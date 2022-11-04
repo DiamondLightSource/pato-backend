@@ -7,15 +7,15 @@
 from pathlib import Path
 from subprocess import check_output
 
-import python3_pip_skeleton
+import ebic_backend
 
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
-project = "python3-pip-skeleton"
+project = "ebic_backend"
 
 # The full version, including alpha/beta/rc tags.
-release = python3_pip_skeleton.__version__
+release = ebic_backend.__version__
 
 # The short X.Y version.
 if "+" in release:

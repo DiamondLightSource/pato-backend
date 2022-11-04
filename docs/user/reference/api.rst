@@ -1,14 +1,14 @@
 API
 ===
 
-.. automodule:: python3_pip_skeleton
+.. automodule:: ebic_backend
 
-    ``python3_pip_skeleton``
+    ``ebic_backend``
     -----------------------------------
 
-This is the internal API reference for python3_pip_skeleton
+This is the internal API reference for ebic_backend
 
-.. data:: python3_pip_skeleton.__version__
+.. data:: ebic_backend.__version__
     :type: str
 
     Version number as calculated by https://github.com/pypa/setuptools_scm
