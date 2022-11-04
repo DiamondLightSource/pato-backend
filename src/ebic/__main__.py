@@ -11,6 +11,5 @@ def main(args=None):
     args = parser.parse_args(args)
 
 
-# test with: python -m ebic_backend
 if __name__ == "__main__":
     main()
