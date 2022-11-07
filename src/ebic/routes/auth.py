@@ -10,6 +10,7 @@ router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorized}})
 
 @router.post("/login")
 def login(json: OAuth2PasswordRequestForm = Depends()):
+    """Log user in"""
     if json.username != "dummy":
         return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
 
@@ -18,9 +19,11 @@ def login(json: OAuth2PasswordRequestForm = Depends()):
 
 @router.post("/logout")
 def logout():
+    """Log user out"""
     return
 
 
 @router.get("/user")
 def check_user(user=Depends(get_user)):
+    """Check user authentication status"""
     return user

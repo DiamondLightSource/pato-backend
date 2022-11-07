@@ -19,6 +19,7 @@ def proposals(
     s: str = "",
     user=Depends(get_user),
 ):
+    """List proposals"""
     return crud.get_all_proposals(limit, page, s)
 
 
@@ -31,6 +32,7 @@ def visits(
     maxDate: str = None,
     user=Depends(get_user),
 ):
+    """List visits belonging to a proposal"""
     return crud.get_all_visits(limit, page, prop, min_date=minDate, max_date=maxDate)
 
 
@@ -41,4 +43,5 @@ def collections(
     page: int = 1,
     user=Depends(get_user),
 ):
+    """List collections belonging to a visit"""
     return crud.get_all_collections(limit, page, visit)
