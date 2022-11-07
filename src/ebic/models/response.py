@@ -24,8 +24,8 @@ class ProposalOut(BaseModel):
 
 
 class VisitOut(BaseModel):
-    sessionId: int = Field(..., lt=1e9, description="Proposal ID")
-    beamLineSetupId: int
+    sessionId: int = Field(..., lt=1e9, description="Session ID")
+    beamLineSetupId: Optional[int]
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     beamCalendarId: Optional[int]
     projectCode: Optional[str] = Field(..., max_length=45)
@@ -35,7 +35,7 @@ class VisitOut(BaseModel):
     scheduled: Optional[int] = Field(..., lt=10)
     nbShifts: Optional[int] = Field(..., lt=1e9)
     comments: Optional[str] = Field(..., max_length=2000)
-    beamLineOperator: Optional[str] = Field(..., max_length=45)
+    beamLineOperator: Optional[str]
     bltimeStamp = datetime
     visit_number: int = Field(..., lt=1e9)
     usedFlag: Optional[int] = Field(
@@ -71,3 +71,10 @@ class VisitOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class DataCollectionSummaryOut(BaseModel):
+    dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
+    SESSIONID: int = Field(..., lt=1e9, description="Session ID")
+    comments: str
+    startTime: Optional[datetime]

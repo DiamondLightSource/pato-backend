@@ -1,7 +1,7 @@
 from sqlalchemy import and_
 from sqlalchemy import func as f
 
-from ..models.response import ProposalOut, VisitOut
+from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
 from ..models.table import BLSession, DataCollection, Proposal
 from ..utils.database import Paged, db, paginate
 
@@ -58,9 +58,16 @@ def get_all_visits(
     return Paged(items=query.all(), total=count, limit=items, page=page)
 
 
-def get_all_collections(items: int, page: int, id: int) -> Paged[DataCollection]:
+def get_all_collections(
+    items: int, page: int, id: int
+) -> Paged[DataCollectionSummaryOut]:
     query = paginate(
-        db.session.query(DataCollection).where(id == DataCollection.SESSIONID),
+        db.session.query(
+            DataCollection.startTime,
+            DataCollection.comments,
+            DataCollection.dataCollectionId,
+            DataCollection.SESSIONID,
+        ).where(id == DataCollection.SESSIONID),
         items,
         page,
     )

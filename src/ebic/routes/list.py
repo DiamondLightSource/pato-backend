@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..crud import list as crud
 from ..models.api import Unauthorized
-from ..models.response import ProposalOut, VisitOut
+from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
 from ..utils.auth import get_user
 from ..utils.database import Paged
 
@@ -34,7 +34,7 @@ def visits(
     return crud.get_all_visits(limit, page, prop, min_date=minDate, max_date=maxDate)
 
 
-@router.get("/collections")
+@router.get("/collections", response_model=Paged[DataCollectionSummaryOut])
 def collections(
     visit: int,
     limit: int = 20,

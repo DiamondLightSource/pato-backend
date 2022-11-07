@@ -18,6 +18,6 @@ def motion(tomogram, nth=0, user=Depends(get_user)):
     return crud.get_motion_correction(tomogram, nth)
 
 
-@router.get("/thumbnail/micrograph/{id}", response_class=FileResponse)
-def micrograph(id, user=Depends(get_user)):
-    return crud.get_micrograph_path(id)
+@router.get("/thumbnail/micrograph/{movieId}", response_class=FileResponse)
+def micrograph_snapshot(movieId: int, user=Depends(get_user)):
+    return crud.get_micrograph_path(movieId)

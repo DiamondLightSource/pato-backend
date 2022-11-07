@@ -3,7 +3,7 @@ import json
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
-from ..models.table import MotionCorrection, Movie, TiltImageAlignment, Tomogram
+from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.database import Paged, db
 
 
@@ -97,8 +97,34 @@ def get_tomogram(id: int) -> Paged[Tomogram]:
 
 
 def get_micrograph_path(id: int) -> str:
-    return (
+    path = (
         db.session.query(MotionCorrection.micrographSnapshotFullPath)
         .filter(MotionCorrection.movieId == id)
-        .first()
+        .first()["micrographSnapshotFullPath"]
     )
+
+    if not path:
+        raise HTTPException(
+            status_code=404,
+            detail="No image for this movie or image not found in filesystem",
+        )
+
+    return path
+
+
+def get_fft_path(id: int) -> str:
+    path = (
+        db.session.query(CTF.fftTheoreticalFullPath)
+        .select_from(MotionCorrection)
+        .filter(MotionCorrection.movieId == id)
+        .join(CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .first()["fftTheoreticalFullPath"]
+    )
+
+    if not path:
+        raise HTTPException(
+            status_code=404,
+            detail="No image for this movie or image not found in filesystem",
+        )
+
+    return path
