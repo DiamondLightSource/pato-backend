@@ -1,7 +1,7 @@
 from sqlalchemy import and_
 from sqlalchemy import func as f
 
-from ..models.response import ProposalOut
+from ..models.response import ProposalOut, VisitOut
 from ..models.table import BLSession, DataCollection, Proposal
 from ..utils.database import Paged, db, paginate
 
@@ -35,8 +35,9 @@ def get_all_visits(
     id: int = None,
     min_date: str = None,
     max_date: str = None,
-) -> Paged[BLSession]:
+) -> Paged[VisitOut]:
     query = db.session.query(BLSession)
+
     count_query = db.session.query(f.count(BLSession.sessionId))
 
     if id is not None:

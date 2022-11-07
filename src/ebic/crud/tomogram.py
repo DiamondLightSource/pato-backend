@@ -32,8 +32,6 @@ def get_motion_correction(id, movie: int = None):
 
     data = {"total": total, "rawTotal": raw["total"]}
 
-    print(data)
-
     if total == 0:
         if raw["total"] == 0:
             raise HTTPException(status_code=404, detail="Tomogram not found")

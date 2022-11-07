@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..crud import list as crud
 from ..models.api import Unauthorized
-from ..models.response import ProposalOut
+from ..models.response import ProposalOut, VisitOut
 from ..utils.auth import get_user
 from ..utils.database import Paged
 
@@ -22,7 +22,7 @@ def proposals(
     return crud.get_all_proposals(limit, page, s)
 
 
-@router.get("/visits")
+@router.get("/visits", response_model=Paged[VisitOut])
 def visits(
     limit: int = 20,
     page: int = 1,

@@ -7,15 +7,15 @@
 from pathlib import Path
 from subprocess import check_output
 
-import ebic_backend
+import ebic
 
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
-project = "ebic_backend"
+project = "ebic"
 
 # The full version, including alpha/beta/rc tags.
-release = ebic_backend.__version__
+release = ebic.__version__
 
 # The short X.Y version.
 if "+" in release:
@@ -125,7 +125,7 @@ copybutton_prompt_is_regexp = True
 #
 html_theme = "pydata_sphinx_theme"
 github_repo = project
-github_user = "DiamondLightSource"
+github_user = "yrh59256"
 
 # Theme options for pydata_sphinx_theme
 html_theme_options = dict(
@@ -134,13 +134,6 @@ html_theme_options = dict(
     ),
     use_edit_page_button=True,
     github_url=f"https://github.com/{github_user}/{github_repo}",
-    icon_links=[
-        dict(
-            name="PyPI",
-            url=f"https://pypi.org/project/{project}",
-            icon="fas fa-cube",
-        )
-    ],
     switcher=dict(
         json_url=f"https://{github_user}.github.io/{github_repo}/switcher.json",
         version_match=version,
@@ -149,7 +142,7 @@ html_theme_options = dict(
     external_links=[
         dict(
             name="Release Notes",
-            url=f"https://github.com/{github_user}/{github_repo}/releases",
+            url=f"https://gitlab.diamond.ac.uk/{github_user}/{github_repo}/releases",
         )
     ],
 )

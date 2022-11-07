@@ -4,3 +4,5 @@ dist/
 .tox
 .venv*
 venv*
+.env
+*.pem
