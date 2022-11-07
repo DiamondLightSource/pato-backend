@@ -21,3 +21,8 @@ def motion(tomogram, nth=0, user=Depends(get_user)):
 @router.get("/thumbnail/micrograph/{movieId}", response_class=FileResponse)
 def micrograph_snapshot(movieId: int, user=Depends(get_user)):
     return crud.get_micrograph_path(movieId)
+
+
+@router.get("/thumbnail/fft/{movieId}", response_class=FileResponse)
+def fft_theoretical(movieId: int, user=Depends(get_user)):
+    return crud.get_fft_path(movieId)

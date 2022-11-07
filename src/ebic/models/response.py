@@ -58,7 +58,7 @@ class VisitOut(BaseModel):
     )
     lastUpdate: Optional[datetime] = Field(
         ...,
-        description="Last update timestamp: by default the end of the session, the last collect...",
+        description="Last update timestamp: by default the end of the session, the last collect",  # noqa: E501
     )
     protectedData: Optional[str] = Field(
         ..., max_length=1024, description="Indicates if the data is protected or not"
@@ -66,7 +66,7 @@ class VisitOut(BaseModel):
     archived: int = Field(
         ...,
         lt=2,
-        description="The data for the session is archived and no longer available on disk",
+        description="The data for the session is archived and no longer available on disk",  # noqa: E501
     )
 
     class Config:

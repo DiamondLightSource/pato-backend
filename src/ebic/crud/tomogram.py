@@ -3,6 +3,8 @@ import json
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
+from ebic.utils.generic import flatten_join
+
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.database import Paged, db
 
@@ -32,32 +34,30 @@ def get_motion_correction(id, movie: int = None):
 
     data = {"total": total, "rawTotal": raw["total"]}
 
-    if total == 0:
-        if raw["total"] == 0:
-            raise HTTPException(status_code=404, detail="Tomogram not found")
+    try:
+        if total == 0:
+            if raw["total"] == 0:
+                raise HTTPException(status_code=404, detail="Tomogram not found")
 
-        data = {
-            **data,
-            **dict(
-                db.session.query(MotionCorrection)
-                .select_from(Movie)
-                .filter(Movie.dataCollectionId == raw["dataCollectionId"])
-                .join(
-                    MotionCorrection,
-                    MotionCorrection.movieId == Movie.movieId,
-                )
-                .order_by(MotionCorrection.imageNumber)
-                .offset(movie)
-                .limit(1)
-                .first()
-            ),
-        }
-    else:
-        try:
             data = {
                 **data,
                 **dict(
-                    db.session.query(TiltImageAlignment, MotionCorrection)
+                    db.session.query(MotionCorrection)
+                    .select_from(Movie)
+                    .filter(Movie.dataCollectionId == raw["dataCollectionId"])
+                    .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
+                    .order_by(MotionCorrection.imageNumber)
+                    .offset(movie)
+                    .limit(1)
+                    .first()
+                ),
+            }
+        else:
+
+            data = {
+                **data,
+                **flatten_join(
+                    db.session.query(MotionCorrection, TiltImageAlignment)
                     .filter(TiltImageAlignment.tomogramId == id)
                     .join(
                         MotionCorrection,
@@ -69,11 +69,11 @@ def get_motion_correction(id, movie: int = None):
                     .first()
                 ),
             }
-        except TypeError:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Motion correction data does not exist for movie ID",
-            )
+    except (TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Motion correction data does not exist for movie ID",
+        )
 
     try:
         with open("/mnt" + data["driftPlotFullPath"], "r") as file:
@@ -81,7 +81,7 @@ def get_motion_correction(id, movie: int = None):
                 {"x": i, "y": val}
                 for (i, val) in enumerate(json.load(file)["data"][0]["y"])
             ]
-    except (FileNotFoundError, KeyError, IndexError):
+    except (FileNotFoundError, KeyError, IndexError, TypeError):
         data["drift"] = []
 
     return data
@@ -117,7 +117,7 @@ def get_fft_path(id: int) -> str:
         db.session.query(CTF.fftTheoreticalFullPath)
         .select_from(MotionCorrection)
         .filter(MotionCorrection.movieId == id)
-        .join(CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
         .first()["fftTheoreticalFullPath"]
     )
 
