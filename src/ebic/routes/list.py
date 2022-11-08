@@ -28,12 +28,13 @@ def visits(
     limit: int = 20,
     page: int = 1,
     prop: str = None,
+    s: str = "",
     minDate: str = None,
     maxDate: str = None,
     user=Depends(get_user),
 ):
     """List visits belonging to a proposal"""
-    return crud.get_all_visits(limit, page, prop, min_date=minDate, max_date=maxDate)
+    return crud.get_all_visits(limit, page, prop, s, min_date=minDate, max_date=maxDate)
 
 
 @router.get("/collections", response_model=Paged[DataCollectionSummaryOut])

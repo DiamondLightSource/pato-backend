@@ -31,13 +31,13 @@ def get_all_visits(
     items: int = None,
     page: int = 1,
     id: str = None,
+    search: str = "",
     min_date: str = None,
     max_date: str = None,
 ) -> Paged[VisitOut]:
     query = db.session.query(BLSession)
 
     count_query = db.session.query(f.count(BLSession.sessionId))
-
     if id is not None:
         query = (
             query.select_from(Proposal)
@@ -55,9 +55,11 @@ def get_all_visits(
         )
 
     if items is not None:
-        query = paginate(query, items, page)
+        query = paginate(
+            query.filter(BLSession.visit_number.contains(search)), items, page
+        )
 
-    count = count_query.first()[0] or 0
+    count = count_query.filter(BLSession.visit_number.contains(search)).first()[0] or 0
 
     return Paged(items=query.all(), total=count, limit=items, page=page)
 
