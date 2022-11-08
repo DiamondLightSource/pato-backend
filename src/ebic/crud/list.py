@@ -5,8 +5,6 @@ from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
 from ..models.table import BLSession, DataCollection, Proposal
 from ..utils.database import Paged, db, paginate
 
-# TODO: Add a wrapper to avoid boilerplate code
-
 
 def get_all_proposals(items: int, page: int, search: str = "") -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
@@ -32,7 +30,7 @@ def get_all_proposals(items: int, page: int, search: str = "") -> Paged[Proposal
 def get_all_visits(
     items: int = None,
     page: int = 1,
-    id: int = None,
+    id: str = None,
     min_date: str = None,
     max_date: str = None,
 ) -> Paged[VisitOut]:
@@ -41,7 +39,13 @@ def get_all_visits(
     count_query = db.session.query(f.count(BLSession.sessionId))
 
     if id is not None:
-        query = query.filter(BLSession.proposalId == id)
+        query = (
+            query.select_from(Proposal)
+            .filter(
+                and_(Proposal.proposalCode == id[:2], Proposal.proposalNumber == id[2:])
+            )
+            .join(BLSession, BLSession.proposalId == Proposal.proposalId)
+        )
         count_query = count_query.filter(BLSession.proposalId == id)
 
     if min_date is not None and max_date is not None:

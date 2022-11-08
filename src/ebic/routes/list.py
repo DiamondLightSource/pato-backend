@@ -27,7 +27,7 @@ def proposals(
 def visits(
     limit: int = 20,
     page: int = 1,
-    prop: int = None,
+    prop: str = None,
     minDate: str = None,
     maxDate: str = None,
     user=Depends(get_user),

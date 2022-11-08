@@ -76,5 +76,5 @@ class VisitOut(BaseModel):
 class DataCollectionSummaryOut(BaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
-    comments: str
+    comments: Optional[str]
     startTime: Optional[datetime]
