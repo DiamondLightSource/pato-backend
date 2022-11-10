@@ -14,18 +14,18 @@ router = APIRouter(
 
 @router.get("/proposals/", response_model=Paged[ProposalOut])
 def proposals(
-    limit: int = 20,
+    limit: int = 100,
     page: int = 1,
     s: str = "",
     user=Depends(get_user),
 ):
     """List proposals"""
-    return crud.get_all_proposals(limit, page, s)
+    return crud.get_proposals(limit, page, s)
 
 
 @router.get("/visits", response_model=Paged[VisitOut])
 def visits(
-    limit: int = 20,
+    limit: int = 100,
     page: int = 1,
     prop: str = None,
     s: str = "",
@@ -34,15 +34,15 @@ def visits(
     user=Depends(get_user),
 ):
     """List visits belonging to a proposal"""
-    return crud.get_all_visits(limit, page, prop, s, min_date=minDate, max_date=maxDate)
+    return crud.get_visits(limit, page, prop, s, min_date=minDate, max_date=maxDate)
 
 
 @router.get("/collections", response_model=Paged[DataCollectionSummaryOut])
 def collections(
     visit: int,
-    limit: int = 20,
+    limit: int = 100,
     page: int = 1,
     user=Depends(get_user),
 ):
     """List collections belonging to a visit"""
-    return crud.get_all_collections(limit, page, visit)
+    return crud.get_collections(limit, page, visit)

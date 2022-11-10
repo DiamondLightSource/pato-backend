@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import and_
 from sqlalchemy import func as f
 
@@ -6,7 +8,7 @@ from ..models.table import BLSession, DataCollection, Proposal
 from ..utils.database import Paged, db, paginate
 
 
-def get_all_proposals(items: int, page: int, search: str = "") -> Paged[ProposalOut]:
+def get_proposals(items: int, page: int, search: str = "") -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
     query = paginate(
         db.session.query(*cols, f.count(BLSession.sessionId).label("visits"))
@@ -27,13 +29,13 @@ def get_all_proposals(items: int, page: int, search: str = "") -> Paged[Proposal
     return Paged(items=query.all(), total=count, limit=items, page=page)
 
 
-def get_all_visits(
-    items: int = None,
-    page: int = 1,
-    id: str = None,
-    search: str = "",
-    min_date: str = None,
-    max_date: str = None,
+def get_visits(
+    items: int,
+    page: int,
+    id: Optional[str],
+    search: str,
+    min_date: Optional[str],
+    max_date: Optional[str],
 ) -> Paged[VisitOut]:
     query = db.session.query(BLSession)
 
@@ -54,19 +56,14 @@ def get_all_visits(
             BLSession.startDate.between(min_date, max_date)
         )
 
-    if items is not None:
-        query = paginate(
-            query.filter(BLSession.visit_number.contains(search)), items, page
-        )
+    query = paginate(query.filter(BLSession.visit_number.contains(search)), items, page)
 
     count = count_query.filter(BLSession.visit_number.contains(search)).first()[0] or 0
 
     return Paged(items=query.all(), total=count, limit=items, page=page)
 
 
-def get_all_collections(
-    items: int, page: int, id: int
-) -> Paged[DataCollectionSummaryOut]:
+def get_collections(items: int, page: int, id: int) -> Paged[DataCollectionSummaryOut]:
     query = paginate(
         db.session.query(
             DataCollection.startTime,
