@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
-from fastapi.responses import FileResponse
 
 from ..crud import tomogram as crud
 from ..models.api import Unauthorized
 from ..utils.auth import get_user
 
-router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorized}})
+router = APIRouter(tags=["tomograph"], responses={401: {"model": Unauthorized}})
 
 
 @router.get("/tomograms/{collection}")
@@ -15,18 +14,13 @@ def tomograms(collection: int, user=Depends(get_user)):
 
 
 @router.get("/motion/{tomogram}")
-def motion(tomogram, nth=0, user=Depends(get_user)):
+def motion(tomogram, nth=None, user=Depends(get_user)):
     """Get motion correction and tilt alignment data (including drift plot)"""
     return crud.get_motion_correction(tomogram, nth)
 
 
-@router.get("/thumbnail/micrograph/{movie}", response_class=FileResponse)
-def micrograph_snapshot(movie: int, user=Depends(get_user)):
-    """Get micrograph snapshot"""
-    return crud.get_micrograph_path(movie)
-
-
-@router.get("/thumbnail/fft/{movie}", response_class=FileResponse)
-def fft_theoretical(movie: int, user=Depends(get_user)):
-    """Get FFT theoretical image"""
-    return crud.get_fft_path(movie)
+@router.get("/ctf/{tomogram}")
+def ctf(tomogram, user=Depends(get_user)):
+    """Get astigmatism, resolution and defocus as a function of tilt image
+    alignment refined tilt angles"""
+    return crud.get_ctf(tomogram)

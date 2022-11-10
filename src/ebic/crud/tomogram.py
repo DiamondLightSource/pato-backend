@@ -31,6 +31,8 @@ def get_motion_correction(id, movie: int = None):
 
     if movie is None:
         movie = raw["total"] - 1 if total == 0 else total - 1
+    else:
+        movie = int(movie) - 1
 
     data = {"total": total, "rawTotal": raw["total"]}
 
@@ -53,7 +55,6 @@ def get_motion_correction(id, movie: int = None):
                 ),
             }
         else:
-
             data = {
                 **data,
                 **flatten_join(
@@ -96,35 +97,18 @@ def get_tomogram(id: int) -> Paged[Tomogram]:
     return Paged(items=data, total=len(data), page=1, limit=100)
 
 
-def get_micrograph_path(id: int) -> str:
-    path = (
-        db.session.query(MotionCorrection.micrographSnapshotFullPath)
-        .filter(MotionCorrection.movieId == id)
-        .first()["micrographSnapshotFullPath"]
-    )
-
-    if not path:
-        raise HTTPException(
-            status_code=404,
-            detail="No image for this movie or image not found in filesystem",
+def get_ctf(id: int):
+    data = (
+        db.session.query(
+            CTF.estimatedResolution,
+            CTF.estimatedDefocus,
+            CTF.astigmatism,
+            TiltImageAlignment.refinedTiltAngle,
         )
-
-    return path
-
-
-def get_fft_path(id: int) -> str:
-    path = (
-        db.session.query(CTF.fftTheoreticalFullPath)
-        .select_from(MotionCorrection)
-        .filter(MotionCorrection.movieId == id)
+        .filter(TiltImageAlignment.tomogramId == id)
+        .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-        .first()["fftTheoreticalFullPath"]
+        .all()
     )
 
-    if not path:
-        raise HTTPException(
-            status_code=404,
-            detail="No image for this movie or image not found in filesystem",
-        )
-
-    return path
+    return data
