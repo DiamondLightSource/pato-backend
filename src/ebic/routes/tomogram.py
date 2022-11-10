@@ -24,3 +24,9 @@ def ctf(tomogram, user=Depends(get_user)):
     """Get astigmatism, resolution and defocus as a function of tilt image
     alignment refined tilt angles"""
     return crud.get_ctf(tomogram)
+
+
+@router.get("/shiftPlot/{tomogram}")
+def shift_plot(tomogram, user=Depends(get_user)):
+    "Get X-Y shift plot data"
+    return crud.get_shift_plot(tomogram)

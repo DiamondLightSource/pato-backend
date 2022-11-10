@@ -1,12 +1,10 @@
-import json
-
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
-from ebic.utils.generic import flatten_join
-
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.database import Paged, db
+from ..utils.generic import flatten_join, parse_json_file
+from .path import get_tomogram_auto_proc_attachment
 
 
 def get_motion_correction(id, movie: int = None):
@@ -76,14 +74,7 @@ def get_motion_correction(id, movie: int = None):
             detail="Motion correction data does not exist for movie ID",
         )
 
-    try:
-        with open("/mnt" + data["driftPlotFullPath"], "r") as file:
-            data["drift"] = [
-                {"x": i, "y": val}
-                for (i, val) in enumerate(json.load(file)["data"][0]["y"])
-            ]
-    except (FileNotFoundError, KeyError, IndexError, TypeError):
-        data["drift"] = []
+    data["drift"] = parse_json_file(data["driftPlotFullPath"])
 
     return data
 
@@ -111,4 +102,13 @@ def get_ctf(id: int):
         .all()
     )
 
-    return data
+    return {"items": data}
+
+
+def get_shift_plot(id: int):
+    data = parse_json_file(get_tomogram_auto_proc_attachment(id, "Graph"))
+
+    if not data:
+        raise HTTPException(status_code=404, detail="Graph file not found")
+
+    return {"items": data}

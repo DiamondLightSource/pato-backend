@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 
-from ..crud import image as crud
+from ..crud import path as crud
 from ..models.api import Unauthorized
 from ..utils.auth import get_user
 
@@ -25,4 +25,4 @@ def fft_theoretical(movie: int, user=Depends(get_user)):
 @router.get("/slice/{tomogram}", response_class=FileResponse)
 def slice(tomogram: int, user=Depends(get_user)):
     """Get tomogram central slice image"""
-    return crud.get_central_slice_path(tomogram)
+    return crud.get_tomogram_auto_proc_attachment(tomogram)

@@ -5,8 +5,26 @@ from ..models.table import CTF, AutoProcProgramAttachment, MotionCorrection, Tom
 from ..utils.database import db
 
 
-def get_central_slice_path(id: int) -> str:
-    path = (
+def validate_path(func):
+    def wrap(*args, **kwargs):
+        try:
+            path = func(*args, **kwargs)
+            if not path:
+                raise ValueError
+        except (ValueError, TypeError):
+            raise HTTPException(
+                status_code=404,
+                detail="No file found in table",
+            )
+
+        return path
+
+    return wrap
+
+
+@validate_path
+def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str:
+    return (
         db.session.query(AutoProcProgramAttachment.filePath)
         .select_from(Tomogram)
         .filter(Tomogram.tomogramId == id)
@@ -15,23 +33,16 @@ def get_central_slice_path(id: int) -> str:
             and_(
                 AutoProcProgramAttachment.autoProcProgramId
                 == Tomogram.autoProcProgramId,
-                AutoProcProgramAttachment.fileType == "Result",
+                AutoProcProgramAttachment.fileType == file_type,
             ),
         )
         .first()["filePath"]
     )
 
-    if not path:
-        raise HTTPException(
-            status_code=404,
-            detail="No image for this movie or image not found in filesystem",
-        )
 
-    return path
-
-
+@validate_path
 def get_fft_path(id: int) -> str:
-    path = (
+    return (
         db.session.query(CTF.fftTheoreticalFullPath)
         .select_from(MotionCorrection)
         .filter(MotionCorrection.movieId == id)
@@ -39,26 +50,11 @@ def get_fft_path(id: int) -> str:
         .first()["fftTheoreticalFullPath"]
     )
 
-    if not path:
-        raise HTTPException(
-            status_code=404,
-            detail="No image for this movie or image not found in filesystem",
-        )
 
-    return path
-
-
+@validate_path
 def get_micrograph_path(id: int) -> str:
-    path = (
+    return (
         db.session.query(MotionCorrection.micrographSnapshotFullPath)
         .filter(MotionCorrection.movieId == id)
         .first()["micrographSnapshotFullPath"]
     )
-
-    if not path:
-        raise HTTPException(
-            status_code=404,
-            detail="No image for this movie or image not found in filesystem",
-        )
-
-    return path
