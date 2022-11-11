@@ -39,40 +39,42 @@ def get_motion_correction(id, movie: int = None):
             if raw["total"] == 0:
                 raise HTTPException(status_code=404, detail="Tomogram not found")
 
-            data = {
-                **data,
-                **dict(
-                    db.session.query(MotionCorrection)
-                    .select_from(Movie)
-                    .filter(Movie.dataCollectionId == raw["dataCollectionId"])
-                    .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
-                    .order_by(MotionCorrection.imageNumber)
-                    .offset(movie)
-                    .limit(1)
-                    .first()
-                ),
-            }
+            query = (
+                db.session.query(MotionCorrection, CTF, Movie)
+                .filter(Movie.dataCollectionId == raw["dataCollectionId"])
+                .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
+                .join(
+                    CTF, CTF.motionCorrectionId == MotionCorrection.MotionCorrectionId
+                )
+                .order_by(MotionCorrection.imageNumber)
+            )
         else:
-            data = {
-                **data,
-                **flatten_join(
-                    db.session.query(MotionCorrection, TiltImageAlignment)
-                    .filter(TiltImageAlignment.tomogramId == id)
-                    .join(
-                        MotionCorrection,
-                        MotionCorrection.movieId == TiltImageAlignment.movieId,
-                    )
-                    .order_by(TiltImageAlignment.refinedTiltAngle)
-                    .offset(movie)
-                    .limit(1)
-                    .first()
-                ),
-            }
+            query = (
+                db.session.query(MotionCorrection, TiltImageAlignment, CTF, Movie)
+                .filter(TiltImageAlignment.tomogramId == id)
+                .join(
+                    MotionCorrection,
+                    MotionCorrection.movieId == TiltImageAlignment.movieId,
+                )
+                .join(Movie, Movie.movieId == TiltImageAlignment.movieId)
+                .join(
+                    CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId
+                )
+                .order_by(TiltImageAlignment.refinedTiltAngle)
+            )
+
+        query = query.offset(movie).limit(1).first()
+
     except (TypeError, ValueError):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Motion correction data does not exist for movie ID",
         )
+
+    data = {
+        **data,
+        **flatten_join(query),
+    }
 
     data["drift"] = parse_json_file(data["driftPlotFullPath"])
 
