@@ -69,3 +69,5 @@ lockfiles/
 
 .env
 *.pem
+
+*.db
