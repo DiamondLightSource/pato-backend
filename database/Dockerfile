@@ -6,6 +6,7 @@ RUN apt-get update -y && \
     git clone https://github.com/DiamondLightSource/ispyb-database && \
     mv ispyb-database/schemas/ispyb/tables.sql 1.sql && \
     mv ispyb-database/schemas/ispyb/lookups.sql 2.sql 
+    #mv ispyb-database/schemas/ispyb/data.sql 3.sql
 
 ADD data.sql /docker-entrypoint-initdb.d/3.sql
 

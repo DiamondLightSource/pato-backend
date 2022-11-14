@@ -3,12 +3,16 @@ import json
 from sqlalchemy import inspect
 
 
-def flatten_join(tup_list):
+def flatten_join(tup_list, preserve_dups=[]):
     flattened = {}
 
     for inner in tup_list:
         for c in inspect(inner).mapper.column_attrs:
-            flattened[c.key] = getattr(inner, c.key)
+            key = c.key
+            if c.key in preserve_dups:
+                key = key + "_" + inner.__table__.name
+
+            flattened[key] = getattr(inner, c.key)
 
     return flattened
 

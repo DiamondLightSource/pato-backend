@@ -2,25 +2,40 @@ from typing import Optional
 
 from sqlalchemy import and_
 from sqlalchemy import func as f
+from sqlalchemy.orm import Query
 
 from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
-from ..models.table import BLSession, DataCollection, Proposal
+from ..models.table import BLSession, DataCollection, Proposal, ProposalHasPerson
 from ..utils.database import Paged, db, paginate
 
 
-def get_proposals(items: int, page: int, search: str = "") -> Paged[ProposalOut]:
+def _concat_prop_user(user: dict, query: Query):
+    if not user["is_admin"]:
+        return query.filter(
+            ProposalHasPerson.personId == user["id"].personId,
+            ProposalHasPerson.proposalId == Proposal.proposalId,
+        )
+    return query
+
+
+def get_proposals(items: int, page: int, search: str, user: dict) -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
-    query = paginate(
+    query = _concat_prop_user(
+        user,
         db.session.query(*cols, f.count(BLSession.sessionId).label("visits"))
         .filter(Proposal.proposalNumber.contains(search))
         .join(BLSession, BLSession.proposalId == Proposal.proposalId)
         .group_by(Proposal.proposalId),
+    )
+
+    query = paginate(
+        query,
         items,
         page,
     )
 
     count = (
-        db.session.query(f.count(Proposal.proposalId))
+        _concat_prop_user(user, db.session.query(f.count(Proposal.proposalId)))
         .filter(Proposal.proposalNumber.contains(search))
         .first()[0]
         or 0
@@ -32,6 +47,7 @@ def get_proposals(items: int, page: int, search: str = "") -> Paged[ProposalOut]
 def get_visits(
     items: int,
     page: int,
+    user: dict,
     id: Optional[str],
     search: str,
     min_date: Optional[str],

@@ -73,7 +73,7 @@ def get_motion_correction(id, movie: int = None):
 
     data = {
         **data,
-        **flatten_join(query),
+        **flatten_join(query, ["comments"]),
     }
 
     data["drift"] = parse_json_file(data["driftPlotFullPath"])

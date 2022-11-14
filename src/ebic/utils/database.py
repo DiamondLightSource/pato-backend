@@ -4,6 +4,7 @@ from typing import Generic, Optional, TypeVar
 
 import sqlalchemy.orm
 from pydantic.generics import GenericModel
+from sqlalchemy.orm import Query
 
 from .session import _session as sqlsession
 
@@ -56,5 +57,5 @@ class Paged(GenericModel, Generic[T]):
         arbitrary_types_allowed = True
 
 
-def paginate(query, items, page):
+def paginate(query: Query, items: int, page: int):
     return query.limit(items).offset((page - 1) * items)

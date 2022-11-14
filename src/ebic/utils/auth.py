@@ -3,6 +3,10 @@ import os
 import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy import and_
+
+from ..models.table import Permission, Person, UserGroup
+from .database import db
 
 
 def discovery():
@@ -39,6 +43,29 @@ def get_auth_redirect(redirect: str):
         + "?response_type=token&client_id=oidc_diamond_ac_uk&redirect_uri="
         + redirect
     )
+
+
+def check_admin(token: str = Depends(oauth2_scheme)):
+    user = (
+        db.session.query(Person.personId)
+        .filter(Person.login == get_user(token)["id"])
+        .first()
+    )
+
+    query = (
+        db.session.query(UserGroup)
+        .select_from(Person)
+        .filter(Person.personId == user.personId)
+        .join(Permission, Permission.permissionId == 8)
+        .filter(
+            and_(
+                UserGroup.userGroupId.in_(Person.UserGroup),
+                UserGroup.userGroupId.in_(Permission.UserGroup),
+            )
+        )
+    )
+
+    return {"id": user, "is_admin": query.scalar() is not None}
 
 
 def get_logout_redirect():
