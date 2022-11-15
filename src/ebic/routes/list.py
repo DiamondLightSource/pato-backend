@@ -7,7 +7,7 @@ from ..utils.auth import check_admin, get_user
 from ..utils.database import Paged
 
 router = APIRouter(
-    tags=["auth"],
+    tags=["list"],
     responses={401: {"model": Unauthorized}},
 )
 

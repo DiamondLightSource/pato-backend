@@ -44,7 +44,7 @@ def get_motion_correction(id, movie: int = None):
                 .filter(Movie.dataCollectionId == raw["dataCollectionId"])
                 .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
                 .join(
-                    CTF, CTF.motionCorrectionId == MotionCorrection.MotionCorrectionId
+                    CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId
                 )
                 .order_by(MotionCorrection.imageNumber)
             )

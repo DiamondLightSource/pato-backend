@@ -1,9 +1,15 @@
 import json
 
+from fastapi import HTTPException
 from sqlalchemy import inspect
 
 
 def flatten_join(tup_list, preserve_dups=[]):
+    if tup_list is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Request did not return any data",
+        )
     flattened = {}
 
     for inner in tup_list:

@@ -2,16 +2,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from ebic.main import app
-from ebic.utils.auth import get_user
+from ebic.utils.auth import get_user, oauth2_scheme
 
-
-def override_get_user():
-    return {"user": "lauda"}
-
-
-app.dependency_overrides[get_user] = override_get_user
+app.dependency_overrides[oauth2_scheme] = lambda: "aaa"
 
 
 @pytest.fixture(scope="session")
-def client():
+def client(request):
+    app.dependency_overrides[get_user] = lambda: {"id": request.param}
     yield TestClient(app)

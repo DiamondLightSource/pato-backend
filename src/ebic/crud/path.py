@@ -1,3 +1,5 @@
+import os
+
 from fastapi import HTTPException
 from sqlalchemy import and_
 
@@ -17,15 +19,17 @@ def validate_path(func):
                 detail="No file found in table",
             )
 
-        return path
+        return "/mnt" + path
 
     return wrap
 
 
 @validate_path
 def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str:
-    return (
-        db.session.query(AutoProcProgramAttachment.filePath)
+    paths = (
+        db.session.query(
+            AutoProcProgramAttachment.filePath, AutoProcProgramAttachment.fileName
+        )
         .select_from(Tomogram)
         .filter(Tomogram.tomogramId == id)
         .join(
@@ -36,8 +40,10 @@ def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str
                 AutoProcProgramAttachment.fileType == file_type,
             ),
         )
-        .first()["filePath"]
+        .first()
     )
+
+    return os.path.join(paths["filePath"], paths["fileName"])
 
 
 @validate_path

@@ -1,3 +1,8 @@
+import pytest
+
+pytestmark = pytest.mark.parametrize("client", ["yrh59256"], indirect=True)
+
+
 def test_motion(client):
     """Checks for valid motion response"""
     resp = client.get("/motion/1")

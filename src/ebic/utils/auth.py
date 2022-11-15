@@ -51,6 +51,11 @@ def check_admin(token: str = Depends(oauth2_scheme)):
         .filter(Person.login == get_user(token)["id"])
         .first()
     )
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User is not listed or does not have permission to view content",
+        )
 
     query = (
         db.session.query(UserGroup)
