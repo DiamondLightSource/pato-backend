@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..crud import tomogram as crud
 from ..models.api import Unauthorized
-from ..utils.auth import check_admin, get_user
+from ..utils.auth import check_admin
 
 router = APIRouter(tags=["tomograph"], responses={401: {"model": Unauthorized}})
 
@@ -20,13 +20,13 @@ def motion(tomogram, nth=None, user=Depends(check_admin)):
 
 
 @router.get("/ctf/{tomogram}")
-def ctf(tomogram, user=Depends(get_user)):
+def ctf(tomogram, user=Depends(check_admin)):
     """Get astigmatism, resolution and defocus as a function of tilt image
     alignment refined tilt angles"""
-    return crud.get_ctf(tomogram)
+    return crud.get_ctf(user, tomogram)
 
 
 @router.get("/shiftPlot/{tomogram}")
-def shift_plot(tomogram, user=Depends(get_user)):
+def shift_plot(tomogram, user=Depends(check_admin)):
     "Get X-Y shift plot data"
-    return crud.get_shift_plot(tomogram)
+    return crud.get_shift_plot(user, tomogram)

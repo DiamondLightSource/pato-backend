@@ -37,8 +37,8 @@ class AuthUser:
                 detail="User is not listed or does not have permission to view content",
             )
 
-        # This is being done because otherwise SQLAlchemy would build a massive query based
-        # on the relationships in the model; this is slightly better:
+        # This is being done because otherwise SQLAlchemy would build a massive query
+        # based on the relationships in the model; this is slightly better:
         query = (
             db.session.query(GroupHasPerm.columns.permissionId)
             .select_from(GroupHasPerson)

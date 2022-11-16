@@ -169,7 +169,8 @@ def get_tomogram(user: AuthUser, id: int) -> Paged[Tomogram]:
 
 
 @validate_tomogram
-def get_ctf(id: int):
+def get_ctf(user: AuthUser, id: int):
+    """Get CTF data (resolution, defocus, astigmatism) as a function of refined tilt angle"""
     data = (
         db.session.query(
             CTF.estimatedResolution,
@@ -187,7 +188,7 @@ def get_ctf(id: int):
 
 
 @validate_tomogram
-def get_shift_plot(id: int):
+def get_shift_plot(user: AuthUser, id: int):
     data = parse_json_file(get_tomogram_auto_proc_attachment(id, "Graph"))
 
     if not data:
