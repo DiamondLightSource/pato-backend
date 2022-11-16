@@ -1,10 +1,6 @@
 from unittest.mock import patch
 
-import pytest
-
 from ebic.utils import auth
-
-pytestmark = pytest.mark.parametrize("client", ["yrh59256"], indirect=True)
 
 
 @patch.object(auth, "get_user", return_value={"id": "admin"}, autospec=True)
