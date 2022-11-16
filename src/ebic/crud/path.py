@@ -19,7 +19,15 @@ def validate_path(func):
                 detail="No file found in table",
             )
 
-        return "/mnt" + path
+        path = "/mnt" + path
+
+        if not os.path.exists(path):
+            raise HTTPException(
+                status_code=404,
+                detail="File does not exist in filesystem",
+            )
+
+        return path
 
     return wrap
 

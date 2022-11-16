@@ -32,3 +32,8 @@ def parse_json_file(path):
             ]
     except (FileNotFoundError, KeyError, IndexError, TypeError):
         return []
+    except json.decoder.JSONDecodeError:
+        raise HTTPException(
+            status_code=500,
+            detail="JSON file not in correct format",
+        )
