@@ -15,6 +15,15 @@ def test_get_all_tomograms(mock_user, client):
     assert resp.json()["total"] == 1
 
 
+@patch.object(auth, "get_user", return_value={"id": "em_admin"}, autospec=True)
+def test_get_em_admin_tomogram(mock_user, client):
+    """Get tomogram in a data collection (request for EM admin).
+    Non-EM tomograms cannot exist."""
+    resp = client.get("/tomograms/6017406")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 1
+
+
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
 def test_get_user_tomograms(mock_user, client):
     """Get all tomograms in a data collection belonging to user"""
