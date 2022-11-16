@@ -1,8 +1,10 @@
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
+from sqlalchemy.orm import Query
 
 from ..models.table import (
     CTF,
+    BLSession,
     DataCollection,
     MotionCorrection,
     Movie,
@@ -16,6 +18,30 @@ from ..utils.generic import flatten_join, parse_json_file
 from .path import get_tomogram_auto_proc_attachment
 
 
+def _session_check(query: Query, user: AuthUser, data):
+    if bool(set([11, 26]) & set(user.permissions)):
+        return data
+
+    if bool(set([8]) & set(user.permissions)):
+        query = query.filter(
+            BLSession.sessionId == DataCollection.SESSIONID,
+            BLSession.beamLineName.like("m__"),
+        )
+    else:
+        query = query.filter(
+            SessionHasPerson.sessionId == DataCollection.SESSIONID,
+            SessionHasPerson.personId == user.id,
+        )
+
+    if query.scalar() is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User not in the parent session",
+        )
+
+    return data
+
+
 def validate_collection(func):
     def wrap(*args, **kwargs):
         user = args[0]
@@ -26,24 +52,11 @@ def validate_collection(func):
         if bool(set([11, 26]) & set(user.permissions)):
             return data
 
-        session = (
-            db.session.query(SessionHasPerson)
-            .select_from(DataCollection)
-            .filter(DataCollection.dataCollectionId == col_id)
-            .filter(
-                SessionHasPerson.sessionId == DataCollection.SESSIONID,
-                SessionHasPerson.personId == user.id,
-            )
-            .scalar()
+        query = db.session.query(DataCollection).filter(
+            DataCollection.dataCollectionId == col_id
         )
 
-        if session is None:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="User cannot view anything in this collection",
-            )
-
-        return data
+        return _session_check(query, user, data)
 
     return wrap
 
@@ -55,31 +68,17 @@ def validate_tomogram(func):
 
         data = func(*args, **kwargs)
 
-        if bool(set([11, 26]) & set(user.permissions)):
-            return data
-
-        session = (
-            db.session.query(SessionHasPerson)
+        query = (
+            db.session.query(DataCollection)
             .select_from(Tomogram)
             .filter(Tomogram.tomogramId == tomo_id)
             .join(
                 DataCollection,
                 DataCollection.dataCollectionId == Tomogram.dataCollectionId,
             )
-            .filter(
-                SessionHasPerson.sessionId == DataCollection.SESSIONID,
-                SessionHasPerson.personId == user.id,
-            )
-            .scalar()
         )
 
-        if session is None:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="User cannot view anything in this tomogram",
-            )
-
-        return data
+        return _session_check(query, user, data)
 
     return wrap
 

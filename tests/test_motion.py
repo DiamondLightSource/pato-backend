@@ -18,9 +18,18 @@ def test_get_motion(mock_user, client):
     assert resp_json["rawTotal"] == 5
 
 
+@patch.object(auth, "get_user", return_value={"id": "em_admin"}, autospec=True)
+def test_get_em_admin_motion(mock_user, client):
+    """Get motion correction in a tomogram (request for EM admin).
+    Non-EM tomograms cannot exist."""
+    resp = client.get("/motion/1")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 4
+
+
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
 def test_get_user_motion(mock_user, client):
-    """Get all tomograms in a data collection belonging to user"""
+    """Get all motion correction in a tomogram belonging to user"""
     resp = client.get("/motion/2")
     assert resp.status_code == 200
     assert resp.json()["total"] == 4
@@ -28,6 +37,6 @@ def test_get_user_motion(mock_user, client):
 
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
 def test_get_forbidden_motion(mock_user, client):
-    """Try to get tomograms in a data collection that does not belong to user"""
+    """Try to get motion correction in a tomogram that does not belong to user"""
     resp = client.get("/motion/1")
     assert resp.status_code == 403
