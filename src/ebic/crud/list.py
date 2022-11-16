@@ -5,43 +5,73 @@ from sqlalchemy import func as f
 from sqlalchemy.orm import Query
 
 from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
-from ..models.table import BLSession, DataCollection, Proposal, ProposalHasPerson
+from ..models.table import (
+    BLSession,
+    DataCollection,
+    Proposal,
+    ProposalHasPerson,
+    SessionHasPerson,
+)
 from ..utils.database import Paged, db, paginate
+
+# TODO: Add config file
 
 
 def _concat_prop_user(user: dict, query: Query):
-    if not user["is_admin"]:
-        return query.filter(
-            ProposalHasPerson.personId == user["id"].personId,
-            ProposalHasPerson.proposalId == Proposal.proposalId,
-        )
-    return query
+    if bool(set([11, 26]) & set(user["permissions"])):
+        return query
+
+    if 8 in user["permissions"]:
+        return query.filter(BLSession.beamLineName.like("m__"))
+    return query.filter(
+        ProposalHasPerson.personId == user["id"].personId,
+        ProposalHasPerson.proposalId == Proposal.proposalId,
+    )
+
+
+def _concat_session_user(user: dict, query: Query):
+    if bool(set([11, 26]) & set(user["permissions"])):
+        return query
+
+    if 8 in user["permissions"]:
+        return query.filter(BLSession.beamLineName.like("m__"))
+
+    return query.filter(
+        SessionHasPerson.sessionId == BLSession.sessionId,
+        SessionHasPerson.personId == user["id"].personId,
+    )
+
+
+def _concat_collection_user(user: dict, query: Query):
+    if bool(set([11, 26]) & set(user["permissions"])):
+        return query
+
+    if 8 in user["permissions"]:
+        return query.join(
+            BLSession, BLSession.sessionId == DataCollection.SESSIONID
+        ).filter(BLSession.beamLineName.like("m__"))
+
+    return query.filter(
+        SessionHasPerson.sessionId == DataCollection.SESSIONID,
+        SessionHasPerson.personId == user["id"].personId,
+    )
 
 
 def get_proposals(items: int, page: int, search: str, user: dict) -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
     query = _concat_prop_user(
         user,
-        db.session.query(*cols, f.count(BLSession.sessionId).label("visits"))
+        db.session.query(
+            *cols,
+            f.count(BLSession.sessionId).label("visits"),
+            f.count(Proposal.proposalId).over().label("total")
+        )
         .filter(Proposal.proposalNumber.contains(search))
         .join(BLSession, BLSession.proposalId == Proposal.proposalId)
         .group_by(Proposal.proposalId),
     )
 
-    query = paginate(
-        query,
-        items,
-        page,
-    )
-
-    count = (
-        _concat_prop_user(user, db.session.query(f.count(Proposal.proposalId)))
-        .filter(Proposal.proposalNumber.contains(search))
-        .first()[0]
-        or 0
-    )
-
-    return Paged(items=query.all(), total=count, limit=items, page=page)
+    return paginate(query, items, page)
 
 
 def get_visits(
@@ -53,9 +83,11 @@ def get_visits(
     min_date: Optional[str],
     max_date: Optional[str],
 ) -> Paged[VisitOut]:
-    query = db.session.query(BLSession)
+    query = db.session.query(
+        *[c for c in BLSession.__table__.columns],
+        f.count(BLSession.sessionId).over().label("total")
+    )
 
-    count_query = db.session.query(f.count(BLSession.sessionId))
     if id is not None:
         query = (
             query.select_from(Proposal)
@@ -64,38 +96,26 @@ def get_visits(
             )
             .join(BLSession, BLSession.proposalId == Proposal.proposalId)
         )
-        count_query = count_query.filter(BLSession.proposalId == id)
 
     if min_date is not None and max_date is not None:
         query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
-        count_query = count_query.filter(
-            BLSession.startDate.between(min_date, max_date)
-        )
 
-    query = paginate(query.filter(BLSession.visit_number.contains(search)), items, page)
-
-    count = count_query.filter(BLSession.visit_number.contains(search)).first()[0] or 0
-
-    return Paged(items=query.all(), total=count, limit=items, page=page)
-
-
-def get_collections(items: int, page: int, id: int) -> Paged[DataCollectionSummaryOut]:
-    query = paginate(
-        db.session.query(
-            DataCollection.startTime,
-            DataCollection.comments,
-            DataCollection.dataCollectionId,
-            DataCollection.SESSIONID,
-        ).where(id == DataCollection.SESSIONID),
-        items,
-        page,
+    query = _concat_session_user(
+        user, query.filter(BLSession.visit_number.contains(search))
     )
 
-    count = (
-        db.session.query(f.count(DataCollection.dataCollectionId))
-        .where(id == DataCollection.SESSIONID)
-        .first()[0]
-        or 0
-    )
+    return paginate(query, items, page)
 
-    return Paged(items=query.all(), total=count, limit=items, page=page)
+
+def get_collections(
+    items: int, page: int, id: int, user: dict
+) -> Paged[DataCollectionSummaryOut]:
+    query = db.session.query(
+        DataCollection.startTime,
+        DataCollection.comments,
+        DataCollection.dataCollectionId,
+        DataCollection.SESSIONID,
+        f.count(DataCollection.dataCollectionId).over().label("total"),
+    ).where(id == DataCollection.SESSIONID)
+
+    return paginate(_concat_collection_user(user, query), items, page)

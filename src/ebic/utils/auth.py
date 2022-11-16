@@ -3,9 +3,10 @@ import os
 import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy import and_
 
-from ..models.table import Permission, Person, UserGroup
+from ..models.table import Person
+from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
+from ..models.table import t_UserGroup_has_Person as GroupHasPerson
 from .database import db
 
 
@@ -51,26 +52,26 @@ def check_admin(token: str = Depends(oauth2_scheme)):
         .filter(Person.login == get_user(token)["id"])
         .first()
     )
+
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User is not listed or does not have permission to view content",
         )
 
+    # This is being done because otherwise SQLAlchemy would build a massive query based
+    # on the relationships in the model; this is slightly better:
     query = (
-        db.session.query(UserGroup)
-        .select_from(Person)
-        .filter(Person.personId == user.personId)
-        .join(Permission, Permission.permissionId == 8)
-        .filter(
-            and_(
-                UserGroup.userGroupId.in_(Person.UserGroup),
-                UserGroup.userGroupId.in_(Permission.UserGroup),
-            )
+        db.session.query(GroupHasPerm.columns.permissionId)
+        .select_from(GroupHasPerson)
+        .filter(GroupHasPerson.columns.personId == user.personId)
+        .join(
+            GroupHasPerm,
+            GroupHasPerm.columns.userGroupId == GroupHasPerson.columns.userGroupId,
         )
     )
 
-    return {"id": user, "is_admin": query.scalar() is not None}
+    return {"id": user, "permissions": [p.permissionId for p in query.all()]}
 
 
 def get_logout_redirect():

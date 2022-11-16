@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from ..crud import list as crud
 from ..models.api import Unauthorized
 from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
-from ..utils.auth import check_admin, get_user
+from ..utils.auth import check_admin
 from ..utils.database import Paged
 
 router = APIRouter(
@@ -39,7 +39,7 @@ def collections(
     visit: int,
     limit: int = 100,
     page: int = 1,
-    user=Depends(get_user),
+    user=Depends(check_admin),
 ):
     """List collections belonging to a visit"""
-    return crud.get_collections(limit, page, visit)
+    return crud.get_collections(limit, page, visit, user)

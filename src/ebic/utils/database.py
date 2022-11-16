@@ -3,6 +3,7 @@ import contextvars
 from typing import Generic, Optional, TypeVar
 
 import sqlalchemy.orm
+from fastapi import HTTPException, status
 from pydantic.generics import GenericModel
 from sqlalchemy.orm import Query
 
@@ -58,4 +59,12 @@ class Paged(GenericModel, Generic[T]):
 
 
 def paginate(query: Query, items: int, page: int):
-    return query.limit(items).offset((page - 1) * items)
+    data = query.limit(items).offset((page - 1) * items).all()
+
+    if not data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No items found",
+        )
+
+    return Paged(items=data, total=data[0].total, limit=items, page=page)
