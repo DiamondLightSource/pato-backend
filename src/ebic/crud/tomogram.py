@@ -1,13 +1,91 @@
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
-from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
+from ..models.table import (
+    CTF,
+    DataCollection,
+    MotionCorrection,
+    Movie,
+    SessionHasPerson,
+    TiltImageAlignment,
+    Tomogram,
+)
+from ..utils.auth import AuthUser
 from ..utils.database import Paged, db
 from ..utils.generic import flatten_join, parse_json_file
 from .path import get_tomogram_auto_proc_attachment
 
 
-def get_motion_correction(id, movie: int = None):
+def validate_collection(func):
+    def wrap(*args, **kwargs):
+        user = args[0]
+        col_id = args[1]
+
+        data = func(*args, **kwargs)
+
+        if bool(set([11, 26]) & set(user.permissions)):
+            return data
+
+        session = (
+            db.session.query(SessionHasPerson)
+            .select_from(DataCollection)
+            .filter(DataCollection.dataCollectionId == col_id)
+            .filter(
+                SessionHasPerson.sessionId == DataCollection.SESSIONID,
+                SessionHasPerson.personId == user.id,
+            )
+            .scalar()
+        )
+
+        if session is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User cannot view anything in this collection",
+            )
+
+        return data
+
+    return wrap
+
+
+def validate_tomogram(func):
+    def wrap(*args, **kwargs):
+        user = args[0]
+        tomo_id = args[1]
+
+        data = func(*args, **kwargs)
+
+        if bool(set([11, 26]) & set(user.permissions)):
+            return data
+
+        session = (
+            db.session.query(SessionHasPerson)
+            .select_from(Tomogram)
+            .filter(Tomogram.tomogramId == tomo_id)
+            .join(
+                DataCollection,
+                DataCollection.dataCollectionId == Tomogram.dataCollectionId,
+            )
+            .filter(
+                SessionHasPerson.sessionId == DataCollection.SESSIONID,
+                SessionHasPerson.personId == user.id,
+            )
+            .scalar()
+        )
+
+        if session is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User cannot view anything in this tomogram",
+            )
+
+        return data
+
+    return wrap
+
+
+@validate_tomogram
+def get_motion_correction(user: AuthUser, id, movie: int = None):
     raw = dict(
         db.session.query(
             Tomogram.dataCollectionId,
@@ -81,7 +159,8 @@ def get_motion_correction(id, movie: int = None):
     return data
 
 
-def get_tomogram(id: int) -> Paged[Tomogram]:
+@validate_collection
+def get_tomogram(user: AuthUser, id: int) -> Paged[Tomogram]:
     data = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == id).all()
 
     if not data:
@@ -90,6 +169,7 @@ def get_tomogram(id: int) -> Paged[Tomogram]:
     return Paged(items=data, total=len(data), page=1, limit=100)
 
 
+@validate_tomogram
 def get_ctf(id: int):
     data = (
         db.session.query(
@@ -107,6 +187,7 @@ def get_ctf(id: int):
     return {"items": data}
 
 
+@validate_tomogram
 def get_shift_plot(id: int):
     data = parse_json_file(get_tomogram_auto_proc_attachment(id, "Graph"))
 

@@ -35,7 +35,7 @@ def test_get_user_collections(mock_user, client):
     """Get data collections in a visit belonging to a regular user"""
     resp = client.get("/collections?visit=27464089")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 1
+    assert resp.json()["total"] == 2
 
 
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)

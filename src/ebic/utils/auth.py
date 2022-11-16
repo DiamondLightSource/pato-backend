@@ -23,6 +23,36 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 oidc_endpoints = discovery()
 
 
+class AuthUser:
+    def __init__(self, token: str):
+        user = (
+            db.session.query(Person.personId)
+            .filter(Person.login == get_user(token)["id"])
+            .first()
+        )
+
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User is not listed or does not have permission to view content",
+            )
+
+        # This is being done because otherwise SQLAlchemy would build a massive query based
+        # on the relationships in the model; this is slightly better:
+        query = (
+            db.session.query(GroupHasPerm.columns.permissionId)
+            .select_from(GroupHasPerson)
+            .filter(GroupHasPerson.columns.personId == user.personId)
+            .join(
+                GroupHasPerm,
+                GroupHasPerm.columns.userGroupId == GroupHasPerson.columns.userGroupId,
+            )
+        )
+
+        self.id = user.personId
+        self.permissions = [p.permissionId for p in query.all()]
+
+
 def get_user(token: str = Depends(oauth2_scheme)):
     response = requests.get(
         oidc_endpoints["userinfo_endpoint"],
@@ -47,31 +77,7 @@ def get_auth_redirect(redirect: str):
 
 
 def check_admin(token: str = Depends(oauth2_scheme)):
-    user = (
-        db.session.query(Person.personId)
-        .filter(Person.login == get_user(token)["id"])
-        .first()
-    )
-
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="User is not listed or does not have permission to view content",
-        )
-
-    # This is being done because otherwise SQLAlchemy would build a massive query based
-    # on the relationships in the model; this is slightly better:
-    query = (
-        db.session.query(GroupHasPerm.columns.permissionId)
-        .select_from(GroupHasPerson)
-        .filter(GroupHasPerson.columns.personId == user.personId)
-        .join(
-            GroupHasPerm,
-            GroupHasPerm.columns.userGroupId == GroupHasPerson.columns.userGroupId,
-        )
-    )
-
-    return {"id": user, "permissions": [p.permissionId for p in query.all()]}
+    return AuthUser(token)
 
 
 def get_logout_redirect():

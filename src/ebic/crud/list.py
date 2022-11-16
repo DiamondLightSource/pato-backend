@@ -12,52 +12,55 @@ from ..models.table import (
     ProposalHasPerson,
     SessionHasPerson,
 )
+from ..utils.auth import AuthUser
 from ..utils.database import Paged, db, paginate
 
 # TODO: Add config file
 
 
-def _concat_prop_user(user: dict, query: Query):
-    if bool(set([11, 26]) & set(user["permissions"])):
+def _concat_prop_user(user: AuthUser, query: Query):
+    if bool(set([11, 26]) & set(user.permissions)):
         return query
 
-    if 8 in user["permissions"]:
+    if 8 in user.permissions:
         return query.filter(BLSession.beamLineName.like("m__"))
     return query.filter(
-        ProposalHasPerson.personId == user["id"].personId,
+        ProposalHasPerson.personId == user.id,
         ProposalHasPerson.proposalId == Proposal.proposalId,
     )
 
 
-def _concat_session_user(user: dict, query: Query):
-    if bool(set([11, 26]) & set(user["permissions"])):
+def _concat_session_user(user: AuthUser, query: Query):
+    if bool(set([11, 26]) & set(user.permissions)):
         return query
 
-    if 8 in user["permissions"]:
+    if 8 in user.permissions:
         return query.filter(BLSession.beamLineName.like("m__"))
 
     return query.filter(
         SessionHasPerson.sessionId == BLSession.sessionId,
-        SessionHasPerson.personId == user["id"].personId,
+        SessionHasPerson.personId == user.id,
     )
 
 
-def _concat_collection_user(user: dict, query: Query):
-    if bool(set([11, 26]) & set(user["permissions"])):
+def _concat_collection_user(user: AuthUser, query: Query):
+    if bool(set([11, 26]) & set(user.permissions)):
         return query
 
-    if 8 in user["permissions"]:
+    if 8 in user.permissions:
         return query.join(
             BLSession, BLSession.sessionId == DataCollection.SESSIONID
         ).filter(BLSession.beamLineName.like("m__"))
 
     return query.filter(
         SessionHasPerson.sessionId == DataCollection.SESSIONID,
-        SessionHasPerson.personId == user["id"].personId,
+        SessionHasPerson.personId == user.id,
     )
 
 
-def get_proposals(items: int, page: int, search: str, user: dict) -> Paged[ProposalOut]:
+def get_proposals(
+    items: int, page: int, search: str, user: AuthUser
+) -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
     query = _concat_prop_user(
         user,
@@ -77,7 +80,7 @@ def get_proposals(items: int, page: int, search: str, user: dict) -> Paged[Propo
 def get_visits(
     items: int,
     page: int,
-    user: dict,
+    user: AuthUser,
     id: Optional[str],
     search: str,
     min_date: Optional[str],
@@ -108,7 +111,7 @@ def get_visits(
 
 
 def get_collections(
-    items: int, page: int, id: int, user: dict
+    items: int, page: int, id: int, user: AuthUser
 ) -> Paged[DataCollectionSummaryOut]:
     query = db.session.query(
         DataCollection.startTime,
