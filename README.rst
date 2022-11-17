@@ -24,7 +24,9 @@ Running Kubernetes deployment for database and API:
 If you configuration is not pointing to a proper repository with the images, you can build the images with `minikube`:
 
 .. code-block:: bash
+
     $ minikube build . -t ebic:0.0.1
+
     $ minikube build . -t diamond-ispyb:0.0.1
 
 Create the deployment and nodePort service with :code:`kubectl create -f deployment.yaml`
@@ -32,7 +34,9 @@ Create the deployment and nodePort service with :code:`kubectl create -f deploym
 You should be able to access the service at the IP displayed by the :code:`minikube ip` command, at port :code:`31394` by default. This can be verified by running `curl` and expecting the following response:
 
 .. code-block:: bash
+
     $ curl $(minikube ip):31394
+    
     {"detail":"Not Found"}
 
 ============
