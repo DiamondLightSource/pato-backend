@@ -59,6 +59,7 @@ def get_tomogram_auto_proc_attachment(
     return join_path(paths["filePath"], paths["fileName"])
 
 
+@validate_movie
 @validate_path
 def get_fft_path(user: AuthUser, id: int) -> str:
     return (
