@@ -47,14 +47,21 @@ def test_get_forbidden(mock_user, client):
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
 def test_invalid_file(mock_user, mock_file, client):
     """Try to get shift plot file that is not in a correct format"""
-    resp = client.get("/shiftPlot/1")
+    resp = client.get("/shiftPlot/2")
     assert resp.status_code == 500
 
 
 @patch("builtins.open", new_callable=mock_open)
 @patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
-def test_inexistent_file(mock_user, mock_file, client):
+def test_file_not_found(mock_user, mock_file, client):
     """Try to get shift plot file that does not exist"""
     mock_file.side_effect = FileNotFoundError
-    resp = client.get("/shiftPlot/1")
+    resp = client.get("/shiftPlot/2")
+    assert resp.status_code == 404
+
+
+@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+def test_inexistent_file(mock_user, client):
+    """Try to get shift plot file not in database"""
+    resp = client.get("/shiftPlot/999")
     assert resp.status_code == 404

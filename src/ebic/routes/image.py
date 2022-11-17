@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 
 from ..crud import path as crud
 from ..models.api import Unauthorized
-from ..utils.auth import get_user
+from ..utils.auth import check_admin
 
 router = APIRouter(
     tags=["images"], prefix="/image", responses={401: {"model": Unauthorized}}
@@ -11,18 +11,18 @@ router = APIRouter(
 
 
 @router.get("/micrograph/{movie}", response_class=FileResponse)
-def micrograph_snapshot(movie: int, user=Depends(get_user)):
+def micrograph_snapshot(movie: int, user=Depends(check_admin)):
     """Get micrograph snapshot"""
-    return crud.get_micrograph_path(movie)
+    return crud.get_micrograph_path(user, movie)
 
 
 @router.get("/fft/{movie}", response_class=FileResponse)
-def fft_theoretical(movie: int, user=Depends(get_user)):
+def fft_theoretical(movie: int, user=Depends(check_admin)):
     """Get FFT theoretical image"""
-    return crud.get_fft_path(movie)
+    return crud.get_fft_path(user, movie)
 
 
 @router.get("/slice/{tomogram}", response_class=FileResponse)
-def slice(tomogram: int, user=Depends(get_user)):
+def slice(tomogram: int, user=Depends(check_admin)):
     """Get tomogram central slice image"""
-    return crud.get_tomogram_auto_proc_attachment(tomogram)
+    return crud.get_tomogram_auto_proc_attachment(user, tomogram)

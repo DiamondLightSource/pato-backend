@@ -1,86 +1,12 @@
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
-from sqlalchemy.orm import Query
 
-from ..models.table import (
-    CTF,
-    BLSession,
-    DataCollection,
-    MotionCorrection,
-    Movie,
-    SessionHasPerson,
-    TiltImageAlignment,
-    Tomogram,
-)
+from ..auth.permission import validate_collection, validate_tomogram
+from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.auth import AuthUser
 from ..utils.database import Paged, db
 from ..utils.generic import flatten_join, parse_json_file
 from .path import get_tomogram_auto_proc_attachment
-
-
-def _session_check(query: Query, user: AuthUser, data):
-    if bool(set([11, 26]) & set(user.permissions)):
-        return data
-
-    if bool(set([8]) & set(user.permissions)):
-        query = query.filter(
-            BLSession.sessionId == DataCollection.SESSIONID,
-            BLSession.beamLineName.like("m__"),
-        )
-    else:
-        query = query.filter(
-            SessionHasPerson.sessionId == DataCollection.SESSIONID,
-            SessionHasPerson.personId == user.id,
-        )
-
-    if query.scalar() is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="User not in the parent session",
-        )
-
-    return data
-
-
-def validate_collection(func):
-    def wrap(*args, **kwargs):
-        user = args[0]
-        col_id = args[1]
-
-        data = func(*args, **kwargs)
-
-        if bool(set([11, 26]) & set(user.permissions)):
-            return data
-
-        query = db.session.query(DataCollection).filter(
-            DataCollection.dataCollectionId == col_id
-        )
-
-        return _session_check(query, user, data)
-
-    return wrap
-
-
-def validate_tomogram(func):
-    def wrap(*args, **kwargs):
-        user = args[0]
-        tomo_id = args[1]
-
-        data = func(*args, **kwargs)
-
-        query = (
-            db.session.query(DataCollection)
-            .select_from(Tomogram)
-            .filter(Tomogram.tomogramId == tomo_id)
-            .join(
-                DataCollection,
-                DataCollection.dataCollectionId == Tomogram.dataCollectionId,
-            )
-        )
-
-        return _session_check(query, user, data)
-
-    return wrap
 
 
 @validate_tomogram
@@ -170,7 +96,8 @@ def get_tomogram(user: AuthUser, id: int) -> Paged[Tomogram]:
 
 @validate_tomogram
 def get_ctf(user: AuthUser, id: int):
-    """Get CTF data (resolution, defocus, astigmatism) as a function of refined tilt angle"""
+    """Get CTF data (resolution, defocus, astigmatism) as a
+    function of refined tilt angle"""
     data = (
         db.session.query(
             CTF.estimatedResolution,
@@ -187,11 +114,10 @@ def get_ctf(user: AuthUser, id: int):
     return {"items": data}
 
 
-@validate_tomogram
 def get_shift_plot(user: AuthUser, id: int):
-    data = parse_json_file(get_tomogram_auto_proc_attachment(id, "Graph"))
+    data = parse_json_file(get_tomogram_auto_proc_attachment(user, id, "Graph"))
 
     if not data:
-        raise HTTPException(status_code=404, detail="Graph file not found")
+        raise HTTPException(status_code=404, detail="Invalid or empty data file")
 
     return {"items": data}
