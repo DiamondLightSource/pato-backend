@@ -31,7 +31,7 @@ Create the deployment and nodePort service with :code:`kubectl create -f deploym
 
 You should be able to access the service at the IP displayed by the :code:`minikube ip` command, at port :code:`31394` by default. This can be verified by running `curl` and expecting the following response:
 
-..code-block:: bash
+.. code-block:: bash
     $ curl $(minikube ip):31394
     {"detail":"Not Found"}
 
