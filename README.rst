@@ -22,11 +22,11 @@ Running development server:
 Testing
 ============
 
-- Build the Docker image in `database` with `podman build . -t diamond-ispyb`
-- Run with `podman run -p 3306:3306 --detach --name diamond-ispyb localhost/diamond-ispyb`
+- Build the Docker image in `database` with :code:`podman build . -t diamond-ispyb`
+- Run with :code:`podman run -p 3306:3306 --detach --name diamond-ispyb localhost/diamond-ispyb`
     - You may change the port or where the container itself runs, just remember to update `.test.env`
-- Install the package with `pip install .` or `pip install -e .`
-- Run `pytest tests`
+- Install the package with :code:`pip install .` or :code:`pip install -e .`
+- Run :code:`pytest tests`
 
 .. |code_ci| image:: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/code.yml/badge.svg?branch=main
     :target: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/code.yml
