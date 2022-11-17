@@ -12,7 +12,6 @@ RUN apt-get update && apt-get upgrade -y && \
     busybox \
     git \
     net-tools \
-    vim \
     && rm -rf /var/lib/apt/lists/* \
     && busybox --install
 
@@ -43,11 +42,12 @@ RUN pip install --upgrade pip && \
 FROM python:3.10-slim as runtime
 
 # Add apt-get system dependecies for runtime here if needed
+RUN apt-get update && apt-get install -y libmariadb-dev
 
 # copy the virtual environment from the build stage and put it in PATH
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
-ENTRYPOINT ["ebic_backend"]
-CMD ["--version"]
+ENTRYPOINT ["gunicorn"]
+CMD ["ebic.main:app", "--workers", "6", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]

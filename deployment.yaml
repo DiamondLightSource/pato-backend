@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ebic
+spec:
+  selector:
+    matchLabels:
+      run: api
+  template:
+    metadata:
+      labels:
+        run: api
+    spec:
+      containers:
+        - name: api
+          env:
+            - name: SQL_DATABASE_URL
+              value: "mysql://root:ispyb-root@127.0.0.1/ispyb"
+          image: ebic:0.0.1
+          ports:
+            - containerPort: 8000
+              name: http
+        - name: db
+          image: diamond-ispyb:0.0.1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ebic
+  namespace: default
+  resourceVersion: "5794"
+  uid: 40ef92f0-0ed6-4f5d-aeed-b3074e3cc52f
+spec:
+  clusterIP: 10.105.119.31
+  clusterIPs:
+    - 10.105.119.31
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - nodePort: 31394
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    run: api
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
