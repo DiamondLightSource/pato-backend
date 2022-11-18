@@ -13,7 +13,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class AuthUser:
     def __init__(self, token=Depends(oauth2_scheme)):
-        self.fedid = self.auth(token)
+        self.fedid = AuthUser.auth(token)
 
         user = (
             db.session.query(Person.personId).filter(Person.login == self.fedid).first()
