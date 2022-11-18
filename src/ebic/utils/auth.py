@@ -1,15 +1,18 @@
 import os
 
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 
 from ..models.table import Person
 from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
 from ..models.table import t_UserGroup_has_Person as GroupHasPerson
 from ..utils.database import db
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 class AuthUser:
-    def __init__(self, token: str):
+    def __init__(self, token=Depends(oauth2_scheme)):
         self.fedid = self.auth(token)
 
         user = (
@@ -58,6 +61,7 @@ class AuthUser:
 
 
 auth_type = os.environ.get("AUTH_TYPE") or "oidc"
+
 
 if auth_type.lower() == "oidc":
     from ..extensions.auth.oidc import auth, oidc_auth_redirect, oidc_logout_redirect
