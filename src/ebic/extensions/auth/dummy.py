@@ -1,10 +1,10 @@
-def auth(_: str) -> str:
-    return "yrh59256"
+from .template import GenericAuthUser
 
 
-def auth_redirect(redirect: str) -> str:
-    return ""
+class AuthUser(GenericAuthUser):
+    def __init__(self, token=""):
+        super().__init__(token)
 
-
-def logout_redirect():
-    return ""
+    @classmethod
+    def auth(cls, _: str):
+        return "yrh59256"

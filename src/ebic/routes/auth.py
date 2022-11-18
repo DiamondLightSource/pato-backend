@@ -1,10 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import RedirectResponse
 
 from ..models.api import Unauthorized
 from ..utils.auth import AuthUser
 
 router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorized}})
+
+
+@router.get("/user")
+def get_user(user=Depends(AuthUser)):
+    return {"id": user.fedid}
 
 
 @router.get("/authorise", status_code=302, response_class=RedirectResponse)
