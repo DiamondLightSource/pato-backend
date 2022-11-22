@@ -3,11 +3,6 @@ kind: Deployment
 metadata:
   name: ebic
 spec:
-  volumes:
-    - name: dls
-      hostPath:
-        path: /dls
-        type: Directory
   replicas: 1
   selector:
     matchLabels:
@@ -17,40 +12,42 @@ spec:
       labels:
         app: ebic
     spec:
+      volumes:
+        - name: dls
+          hostPath:
+            path: /dls
+            type: Directory
       containers:
         - name: api
+          envFrom:
+          - secretRef:
+              name: ebic-db
           env:
-            - name: SQL_DATABASE_URL
-              valueFrom:
-              secretKeyRef:
-                name: ebicapi
-                key: db
-                optional: false
             - name: OIDC_DISCOVERY_ENDPOINT
               value: https://authalpha.diamond.ac.uk/cas/oidc/.well-known
-          image: gcr.io/diamond-pubreg/em/ebic:latest
+            - name: AUTH_TYPE
+              value: oidc
+          image: gcr.io/diamond-pubreg/em/ebic-api:0.0.1
           ports:
             - containerPort: 8000
-              name: http
+              name: api
           resources:
-          limits:
-            cpu: "1"
-            memory: 300M
+            limits:
+              cpu: "1"
+              memory: 1G
           volumeMounts:
             - mountPath: /dls
               name: dls
               mountPropagation: HostToContainer
-        #- name: db
-        #  image: diamond-ispyb:0.0.1
         - name: frontend
-          image: gcr.io/diamond-pubreg/em/ebic-frontend:latest
+          image: gcr.io/diamond-pubreg/em/ebic-frontend:0.0.1-oidc
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               name: http
           resources:
-          limits:
-            cpu: "1"
-            memory: 200M
+            limits:
+              cpu: "1"
+              memory: 1G
 ---
 apiVersion: v1
 kind: Service
@@ -59,41 +56,63 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 8080
       protocol: TCP
-      targetPort: 80
+      targetPort: 8080
     - name: api
       port: 8000
       protocol: TCP
       targetPort: 8000
   selector:
     app: ebic
-  type: ClusterIP
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ebic-ingress
+  name: ebic-frontend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
-  ingressClassName: ebic
+  ingressClassName: nginx
   tls:
-    - hosts:
-        - ebic-staging.diamond.ac.uk
+  - hosts:
+      - ebic-staging.diamond.ac.uk
   rules:
-    - host: ebic-staging.diamond.ac.uk
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ebic-svc
-                port:
-                  number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: ebic-svc
-                port:
-                  number: 8000
+  - host: ebic-staging.diamond.ac.uk
+    http:
+      paths:
+      - path: /(?!api).*
+        pathType: Prefix
+        backend:
+          service:
+            name: ebic-svc
+            port:
+              number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ebic-api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - ebic-staging.diamond.ac.uk
+  rules:
+  - host: ebic-staging.diamond.ac.uk
+    http:
+      paths:
+      - path: /api/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ebic-svc
+            port:
+              number: 8000
+---
