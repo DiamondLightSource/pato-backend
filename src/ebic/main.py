@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes import auth, image, list, tomogram
 from .utils.database import get_session
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 app.add_middleware(
     CORSMiddleware,

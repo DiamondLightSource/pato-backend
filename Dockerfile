@@ -1,9 +1,4 @@
-# This file is for use as a devcontainer and a runtime container
-#
-# The devcontainer should use the build target and run as root with podman
-# or docker with user namespaces.
-#
-FROM python:3.10 as build
+FROM docker.io/library/python:3.10 as build
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get upgrade -y && \
@@ -21,7 +16,6 @@ WORKDIR /project
 # make the wheel outside of the venv so 'build' does not dirty requirements.txt
 RUN pip install --upgrade pip build && \
     export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) && \
-    git diff && \
     python -m build && \
     touch requirements.txt
 
@@ -39,7 +33,7 @@ RUN pip install --upgrade pip && \
     # and replace with a comment to avoid a zero length asset upload later
     sed -i '/file:/s/^/# Requirements for /' lockfiles/requirements.txt
 
-FROM python:3.10-slim as runtime
+FROM docker.io/library/python:3.10-slim as runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update && apt-get install -y libmariadb-dev
@@ -49,5 +43,7 @@ COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
-ENTRYPOINT ["gunicorn"]
-CMD ["ebic.main:app", "--workers", "6", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["uvicorn"]
+CMD ["ebic.main:app", "--host", "0.0.0.0", "--port", "8000", "--root-path", "/api"]
+
+

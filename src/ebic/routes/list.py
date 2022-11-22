@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/proposals/", response_model=Paged[ProposalOut])
+@router.get("/proposals", response_model=Paged[ProposalOut])
 def proposals(limit: int = 100, page: int = 1, s: str = "", user=Depends(AuthUser)):
     """List proposals"""
     return crud.get_proposals(limit, page, s, user)
