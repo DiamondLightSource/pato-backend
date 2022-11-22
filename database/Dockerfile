@@ -8,6 +8,7 @@ RUN apt-get update -y && \
     mv ispyb-database/schemas/ispyb/lookups.sql 2.sql
 
 ADD data.sql /docker-entrypoint-initdb.d/3.sql
+RUN chown -R mysql:mysql /docker-entrypoint-initdb.d/
 
 ENV MYSQL_ROOT_PASSWORD ispyb-root
 ENV MYSQL_DATABASE ispyb

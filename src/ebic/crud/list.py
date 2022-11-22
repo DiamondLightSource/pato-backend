@@ -69,8 +69,10 @@ def get_proposals(
             f.count(BLSession.sessionId).label("visits"),
             f.count(Proposal.proposalId).over().label("total")
         )
-        .filter(Proposal.proposalNumber.contains(search))
-        .join(BLSession, BLSession.proposalId == Proposal.proposalId)
+        .filter(
+            f.concat(Proposal.proposalCode, Proposal.proposalNumber).contains(search)
+        )
+        .join(BLSession)
         .group_by(Proposal.proposalId),
     )
 
@@ -97,7 +99,7 @@ def get_visits(
             .filter(
                 and_(Proposal.proposalCode == id[:2], Proposal.proposalNumber == id[2:])
             )
-            .join(BLSession, BLSession.proposalId == Proposal.proposalId)
+            .join(BLSession)
         )
 
     if min_date is not None and max_date is not None:
@@ -111,7 +113,7 @@ def get_visits(
 
 
 def get_collections(
-    items: int, page: int, id: int, user: AuthUser
+    items: int, page: int, id: int, search: str, user: AuthUser
 ) -> Paged[DataCollectionSummaryOut]:
     query = db.session.query(
         DataCollection.startTime,
@@ -119,6 +121,11 @@ def get_collections(
         DataCollection.dataCollectionId,
         DataCollection.SESSIONID,
         f.count(DataCollection.dataCollectionId).over().label("total"),
-    ).where(id == DataCollection.SESSIONID)
+    ).where(
+        and_(
+            id == DataCollection.SESSIONID,
+            DataCollection.dataCollectionId.contains(search),
+        )
+    )
 
     return paginate(_concat_collection_user(user, query), items, page)

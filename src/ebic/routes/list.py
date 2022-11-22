@@ -39,7 +39,8 @@ def collections(
     visit: int,
     limit: int = 100,
     page: int = 1,
+    s: str = "",
     user=Depends(AuthUser),
 ):
     """List collections belonging to a visit"""
-    return crud.get_collections(limit, page, visit, user)
+    return crud.get_collections(limit, page, visit, s, user)
