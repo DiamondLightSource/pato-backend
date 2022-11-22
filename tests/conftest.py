@@ -4,10 +4,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from ebic.main import app
-from ebic.utils.auth import get_user, oauth2_scheme
-
-app.dependency_overrides[oauth2_scheme] = lambda: "aaa"
-app.dependency_overrides[get_user] = lambda: {"id": "aaa"}
 
 
 async def mock_send(_, _1, _2, s):

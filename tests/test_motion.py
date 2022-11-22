@@ -1,9 +1,8 @@
 from unittest.mock import patch
+from ebic.utils.auth import AuthUser
 
-from ebic.utils import auth
 
-
-@patch.object(auth, "get_user", return_value={"id": "admin"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="admin", autospec=True)
 def test_get_admin(mock_user, client):
     """Get motion correction in a tomogram (request for admin)"""
     resp = client.get("/motion/1")
@@ -14,7 +13,7 @@ def test_get_admin(mock_user, client):
     assert resp_json["rawTotal"] == 5
 
 
-@patch.object(auth, "get_user", return_value={"id": "em_admin"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="em_admin", autospec=True)
 def test_get_em_admin(mock_user, client):
     """Get motion correction in a tomogram (request for EM admin).
     Non-EM tomograms cannot exist."""
@@ -23,7 +22,7 @@ def test_get_em_admin(mock_user, client):
     assert resp.json()["total"] == 4
 
 
-@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_get_user(mock_user, client):
     """Get all motion correction in a tomogram belonging to user"""
     resp = client.get("/motion/2")
@@ -31,7 +30,7 @@ def test_get_user(mock_user, client):
     assert resp.json()["total"] == 4
 
 
-@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_no_tilt_alignment(mock_user, client):
     """Get motion correction without tilt alignment data"""
     resp = client.get("/motion/3")
@@ -42,7 +41,7 @@ def test_no_tilt_alignment(mock_user, client):
     assert resp_json["rawTotal"] == 5
 
 
-@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_nth_motion(mock_user, client):
     """Get specific (nth) motion correction"""
     resp = client.get("/motion/2?nth=2")
@@ -53,7 +52,7 @@ def test_nth_motion(mock_user, client):
     assert resp_json["refinedTiltAngle"] == 17
 
 
-@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_get_forbidden(mock_user, client):
     """Try to get motion correction in a tomogram that does not belong to user"""
     resp = client.get("/motion/1")

@@ -1,9 +1,8 @@
 from unittest.mock import patch
+from ebic.utils.auth import AuthUser
 
-from ebic.utils import auth
 
-
-@patch.object(auth, "get_user", return_value={"id": "admin"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="admin", autospec=True)
 def test_get_admin(mock_user, client):
     """Get all proposals (request for admin)"""
     resp = client.get("/proposals")
@@ -11,7 +10,7 @@ def test_get_admin(mock_user, client):
     assert resp.json()["total"] == 3
 
 
-@patch.object(auth, "get_user", return_value={"id": "em_admin"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="em_admin", autospec=True)
 def test_get_em_admin(mock_user, client):
     """Get all proposals belonging to EM (request for EM admin)"""
     resp = client.get("/proposals")
@@ -19,7 +18,7 @@ def test_get_em_admin(mock_user, client):
     assert resp.json()["total"] == 1
 
 
-@patch.object(auth, "get_user", return_value={"id": "user"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_get_user(mock_user, client):
     """Get proposals belonging to a regular user"""
     resp = client.get("/proposals")
@@ -27,7 +26,7 @@ def test_get_user(mock_user, client):
     assert resp.json()["total"] == 1
 
 
-@patch.object(auth, "get_user", return_value={"id": "empty"}, autospec=True)
+@patch.object(AuthUser, "auth", return_value="empty", autospec=True)
 def test_get_forbidden(mock_user, client):
     """Try to get proposals for user with no proposals"""
     resp = client.get("/proposals")

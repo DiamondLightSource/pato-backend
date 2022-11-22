@@ -1,10 +1,10 @@
 from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from ...models.table import Person
-from ...models.table import t_UserGroup_has_Permission as GroupHasPerm
-from ...models.table import t_UserGroup_has_Person as GroupHasPerson
-from ...utils.database import db
+from ..models.table import Person
+from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
+from ..models.table import t_UserGroup_has_Person as GroupHasPerson
+from ..utils.database import db
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
