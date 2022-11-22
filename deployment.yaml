@@ -3,50 +3,97 @@ kind: Deployment
 metadata:
   name: ebic
 spec:
+  volumes:
+    - name: dls
+      hostPath:
+        path: /dls
+        type: Directory
+  replicas: 1
   selector:
     matchLabels:
-      run: api
+      app: ebic
   template:
     metadata:
       labels:
-        run: api
+        app: ebic
     spec:
       containers:
         - name: api
           env:
             - name: SQL_DATABASE_URL
-              value: "mysql://root:ispyb-root@127.0.0.1/ispyb"
-          image: ebic:0.0.1
+              valueFrom:
+              secretKeyRef:
+                name: ebicapi
+                key: db
+                optional: false
+            - name: OIDC_DISCOVERY_ENDPOINT
+              value: https://authalpha.diamond.ac.uk/cas/oidc/.well-known
+          image: gcr.io/diamond-pubreg/em/ebic:latest
           ports:
             - containerPort: 8000
               name: http
-        - name: db
-          image: diamond-ispyb:0.0.1
+          resources:
+          limits:
+            cpu: "1"
+            memory: 300M
+          volumeMounts:
+            - mountPath: /dls
+              name: dls
+              mountPropagation: HostToContainer
+        #- name: db
+        #  image: diamond-ispyb:0.0.1
+        - name: frontend
+          image: gcr.io/diamond-pubreg/em/ebic-frontend:latest
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+          limits:
+            cpu: "1"
+            memory: 200M
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ebic
-  namespace: default
-  resourceVersion: "5794"
-  uid: 40ef92f0-0ed6-4f5d-aeed-b3074e3cc52f
+  name: ebic-svc
 spec:
-  clusterIP: 10.105.119.31
-  clusterIPs:
-    - 10.105.119.31
-  externalTrafficPolicy: Cluster
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
-    - nodePort: 31394
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: api
       port: 8000
       protocol: TCP
       targetPort: 8000
   selector:
-    run: api
-  sessionAffinity: None
-  type: NodePort
-status:
-  loadBalancer: {}
+    app: ebic
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ebic-ingress
+spec:
+  ingressClassName: ebic
+  tls:
+    - hosts:
+        - ebic-staging.diamond.ac.uk
+  rules:
+    - host: ebic-staging.diamond.ac.uk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ebic-svc
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: ebic-svc
+                port:
+                  number: 8000

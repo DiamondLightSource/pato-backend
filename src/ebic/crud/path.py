@@ -22,8 +22,6 @@ def validate_path(func):
                 detail="No file found in table",
             )
 
-        file = "/mnt" + file
-
         if not isfile(file):
             raise HTTPException(
                 status_code=404,

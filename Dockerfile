@@ -21,7 +21,6 @@ WORKDIR /project
 # make the wheel outside of the venv so 'build' does not dirty requirements.txt
 RUN pip install --upgrade pip build && \
     export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) && \
-    git diff && \
     python -m build && \
     touch requirements.txt
 
@@ -49,5 +48,7 @@ COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
-ENTRYPOINT ["gunicorn"]
-CMD ["ebic.main:app", "--workers", "6", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["uvicorn"]
+CMD ["ebic.main:app", "--host", "0.0.0.0", "--port", "8000", "--root-path", "/api"]
+
+

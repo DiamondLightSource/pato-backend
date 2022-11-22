@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from ..crud import list as crud
 from ..models.api import Unauthorized
 from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
-from ..utils.auth import check_admin
+from ..utils.auth import AuthUser
 from ..utils.database import Paged
 
 router = APIRouter(
@@ -12,8 +12,8 @@ router = APIRouter(
 )
 
 
-@router.get("/proposals/", response_model=Paged[ProposalOut])
-def proposals(limit: int = 100, page: int = 1, s: str = "", user=Depends(check_admin)):
+@router.get("/proposals", response_model=Paged[ProposalOut])
+def proposals(limit: int = 100, page: int = 1, s: str = "", user=Depends(AuthUser)):
     """List proposals"""
     return crud.get_proposals(limit, page, s, user)
 
@@ -26,7 +26,7 @@ def visits(
     s: str = "",
     minDate: str = None,
     maxDate: str = None,
-    user=Depends(check_admin),
+    user=Depends(AuthUser),
 ):
     """List visits belonging to a proposal"""
     return crud.get_visits(
@@ -39,7 +39,7 @@ def collections(
     visit: int,
     limit: int = 100,
     page: int = 1,
-    user=Depends(check_admin),
+    user=Depends(AuthUser),
 ):
     """List collections belonging to a visit"""
     return crud.get_collections(limit, page, visit, user)
