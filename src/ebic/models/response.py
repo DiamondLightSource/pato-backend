@@ -78,6 +78,18 @@ class DataCollectionSummaryOut(BaseModel):
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
     startTime: Optional[datetime]
+    pixelSizeOnImage: Optional[float] = Field(
+        ...,
+        comment="Pixel size on image, calculated from magnification",
+    )
+    voltage: Optional[float] = Field(..., comment="Unit: kV")
+    imageSizeX: Optional[int] = Field(
+        ...,
+        comment="Image size in x, in case crop has been used.",
+    )
+    imageSizeY: Optional[int] = Field(
+        ..., comment="Image size in y, in case crop has been used."
+    )
 
 
 class DataCollectionGroupSummaryOut(BaseModel):

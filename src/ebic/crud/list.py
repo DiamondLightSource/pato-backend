@@ -5,7 +5,12 @@ from sqlalchemy import and_
 from sqlalchemy import func as f
 from sqlalchemy.orm import Query
 
-from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
+from ..models.response import (
+    DataCollectionGroupSummaryOut,
+    DataCollectionSummaryOut,
+    ProposalOut,
+    VisitOut,
+)
 from ..models.table import (
     BLSession,
     DataCollection,
@@ -84,7 +89,7 @@ def get_proposals(
         db.session.query(
             *cols,
             f.count(BLSession.sessionId).label("visits"),
-            f.count(Proposal.proposalId).over().label("total")
+            f.count(Proposal.proposalId).over().label("total"),
         )
         .filter(
             f.concat(Proposal.proposalCode, Proposal.proposalNumber).contains(search)
@@ -107,7 +112,7 @@ def get_visits(
 ) -> Paged[VisitOut]:
     query = db.session.query(
         *[c for c in BLSession.__table__.columns],
-        f.count(BLSession.sessionId).over().label("total")
+        f.count(BLSession.sessionId).over().label("total"),
     )
 
     if id is not None:
@@ -131,12 +136,10 @@ def get_visits(
 
 def get_collection_groups(
     items: int, page: int, id: int, search: str, user: AuthUser
-) -> Paged[DataCollectionSummaryOut]:
+) -> Paged[DataCollectionGroupSummaryOut]:
     query = (
         db.session.query(
-            DataCollectionGroup.comments,
-            DataCollectionGroup.dataCollectionGroupId,
-            DataCollectionGroup.sessionId,
+            *[c for c in DataCollectionGroup.__table__.columns],
             f.count(DataCollectionGroup.dataCollectionGroupId).over().label("total"),
             f.count(DataCollection.dataCollectionId).over().label("collections"),
         )
@@ -160,10 +163,7 @@ def get_collections(
     items: int, page: int, id: int, search: str, user: AuthUser
 ) -> Paged[DataCollectionSummaryOut]:
     query = db.session.query(
-        DataCollection.startTime,
-        DataCollection.comments,
-        DataCollection.dataCollectionId,
-        DataCollection.SESSIONID,
+        *[c for c in DataCollection.__table__.columns],
         f.count(DataCollection.dataCollectionId).over().label("total"),
     ).where(
         and_(
