@@ -78,3 +78,12 @@ class DataCollectionSummaryOut(BaseModel):
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
     startTime: Optional[datetime]
+
+
+class DataCollectionGroupSummaryOut(BaseModel):
+    dataCollectionGroupId: int = Field(
+        ..., lt=1e9, description="Data Collection Group ID"
+    )
+    sessionId: int = Field(..., lt=1e9, description="Session ID")
+    comments: Optional[str]
+    collections: int

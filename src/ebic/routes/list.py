@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends
 
 from ..crud import list as crud
 from ..models.api import Unauthorized
-from ..models.response import DataCollectionSummaryOut, ProposalOut, VisitOut
+from ..models.response import (
+    DataCollectionGroupSummaryOut,
+    DataCollectionSummaryOut,
+    ProposalOut,
+    VisitOut,
+)
 from ..utils.auth import AuthUser
 from ..utils.database import Paged
 
@@ -34,13 +39,27 @@ def visits(
     )
 
 
-@router.get("/collections", response_model=Paged[DataCollectionSummaryOut])
-def collections(
+@router.get(
+    "/dataCollectionGroups", response_model=Paged[DataCollectionGroupSummaryOut]
+)
+def collection_groups(
     visit: int,
     limit: int = 100,
     page: int = 1,
     s: str = "",
     user=Depends(AuthUser),
 ):
-    """List collections belonging to a visit"""
-    return crud.get_collections(limit, page, visit, s, user)
+    """List collection groups belonging to a visit"""
+    return crud.get_collection_groups(limit, page, visit, s, user)
+
+
+@router.get("/dataCollections", response_model=Paged[DataCollectionSummaryOut])
+def collections(
+    group: int,
+    limit: int = 100,
+    page: int = 1,
+    s: str = "",
+    user=Depends(AuthUser),
+):
+    """List collections belonging to a data collection group"""
+    return crud.get_collections(limit, page, group, s, user)
