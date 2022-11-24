@@ -1,19 +1,13 @@
-import os
-
 import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
+from ..utils.config import Config
 from .template import GenericAuthUser
 
 
 def _discovery():
-    return requests.get(
-        os.environ.get(
-            "OIDC_DISCOVERY_ENDPOINT",
-            "https://authalpha.diamond.ac.uk/cas/oidc/.well-known",
-        )
-    ).json()
+    return requests.get(Config.get["auth"]["oidc_discovery_endpoint"]).json()
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "oidc_discovery_endpoint": "https://localhost/cas/oidc/.well-known",
+    "read_all_perms": [11, 26],
+    "read_em_perms": [8]
+  },
+  "ispyb": { "pool": 10, "overflow": 20 }
+}

@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Query
 
 from ..models.table import BLSession, DataCollection, Movie, SessionHasPerson, Tomogram
-from ..utils.auth import AuthUser
+from ..utils.auth import AuthUser, is_admin, is_em_staff
 from ..utils.database import db
 
 
@@ -13,10 +13,10 @@ def _session_check(query: Query, user: AuthUser, data):
             detail="Data not found",
         )
 
-    if bool(set([11, 26]) & set(user.permissions)):
+    if is_admin(user.permissions):
         return data
 
-    if bool(set([8]) & set(user.permissions)):
+    if is_em_staff(user.permissions):
         query = query.filter(
             BLSession.sessionId == DataCollection.SESSIONID,
             BLSession.beamLineName.like("m__"),

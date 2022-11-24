@@ -10,34 +10,32 @@ Source code    https://gitlab.diamond.ac.uk/yrh59256/ebic-backend
 API for tomogram and miscellaneous information relating to eBIC.
 
 ==========
+Configuration
+==========
+
+The API supports a configuration file, that follows the example set in :code:`config.json`, but most importantly, two environment variables need to be set:
+
+- :code:`SQL_DATABASE_URL`: The URL for the database
+- :code:`CONFIG_PATH`: Path for the configuration file
+
+==========
 Deployment
 ==========
 
 Running development server on your machine:
 
-- Install the package with :code:`pip install .` or :code:`pip install -e .`
-- Set the `SQL_DATABASE_URL` environment variable according to your database's location
-- Run :code:`uvicorn` with `uvicorn ebic.main:app --reload --port 8000`
+1. Install the package with :code:`pip install .` or :code:`pip install -e .`
+2. Set the `SQL_DATABASE_URL` environment variable according to your database's location
+3. Run :code:`uvicorn` with `uvicorn ebic.main:app --reload --port 8000`
 
-Running Kubernetes deployment for database and API:
+Running Kubernetes deployment for frontend and API:
 
-If you configuration is not pointing to a proper repository with the images, you can build the images with `minikube`:
+1. Build and push frontend/backend images to your local repository (remember to change the location in the configuration file).
+2. Create a secret (or alter the configuration file) containing the SQL database URL, placing it under the :code:`SQL_DATABASE_URL` environment variable in the Kubernetes deployment section.
+3. Apply the changes and create the LoadBalancer service, ingress and pod with :code:`kubectl apply -f deployment.yaml`
+4. Access the deployment (in the frontend) through the host provided to the ingress, and communicate with the API through the same host, followed by :code:`/api`
 
-.. code-block:: bash
-
-    $ minikube build . -t ebic:0.0.1
-
-    $ minikube build . -t diamond-ispyb:0.0.1
-
-Create the deployment and nodePort service with :code:`kubectl create -f deployment.yaml`
-
-You should be able to access the service at the IP displayed by the :code:`minikube ip` command, at port :code:`31394` by default. This can be verified by running `curl` and expecting the following response:
-
-.. code-block:: bash
-
-    $ curl $(minikube ip):31394
-    
-    {"detail":"Not Found"}
+Note: you may need to adapt some deployment configurations for it to work on an environment that differs from the one used here. It is recommended to carefully study all configuration options as they could possibly break your deployment.
 
 ============
 Testing

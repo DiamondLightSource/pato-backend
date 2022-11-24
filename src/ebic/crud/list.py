@@ -19,17 +19,28 @@ from ..models.table import (
     ProposalHasPerson,
     SessionHasPerson,
 )
-from ..utils.auth import AuthUser
+from ..utils.auth import AuthUser, is_admin, is_em_staff
 from ..utils.database import Paged, db, paginate
 
 # TODO: Add config file
 
 
-def _concat_prop_user(user: AuthUser, query: Query):
-    if bool(set([11, 26]) & set(user.permissions)):
-        return query
+def check_admin(func):
+    def wrap(*args, **kwargs):
+        user = args[0]
+        query = args[1]
 
-    if 8 in user.permissions:
+        if is_admin(user.permissions):
+            return query
+
+        return func(*args, **kwargs)
+
+    return wrap
+
+
+@check_admin
+def _concat_prop_user(user: AuthUser, query: Query):
+    if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
     return query.filter(
         ProposalHasPerson.personId == user.id,
@@ -37,11 +48,9 @@ def _concat_prop_user(user: AuthUser, query: Query):
     )
 
 
+@check_admin
 def _concat_session_user(user: AuthUser, query: Query):
-    if bool(set([11, 26]) & set(user.permissions)):
-        return query
-
-    if 8 in user.permissions:
+    if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
 
     return query.filter(
@@ -50,11 +59,9 @@ def _concat_session_user(user: AuthUser, query: Query):
     )
 
 
+@check_admin
 def _concat_collection_group_user(user: AuthUser, query: Query):
-    if bool(set([11, 26]) & set(user.permissions)):
-        return query
-
-    if 8 in user.permissions:
+    if is_em_staff(user.permissions):
         return query.join(
             BLSession, BLSession.sessionId == DataCollectionGroup.sessionId
         ).filter(BLSession.beamLineName.like("m__"))
@@ -65,11 +72,9 @@ def _concat_collection_group_user(user: AuthUser, query: Query):
     )
 
 
+@check_admin
 def _concat_collection_user(user: AuthUser, query: Query):
-    if bool(set([11, 26]) & set(user.permissions)):
-        return query
-
-    if 8 in user.permissions:
+    if is_em_staff(user.permissions):
         return query.join(
             BLSession, BLSession.sessionId == DataCollection.SESSIONID
         ).filter(BLSession.beamLineName.like("m__"))

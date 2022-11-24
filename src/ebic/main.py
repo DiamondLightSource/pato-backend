@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routes import auth, image, list, tomogram
+from .utils.config import Config
 from .utils.database import get_session
 
 app = FastAPI(root_path="/api")
