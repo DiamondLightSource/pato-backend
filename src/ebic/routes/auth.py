@@ -9,7 +9,7 @@ router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorized}})
 
 @router.get("/user")
 def get_user(user=Depends(AuthUser)):
-    return {"id": user.fedid}
+    return user
 
 
 @router.get("/authorise", status_code=302, response_class=RedirectResponse)

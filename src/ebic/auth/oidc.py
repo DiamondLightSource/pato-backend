@@ -7,7 +7,7 @@ from .template import GenericAuthUser
 
 
 def _discovery():
-    return requests.get(Config.get["auth"]["oidc_discovery_endpoint"]).json()
+    return requests.get(Config.get()["auth"]["oidc_discovery_endpoint"]).json()
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

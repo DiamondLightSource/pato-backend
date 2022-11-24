@@ -1,4 +1,3 @@
-import configparser
 import json
 import os
 from typing import Collection, Optional
@@ -20,7 +19,7 @@ class Config:
     def get() -> Optional[Collection[object]]:
         if Config.__conf is None:
             try:
-                with open(os.environ.get("CONFIG_PATH") or "config.cfg", "r") as fp:
+                with open(os.environ.get("CONFIG_PATH") or "config.json", "r") as fp:
                     Config.__conf = json.load(fp)
             except FileNotFoundError:
                 Config.__conf = _defaults

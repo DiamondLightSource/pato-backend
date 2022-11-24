@@ -13,8 +13,8 @@ class GenericAuthUser:
     def __init__(self, token: str):
         self.fedid = self.auth(token)
 
-        user = (
-            db.session.query(Person.personId).filter(Person.login == self.fedid).first()
+        user: Person = (
+            db.session.query(Person).filter(Person.login == self.fedid).first()
         )
 
         if user is None:
@@ -24,6 +24,9 @@ class GenericAuthUser:
             )
 
         self.id = user.personId
+        self.family_name = user.familyName
+        self.title = user.title
+        self.given_name = user.givenName
         self._permissions: list[int] = []
 
     @property
