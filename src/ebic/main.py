@@ -1,13 +1,10 @@
-import os
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import auth, image, list, tomogram
-from .utils.config import Config
+from .routes import auth, collection, image, list, tomogram
 from .utils.database import get_session
 
-app = FastAPI(root_path="/api")
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,3 +25,4 @@ app.include_router(auth.router)
 app.include_router(list.router)
 app.include_router(tomogram.router)
 app.include_router(image.router)
+app.include_router(collection.router)

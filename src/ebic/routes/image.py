@@ -20,9 +20,3 @@ def micrograph_snapshot(movie: int, user=Depends(AuthUser)):
 def fft_theoretical(movie: int, user=Depends(AuthUser)):
     """Get FFT theoretical image"""
     return crud.get_fft_path(user, movie)
-
-
-@router.get("/slice/{tomogram}", response_class=FileResponse)
-def slice(tomogram: int, user=Depends(AuthUser)):
-    """Get tomogram central slice image"""
-    return crud.get_tomogram_auto_proc_attachment(user, tomogram)

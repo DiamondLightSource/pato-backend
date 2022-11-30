@@ -3,6 +3,23 @@ Changelog
 ==========
 
 ++++++++++
+v0.0.1-rc3 (30/11/2022)
+++++++++++
+
+**Added**
+
+- Motion has been split into tomogram motion correction (with the prefix :code:`/tomogram`) and data collection motion correction (prefix :code:`/dataCollection`)
+
+**Changed**
+
+- Shift plot moved from :code:`/shiftPlot` to :code:`/tomograms/{tomogramId}/shiftPlot`
+- Central slice moved from :code:`/image/slice/{tomogramId}`  to :code:`/tomograms/{tomogramId}/centralSlice`
+- CTF moved from :code:`/ctf` to :code:`/tomograms/{tomogramId}/ctf`
+- Listing of tomograms moved from :code:`/tomograms` to :code:`/dataCollections/{collectionId}/tomogram`
+- Only a single tomogram is returned in the listing, as a one-to-one mapping between tomogram and collections is expected
+
+
+++++++++++
 v0.0.1-rc2 (25/11/2022)
 ++++++++++
 

@@ -5,12 +5,7 @@ from sqlalchemy import and_
 from sqlalchemy import func as f
 from sqlalchemy.orm import Query
 
-from ..models.response import (
-    DataCollectionGroupSummaryOut,
-    DataCollectionSummaryOut,
-    ProposalOut,
-    VisitOut,
-)
+from ..models.response import DataCollectionGroupSummaryOut, ProposalOut, VisitOut
 from ..models.table import (
     BLSession,
     DataCollection,
@@ -72,19 +67,6 @@ def _concat_collection_group_user(user: AuthUser, query: Query):
     )
 
 
-@check_admin
-def _concat_collection_user(user: AuthUser, query: Query):
-    if is_em_staff(user.permissions):
-        return query.join(
-            BLSession, BLSession.sessionId == DataCollection.SESSIONID
-        ).filter(BLSession.beamLineName.like("m__"))
-
-    return query.filter(
-        SessionHasPerson.sessionId == DataCollection.SESSIONID,
-        SessionHasPerson.personId == user.id,
-    )
-
-
 def get_proposals(
     items: int, page: int, search: str, user: AuthUser
 ) -> Paged[ProposalOut]:
@@ -133,7 +115,10 @@ def get_visits(
         query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
 
     query = _concat_session_user(
-        user, query.filter(BLSession.visit_number.contains(search))
+        user,
+        query.filter(BLSession.visit_number.contains(search)).order_by(
+            BLSession.visit_number
+        ),
     )
 
     return paginate(query, items, page)
@@ -146,7 +131,7 @@ def get_collection_groups(
         db.session.query(
             *[c for c in DataCollectionGroup.__table__.columns],
             f.count(DataCollectionGroup.dataCollectionGroupId).over().label("total"),
-            f.count(DataCollection.dataCollectionId).over().label("collections"),
+            f.count(DataCollection.dataCollectionId).label("collections"),
         )
         .where(
             and_(
@@ -157,27 +142,12 @@ def get_collection_groups(
                 ),
             )
         )
-        .join(DataCollection)
+        .join(
+            DataCollection,
+            DataCollection.dataCollectionGroupId
+            == DataCollectionGroup.dataCollectionGroupId,
+        )
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
     return paginate(_concat_collection_group_user(user, query), items, page)
-
-
-def get_collections(
-    items: int, page: int, id: int, search: str, user: AuthUser
-) -> Paged[DataCollectionSummaryOut]:
-    query = db.session.query(
-        *[c for c in DataCollection.__table__.columns],
-        f.count(DataCollection.dataCollectionId).over().label("total"),
-    ).where(
-        and_(
-            id == DataCollection.dataCollectionGroupId,
-            or_(
-                DataCollection.comments.contains(search),
-                search == "",
-            ),
-        )
-    )
-
-    return paginate(_concat_collection_user(user, query), items, page)
