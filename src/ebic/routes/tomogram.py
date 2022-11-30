@@ -16,7 +16,7 @@ def shift_plot(id, user=Depends(AuthUser)):
     return tomogram.get_shift_plot(user, id)
 
 
-@router.get("/{id}/motion/")
+@router.get("/{id}/motion")
 def motion_correction(id, user=Depends(AuthUser)):
     "Get motion correction data for the given tomogram"
     return tomogram.get_motion_correction(user, id)

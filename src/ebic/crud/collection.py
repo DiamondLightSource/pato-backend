@@ -82,8 +82,6 @@ def get_motion_correction(user: AuthUser, id, movie: int = None):
             )
         movie = raw.total
 
-    print(id, movie)
-
     query = (
         db.session.query(
             MotionCorrection, CTF, Movie, f.count(Movie.movieId).over().label("total")
@@ -96,7 +94,10 @@ def get_motion_correction(user: AuthUser, id, movie: int = None):
     )
 
     query = query.offset(movie - 1).limit(1).first()
-    data = flatten_join(query[:3], ["comments"])  # FIX THIS, ADD TOTAL
-    data["drift"] = parse_json_file(data["driftPlotFullPath"])
+    data = {
+        "drift": parse_json_file(query.MotionCorrection.driftPlotFullPath),
+        "total": query.total,
+        **flatten_join(query[:3], ["comments"]),
+    }
 
     return data

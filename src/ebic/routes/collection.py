@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=Paged[DataCollectionSummaryOut])
+@router.get("", response_model=Paged[DataCollectionSummaryOut])
 def collections(
     group: int,
     limit: int = 100,
@@ -32,6 +32,6 @@ def tomograms(id: int, user=Depends(AuthUser)):
 
 
 @router.get("/{id}/motion")
-def motion(id, nth=None, user=Depends(AuthUser)):
+def motion(id: int, nth: int = None, user=Depends(AuthUser)):
     """Get motion correction and tilt alignment data (including drift plot)"""
     return crud.get_motion_correction(user, id, nth)
