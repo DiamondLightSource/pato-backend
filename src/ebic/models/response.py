@@ -11,6 +11,11 @@ class StateEnum(str, Enum):
     cancelled = "Cancelled"
 
 
+class DataPoint(BaseModel):
+    x: float
+    y: float
+
+
 class ProposalOut(BaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
@@ -99,3 +104,71 @@ class DataCollectionGroupSummaryOut(BaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
     collections: int
+
+
+class MotionOut(BaseModel):
+    motionCorrectionId: int = Field(..., lt=1e11)
+    dataCollectionId: int
+    autoProcProgramId: Optional[int]
+    imageNumber: Optional[int] = Field(
+        ..., comment="Movie number, sequential in time 1-n"
+    )
+    firstFrame: Optional[int] = Field(..., comment="First frame of movie used")
+    lastFrame: Optional[int] = Field(..., comment="Last frame of movie used")
+    dosePerFrame: Optional[float] = Field(..., comment="Dose per frame")
+    totalMotion: Optional[float] = Field(..., comment="Total motion")
+    averageMotionPerFrame: Optional[float]
+    driftPlotFullPath: Optional[str] = Field(..., max_length=255)
+    micrographFullPath: Optional[str] = Field(..., max_length=255)
+    micrographSnapshotFullPath: Optional[str] = Field(..., max_length=255)
+    patchesUsedX: Optional[int]
+    patchesUsedY: Optional[int]
+    fftFullPath: Optional[str] = Field(..., max_length=255)
+    fftCorrectedFullPath: Optional[str] = Field(..., max_length=255)
+    comments_MotionCorrection: Optional[str] = Field(..., max_length=255)
+    movieId: Optional[int]
+    ctfId: Optional[int]
+    boxSizeX: Optional[float]
+    boxSizeY: Optional[float]
+    minResolution: Optional[float]
+    maxResolution: Optional[float]
+    minDefocus: Optional[float]
+    maxDefocus: Optional[float]
+    defocusStepSize: Optional[float]
+    astigmatism: Optional[float]
+    astigmatismAngle: Optional[float]
+    estimatedResolution: Optional[float]
+    estimatedDefocus: Optional[float]
+    amplitudeContrast: Optional[float]
+    ccValue: Optional[float]
+    fftTheoreticalFullPath: Optional[str] = Field(..., max_length=255)
+    comments_CTF: Optional[str] = Field(..., max_length=255)
+    movieNumber: Optional[int]
+    movieFullPath: Optional[str] = Field(..., max_length=255)
+    createdTimeStamp: datetime
+    positionX: Optional[float]
+    positionY: Optional[float]
+    nominalDefocus: Optional[float]
+    angle: Optional[float]
+    fluence: Optional[float] = Field(
+        ...,
+        comment="""accumulated electron fluence from start to end of acquisition of this
+        movie (commonly, but incorrectly, referred to as ‘dose’)""",
+    )
+    numberOfFrames: Optional[int]
+    drift: list[DataPoint]
+    total: int
+
+
+class TiltAlignmentOut(MotionOut):
+    tomogramId: int
+    defocusU: Optional[float]
+    defocusV: Optional[float]
+    psdFile: Optional[str] = Field(..., max_length=255)
+    resolution: Optional[float]
+    fitQuality: Optional[float]
+    refinedMagnification: Optional[float]
+    refinedTiltAngle: Optional[float]
+    refinedTiltAxis: Optional[float]
+    residualError: Optional[float]
+    rawTotal: int

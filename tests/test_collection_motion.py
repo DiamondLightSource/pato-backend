@@ -9,6 +9,8 @@ def test_get_admin(mock_user, client):
     resp = client.get("/dataCollections/6017406/motion")
     resp_json = resp.json()
 
+    print(resp_json)
+
     assert resp.status_code == 200
     assert resp_json["total"] == 5
 

@@ -3,6 +3,8 @@ import json
 from fastapi import HTTPException
 from sqlalchemy import inspect
 
+from ..models.response import DataPoint
+
 
 def flatten_join(tup_list, preserve_dups=[]):
     if tup_list is None:
@@ -27,7 +29,7 @@ def parse_json_file(path):
     try:
         with open(path, "r") as file:
             return [
-                {"x": i, "y": val}
+                DataPoint(x=i, y=val)
                 for (i, val) in enumerate(json.load(file)["data"][0]["y"])
             ]
     except (FileNotFoundError, KeyError, IndexError, TypeError):

@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
 from ..auth.permission import validate_tomogram
+from ..models.response import TiltAlignmentOut
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.auth import AuthUser
 from ..utils.database import db
@@ -19,7 +20,7 @@ def get_shift_plot(user: AuthUser, id: int):
 
 
 @validate_tomogram
-def get_motion_correction(user: AuthUser, id, movie: int = None):
+def get_motion_correction(user: AuthUser, id, movie: int = None) -> TiltAlignmentOut:
     raw = (
         db.session.query(
             f.count(Movie.movieId).label("total"),
@@ -63,16 +64,12 @@ def get_motion_correction(user: AuthUser, id, movie: int = None):
             detail="Motion correction data does not exist for movie index",
         )
 
-    data = {
-        **{
-            "total": picked,
-            "rawTotal": raw,
-            "drift": parse_json_file(query.MotionCorrection.driftPlotFullPath),
-        },
-        **flatten_join(query, ["comments"]),
-    }
-
-    return data
+    return TiltAlignmentOut(
+        drift=parse_json_file(query.MotionCorrection.driftPlotFullPath),
+        total=picked,
+        rawTotal=raw,
+        **flatten_join(query, ["comments"])
+    )
 
 
 @validate_tomogram

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Query
 
 from ..auth.permission import validate_collection
 from ..crud.list import check_admin
-from ..models.response import DataCollectionSummaryOut
+from ..models.response import DataCollectionSummaryOut, MotionOut
 from ..models.table import (
     CTF,
     BLSession,
@@ -65,7 +65,7 @@ def get_tomogram(user: AuthUser, id: int) -> Tomogram:
 
 
 @validate_collection
-def get_motion_correction(user: AuthUser, id, movie: int = None):
+def get_motion_correction(user: AuthUser, id, movie: int = None) -> MotionOut:
     if movie is None:
         raw = (
             db.session.query(
@@ -94,10 +94,9 @@ def get_motion_correction(user: AuthUser, id, movie: int = None):
     )
 
     query = query.offset(movie - 1).limit(1).first()
-    data = {
-        "drift": parse_json_file(query.MotionCorrection.driftPlotFullPath),
-        "total": query.total,
-        **flatten_join(query[:3], ["comments"]),
-    }
 
-    return data
+    return MotionOut(
+        drift=parse_json_file(query.MotionCorrection.driftPlotFullPath),
+        total=query.total,
+        **flatten_join(query[:3], ["comments"]),
+    )
