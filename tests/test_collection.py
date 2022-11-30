@@ -8,7 +8,7 @@ def test_get_admin(mock_user, client):
     """Get all data collections in a visit (request for admin)"""
     resp = client.get("/dataCollections?group=5440740")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 1
+    assert resp.json()["total"] == 2
 
 
 @patch.object(AuthUser, "auth", return_value="em_admin", autospec=True)
@@ -16,7 +16,7 @@ def test_get_em_admin(mock_user, client):
     """Get all collections in visit belonging to EM (request for EM admin)"""
     resp = client.get("/dataCollections?group=5440740")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 1
+    assert resp.json()["total"] == 2
 
 
 @patch.object(AuthUser, "auth", return_value="em_admin", autospec=True)

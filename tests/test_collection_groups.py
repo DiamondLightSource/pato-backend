@@ -32,7 +32,7 @@ def test_get_user(mock_user, client):
     """Get data collection groups in a visit belonging to a regular user"""
     resp = client.get("/dataCollectionGroups?visit=27464089")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 3
+    assert resp.json()["total"] == 4
 
 
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
@@ -40,3 +40,14 @@ def test_get_forbidden(mock_user, client):
     """Try to get data collection groups for a visit that does not belong to user"""
     resp = client.get("/dataCollectionGroups?visit=27464088")
     assert resp.status_code == 404
+
+
+@patch.object(AuthUser, "auth", return_value="admin", autospec=True)
+def test_get_collection_count(mock_user, client):
+    """Get count of collections that belong to a data collection group"""
+    resp = client.get("/dataCollectionGroups?visit=27464089")
+    resp_json = resp.json()
+
+    assert resp.status_code == 200
+    assert resp_json["items"][1]["collections"] == 1
+    assert resp_json["items"][2]["collections"] == 2

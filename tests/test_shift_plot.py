@@ -1,6 +1,7 @@
 from unittest.mock import mock_open, patch
 
 import pytest
+
 from ebic.utils.auth import AuthUser
 
 
@@ -15,7 +16,7 @@ def file_mock():
 @patch.object(AuthUser, "auth", return_value="admin", autospec=True)
 def test_get_admin(mock_user, file_mock, client):
     """Get shift plot for motion correction (request for admin)"""
-    resp = client.get("/shiftPlot/1")
+    resp = client.get("/tomograms/1/shiftPlot")
 
     assert resp.status_code == 200
 
@@ -24,21 +25,21 @@ def test_get_admin(mock_user, file_mock, client):
 def test_get_em_admin(mock_user, client):
     """Get shift plot for motion correction (request for EM admin).
     Non-EM tomograms cannot exist."""
-    resp = client.get("/shiftPlot/1")
+    resp = client.get("/tomograms/1/shiftPlot")
     assert resp.status_code == 200
 
 
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_get_user(mock_user, client):
     """Get all shift plot for motion correction belonging to user"""
-    resp = client.get("/shiftPlot/2")
+    resp = client.get("/tomograms/2/shiftPlot")
     assert resp.status_code == 200
 
 
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_get_forbidden(mock_user, client):
     """Get all shift plot for motion correction not belonging to user"""
-    resp = client.get("/shiftPlot/1")
+    resp = client.get("/tomograms/1/shiftPlot")
     assert resp.status_code == 403
 
 
@@ -46,7 +47,7 @@ def test_get_forbidden(mock_user, client):
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_invalid_file(mock_user, mock_file, client):
     """Try to get shift plot file that is not in a correct format"""
-    resp = client.get("/shiftPlot/2")
+    resp = client.get("/tomograms/2/shiftPlot")
     assert resp.status_code == 500
 
 
@@ -55,12 +56,12 @@ def test_invalid_file(mock_user, mock_file, client):
 def test_file_not_found(mock_user, mock_file, client):
     """Try to get shift plot file that does not exist"""
     mock_file.side_effect = FileNotFoundError
-    resp = client.get("/shiftPlot/2")
+    resp = client.get("/tomograms/2/shiftPlot")
     assert resp.status_code == 404
 
 
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_inexistent_file(mock_user, client):
     """Try to get shift plot file not in database"""
-    resp = client.get("/shiftPlot/999")
+    resp = client.get("/tomograms/999/shiftPlot")
     assert resp.status_code == 404

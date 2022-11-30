@@ -8,7 +8,7 @@ v0.0.1-rc3 (30/11/2022)
 
 **Added**
 
-- Motion has been split into tomogram motion correction (with the prefix :code:`/tomogram`) and data collection motion correction (prefix :code:`/dataCollection`)
+- Motion has been split into tomogram motion correction (with the prefix :code:`/tomograms`) and data collection motion correction (prefix :code:`/dataCollections`)
 
 **Changed**
 
