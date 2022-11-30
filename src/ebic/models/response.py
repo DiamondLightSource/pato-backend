@@ -172,3 +172,41 @@ class TiltAlignmentOut(MotionOut):
     refinedTiltAxis: Optional[float]
     residualError: Optional[float]
     rawTotal: int
+
+
+class CtfTiltAlign(BaseModel):
+    estimatedResolution: Optional[float]
+    estimatedDefocus: Optional[float]
+    astigmatism: Optional[float]
+    refinedTiltAngle: Optional[float]
+
+    class Config:
+        orm_mode = True
+
+
+class CtfOut(BaseModel):
+    items: list[CtfTiltAlign]
+
+
+class GenericPlot(BaseModel):
+    items: list[DataPoint]
+
+
+class Tomogram(BaseModel):
+    tomogramId: int
+    dataCollectionId: int
+    autoProcProgramId: Optional[int]
+    volumeFile: Optional[str] = Field(..., max_length=255)
+    stackFile: Optional[str] = Field(..., max_length=255)
+    sizeX: Optional[int]
+    sizeY: Optional[int]
+    sizeZ: Optional[int]
+    pixelSpacing: Optional[float]
+    residualErrorMean: Optional[float]
+    residualErrorSD: Optional[float]
+    xAxisCorrection: Optional[float]
+    tiltAngleOffset: Optional[float]
+    zShift: Optional[float]
+
+    class Config:
+        orm_mode = True

@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 
 from ..crud import path, tomogram
 from ..models.api import Unauthorized
+from ..models.response import CtfOut, GenericPlot, TiltAlignmentOut
 from ..utils.auth import AuthUser
 
 router = APIRouter(
@@ -10,13 +11,13 @@ router = APIRouter(
 )
 
 
-@router.get("/{id}/shiftPlot")
+@router.get("/{id}/shiftPlot", response_model=GenericPlot)
 def shift_plot(id, user=Depends(AuthUser)):
     "Get X-Y shift plot data"
     return tomogram.get_shift_plot(user, id)
 
 
-@router.get("/{id}/motion")
+@router.get("/{id}/motion", response_model=TiltAlignmentOut)
 def motion_correction(id, user=Depends(AuthUser)):
     "Get motion correction data for the given tomogram"
     return tomogram.get_motion_correction(user, id)
@@ -28,7 +29,7 @@ def slice(id: int, user=Depends(AuthUser)):
     return path.get_tomogram_auto_proc_attachment(user, id)
 
 
-@router.get("/{id}/ctf")
+@router.get("/{id}/ctf", response_model=CtfOut)
 def ctf(id, user=Depends(AuthUser)):
     """Get astigmatism, resolution and defocus as a function of tilt image
     alignment refined tilt angles"""

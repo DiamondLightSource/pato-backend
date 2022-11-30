@@ -55,7 +55,7 @@ def get_collections(
 
 
 @validate_collection
-def get_tomogram(user: AuthUser, id: int) -> Tomogram:
+def get_tomogram(user: AuthUser, id: int):
     data = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == id).scalar()
 
     if data is None:
@@ -65,7 +65,7 @@ def get_tomogram(user: AuthUser, id: int) -> Tomogram:
 
 
 @validate_collection
-def get_motion_correction(user: AuthUser, id, movie: int = None) -> MotionOut:
+def get_motion_correction(user: AuthUser, id, movie: int = None):
     if movie is None:
         raw = (
             db.session.query(
