@@ -12,7 +12,7 @@ install-job:
   script:
     - pip install .[dev]
 
-unit-test-job:
+integration-test-job:
   stage: test
   tags: 
     - argus
