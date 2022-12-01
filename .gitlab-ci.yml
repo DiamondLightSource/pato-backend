@@ -1,6 +1,6 @@
 image: python
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.0.1
+  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.0.2
 stages:
   - build
   - test
@@ -12,7 +12,7 @@ install-job:
   script:
     - pip install .[dev]
 
-unit-test-job:
+integration-test-job:
   stage: test
   tags: 
     - argus
