@@ -41,12 +41,12 @@ def test_no_tilt_alignment(mock_user, client):
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
 def test_nth_motion(mock_user, client):
     """Get specific (nth) motion correction"""
-    resp = client.get("/tomograms/2/motion")
+    resp = client.get("/tomograms/2/motion?nth=2")
     resp_json = resp.json()
 
     assert resp.status_code == 200
     assert resp_json["total"] == 4
-    assert resp_json["refinedTiltAngle"] == 19
+    assert resp_json["refinedTiltAngle"] == 17
 
 
 @patch.object(AuthUser, "auth", return_value="user", autospec=True)
