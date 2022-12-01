@@ -1,7 +1,7 @@
 eBIC API
 ===========================
 
-|code_ci| |docs_ci| |coverage| |pypi_version| |license|
+|code_ci| |coverage| |license|
 
 ============== ==============================================================
 Source code    https://gitlab.diamond.ac.uk/yrh59256/ebic-backend
