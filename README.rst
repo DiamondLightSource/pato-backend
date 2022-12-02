@@ -1,7 +1,7 @@
 eBIC API
 ===========================
 
-|code_ci| |docs_ci| |coverage| |pypi_version| |license|
+|code_ci| |coverage| |license|
 
 ============== ==============================================================
 Source code    https://gitlab.diamond.ac.uk/yrh59256/ebic-backend
@@ -50,21 +50,13 @@ Testing
     - You may change the port or where the container itself runs, just remember to update `.test.env`
 - Run :code:`pytest tests`
 
-.. |code_ci| image:: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/code.yml/badge.svg?branch=main
-    :target: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/code.yml
+.. |code_ci| image:: https://gitlab.diamond.ac.uk/lims/ebic-backend/badges/master/pipeline.svg
+    :target: https://gitlab.diamond.ac.uk/lims/ebic-backend/-/pipelines
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/docs.yml/badge.svg?branch=main
-    :target: https://github.com/DiamondLightSource/python3-pip-skeleton/actions/workflows/docs.yml
-    :alt: Docs CI
-
-.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/python3-pip-skeleton/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/DiamondLightSource/python3-pip-skeleton
+.. |coverage| image:: https://gitlab.diamond.ac.uk/lims/ebic-backend/badges/master/coverage.svg
+    :target: https://gitlab.diamond.ac.uk/lims/ebic-backend/-/pipelines
     :alt: Test Coverage
-
-.. |pypi_version| image:: https://img.shields.io/pypi/v/python3-pip-skeleton.svg
-    :target: https://pypi.org/project/python3-pip-skeleton
-    :alt: Latest PyPI version
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
