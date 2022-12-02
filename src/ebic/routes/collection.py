@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..crud import collection as crud
-from ..models.api import Unauthorized
+from ..models.api import Unauthorised
 from ..models.response import DataCollectionSummaryOut, MotionOut, Tomogram
 from ..utils.auth import AuthUser
 from ..utils.database import Paged
@@ -9,7 +9,7 @@ from ..utils.database import Paged
 router = APIRouter(
     tags=["collection"],
     prefix="/dataCollections",
-    responses={401: {"model": Unauthorized}},
+    responses={401: {"model": Unauthorised}},
 )
 
 

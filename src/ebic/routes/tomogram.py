@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 
 from ..crud import path, tomogram
-from ..models.api import Unauthorized
+from ..models.api import Unauthorised
 from ..models.response import CtfOut, GenericPlot, TiltAlignmentOut
 from ..utils.auth import AuthUser
 
 router = APIRouter(
-    tags=["tomograph"], prefix="/tomograms", responses={401: {"model": Unauthorized}}
+    tags=["tomograph"], prefix="/tomograms", responses={401: {"model": Unauthorised}}
 )
 
 

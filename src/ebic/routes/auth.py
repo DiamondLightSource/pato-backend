@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import RedirectResponse
 
-from ..models.api import Unauthorized
+from ..models.api import Unauthorised
 from ..utils.auth import AuthUser
 
-router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorized}})
+router = APIRouter(tags=["auth"], responses={401: {"model": Unauthorised}})
 
 
 @router.get("/user")
