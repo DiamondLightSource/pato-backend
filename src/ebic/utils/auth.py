@@ -1,15 +1,10 @@
 # flake8: noqa F401
-import os
-
 from .config import Config
 
-auth_type = os.environ.get("AUTH_TYPE") or "oidc"
+auth_type = Config.get()["auth"]["type"]
 
-
-if auth_type.lower() == "oidc":
-    from ..auth.oidc import AuthUser
-elif auth_type.lower() == "dummy":
-    from ..auth.dummy import AuthUser  # type: ignore
+if auth_type.lower() == "micro":
+    from ..auth.micro import AuthUser
 
 
 def is_admin(perms: list[int]):

@@ -4,9 +4,10 @@ from typing import Collection, Optional
 
 _defaults = {
     "auth": {
-        "oidc_discovery_endpoint": "https://localhost/cas/oidc/.well-known",
+        "endpoint": "http://localhost:8050/user",
         "read_all_perms": [11, 26],
         "read_em_perms": [8],
+        "type": "micro",
     },
     "ispyb": {"pool": 10, "overflow": 20},
 }
