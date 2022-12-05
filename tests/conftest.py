@@ -1,9 +1,13 @@
 from unittest.mock import patch
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from ebic.main import app
+from ebic.utils.auth import AuthUser
+
+from .users import admin
 
 
 async def mock_send(_, _1, _2, s):
@@ -13,6 +17,18 @@ async def mock_send(_, _1, _2, s):
 @pytest.fixture(scope="session")
 def client():
     yield TestClient(app)
+
+
+@pytest.fixture(scope="function", params=[admin], autouse=True)
+def override_user(request):
+    try:
+        old_overrides = app.dependency_overrides[AuthUser]
+    except KeyError:
+        old_overrides = {}
+
+    app.dependency_overrides[AuthUser] = lambda: request.param
+    yield
+    app.dependency_overrides[AuthUser] = old_overrides
 
 
 @pytest.fixture(scope="function", autouse=True)

@@ -20,10 +20,4 @@ class AuthUser(GenericAuthUser):
                 status_code=response.status_code, detail=response.json()
             )
 
-        resp_json = response.json()
-
-        self.permissions = resp_json["permissions"]
-        self.given_name = resp_json["given_name"]
-        self.title = resp_json["title"]
-        self.id = resp_json["id"]
-        self.family_name = resp_json["family_name"]
+        super().__init__(**response.json())

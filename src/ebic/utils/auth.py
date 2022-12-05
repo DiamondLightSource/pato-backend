@@ -5,6 +5,8 @@ auth_type = Config.get()["auth"]["type"]
 
 if auth_type.lower() == "micro":
     from ..auth.micro import AuthUser
+elif auth_type.lower() == "dummy":
+    from ..auth.template import GenericAuthUser as AuthUser
 
 
 def is_admin(perms: list[int]):

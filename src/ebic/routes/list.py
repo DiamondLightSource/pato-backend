@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends
 
 from ..crud import list as crud
-from ..models.api import Unauthorised
 from ..models.response import DataCollectionGroupSummaryOut, ProposalOut, VisitOut
 from ..utils.auth import AuthUser
 from ..utils.database import Paged
 
 router = APIRouter(
     tags=["list"],
-    responses={401: {"model": Unauthorised}},
 )
 
 

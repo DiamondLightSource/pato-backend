@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 
 from ..crud import path as crud
-from ..models.api import Unauthorised
 from ..utils.auth import AuthUser
 
 router = APIRouter(
-    tags=["images"], prefix="/image", responses={401: {"model": Unauthorised}}
+    tags=["images"],
+    prefix="/image",
 )
 
 
