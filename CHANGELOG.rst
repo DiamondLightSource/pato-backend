@@ -3,6 +3,17 @@ Changelog
 ==========
 
 ++++++++++
+v0.0.1-rc4 (06/12/2022)
+++++++++++
+
+**Changed**
+
+- Authorisation and authentication is done through a separate microservice
+- Data collection listing moved from :code:`/collection?group={id}` to :code:`dataGroups/{id}/collections`
+- Visit listing moved from :code:`/visit?prop={id}` to :code:`proposals/{id}/visits`
+- Data collection groups listing from :code:`/dataCollectionGroups?visit={id}` to :code:`visits/{id}/dataGroups`
+
+++++++++++
 v0.0.1-rc3 (30/11/2022)
 ++++++++++
 

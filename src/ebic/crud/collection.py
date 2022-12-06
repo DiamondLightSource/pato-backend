@@ -53,8 +53,7 @@ def get_collections(
     return paginate(_concat_collection_user(user, query), items, page)
 
 
-# COLLECTION
-def get_tomogram(user: User, id: int):
+def get_tomogram(id: int):
     data = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == id).scalar()
 
     if data is None:
@@ -63,8 +62,7 @@ def get_tomogram(user: User, id: int):
     return data
 
 
-# COLLECTION
-def get_motion_correction(user: User, id, movie: int = None):
+def get_motion_correction(id, movie: int = None):
     if movie is None:
         raw = (
             db.session.query(

@@ -1,36 +1,16 @@
 import pytest
 
-from .users import admin, em_admin, user
 
-
-@pytest.mark.parametrize("mock_user", [admin], indirect=True)
-def test_get_admin(mock_user, client):
-    """Get motion correction in a data collection (request for admin)"""
-    resp = client.get("/dataCollections/6017406/motion")
-    resp_json = resp.json()
-
-    assert resp.status_code == 200
-    assert resp_json["total"] == 5
-
-
-@pytest.mark.parametrize("mock_user", [em_admin], indirect=True)
-def test_get_em_admin(mock_user, client):
-    """Get motion correction in a data collection (request for EM admin)."""
-    resp = client.get("/dataCollections/6017406/motion")
-    assert resp.status_code == 200
-    assert resp.json()["total"] == 5
-
-
-@pytest.mark.parametrize("mock_user", [user], indirect=True)
-def test_get_user(mock_user, client):
+@pytest.mark.parametrize("mock_permissions", [200], indirect=True)
+def test_get_user(mock_permissions, client):
     """Get all motion correction in a data collection belonging to user"""
     resp = client.get("/dataCollections/6017408/motion")
     assert resp.status_code == 200
     assert resp.json()["total"] == 5
 
 
-@pytest.mark.parametrize("mock_user", [user], indirect=True)
-def test_nth_motion(mock_user, client):
+@pytest.mark.parametrize("mock_permissions", [200], indirect=True)
+def test_nth_motion(mock_permissions, client):
     """Get specific (nth) motion correction"""
     resp = client.get("/dataCollections/6017408/motion?nth=3")
     resp_json = resp.json()
@@ -40,8 +20,8 @@ def test_nth_motion(mock_user, client):
     assert resp_json["imageNumber"] == 3
 
 
-@pytest.mark.parametrize("mock_user", [user], indirect=True)
-def test_get_forbidden(mock_user, client):
+@pytest.mark.parametrize("mock_permissions", [403], indirect=True)
+def test_get_forbidden(mock_permissions, client):
     """Try to get motion correction in a data collection that does not belong to user"""
     resp = client.get("/dataCollections/6017406/motion")
     assert resp.status_code == 403
