@@ -7,7 +7,7 @@ from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
 from ..models.table import t_UserGroup_has_Person as GroupHasPerson
 from ..utils.config import Config
 from ..utils.database import db
-from .template import GenericAuthUser
+from .template import GenericPermissions, GenericUser
 
 
 def _discovery():
@@ -18,7 +18,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 oidc_endpoints = _discovery()
 
 
-class AuthUser(GenericAuthUser):
+class User(GenericUser):
     def __init__(self, token=Depends(oauth2_scheme)):
         super().__init__(token)
 
@@ -75,3 +75,8 @@ class AuthUser(GenericAuthUser):
     @classmethod
     def get_logout_redirect(cls):
         return oidc_endpoints["end_session_endpoint"]
+
+
+class Permissions(GenericPermissions):
+    def __init__(self, endpoint: str):
+        raise NotImplementedError()

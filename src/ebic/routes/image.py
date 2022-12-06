@@ -2,21 +2,20 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 
 from ..crud import path as crud
-from ..utils.auth import AuthUser
+from ..utils.auth import Permissions
 
 router = APIRouter(
-    tags=["images"],
-    prefix="/image",
+    tags=["images"], prefix="/image", dependencies=[Depends(Permissions("movie"))]
 )
 
 
-@router.get("/micrograph/{movie}", response_class=FileResponse)
-def micrograph_snapshot(movie: int, user=Depends(AuthUser)):
+@router.get("/micrograph/{id}", response_class=FileResponse)
+def micrograph_snapshot(id: int):
     """Get micrograph snapshot"""
-    return crud.get_micrograph_path(user, movie)
+    return crud.get_micrograph_path(id)
 
 
-@router.get("/fft/{movie}", response_class=FileResponse)
-def fft_theoretical(movie: int, user=Depends(AuthUser)):
+@router.get("/fft/{id}", response_class=FileResponse)
+def fft_theoretical(id: int):
     """Get FFT theoretical image"""
-    return crud.get_fft_path(user, movie)
+    return crud.get_fft_path(id)

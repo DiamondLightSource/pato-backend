@@ -4,7 +4,7 @@ from typing import Collection, Optional
 
 _defaults = {
     "auth": {
-        "endpoint": "http://localhost:8050/user",
+        "endpoint": "http://localhost:8050/",
         "read_all_perms": [11, 26],
         "read_em_perms": [8],
         "type": "micro",

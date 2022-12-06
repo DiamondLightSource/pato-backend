@@ -14,7 +14,7 @@ from ..models.table import (
     ProposalHasPerson,
     SessionHasPerson,
 )
-from ..utils.auth import AuthUser, is_admin, is_em_staff
+from ..utils.auth import User, is_admin, is_em_staff
 from ..utils.database import Paged, db, paginate
 
 # TODO: Add config file
@@ -34,7 +34,7 @@ def check_admin(func):
 
 
 @check_admin
-def _concat_prop_user(user: AuthUser, query: Query):
+def _concat_prop_user(user: User, query: Query):
     if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
     return query.filter(
@@ -44,7 +44,7 @@ def _concat_prop_user(user: AuthUser, query: Query):
 
 
 @check_admin
-def _concat_session_user(user: AuthUser, query: Query):
+def _concat_session_user(user: User, query: Query):
     if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
 
@@ -55,7 +55,7 @@ def _concat_session_user(user: AuthUser, query: Query):
 
 
 @check_admin
-def _concat_collection_group_user(user: AuthUser, query: Query):
+def _concat_collection_group_user(user: User, query: Query):
     if is_em_staff(user.permissions):
         return query.join(
             BLSession, BLSession.sessionId == DataCollectionGroup.sessionId
@@ -67,9 +67,7 @@ def _concat_collection_group_user(user: AuthUser, query: Query):
     )
 
 
-def get_proposals(
-    items: int, page: int, search: str, user: AuthUser
-) -> Paged[ProposalOut]:
+def get_proposals(items: int, page: int, search: str, user: User) -> Paged[ProposalOut]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
     query = _concat_prop_user(
         user,
@@ -91,7 +89,7 @@ def get_proposals(
 def get_visits(
     items: int,
     page: int,
-    user: AuthUser,
+    user: User,
     id: Optional[str],
     search: str,
     min_date: Optional[str],
@@ -125,7 +123,7 @@ def get_visits(
 
 
 def get_collection_groups(
-    items: int, page: int, id: int, search: str, user: AuthUser
+    items: int, page: int, id: int, search: str, user: User
 ) -> Paged[DataCollectionGroupSummaryOut]:
     query = (
         db.session.query(

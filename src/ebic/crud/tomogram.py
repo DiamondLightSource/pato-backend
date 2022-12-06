@@ -1,17 +1,15 @@
 from fastapi import HTTPException, status
 from sqlalchemy import func as f
 
-from ..auth.permission import validate_tomogram
 from ..models.response import CtfOut, GenericPlot, TiltAlignmentOut
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
-from ..utils.auth import AuthUser
 from ..utils.database import db
 from ..utils.generic import flatten_join, parse_json_file
 from .path import get_tomogram_auto_proc_attachment
 
 
-def get_shift_plot(user: AuthUser, id: int):
-    data = parse_json_file(get_tomogram_auto_proc_attachment(user, id, "Graph"))
+def get_shift_plot(id: int):
+    data = parse_json_file(get_tomogram_auto_proc_attachment(id, "Graph"))
 
     if not data:
         raise HTTPException(status_code=404, detail="Invalid or empty data file")
@@ -19,8 +17,7 @@ def get_shift_plot(user: AuthUser, id: int):
     return GenericPlot(items=data)
 
 
-@validate_tomogram
-def get_motion_correction(user: AuthUser, id, movie: int = None):
+def get_motion_correction(id: int, movie: int = None):
     raw = (
         db.session.query(
             f.count(Movie.movieId).label("total"),
@@ -72,8 +69,8 @@ def get_motion_correction(user: AuthUser, id, movie: int = None):
     )
 
 
-@validate_tomogram
-def get_ctf(user: AuthUser, id: int):
+# TOMOGRAM
+def get_ctf(id: int):
     data = (
         db.session.query(
             CTF.estimatedResolution,

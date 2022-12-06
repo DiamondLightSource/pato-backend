@@ -1,7 +1,7 @@
-from .template import GenericAuthUser
+from .template import GenericUser
 
 
-class AuthUser(GenericAuthUser):
+class User(GenericUser):
     def __init__(self, token=""):
         super().__init__(token)
 

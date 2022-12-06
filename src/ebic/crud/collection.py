@@ -5,7 +5,6 @@ from sqlalchemy import and_
 from sqlalchemy import func as f
 from sqlalchemy.orm import Query
 
-from ..auth.permission import validate_collection
 from ..crud.list import check_admin
 from ..models.response import DataCollectionSummaryOut, MotionOut
 from ..models.table import (
@@ -17,13 +16,13 @@ from ..models.table import (
     SessionHasPerson,
     Tomogram,
 )
-from ..utils.auth import AuthUser, is_em_staff
+from ..utils.auth import User, is_em_staff
 from ..utils.database import Paged, db, paginate
 from ..utils.generic import flatten_join, parse_json_file
 
 
 @check_admin
-def _concat_collection_user(user: AuthUser, query: Query):
+def _concat_collection_user(user: User, query: Query):
     if is_em_staff(user.permissions):
         return query.join(
             BLSession, BLSession.sessionId == DataCollection.SESSIONID
@@ -36,7 +35,7 @@ def _concat_collection_user(user: AuthUser, query: Query):
 
 
 def get_collections(
-    items: int, page: int, id: int, search: str, user: AuthUser
+    items: int, page: int, id: int, search: str, user: User
 ) -> Paged[DataCollectionSummaryOut]:
     query = db.session.query(
         *[c for c in DataCollection.__table__.columns],
@@ -54,8 +53,8 @@ def get_collections(
     return paginate(_concat_collection_user(user, query), items, page)
 
 
-@validate_collection
-def get_tomogram(user: AuthUser, id: int):
+# COLLECTION
+def get_tomogram(user: User, id: int):
     data = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == id).scalar()
 
     if data is None:
@@ -64,8 +63,8 @@ def get_tomogram(user: AuthUser, id: int):
     return data
 
 
-@validate_collection
-def get_motion_correction(user: AuthUser, id, movie: int = None):
+# COLLECTION
+def get_motion_correction(user: User, id, movie: int = None):
     if movie is None:
         raw = (
             db.session.query(

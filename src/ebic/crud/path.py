@@ -4,9 +4,7 @@ from os.path import join as join_path
 from fastapi import HTTPException
 from sqlalchemy import and_
 
-from ..auth.permission import validate_movie, validate_tomogram
 from ..models.table import CTF, AutoProcProgramAttachment, MotionCorrection, Tomogram
-from ..utils.auth import AuthUser
 from ..utils.database import db
 
 
@@ -32,11 +30,8 @@ def validate_path(func):
     return wrap
 
 
-@validate_tomogram
 @validate_path
-def get_tomogram_auto_proc_attachment(
-    user: AuthUser, id: int, file_type: str = "Result"
-) -> str:
+def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str:
     paths = (
         db.session.query(
             AutoProcProgramAttachment.filePath, AutoProcProgramAttachment.fileName
@@ -57,9 +52,8 @@ def get_tomogram_auto_proc_attachment(
     return join_path(paths["filePath"], paths["fileName"])
 
 
-@validate_movie
 @validate_path
-def get_fft_path(user: AuthUser, id: int) -> str:
+def get_fft_path(id: int) -> str:
     return (
         db.session.query(CTF.fftTheoreticalFullPath)
         .select_from(MotionCorrection)
@@ -69,9 +63,8 @@ def get_fft_path(user: AuthUser, id: int) -> str:
     )
 
 
-@validate_movie
 @validate_path
-def get_micrograph_path(user: AuthUser, id: int) -> str:
+def get_micrograph_path(id: int) -> str:
     return (
         db.session.query(MotionCorrection.micrographSnapshotFullPath)
         .filter(MotionCorrection.movieId == id)

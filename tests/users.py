@@ -1,13 +1,22 @@
-from ebic.auth.template import GenericAuthUser
+from ebic.auth.template import GenericUser
 
-admin = GenericAuthUser(
+admin = GenericUser(
     id=00, family_name="Admin", title="Dr.", given_name="McAdmin", permissions=[11]
 )
 
-em_admin = GenericAuthUser(
+em_admin = GenericUser(
     id=18660, family_name="EM", title="Dr.", given_name="Admin", permissions=[8]
 )
 
-user = GenericAuthUser(
+user = GenericUser(
     id=18600, family_name="Generic", title="Dr.", given_name="User", permissions=[]
 )
+
+
+class MockResponse:
+    def __init__(self, status=200, data={"details": ""}):
+        self.status_code = status
+        self.data = data
+
+    def json(self):
+        return self.data
