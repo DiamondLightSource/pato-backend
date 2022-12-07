@@ -3,7 +3,7 @@ import pytest
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_em_admin(mock_permissions, client):
-    """Get central slice for tomogram (request for EM admin)."""
+    """Get central slice for tomogram"""
     resp = client.get("/tomograms/1/centralSlice")
     assert resp.status_code == 200
 

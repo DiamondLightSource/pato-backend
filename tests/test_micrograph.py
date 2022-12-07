@@ -3,7 +3,7 @@ import pytest
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_admin(mock_permissions, client):
-    """Get micrograph for motion correction (request for admin)"""
+    """Get micrograph for motion correction"""
     resp = client.get("/image/micrograph/1")
     assert resp.status_code == 200
 

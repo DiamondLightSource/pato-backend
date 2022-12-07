@@ -13,15 +13,6 @@ def test_get_admin(mock_permissions, client):
 
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
-def test_get_em_admin(mock_permissions, client):
-    """Get motion correction in a tomogram (request for EM admin).
-    Non-EM tomograms cannot exist."""
-    resp = client.get("/tomograms/1/motion")
-    assert resp.status_code == 200
-    assert resp.json()["total"] == 4
-
-
-@pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_no_tilt_alignment(mock_permissions, client):
     """Get motion correction without tilt alignment data"""
     resp = client.get("/tomograms/3/motion")

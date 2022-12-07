@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class GenericUser:
+    fedid: str
     id: str
     family_name: str
     title: str
