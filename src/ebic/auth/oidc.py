@@ -1,8 +1,13 @@
+from typing import Literal
+
 import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from ..models.table import Person
+from ebic.models.response import Tomogram
+from ebic.utils.auth import is_admin, is_em_staff
+
+from ..models.table import BLSession, DataCollection, Movie, Person, SessionHasPerson
 from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
 from ..models.table import t_UserGroup_has_Person as GroupHasPerson
 from ..utils.config import Config
@@ -16,6 +21,14 @@ def _discovery():
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 oidc_endpoints = _discovery()
+
+
+def _session_exists(session: int):
+    if db.session.query(BLSession).filter_by(sessionId=session).scalar() is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session does not exist",
+        )
 
 
 class User(GenericUser):
@@ -77,6 +90,96 @@ class User(GenericUser):
         return oidc_endpoints["end_session_endpoint"]
 
 
+def _session_check(user: User, session: int) -> Literal[True]:
+    """Checks if the user has permission to view data related to a session,
+    or raises an error"""
+    if session is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Object does not exist in database",
+        )
+
+    if is_admin(user.permissions):
+        _session_exists(session)
+        return True
+
+    if is_em_staff(user.permissions):
+        if (
+            db.session.query(BLSession.sessionId)
+            .filter(
+                BLSession.sessionId == session,
+                BLSession.beamLineName.like("m__"),
+            )
+            .scalar()
+            is not None
+        ):
+            return True
+
+    if (
+        db.session.query(SessionHasPerson.sessionId)
+        .filter_by(sessionId=session, personId=user.id)
+        .scalar()
+        is not None
+    ):
+        return True
+
+    _session_exists(session)
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="User not in the parent session",
+    )
+
+
+def _validate_collection(user: User, col_id: int):
+    session_id = (
+        db.session.query(DataCollection.SESSIONID)
+        .filter(DataCollection.dataCollectionId == col_id)
+        .scalar()
+    )
+
+    return _session_check(user, session_id)
+
+
+def _validate_tomogram(user: User, tomo_id: int):
+    session_id = (
+        db.session.query(DataCollection.SESSIONID)
+        .select_from(Tomogram)
+        .filter_by(tomogramId=tomo_id)
+        .join(
+            DataCollection,
+            DataCollection.dataCollectionId == Tomogram.dataCollectionId,
+        )
+    ).scalar()
+
+    return _session_check(user, session_id)
+
+
+def _validate_movie(user: User, mov_id: int):
+    session_id = (
+        db.session.query(DataCollection.SESSIONID)
+        .select_from(Movie)
+        .filter(Movie.movieId == mov_id)
+        .join(
+            DataCollection,
+            DataCollection.dataCollectionId == Movie.dataCollectionId,
+        )
+    ).scalar()
+
+    return _session_check(user, session_id)
+
+
+_validation = {
+    "movie": _validate_movie,
+    "collection": _validate_collection,
+    "tomogram": _validate_tomogram,
+}
+
+
 class Permissions(GenericPermissions):
     def __init__(self, endpoint: str):
-        raise NotImplementedError()
+        self.endpoint = endpoint
+
+    def __call__(self, data_id: int | str, user=Depends(User)):
+        _validation[self.endpoint](user, int(data_id))
+        return data_id

@@ -1,23 +1,24 @@
 from fastapi import APIRouter, Depends
 
+from ..auth import Permissions
 from ..crud import collection as crud
 from ..models.response import MotionOut, Tomogram
-from ..utils.auth import Permissions
+
+auth = Permissions("collection")
 
 router = APIRouter(
-    tags=["collection"],
+    tags=["Data Collections"],
     prefix="/dataCollections",
-    dependencies=[Depends(Permissions("collection"))],
 )
 
 
-@router.get("/{id}/tomogram", response_model=Tomogram)
-def tomograms(id: int):
+@router.get("/{collectionId}/tomogram", response_model=Tomogram)
+def get_tomogram(collectionId: int = Depends(auth)):
     """Get tomogram that belongs to the collection"""
-    return crud.get_tomogram(id)
+    return crud.get_tomogram(collectionId)
 
 
-@router.get("/{id}/motion", response_model=MotionOut)
-def motion(id: int, nth: int = None):
+@router.get("/{collectionId}/motion", response_model=MotionOut)
+def get_motion_correction(collectionId: int = Depends(auth), nth: int = None):
     """Get motion correction and tilt alignment data (including drift plot)"""
-    return crud.get_motion_correction(id, nth)
+    return crud.get_motion_correction(collectionId, nth)

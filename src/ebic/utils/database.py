@@ -7,6 +7,7 @@ from fastapi import HTTPException, status
 from pydantic.generics import GenericModel
 from sqlalchemy.orm import Query
 
+from ..models.table import Base
 from .session import _session as sqlsession
 
 _session = contextvars.ContextVar("_session", default=None)
@@ -59,6 +60,7 @@ class Paged(GenericModel, Generic[T]):
 
 
 def paginate(query: Query, items: int, page: int):
+    total = query.count()
     data = query.limit(items).offset((page - 1) * items).all()
 
     if not data:
@@ -67,4 +69,8 @@ def paginate(query: Query, items: int, page: int):
             detail="No items found",
         )
 
-    return Paged(items=data, total=data[0].total, limit=items, page=page)
+    return Paged(items=data, total=total, limit=items, page=page)
+
+
+def unravel(model: Base):
+    return [c for c in model.__table__.columns]

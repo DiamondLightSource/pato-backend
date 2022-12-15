@@ -27,7 +27,7 @@ class Permissions(GenericPermissions):
     def __init__(self, endpoint: str):
         self.endpoint = endpoint
 
-    def __call__(self, id: int | str, token=Depends(oauth2_scheme)):
+    def __call__(self, data_id: int | str, token=Depends(oauth2_scheme)):
         response = requests.get(
             "".join(
                 [
@@ -35,7 +35,7 @@ class Permissions(GenericPermissions):
                     "permission/",
                     self.endpoint,
                     "/",
-                    str(id),
+                    str(data_id),
                 ]
             ),
             headers={"Authorization": f"Bearer {token}"},
@@ -45,3 +45,5 @@ class Permissions(GenericPermissions):
             raise HTTPException(
                 status_code=response.status_code, detail=response.json().get("detail")
             )
+
+        return data_id

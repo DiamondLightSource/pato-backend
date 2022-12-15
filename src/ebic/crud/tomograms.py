@@ -69,7 +69,6 @@ def get_motion_correction(id: int, movie: int = None):
     )
 
 
-# TOMOGRAM
 def get_ctf(id: int):
     data = (
         db.session.query(
