@@ -23,27 +23,37 @@ class User(GenericUser):
         super().__init__(**response.json())
 
 
-class Permissions(GenericPermissions):
-    def __init__(self, endpoint: str):
-        self.endpoint = endpoint
+def _check_perms(data_id: str | int, endpoint: str, token=str):
+    response = requests.get(
+        "".join(
+            [
+                Config.get()["auth"]["endpoint"],
+                "permission/",
+                endpoint,
+                "/",
+                str(data_id),
+            ]
+        ),
+        headers={"Authorization": f"Bearer {token}"},
+    )
 
-    def __call__(self, data_id: int | str, token=Depends(oauth2_scheme)):
-        response = requests.get(
-            "".join(
-                [
-                    Config.get()["auth"]["endpoint"],
-                    "permission/",
-                    self.endpoint,
-                    "/",
-                    str(data_id),
-                ]
-            ),
-            headers={"Authorization": f"Bearer {token}"},
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code, detail=response.json().get("detail")
         )
 
-        if response.status_code != 200:
-            raise HTTPException(
-                status_code=response.status_code, detail=response.json().get("detail")
-            )
+    return data_id
 
-        return data_id
+
+class Permissions(GenericPermissions):
+    @staticmethod
+    def collection(collectionId: int, token=Depends(oauth2_scheme)):
+        return _check_perms(collectionId, "collection", token)
+
+    @staticmethod
+    def tomogram(tomogramId: int, token=Depends(oauth2_scheme)):
+        return _check_perms(tomogramId, "tomogram", token)
+
+    @staticmethod
+    def movie(movieId: int, token=Depends(oauth2_scheme)):
+        return _check_perms(movieId, "movie", token)

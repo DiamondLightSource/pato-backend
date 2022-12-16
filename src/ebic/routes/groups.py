@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import groups as crud
+from ..crud import collections as collections
 from ..models.response import DataCollectionSummaryOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -13,11 +13,14 @@ router = APIRouter(
 
 
 @router.get("/{groupId}/collections", response_model=Paged[DataCollectionSummaryOut])
-def collections(
+def get_collections(
     groupId: int,
     page: dict[str, int] = Depends(pagination),
     search: str = "",
+    onlyTomograms: bool = False,
     user=Depends(User),
 ):
     """List collections belonging to a data collection group"""
-    return crud.get_collections(groupId=groupId, search=search, user=user, **page)
+    return collections.get_collections(
+        groupId=groupId, search=search, user=user, onlyTomograms=onlyTomograms, **page
+    )

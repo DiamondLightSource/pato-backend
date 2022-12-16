@@ -4,8 +4,10 @@ from os.path import join as join_path
 from fastapi import HTTPException
 from sqlalchemy import and_
 
+from ..models.response import GenericPlot
 from ..models.table import CTF, AutoProcProgramAttachment, MotionCorrection, Tomogram
 from ..utils.database import db
+from ..utils.generic import parse_json_file
 
 
 def validate_path(func):
@@ -53,20 +55,33 @@ def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str
 
 
 @validate_path
-def get_fft_path(id: int) -> str:
+def get_fft_path(movieId: int) -> str:
     return (
         db.session.query(CTF.fftTheoreticalFullPath)
         .select_from(MotionCorrection)
-        .filter(MotionCorrection.movieId == id)
+        .filter(MotionCorrection.movieId == movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
         .scalar()
     )
 
 
 @validate_path
-def get_micrograph_path(id: int) -> str:
+def get_micrograph_path(movieId: int) -> str:
     return (
         db.session.query(MotionCorrection.micrographSnapshotFullPath)
-        .filter(MotionCorrection.movieId == id)
+        .filter(MotionCorrection.movieId == movieId)
         .scalar()
     )
+
+
+@validate_path
+def _get_drift_path(movieId: int) -> str:
+    return (
+        db.session.query(MotionCorrection.driftPlotFullPath)
+        .filter(MotionCorrection.movieId == movieId)
+        .scalar()
+    )
+
+
+def get_drift(movieId: int) -> GenericPlot:
+    return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))

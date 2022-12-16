@@ -12,5 +12,14 @@ class GenericUser:
 
 
 class GenericPermissions:
-    def __init__(self, endpoint: str):
-        pass
+    @staticmethod
+    def collection(collectionId: int) -> int:
+        return collectionId
+
+    @staticmethod
+    def tomogram(tomogramId: int) -> int:
+        return tomogramId
+
+    @staticmethod
+    def movie(movieId: int) -> int:
+        return movieId

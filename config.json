@@ -1,9 +1,9 @@
 {
   "auth": {
-    "endpoint": "https://authalpha.diamond.ac.uk/cas/oidc/.well-known",
+    "endpoint": "http://localhost:8050/",
     "read_all_perms": [11, 26],
     "read_em_perms": [8],
-    "type": "oidc"
+    "type": "micro"
   },
   "ispyb": { "pool": 10, "overflow": 20 }
 }

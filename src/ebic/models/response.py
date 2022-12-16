@@ -4,6 +4,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from ..utils.database import Paged
+
 
 class StateEnum(str, Enum):
     open = "Open"
@@ -25,7 +27,7 @@ class ProposalOut(BaseModel):
     bltimeStamp: datetime
     proposalType: Optional[str] = Field(..., max_length=2)
     state = StateEnum.open
-    visits: int
+    sessions: int
 
 
 class VisitOut(BaseModel):
@@ -95,6 +97,7 @@ class DataCollectionSummaryOut(BaseModel):
     imageSizeY: Optional[int] = Field(
         ..., comment="Image size in y, in case crop has been used."
     )
+    tomograms: int
 
 
 class DataCollectionGroupSummaryOut(BaseModel):
@@ -106,62 +109,100 @@ class DataCollectionGroupSummaryOut(BaseModel):
     collections: int
 
 
-class MotionOut(BaseModel):
-    motionCorrectionId: int = Field(..., lt=1e11)
-    dataCollectionId: int
-    autoProcProgramId: Optional[int]
-    imageNumber: Optional[int] = Field(
-        ..., comment="Movie number, sequential in time 1-n"
+class CTF(BaseModel):
+    ctfId: int
+    boxSizeX: Optional[float] = Field(..., title="Box size in x", unit="pixels")
+    boxSizeY: Optional[float] = Field(..., title="Box size in y", unit="pixels")
+    minResolution: Optional[float] = Field(
+        ..., title="Minimum resolution for CTF", unit="A"
     )
-    firstFrame: Optional[int] = Field(..., comment="First frame of movie used")
-    lastFrame: Optional[int] = Field(..., comment="Last frame of movie used")
-    dosePerFrame: Optional[float] = Field(..., comment="Dose per frame")
-    totalMotion: Optional[float] = Field(..., comment="Total motion")
-    averageMotionPerFrame: Optional[float]
-    driftPlotFullPath: Optional[str] = Field(..., max_length=255)
-    micrographFullPath: Optional[str] = Field(..., max_length=255)
-    micrographSnapshotFullPath: Optional[str] = Field(..., max_length=255)
-    patchesUsedX: Optional[int]
-    patchesUsedY: Optional[int]
-    fftFullPath: Optional[str] = Field(..., max_length=255)
-    fftCorrectedFullPath: Optional[str] = Field(..., max_length=255)
-    comments_MotionCorrection: Optional[str] = Field(..., max_length=255)
-    movieId: Optional[int]
-    ctfId: Optional[int]
-    boxSizeX: Optional[float]
-    boxSizeY: Optional[float]
-    minResolution: Optional[float]
-    maxResolution: Optional[float]
-    minDefocus: Optional[float]
-    maxDefocus: Optional[float]
-    defocusStepSize: Optional[float]
-    astigmatism: Optional[float]
-    astigmatismAngle: Optional[float]
-    estimatedResolution: Optional[float]
-    estimatedDefocus: Optional[float]
-    amplitudeContrast: Optional[float]
-    ccValue: Optional[float]
-    fftTheoreticalFullPath: Optional[str] = Field(..., max_length=255)
-    comments_CTF: Optional[str] = Field(..., max_length=255)
+    maxResolution: Optional[float] = Field(..., unit="A")
+    minDefocus: Optional[float] = Field(..., unit="A")
+    maxDefocus: Optional[float] = Field(..., unit="A")
+    defocusStepSize: Optional[float] = Field(..., unit="A")
+    astigmatism: Optional[float] = Field(..., unit="A")
+    astigmatismAngle: Optional[float] = Field(..., unit="deg?")
+    estimatedResolution: Optional[float] = Field(..., unit="A")
+    estimatedDefocus: Optional[float] = Field(..., unit="A")
+    amplitudeContrast: Optional[float] = Field(..., unit="%?")
+    ccValue: Optional[float] = Field(..., title="Correlation value")
+    fftTheoreticalFullPath: Optional[str] = Field(
+        ..., max_length=255, title="Full path to the jpg image of the simulated FFT"
+    )
+    comments: Optional[str] = Field(..., max_length=255)
+
+    class Config:
+        orm_mode = True
+
+
+class Movie(BaseModel):
+    movieId: int
     movieNumber: Optional[int]
     movieFullPath: Optional[str] = Field(..., max_length=255)
     createdTimeStamp: datetime
     positionX: Optional[float]
     positionY: Optional[float]
-    nominalDefocus: Optional[float]
-    angle: Optional[float]
+    nominalDefocus: Optional[float] = Field(..., title="Nominal defocus", unit="A")
+    angle: Optional[float] = Field(
+        ..., unit="degrees relative to perpendicular to beam"
+    )
     fluence: Optional[float] = Field(
         ...,
-        comment="""accumulated electron fluence from start to end of acquisition of this
-        movie (commonly, but incorrectly, referred to as ‘dose’)""",
+        title="accumulated electron fluence from start to end of acquisition of movie",
     )
-    numberOfFrames: Optional[int]
-    drift: list[DataPoint]
-    total: int
+    numberOfFrames: Optional[int] = Field(
+        ...,
+        title="number of frames per movie",
+    )
+
+    class Config:
+        orm_mode = True
 
 
-class TiltAlignmentOut(MotionOut):
-    tomogramId: int
+class MotionCorrection(BaseModel):
+    motionCorrectionId: int
+    dataCollectionId: int
+    autoProcProgramId: Optional[int]
+    imageNumber: Optional[int] = Field(
+        ..., title="Movie number, sequential in time 1-n"
+    )
+    firstFrame: Optional[int] = Field(..., title="First frame of movie used")
+    lastFrame: Optional[int] = Field(..., title="Last frame of movie used")
+    dosePerFrame: Optional[float] = Field(..., title="Dose per frame", unit="e-/A^2")
+    doseWeight: Optional[float] = Field(..., title="Dose weight")
+    totalMotion: Optional[float] = Field(..., title="Total motion", unit="A")
+    averageMotionPerFrame: Optional[float] = Field(
+        ..., title="Average motion per frame", unit="A"
+    )
+    driftPlotFullPath: Optional[str] = Field(
+        ..., max_length=255, title="Path to drift plot"
+    )
+    micrographFullPath: Optional[str] = Field(
+        ..., max_length=255, title="Path to micrograph"
+    )
+    micrographSnapshotFullPath: Optional[str] = Field(
+        ..., max_length=255, title="Path to micrograph"
+    )
+    patchesUsedX: Optional[int] = Field(..., title="Patches used in x")
+    patchesUsedY: Optional[int] = Field(..., title="Patches used in y")
+    fftFullPath: Optional[str] = Field(
+        ...,
+        max_length=255,
+        title="Path to raw micrograph FFT",
+    )
+    fftCorrectedFullPath: Optional[str] = Field(
+        ...,
+        max_length=255,
+        title="Path to drift corrected micrograph FFT",
+    )
+    comments: Optional[str] = Field(..., max_length=255)
+
+    class Config:
+        orm_mode = True
+
+
+class TiltImageAlignment(BaseModel):
+    movieId: int
     defocusU: Optional[float]
     defocusV: Optional[float]
     psdFile: Optional[str] = Field(..., max_length=255)
@@ -171,7 +212,23 @@ class TiltAlignmentOut(MotionOut):
     refinedTiltAngle: Optional[float]
     refinedTiltAxis: Optional[float]
     residualError: Optional[float]
+
+    class Config:
+        orm_mode = True
+
+
+class FullMovie(BaseModel):
+    CTF: CTF
+    Movie: Movie
+    MotionCorrection: MotionCorrection
+    TiltImageAlignment: Optional[TiltImageAlignment]
+
+
+class FullMovieWithTilt(Paged[FullMovie]):
     rawTotal: int
+
+    class Config:
+        orm_mode = True
 
 
 class CtfTiltAlign(BaseModel):

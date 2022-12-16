@@ -61,5 +61,5 @@ def exists_mock():
 
 @pytest.fixture(scope="module", autouse=True)
 def file_response_mock():
-    with patch("ebic.routes.image.FileResponse.__call__", new=mock_send) as _fixture:
+    with patch("ebic.routes.images.FileResponse.__call__", new=mock_send) as _fixture:
         yield _fixture

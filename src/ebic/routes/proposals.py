@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import proposals as crud
+from ..crud import proposals, sessions
 from ..models.response import ProposalOut, VisitOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -17,11 +17,11 @@ def get_proposals(
     page: dict[str, int] = Depends(pagination), search: str = "", user=Depends(User)
 ):
     """List proposals"""
-    return crud.get_proposals(search=search, user=user, **page)
+    return proposals.get_proposals(search=search, user=user, **page)
 
 
-@router.get("/{proposal}/visits", response_model=Paged[VisitOut])
-def get_visits(
+@router.get("/{proposal}/sessions", response_model=Paged[VisitOut])
+def get_sessions(
     page: dict[str, int] = Depends(pagination),
     proposal: str = None,
     search: str = "",
@@ -30,7 +30,7 @@ def get_visits(
     user=Depends(User),
 ):
     """List visits belonging to a proposal"""
-    return crud.get_visits(
+    return sessions.get_sessions(
         user=user,
         proposal=proposal,
         search=search,

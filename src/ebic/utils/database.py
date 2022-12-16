@@ -1,6 +1,6 @@
 import contextlib
 import contextvars
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 import sqlalchemy.orm
 from fastapi import HTTPException, status
@@ -52,8 +52,8 @@ T = TypeVar("T")
 class Paged(GenericModel, Generic[T]):
     items: list[T]
     total: int
-    page: Optional[int]
-    limit: Optional[int]
+    page: int
+    limit: int
 
     class Config:
         arbitrary_types_allowed = True
@@ -61,13 +61,17 @@ class Paged(GenericModel, Generic[T]):
 
 def paginate(query: Query, items: int, page: int):
     total = query.count()
-    data = query.limit(items).offset((page - 1) * items).all()
 
-    if not data:
+    if not total:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No items found",
         )
+
+    if page < 0:
+        page = (total / items) + page
+
+    data = query.limit(items).offset((page) * items).all()
 
     return Paged(items=data, total=total, limit=items, page=page)
 
