@@ -21,13 +21,13 @@ def test_no_tilt_alignment(mock_permissions, client):
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_nth_motion(mock_permissions, client):
-    """Get specific (nth) motion correction"""
-    resp = client.get("/tomograms/2/motion?nth=2")
+    """Get specific motion correction"""
+    resp = client.get("/tomograms/2/motion?page=1&limit=1")
     resp_json = resp.json()
 
     assert resp.status_code == 200
     assert resp_json["total"] == 4
-    assert resp_json["refinedTiltAngle"] == 17
+    assert resp_json["items"][0]["TiltImageAlignment"]["refinedTiltAngle"] == 17
 
 
 @pytest.mark.parametrize("mock_permissions", [403], indirect=True)

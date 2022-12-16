@@ -31,7 +31,7 @@ def check_proposal(query: Query, user: User):
         return query
 
     if is_em_staff(user.permissions):
-        return query.join(BLSession).filter(BLSession.beamLineName.like("m__"))
+        return query.filter(BLSession.beamLineName.like("m__"))
 
     return query.filter(
         ProposalHasPerson.personId == user.id,

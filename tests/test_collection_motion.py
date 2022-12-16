@@ -12,12 +12,12 @@ def test_get_user(mock_permissions, client):
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_nth_motion(mock_permissions, client):
     """Get specific (nth) motion correction"""
-    resp = client.get("/dataCollections/6017408/motion?nth=3")
+    resp = client.get("/dataCollections/6017408/motion?page=2&limit=1")
     resp_json = resp.json()
 
     assert resp.status_code == 200
     assert resp_json["total"] == 5
-    assert resp_json["imageNumber"] == 3
+    assert resp_json["items"][0]["MotionCorrection"]["imageNumber"] == 3
 
 
 @pytest.mark.parametrize("mock_permissions", [403], indirect=True)

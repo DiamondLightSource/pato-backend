@@ -11,6 +11,7 @@ v0.0.1 (06/12/2022)
 - Search param :code:`s` renamed to :code:`search` for clarity
 - Motion correction endpoints no longer return drift, and now support regular pagination. Drift is accessed through :code:`movies/{movieId}/drift`
 - Moved :code:`image` endpoints to :code:`movies`
+- Moved :code:`visits` to :code:`sessions`
 
 ++++++++++
 v0.0.1-rc4 (06/12/2022)
