@@ -27,6 +27,15 @@ user = GenericUser(
     permissions=[],
 )
 
+mx_admin = GenericUser(
+    fedid="mx_admin",
+    id=16000,
+    family_name="MX",
+    title="Dr.",
+    given_name="Admin",
+    permissions=[1],
+)
+
 
 class MockResponse:
     def __init__(self, status=200, data={"details": ""}):

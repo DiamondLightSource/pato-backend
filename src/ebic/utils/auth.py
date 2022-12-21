@@ -1,8 +1,19 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Query
 
 from ..auth import User
-from ..models.table import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
+from ..models.table import BLSession, ProposalHasPerson, SessionHasPerson
 from .config import Config
+
+
+def get_allowed_beamlines(perms: list[int]) -> set[str]:
+    allowed_beamlines: set[str] = set()
+
+    for perm in perms:
+        if str(perm) in Config.auth.beamline_mapping:
+            allowed_beamlines.update(Config.auth.beamline_mapping[str(perm)])
+
+    return allowed_beamlines
 
 
 def is_admin(perms: list[int]):
@@ -20,9 +31,11 @@ def check_session(query: Query, user: User):
     if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
 
-    return query.filter(
-        SessionHasPerson.personId == user.id,
-        SessionHasPerson.sessionId == BLSession.sessionId,
+    return query.join(SessionHasPerson, isouter=True).filter(
+        or_(
+            BLSession.beamLineName.in_(get_allowed_beamlines(user.permissions)),
+            SessionHasPerson.personId == user.id,
+        )
     )
 
 
@@ -33,7 +46,9 @@ def check_proposal(query: Query, user: User):
     if is_em_staff(user.permissions):
         return query.filter(BLSession.beamLineName.like("m__"))
 
-    return query.filter(
-        ProposalHasPerson.personId == user.id,
-        ProposalHasPerson.proposalId == Proposal.proposalId,
+    return query.join(ProposalHasPerson, isouter=True).filter(
+        or_(
+            BLSession.beamLineName.in_(get_allowed_beamlines(user.permissions)),
+            ProposalHasPerson.personId == user.id,
+        )
     )

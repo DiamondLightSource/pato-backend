@@ -1,6 +1,6 @@
 import pytest
 
-from .users import admin, em_admin, user
+from .users import admin, em_admin, mx_admin, user
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
@@ -41,6 +41,14 @@ def test_get_em_admin(mock_user, client):
     resp = client.get("/proposals")
     assert resp.status_code == 200
     assert resp.json()["total"] == 1
+
+
+@pytest.mark.parametrize("mock_user", [mx_admin], indirect=True)
+def test_get_mx_admin(mock_user, client):
+    """Get all proposals belonging to MX (request for MX admin)"""
+    resp = client.get("/proposals")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 2
 
 
 @pytest.mark.parametrize("mock_user", [user], indirect=True)
