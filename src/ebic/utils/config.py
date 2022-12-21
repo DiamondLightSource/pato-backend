@@ -1,28 +1,34 @@
 import json
 import os
-from typing import Collection, Optional
+from dataclasses import dataclass, field
+from typing import Literal
 
-_defaults = {
-    "auth": {
-        "endpoint": "http://localhost:8050/",
-        "read_all_perms": [11, 26],
-        "read_em_perms": [8],
-        "type": "micro",
-    },
-    "ispyb": {"pool": 10, "overflow": 20},
-}
+
+@dataclass
+class Auth:
+    endpoint: str = "https://localhost/auth"
+    type: Literal["oidc", "dummy", "micro"] = "micro"
+    read_all_perms: list[int] = field(default_factory=lambda: [11, 26])
+    read_em_perms: list[int] = field(default_factory=lambda: [8])
+    beamline_mapping: dict[str, list[str]] = field(default_factory=lambda: {})
+
+
+@dataclass
+class ISPyB:
+    pool: int = 10
+    overflow: int = 20
 
 
 class Config:
-    __conf: dict | None = None
+    auth: Auth
+    ispyb: ISPyB
 
     @staticmethod
-    def get() -> Optional[Collection[object]]:
-        if Config.__conf is None:
-            try:
-                with open(os.environ.get("CONFIG_PATH") or "config.json", "r") as fp:
-                    Config.__conf = json.load(fp)
-            except FileNotFoundError:
-                Config.__conf = _defaults
-
-        return Config.__conf
+    def set():
+        try:
+            with open(os.environ.get("CONFIG_PATH") or "config.json", "r") as fp:
+                conf = json.load(fp)
+                Config.auth = Auth(**conf["auth"])
+                Config.ispyb = ISPyB(**conf["ispyb"])
+        except (FileNotFoundError, KeyError):
+            pass

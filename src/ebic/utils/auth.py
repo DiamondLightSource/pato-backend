@@ -6,11 +6,11 @@ from .config import Config
 
 
 def is_admin(perms: list[int]):
-    return bool(set(Config.get()["auth"]["read_all_perms"]) & set(perms))
+    return bool(set(Config.auth.read_all_perms) & set(perms))
 
 
 def is_em_staff(perms: list[int]):
-    return bool(set(Config.get()["auth"]["read_em_perms"]) & set(perms))
+    return bool(set(Config.auth.read_em_perms) & set(perms))
 
 
 def check_session(query: Query, user: User):

@@ -11,7 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 class User(GenericUser):
     def __init__(self, token=Depends(oauth2_scheme)):
         response = requests.get(
-            Config.get()["auth"]["endpoint"] + "user",
+            Config.auth.endpoint + "user",
             headers={"Authorization": f"Bearer {token}"},
         )
 
@@ -27,7 +27,7 @@ def _check_perms(data_id: str | int, endpoint: str, token=str):
     response = requests.get(
         "".join(
             [
-                Config.get()["auth"]["endpoint"],
+                Config.auth.endpoint,
                 "permission/",
                 endpoint,
                 "/",

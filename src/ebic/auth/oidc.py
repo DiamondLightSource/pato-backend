@@ -16,7 +16,7 @@ from .template import GenericPermissions, GenericUser
 
 
 def _discovery():
-    return requests.get(Config.get()["auth"]["endpoint"]).json()
+    return requests.get(Config.auth.endpoint).json()
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
