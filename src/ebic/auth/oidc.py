@@ -4,9 +4,8 @@ import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from ebic.models.response import Tomogram
-from ebic.utils.auth import is_admin, is_em_staff
-
+from ..auth import is_admin, is_em_staff
+from ..models.response import Tomogram
 from ..models.table import BLSession, DataCollection, Movie, Person, SessionHasPerson
 from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
 from ..models.table import t_UserGroup_has_Person as GroupHasPerson

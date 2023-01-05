@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import proposals, sessions
-from ..models.response import ProposalOut, VisitOut
+from ..crud import proposals
+from ..models.response import ProposalOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -18,23 +18,3 @@ def get_proposals(
 ):
     """List proposals"""
     return proposals.get_proposals(search=search, user=user, **page)
-
-
-@router.get("/{proposal}/sessions", response_model=Paged[VisitOut])
-def get_sessions(
-    page: dict[str, int] = Depends(pagination),
-    proposal: str = None,
-    search: str = "",
-    minDate: str = None,
-    maxDate: str = None,
-    user=Depends(User),
-):
-    """List visits belonging to a proposal"""
-    return sessions.get_sessions(
-        user=user,
-        proposal=proposal,
-        search=search,
-        min_date=minDate,
-        max_date=maxDate,
-        **page
-    )

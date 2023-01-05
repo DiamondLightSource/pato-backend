@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from ..utils.database import Paged
 
@@ -75,6 +75,8 @@ class VisitOut(BaseModel):
         lt=2,
         description="The data for the session is archived and no longer available on disk",  # noqa: E501
     )
+    collectionGroups: int
+    dataCollectionGroupId: Optional[int]
 
     class Config:
         orm_mode = True
@@ -105,8 +107,15 @@ class DataCollectionGroupSummaryOut(BaseModel):
         ..., lt=1e9, description="Data Collection Group ID"
     )
     sessionId: int = Field(..., lt=1e9, description="Session ID")
+    experimentType: Optional[str]
+    experimentTypeId: Optional[int] = 37
+    experimentTypeName: Optional[str] = "Single Particle"
     comments: Optional[str]
     collections: int
+
+    @validator("experimentTypeName")
+    def replace_none(cls, v):
+        return v or "Single Particle"
 
 
 class CTF(BaseModel):
@@ -161,7 +170,7 @@ class Movie(BaseModel):
 
 class MotionCorrection(BaseModel):
     motionCorrectionId: int
-    dataCollectionId: int
+    dataCollectionId: Optional[int]
     autoProcProgramId: Optional[int]
     imageNumber: Optional[int] = Field(
         ..., title="Movie number, sequential in time 1-n"

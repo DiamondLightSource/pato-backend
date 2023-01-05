@@ -1,7 +1,7 @@
 from sqlalchemy import or_
 from sqlalchemy.orm import Query
 
-from ..auth import User
+from ..auth import User, is_admin, is_em_staff
 from ..models.table import BLSession, ProposalHasPerson, SessionHasPerson
 from .config import Config
 
@@ -14,14 +14,6 @@ def get_allowed_beamlines(perms: list[int]) -> set[str]:
             allowed_beamlines.update(Config.auth.beamline_mapping[str(perm)])
 
     return allowed_beamlines
-
-
-def is_admin(perms: list[int]):
-    return bool(set(Config.auth.read_all_perms) & set(perms))
-
-
-def is_em_staff(perms: list[int]):
-    return bool(set(Config.auth.read_em_perms) & set(perms))
 
 
 def check_session(query: Query, user: User):

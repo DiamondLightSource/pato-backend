@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException
 from sqlalchemy import and_
 from sqlalchemy import func as f
@@ -43,7 +45,12 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
 
 
 def get_collections(
-    limit: int, page: int, groupId: int, search: str, user: User, onlyTomograms: bool
+    limit: int,
+    page: int,
+    groupId: Optional[int],
+    search: str,
+    user: User,
+    onlyTomograms: bool,
 ) -> Paged[DataCollectionSummaryOut]:
     query = (
         db.session.query(
@@ -52,7 +59,6 @@ def get_collections(
         .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
         .join(Tomogram, isouter=(not onlyTomograms))
         .filter(
-            groupId == DataCollection.dataCollectionGroupId,
             and_(
                 DataCollection.comments.contains(search),
                 search == "",
@@ -60,6 +66,9 @@ def get_collections(
         )
         .group_by(DataCollection.dataCollectionId)
     )
+
+    if groupId is not None:
+        query = query.filter(groupId == DataCollection.dataCollectionGroupId)
 
     return paginate(
         check_session(query, user),

@@ -1,24 +1,29 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import groups
-from ..models.response import DataCollectionGroupSummaryOut
+from ..crud import sessions
+from ..models.response import VisitOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
 router = APIRouter(tags=["Sessions"], prefix="/sessions")
 
 
-@router.get(
-    "/{sessionId}/dataGroups", response_model=Paged[DataCollectionGroupSummaryOut]
-)
-def get_collection_groups(
-    sessionId: int,
+@router.get("", response_model=Paged[VisitOut])
+def get_sessions(
     page: dict[str, int] = Depends(pagination),
+    proposal: str = None,
     search: str = "",
+    minDate: str = None,
+    maxDate: str = None,
     user=Depends(User),
 ):
-    """List collection groups belonging to a session"""
-    return groups.get_collection_groups(
-        sessionId=sessionId, search=search, user=user, **page
+    """List visits belonging to a proposal"""
+    return sessions.get_sessions(
+        user=user,
+        proposal=proposal,
+        search=search,
+        min_date=minDate,
+        max_date=maxDate,
+        **page
     )
