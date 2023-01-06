@@ -23,3 +23,7 @@ class GenericPermissions:
     @staticmethod
     def movie(movieId: int) -> int:
         return movieId
+
+    @staticmethod
+    def autoproc_program(autoProcProgramId: int) -> int:
+        return autoProcProgramId

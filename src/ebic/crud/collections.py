@@ -1,17 +1,19 @@
 from typing import Optional
 
 from fastapi import HTTPException
-from sqlalchemy import and_
 from sqlalchemy import func as f
+from sqlalchemy import or_
 
 from ..auth import User
-from ..models.response import DataCollectionSummaryOut, FullMovie
+from ..models.response import DataCollectionSummaryOut, FullMovie, ProcessingJobOut
 from ..models.table import (
     CTF,
+    AutoProcProgram,
     BLSession,
     DataCollection,
     MotionCorrection,
     Movie,
+    ProcessingJob,
     Tomogram,
 )
 from ..utils.auth import check_session
@@ -59,7 +61,7 @@ def get_collections(
         .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
         .join(Tomogram, isouter=(not onlyTomograms))
         .filter(
-            and_(
+            or_(
                 DataCollection.comments.contains(search),
                 search == "",
             ),
@@ -72,6 +74,25 @@ def get_collections(
 
     return paginate(
         check_session(query, user),
+        limit,
+        page,
+    )
+
+
+def get_processing_jobs(
+    limit: int,
+    page: int,
+    collectionId: int,
+    search: str,
+) -> Paged[ProcessingJobOut]:
+    query = (
+        db.session.query(AutoProcProgram, ProcessingJob)
+        .select_from(ProcessingJob)
+        .join(AutoProcProgram)
+    ).filter(ProcessingJob.dataCollectionId == collectionId)
+
+    return paginate(
+        query,
         limit,
         page,
     )

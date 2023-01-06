@@ -57,3 +57,7 @@ class Permissions(GenericPermissions):
     @staticmethod
     def movie(movieId: int, token=Depends(oauth2_scheme)):
         return _check_perms(movieId, "movie", token)
+
+    @staticmethod
+    def autoproc_program(autoProcId: int, token=Depends(oauth2_scheme)):
+        return _check_perms(autoProcId, "autoProc", token)

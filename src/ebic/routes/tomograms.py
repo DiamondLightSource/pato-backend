@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 
 from ..auth import Permissions
 from ..crud import movies, tomograms
-from ..models.response import CtfOut, FullMovieWithTilt, GenericPlot
+from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
 from ..utils.dependencies import pagination
 
 auth = Permissions.tomogram
@@ -34,7 +34,7 @@ def get_slice(tomogramId: int = Depends(auth)):
     return movies.get_tomogram_auto_proc_attachment(tomogramId)
 
 
-@router.get("/{tomogramId}/ctf", response_model=CtfOut)
+@router.get("/{tomogramId}/ctf", response_model=CtfTiltAlignList)
 def get_ctf(tomogramId: int = Depends(auth)):
     """Get astigmatism, resolution and defocus as a function of tilt image
     alignment refined tilt angles"""

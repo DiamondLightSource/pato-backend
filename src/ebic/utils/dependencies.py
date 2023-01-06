@@ -5,7 +5,7 @@ def pagination(
     page: int = Query(
         0,
         description=(
-            "Page number/Results to skip. Negative numbers count backwards from"
+            "Page number/Results to skip. Negative numbers count backwards from "
             "the last page"
         ),
     ),

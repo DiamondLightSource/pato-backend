@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends
 
 from ..auth import Permissions, User
 from ..crud import collections
-from ..models.response import DataCollectionSummaryOut, FullMovie, Tomogram
+from ..models.response import (
+    DataCollectionSummaryOut,
+    FullMovie,
+    ProcessingJobOut,
+    Tomogram,
+)
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -32,6 +37,18 @@ def get_collections(
 def get_tomogram(collectionId: int = Depends(auth)):
     """Get tomogram that belongs to the collection"""
     return collections.get_tomogram(collectionId)
+
+
+@router.get("/{collectionId}/processingJobs", response_model=Paged[ProcessingJobOut])
+def get_processing_jobs(
+    collectionId: int = Depends(auth),
+    page: dict[str, int] = Depends(pagination),
+    search: str = "",
+):
+    """Get processing jobs that belong to the collection"""
+    return collections.get_processing_jobs(
+        search=search, collectionId=collectionId, **page
+    )
 
 
 @router.get("/{collectionId}/motion", response_model=Paged[FullMovie])

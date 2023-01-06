@@ -240,18 +240,29 @@ class FullMovieWithTilt(Paged[FullMovie]):
         orm_mode = True
 
 
-class CtfTiltAlign(BaseModel):
+class CtfBase(BaseModel):
     estimatedResolution: Optional[float]
     estimatedDefocus: Optional[float]
     astigmatism: Optional[float]
-    refinedTiltAngle: Optional[float]
 
     class Config:
         orm_mode = True
 
 
-class CtfOut(BaseModel):
+class CtfTiltAlign(CtfBase):
+    refinedTiltAngle: Optional[float]
+
+
+class CtfImageNumber(CtfBase):
+    imageNumber: int
+
+
+class CtfTiltAlignList(BaseModel):
     items: list[CtfTiltAlign]
+
+
+class CtfImageNumberList(BaseModel):
+    items: list[CtfImageNumber]
 
 
 class GenericPlot(BaseModel):
@@ -276,3 +287,36 @@ class Tomogram(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ProcessingJob(BaseModel):
+    processingJobId: int
+    dataCollectionId: int
+    displayName: Optional[str] = Field(max_length=80)
+    comments: Optional[str] = Field(max_length=255)
+    recordTimestamp: Optional[datetime]
+    recipe: Optional[str] = Field(max_length=50)
+    automatic: int
+
+    class Config:
+        orm_mode = True
+
+
+class AutoProcProgram(BaseModel):
+    autoProcProgramId: int
+    processingCommandLine: Optional[str] = Field(max_length=255)
+    processingPrograms: Optional[str] = Field(max_length=255)
+    processingStatus: int
+    processingMessage: Optional[str] = Field(max_length=255)
+    processingStartTime: Optional[datetime]
+    processingEndTime: Optional[datetime]
+    processingEnvironment: Optional[str] = Field(max_length=255)
+    recordTimeStamp: Optional[datetime]
+
+    class Config:
+        orm_mode = True
+
+
+class ProcessingJobOut(BaseModel):
+    AutoProcProgram: AutoProcProgram
+    ProcessingJob: ProcessingJob

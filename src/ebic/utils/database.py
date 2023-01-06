@@ -5,6 +5,7 @@ from typing import Generic, TypeVar
 import sqlalchemy.orm
 from fastapi import HTTPException, status
 from pydantic.generics import GenericModel
+from sqlalchemy import func
 from sqlalchemy.orm import Query
 
 from ..models.table import Base
@@ -60,7 +61,12 @@ class Paged(GenericModel, Generic[T]):
 
 
 def paginate(query: Query, items: int, page: int):
-    total = query.count()
+    print(query.statement.with_only_columns([func.count()]).order_by(None))
+    total = db.session.execute(
+        query.statement.with_only_columns([func.count()]).order_by(None)
+    ).scalar()
+
+    print(total)
 
     if not total:
         raise HTTPException(

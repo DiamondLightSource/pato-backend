@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy import func as f
 
-from ..models.response import CtfOut, FullMovieWithTilt, GenericPlot
+from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.database import db, paginate
 from ..utils.generic import parse_json_file
@@ -45,7 +45,7 @@ def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWi
     return FullMovieWithTilt(**motion, rawTotal=raw_total)
 
 
-def get_ctf(id: int):
+def get_ctf(tomogramId: int):
     data = (
         db.session.query(
             CTF.estimatedResolution,
@@ -53,10 +53,11 @@ def get_ctf(id: int):
             CTF.astigmatism,
             TiltImageAlignment.refinedTiltAngle,
         )
-        .filter(TiltImageAlignment.tomogramId == id)
+        .filter(TiltImageAlignment.tomogramId == tomogramId)
         .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .order_by(TiltImageAlignment.refinedTiltAngle)
         .all()
     )
 
-    return CtfOut(items=data)
+    return CtfTiltAlignList(items=data)
