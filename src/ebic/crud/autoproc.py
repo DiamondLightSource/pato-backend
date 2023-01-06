@@ -1,5 +1,5 @@
 from ..models.response import CtfImageNumberList, FullMovie
-from ..models.table import CTF, MotionCorrection, Movie
+from ..models.table import CTF, MotionCorrection, Movie, ParticlePicker
 from ..utils.database import Paged, db, paginate
 
 
@@ -24,7 +24,19 @@ def get_ctf(autoProcId: int):
             MotionCorrection.imageNumber,
         )
         .filter(MotionCorrection.autoProcProgramId == autoProcId)
-        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .join(CTF)
+        .order_by(MotionCorrection.imageNumber)
+        .all()
+    )
+
+    return CtfImageNumberList(items=data)
+
+
+def get_particle_picker(autoProcId: int):
+    data = (
+        db.session.query(ParticlePicker)
+        .filter(MotionCorrection.autoProcProgramId == autoProcId)
+        .join(ParticlePicker)
         .order_by(MotionCorrection.imageNumber)
         .all()
     )

@@ -31,6 +31,7 @@ def test_search_number(mock_user, client):
 def test_search_full(mock_user, client):
     """Get all proposals with a matching proposal code and number"""
     resp = client.get("/proposals?search=cm31")
+    print(resp.json())
     assert resp.status_code == 200
     assert resp.json()["total"] == 1
 

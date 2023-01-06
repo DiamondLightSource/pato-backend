@@ -320,3 +320,10 @@ class AutoProcProgram(BaseModel):
 class ProcessingJobOut(BaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
+
+
+class ParticlePicker(BaseModel):
+    particleDiameter: float
+    numberOfParticles: int
+    particlePickerId: int
+    summaryFullImagePath: Optional[str]

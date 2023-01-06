@@ -46,6 +46,4 @@ def get_sessions(
         .order_by(BLSession.visit_number)
     )
 
-    print(query)
-
     return paginate(check_session(query, user), limit, page)
