@@ -18,6 +18,11 @@ class DataPoint(BaseModel):
     y: float
 
 
+class OrmBaseModel(BaseModel):
+    class Config:
+        orm_mode = True
+
+
 class ProposalOut(BaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
@@ -30,7 +35,7 @@ class ProposalOut(BaseModel):
     sessions: int
 
 
-class VisitOut(BaseModel):
+class VisitOut(OrmBaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     beamLineSetupId: Optional[int]
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
@@ -78,9 +83,6 @@ class VisitOut(BaseModel):
     collectionGroups: int
     dataCollectionGroupId: Optional[int]
 
-    class Config:
-        orm_mode = True
-
 
 class DataCollectionSummaryOut(BaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
@@ -118,7 +120,7 @@ class DataCollectionGroupSummaryOut(BaseModel):
         return v or "Single Particle"
 
 
-class CTF(BaseModel):
+class CTF(OrmBaseModel):
     ctfId: int
     boxSizeX: Optional[float] = Field(..., title="Box size in x", unit="pixels")
     boxSizeY: Optional[float] = Field(..., title="Box size in y", unit="pixels")
@@ -140,11 +142,8 @@ class CTF(BaseModel):
     )
     comments: Optional[str] = Field(..., max_length=255)
 
-    class Config:
-        orm_mode = True
 
-
-class Movie(BaseModel):
+class Movie(OrmBaseModel):
     movieId: int
     movieNumber: Optional[int]
     movieFullPath: Optional[str] = Field(..., max_length=255)
@@ -164,11 +163,8 @@ class Movie(BaseModel):
         title="number of frames per movie",
     )
 
-    class Config:
-        orm_mode = True
 
-
-class MotionCorrection(BaseModel):
+class MotionCorrection(OrmBaseModel):
     motionCorrectionId: int
     dataCollectionId: Optional[int]
     autoProcProgramId: Optional[int]
@@ -206,11 +202,8 @@ class MotionCorrection(BaseModel):
     )
     comments: Optional[str] = Field(..., max_length=255)
 
-    class Config:
-        orm_mode = True
 
-
-class TiltImageAlignment(BaseModel):
+class TiltImageAlignment(OrmBaseModel):
     movieId: int
     defocusU: Optional[float]
     defocusV: Optional[float]
@@ -221,9 +214,6 @@ class TiltImageAlignment(BaseModel):
     refinedTiltAngle: Optional[float]
     refinedTiltAxis: Optional[float]
     residualError: Optional[float]
-
-    class Config:
-        orm_mode = True
 
 
 class FullMovie(BaseModel):
@@ -240,13 +230,10 @@ class FullMovieWithTilt(Paged[FullMovie]):
         orm_mode = True
 
 
-class CtfBase(BaseModel):
+class CtfBase(OrmBaseModel):
     estimatedResolution: Optional[float]
     estimatedDefocus: Optional[float]
     astigmatism: Optional[float]
-
-    class Config:
-        orm_mode = True
 
 
 class CtfTiltAlign(CtfBase):
@@ -269,7 +256,7 @@ class GenericPlot(BaseModel):
     items: list[DataPoint]
 
 
-class Tomogram(BaseModel):
+class Tomogram(OrmBaseModel):
     tomogramId: int
     dataCollectionId: int
     autoProcProgramId: Optional[int]
@@ -285,11 +272,8 @@ class Tomogram(BaseModel):
     tiltAngleOffset: Optional[float]
     zShift: Optional[float]
 
-    class Config:
-        orm_mode = True
 
-
-class ProcessingJob(BaseModel):
+class ProcessingJob(OrmBaseModel):
     processingJobId: int
     dataCollectionId: int
     displayName: Optional[str] = Field(max_length=80)
@@ -298,11 +282,8 @@ class ProcessingJob(BaseModel):
     recipe: Optional[str] = Field(max_length=50)
     automatic: int
 
-    class Config:
-        orm_mode = True
 
-
-class AutoProcProgram(BaseModel):
+class AutoProcProgram(OrmBaseModel):
     autoProcProgramId: int
     processingCommandLine: Optional[str] = Field(max_length=255)
     processingPrograms: Optional[str] = Field(max_length=255)
@@ -313,17 +294,34 @@ class AutoProcProgram(BaseModel):
     processingEnvironment: Optional[str] = Field(max_length=255)
     recordTimeStamp: Optional[datetime]
 
-    class Config:
-        orm_mode = True
-
 
 class ProcessingJobOut(BaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
 
 
-class ParticlePicker(BaseModel):
+class ParticlePicker(OrmBaseModel):
     particleDiameter: float
     numberOfParticles: int
     particlePickerId: int
     summaryFullImagePath: Optional[str]
+
+
+class Classification2D(OrmBaseModel):
+    particleClassificationGroupId: int
+    particlePickerId: int
+    programId: int
+    type: str
+    batchNumber: int
+    numberOfParticlesPerBatch: int
+    numberOfClassesPerBatch: int
+    symmetry: str
+    particleClassificationId: int
+    classNumber: int
+    classImageFullPath: str
+    particlesPerClass: int
+    rotationAccuracy: float
+    translationAccuracy: float
+    estimatedResolution: float
+    overallFourierCompleteness: float
+    classDistribution: float

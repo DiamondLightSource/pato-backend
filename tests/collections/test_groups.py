@@ -1,6 +1,6 @@
 import pytest
 
-from .users import admin, em_admin, user
+from ..users import admin, em_admin, user
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
