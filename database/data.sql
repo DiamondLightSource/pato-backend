@@ -4570,7 +4570,7 @@ CREATE TABLE `ParticleClassification` (
 
 LOCK TABLES `ParticleClassification` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
-INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,12,15,1,NULL),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,NULL),(3,1,'/mnt/test.jpg',60000,15,15,12,15,1,NULL),(4,1,'/mnt/test.jpg',25000,15,15,12,15,1,NULL),(5,1,'/mnt/test.jpg',30000,15,15,12,15,1,NULL);
+INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8403,4 +8403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-09 13:08:28
+-- Dump completed on 2023-01-09 13:12:22
