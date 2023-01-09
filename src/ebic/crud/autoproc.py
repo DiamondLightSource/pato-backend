@@ -2,7 +2,7 @@ from typing import Literal
 
 from sqlalchemy import and_
 
-from ..models.response import CtfImageNumberList, FullMovie
+from ..models.response import Classification2D, CtfImageNumberList, FullMovie
 from ..models.table import (
     CTF,
     CryoemInitialModel,
@@ -71,7 +71,7 @@ def get_2d_classification(
     limit: int,
     page: int,
     sortBy: Literal["class", "particles", "resolution"],
-):
+) -> Classification2D:
     query = (
         db.session.query(
             *unravel(ParticleClassificationGroup),
@@ -88,7 +88,7 @@ def get_2d_classification(
         .join(ParticleClassificationHasCryoem, isouter=True)
         .join(CryoemInitialModel, isouter=True)
         .group_by(ParticleClassification)
-        .order_by(_2d_ordering[sortBy])
+        .order_by(_2d_ordering[sortBy].desc())
     )
 
     return paginate(query, limit, page)

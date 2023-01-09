@@ -7,7 +7,7 @@ def test_get_user(mock_permissions, client):
     resp = client.get("/autoProc/56986680/classification/2d")
     print(resp.json())
     assert resp.status_code == 200
-    assert resp.json()["total"] == 3
+    assert resp.json()["total"] == 5
 
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)

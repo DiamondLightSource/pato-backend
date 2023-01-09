@@ -350,7 +350,7 @@ CREATE TABLE `AutoProcProgram` (
 
 LOCK TABLES `AutoProcProgram` WRITE;
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
-INSERT INTO `AutoProcProgram` VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL),(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL),(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL),(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL),(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL),(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL),(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL),(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL),(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL),(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL),(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5),(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL),(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL),(56986676,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,6),(56986677,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,7),(56986678,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,8),(56986679,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9),(56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10);
+INSERT INTO `AutoProcProgram` VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL),(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL),(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL),(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL),(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL),(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL),(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL),(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL),(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL),(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL),(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5),(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL),(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL),(56986676,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,6),(56986677,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,7),(56986678,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,8),(56986679,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9),(56986680,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2359,7 +2359,7 @@ CREATE TABLE `CryoemInitialModel` (
   `resolution` float DEFAULT NULL COMMENT 'Unit: Angstroms',
   `numberOfParticles` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cryoemInitialModelId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Initial cryo-EM model generation results';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Initial cryo-EM model generation results';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2368,6 +2368,7 @@ CREATE TABLE `CryoemInitialModel` (
 
 LOCK TABLES `CryoemInitialModel` WRITE;
 /*!40000 ALTER TABLE `CryoemInitialModel` DISABLE KEYS */;
+INSERT INTO `CryoemInitialModel` VALUES (1,15,15);
 /*!40000 ALTER TABLE `CryoemInitialModel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4288,7 +4289,7 @@ CREATE TABLE `MotionCorrection` (
 
 LOCK TABLES `MotionCorrection` WRITE;
 /*!40000 ALTER TABLE `MotionCorrection` DISABLE KEYS */;
-INSERT INTO `MotionCorrection` VALUES (1,6017406,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,1),(2,6017406,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,2),(3,6017406,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,3),(4,6017406,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,4),(5,6017406,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,5),(6,6017408,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,6),(7,6017408,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,7),(8,6017408,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,8),(9,6017408,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,9),(10,6017408,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,10),(11,6017409,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,11),(12,6017409,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,12),(13,6017409,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,13),(14,6017409,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,14),(15,6017409,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,15),(16,6017411,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,16),(17,6017411,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,17),(18,6017411,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,18),(19,6017411,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,19),(20,6017411,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,20),(21,6017412,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,21),(22,6017412,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,22),(23,6017412,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,23),(24,6017412,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,24),(25,6017412,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,25);
+INSERT INTO `MotionCorrection` VALUES (1,6017406,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,1),(2,6017406,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,2),(3,6017406,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,3),(4,6017406,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,4),(5,6017406,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,5),(6,6017408,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,6),(7,6017408,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,7),(8,6017408,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,8),(9,6017408,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,9),(10,6017408,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,10),(11,6017409,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,11),(12,6017409,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,12),(13,6017409,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,13),(14,6017409,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,14),(15,6017409,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,15),(16,6017411,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,16),(17,6017411,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,17),(18,6017411,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,18),(19,6017411,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,19),(20,6017411,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,20),(21,6017412,56986680,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,21),(22,6017412,56986680,2,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,22),(23,6017412,56986680,3,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,23),(24,6017412,56986680,4,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,24),(25,6017412,56986680,5,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,25);
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4560,7 +4561,7 @@ CREATE TABLE `ParticleClassification` (
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Results of 2D or 2D classification';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Results of 2D or 2D classification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4569,6 +4570,7 @@ CREATE TABLE `ParticleClassification` (
 
 LOCK TABLES `ParticleClassification` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
+INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,12,15,1,NULL),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,NULL),(3,1,'/mnt/test.jpg',60000,15,15,12,15,1,NULL),(4,1,'/mnt/test.jpg',25000,15,15,12,15,1,NULL),(5,1,'/mnt/test.jpg',30000,15,15,12,15,1,NULL);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4593,7 +4595,7 @@ CREATE TABLE `ParticleClassificationGroup` (
   KEY `ParticleClassificationGroup_fk_programId` (`programId`),
   CONSTRAINT `ParticleClassificationGroup_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ParticleClassificationGroup_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4602,6 +4604,7 @@ CREATE TABLE `ParticleClassificationGroup` (
 
 LOCK TABLES `ParticleClassificationGroup` WRITE;
 /*!40000 ALTER TABLE `ParticleClassificationGroup` DISABLE KEYS */;
+INSERT INTO `ParticleClassificationGroup` VALUES (1,1,56986680,'2D',1,10000,20000,'1');
 /*!40000 ALTER TABLE `ParticleClassificationGroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4628,6 +4631,7 @@ CREATE TABLE `ParticleClassification_has_CryoemInitialModel` (
 
 LOCK TABLES `ParticleClassification_has_CryoemInitialModel` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` DISABLE KEYS */;
+INSERT INTO `ParticleClassification_has_CryoemInitialModel` VALUES (1,1),(2,1),(3,1),(4,1),(5,1);
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4651,7 +4655,7 @@ CREATE TABLE `ParticlePicker` (
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4660,6 +4664,7 @@ CREATE TABLE `ParticlePicker` (
 
 LOCK TABLES `ParticlePicker` WRITE;
 /*!40000 ALTER TABLE `ParticlePicker` DISABLE KEYS */;
+INSERT INTO `ParticlePicker` VALUES (1,56986680,21,NULL,1,10,'/mnt/test.jpg'),(2,56986680,21,NULL,1,10,'/mnt/test.jpg');
 /*!40000 ALTER TABLE `ParticlePicker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5163,7 +5168,7 @@ CREATE TABLE `ProcessingJob` (
 
 LOCK TABLES `ProcessingJob` WRITE;
 /*!40000 ALTER TABLE `ProcessingJob` DISABLE KEYS */;
-INSERT INTO `ProcessingJob` VALUES (5,1002287,'test job 01','Testing the job submission system','2017-10-16 11:02:12','DIALS/xia2',0),(6,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL),(7,6017408,NULL,NULL,'2022-11-16 13:19:56',NULL,NULL),(8,6017409,NULL,NULL,'2022-11-16 15:47:00',NULL,NULL),(9,6017411,NULL,NULL,'2022-11-25 14:40:33',NULL,NULL),(10,6017412,NULL,NULL,'2022-11-30 09:06:02',NULL,NULL);
+INSERT INTO `ProcessingJob` VALUES (5,1002287,'test job 01','Testing the job submission system','2017-10-16 11:02:12','DIALS/xia2',0),(6,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,0),(7,6017408,NULL,NULL,'2022-11-16 13:19:56',NULL,0),(8,6017409,NULL,NULL,'2022-11-16 15:47:00',NULL,0),(9,6017411,NULL,NULL,'2022-11-25 14:40:33',NULL,0),(10,6017412,NULL,NULL,'2022-11-30 09:06:02',NULL,0);
 /*!40000 ALTER TABLE `ProcessingJob` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8398,4 +8403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-21 11:37:41
+-- Dump completed on 2023-01-09 13:08:28
