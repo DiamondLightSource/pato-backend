@@ -10,7 +10,7 @@ def test_get_user(mock_permissions, client):
 
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
-def test_get_user(mock_permissions, client):
+def test_get_user_not_null(mock_permissions, client):
     """Get particle picking data for an autoprocessing program (filter null
     particle picking rows)"""
     resp = client.get("/autoProc/56986680/particlePicker?filterNull=true")
