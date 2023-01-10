@@ -57,9 +57,3 @@ def mock_permissions(request):
 def exists_mock():
     with patch("ebic.utils.generic.isfile", return_value=True) as _fixture:
         yield _fixture
-
-
-@pytest.fixture(scope="module", autouse=True)
-def file_response_mock():
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send) as _fixture:
-        yield _fixture
