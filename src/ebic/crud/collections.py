@@ -43,7 +43,7 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
         .group_by(Movie.movieId)
     )
 
-    return paginate(query, limit, page)
+    return paginate(query, limit, page, slow_count=True)
 
 
 def get_collections(
@@ -72,11 +72,7 @@ def get_collections(
     if groupId is not None:
         query = query.filter(groupId == DataCollection.dataCollectionGroupId)
 
-    return paginate(
-        check_session(query, user),
-        limit,
-        page,
-    )
+    return paginate(check_session(query, user), limit, page, slow_count=True)
 
 
 def get_processing_jobs(

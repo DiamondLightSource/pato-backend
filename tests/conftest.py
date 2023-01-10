@@ -55,7 +55,7 @@ def mock_permissions(request):
 
 @pytest.fixture(scope="function", autouse=True)
 def exists_mock():
-    with patch("ebic.crud.movies.isfile", return_value=True) as _fixture:
+    with patch("ebic.utils.generic.isfile", return_value=True) as _fixture:
         yield _fixture
 
 

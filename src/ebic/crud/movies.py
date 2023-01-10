@@ -1,35 +1,11 @@
-from os.path import isfile
 from os.path import join as join_path
 
-from fastapi import HTTPException
 from sqlalchemy import and_
 
 from ..models.response import GenericPlot
 from ..models.table import CTF, AutoProcProgramAttachment, MotionCorrection, Tomogram
 from ..utils.database import db
-from ..utils.generic import parse_json_file
-
-
-def validate_path(func):
-    def wrap(*args, **kwargs):
-        try:
-            file = func(*args, **kwargs)
-            if not file:
-                raise ValueError
-        except (ValueError, TypeError):
-            raise HTTPException(
-                status_code=404,
-                detail="No file found in table",
-            )
-
-        if not isfile(file):
-            raise HTTPException(
-                status_code=404,
-                detail="File does not exist in filesystem",
-            )
-        return file
-
-    return wrap
+from ..utils.generic import parse_json_file, validate_path
 
 
 @validate_path

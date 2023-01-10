@@ -46,4 +46,4 @@ def get_sessions(
         .order_by(BLSession.visit_number)
     )
 
-    return paginate(check_session(query, user), limit, page)
+    return paginate(check_session(query, user), limit, page, slow_count=True)

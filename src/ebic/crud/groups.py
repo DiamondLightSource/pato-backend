@@ -64,4 +64,4 @@ def get_collection_groups(
                 DataCollectionGroup.sessionId.in_(session_id_query.all())
             )
 
-    return paginate(check_session(query, user), limit, page)
+    return paginate(check_session(query, user), limit, page, slow_count=True)

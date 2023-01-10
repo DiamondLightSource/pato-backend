@@ -16,6 +16,7 @@ from ..models.table import (
     t_ParticleClassification_has_CryoemInitialModel as ParticleClassificationHasCryoem,
 )
 from ..utils.database import Paged, db, paginate, unravel
+from ..utils.generic import validate_path
 
 
 def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullMovie]:
@@ -47,12 +48,17 @@ def get_ctf(autoProcId: int):
     return CtfImageNumberList(items=data)
 
 
-def get_particle_picker(autoProcId: int, limit: int, page: int):
+def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int):
     query = (
-        db.session.query(ParticlePicker)
+        db.session.query(
+            *unravel(ParticlePicker),
+            Movie.createdTimeStamp,
+            MotionCorrection.imageNumber
+        )
         .select_from(MotionCorrection)
         .filter_by(autoProcProgramId=autoProcId)
-        .join(ParticlePicker)
+        .join(ParticlePicker, isouter=(not filterNull))
+        .join(Movie)
         .order_by(MotionCorrection.imageNumber)
     )
 
@@ -87,8 +93,25 @@ def get_2d_classification(
         .join(ParticleClassification, isouter=True)
         .join(ParticleClassificationHasCryoem, isouter=True)
         .join(CryoemInitialModel, isouter=True)
-        .group_by(ParticleClassification)
         .order_by(_2d_ordering[sortBy].desc())
     )
 
     return paginate(query, limit, page)
+
+
+@validate_path
+def get_2d_classification_image(classificationId: int) -> str:
+    return (
+        db.session.query(ParticleClassification.classImageFullPath)
+        .filter_by(particleClassificationId=classificationId)
+        .scalar()
+    )
+
+
+@validate_path
+def get_particle_picker_image(particlePickerId: int) -> str:
+    return (
+        db.session.query(ParticlePicker.summaryImageFullPath)
+        .filter_by(particlePickerId=particlePickerId)
+        .scalar()
+    )

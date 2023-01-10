@@ -21,4 +21,4 @@ def get_proposals(limit: int, page: int, search: str, user: User) -> Paged[Propo
         .group_by(Proposal.proposalId)
     )
 
-    return paginate(check_proposal(query, user), limit, page)
+    return paginate(check_proposal(query, user), limit, page, slow_count=True)

@@ -301,10 +301,12 @@ class ProcessingJobOut(BaseModel):
 
 
 class ParticlePicker(OrmBaseModel):
-    particleDiameter: float
-    numberOfParticles: int
-    particlePickerId: int
+    particleDiameter: Optional[float]
+    numberOfParticles: Optional[int]
+    particlePickerId: Optional[int]
     summaryFullImagePath: Optional[str]
+    imageNumber: int
+    createdTimeStamp: Optional[datetime]
 
 
 class Classification2D(OrmBaseModel):
@@ -319,9 +321,9 @@ class Classification2D(OrmBaseModel):
     particleClassificationId: int
     classNumber: int
     classImageFullPath: str
-    particlesPerClass: int
+    particlesPerClass: Optional[int]
     rotationAccuracy: float
     translationAccuracy: float
     estimatedResolution: float
     overallFourierCompleteness: float
-    classDistribution: float
+    classDistribution: Optional[float]

@@ -5,7 +5,7 @@ from typing import Generic, TypeVar
 import sqlalchemy.orm
 from fastapi import HTTPException, status
 from pydantic.generics import GenericModel
-from sqlalchemy import func
+from sqlalchemy import func, literal_column
 from sqlalchemy.orm import Query
 
 from ..models.table import Base
@@ -60,11 +60,16 @@ class Paged(GenericModel, Generic[T]):
         arbitrary_types_allowed = True
 
 
-def paginate(query: Query, items: int, page: int):
-    # total = db.session.execute(
-    #    query.statement.with_only_columns([func.count()]).order_by(None)
-    # ).scalar()
-    total = query.count()
+def paginate(query: Query, items: int, page: int, slow_count=True):
+    if slow_count:
+        total = query.count()
+    else:
+        total = db.session.execute(
+            query.statement.with_only_columns(
+                [func.count(literal_column("1"))]
+            ).order_by(None)
+        ).scalar()
+
     if not total:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
