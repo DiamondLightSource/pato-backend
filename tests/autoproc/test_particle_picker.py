@@ -33,7 +33,7 @@ def test_get_forbidden(mock_permissions, client):
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_image(mock_permissions, client):
     """Get particle picking summary image"""
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+    with patch("ebic.routes.autoproc.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/particlePicker/1/image")
     assert resp.status_code == 200
 
@@ -41,7 +41,7 @@ def test_get_image(mock_permissions, client):
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_image_not_in_db(mock_permissions, client):
     """Get particle picking summary image not in database"""
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+    with patch("ebic.routes.autoproc.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/particlePicker/5/image")
     assert resp.status_code == 404
 
@@ -58,6 +58,6 @@ def test_get_image_not_found(mock_permissions, exists_mock, client):
 def test_get_image_forbidden(mock_permissions, client):
     """Try to get particle picking summary image for user not present
     in the parent session"""
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+    with patch("ebic.routes.autoproc.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/particlePicker/1/image")
     assert resp.status_code == 403

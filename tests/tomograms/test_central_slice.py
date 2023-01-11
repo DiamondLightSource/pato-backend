@@ -1,10 +1,15 @@
+from unittest.mock import patch
+
 import pytest
+
+from ..conftest import mock_send
 
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_em_admin(mock_permissions, client):
     """Get central slice for tomogram"""
-    resp = client.get("/tomograms/1/centralSlice")
+    with patch("ebic.routes.tomograms.FileResponse.__call__", new=mock_send):
+        resp = client.get("/tomograms/1/centralSlice")
     assert resp.status_code == 200
 
 
