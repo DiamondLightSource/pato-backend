@@ -1,17 +1,23 @@
+from unittest.mock import patch
+
 import pytest
+
+from ..conftest import mock_send
 
 
 @pytest.mark.parametrize("mock_permissions", [200], indirect=True)
 def test_get_admin(mock_permissions, client):
     """Get micrograph for motion correction"""
-    resp = client.get("/movies/1/micrograph")
+    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+        resp = client.get("/movies/1/micrograph")
     assert resp.status_code == 200
 
 
 @pytest.mark.parametrize("mock_permissions", [403], indirect=True)
 def test_get_forbidden(mock_permissions, client):
     """Get all micrograph for motion correction not belonging to user"""
-    resp = client.get("/movies/1/micrograph")
+    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+        resp = client.get("/movies/1/micrograph")
     assert resp.status_code == 403
 
 
