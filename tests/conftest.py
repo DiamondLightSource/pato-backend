@@ -23,6 +23,10 @@ class MockResponse:
         return self.data
 
 
+def new_perms(item_id, _, _0):
+    return item_id
+
+
 @pytest.fixture(scope="session")
 def client():
     yield TestClient(app)
@@ -47,9 +51,7 @@ def mock_user(request):
 @pytest.fixture(scope="function")
 def mock_permissions(request):
     app.dependency_overrides[oauth2_scheme] = lambda: "a"
-    with patch(
-        "ebic.auth.micro.requests.get", return_value=MockResponse(status=request.param)
-    ) as _fixture:
+    with patch("ebic.auth.micro._check_perms", new=new_perms) as _fixture:
         yield _fixture
 
 

@@ -56,5 +56,5 @@ def get_motion_correction(
     collectionId: int = Depends(auth),
     page: dict[str, int] = Depends(pagination),
 ):
-    """Get motion correction and tilt alignment data (including drift plot)"""
+    """Get motion correction and tilt alignment data"""
     return collections.get_motion_correction(collectionId=collectionId, **page)

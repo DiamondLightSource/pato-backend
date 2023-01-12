@@ -3,7 +3,13 @@ from os.path import join as join_path
 from sqlalchemy import and_
 
 from ..models.response import GenericPlot
-from ..models.table import CTF, AutoProcProgramAttachment, MotionCorrection, Tomogram
+from ..models.table import (
+    CTF,
+    AutoProcProgramAttachment,
+    MotionCorrection,
+    MotionCorrectionDrift,
+    Tomogram,
+)
 from ..utils.database import db
 from ..utils.generic import parse_json_file, validate_path
 
@@ -59,5 +65,19 @@ def _get_drift_path(movieId: int) -> str:
     )
 
 
-def get_drift(movieId: int) -> GenericPlot:
+def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
+    if fromDb:
+        return GenericPlot(
+            items=(
+                db.session.query(
+                    MotionCorrectionDrift.deltaX.label("x"),
+                    MotionCorrectionDrift.deltaY.label("y"),
+                )
+                .select_from(MotionCorrection)
+                .filter_by(movieId=movieId)
+                .join(MotionCorrectionDrift)
+                .order_by(MotionCorrectionDrift.frameNumber)
+            ).all()
+        )
+
     return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))

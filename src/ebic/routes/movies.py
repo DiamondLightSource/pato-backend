@@ -23,6 +23,6 @@ def get_fft(movieId: int = Depends(auth)):
 
 
 @router.get("/{movieId}/drift", response_model=GenericPlot)
-def get_drift(movieId: int = Depends(auth)):
-    """Get drift"""
-    return crud.get_drift(movieId)
+def get_drift(movieId: int = Depends(auth), fromDb: bool = False):
+    """Get drift from a JSON file or from the drift table"""
+    return crud.get_drift(movieId=movieId, fromDb=fromDb)

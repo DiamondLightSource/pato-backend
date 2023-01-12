@@ -3,6 +3,27 @@ Changelog
 ==========
 
 ++++++++++
+v0.1.0 (12/01/2023)
+++++++++++
+
+**Added**
+
+- New endpoint for getting processing jobs in data collections (:code:`/collections/{id}/processingJobs`)
+- Autoprocessing program endpoints (:code:`/autoProc/{id}/ctf`, :code:`/autoproc/{id}/classification`, :code:`/autoProc/{id}/particlePicker` and :code:`/autoProc/{id}/motion`)
+- Drift plot endpoint now support obtaining data directly from the DB instead of file (when :code:`fromDb` is set)
+- New endpoints for getting 2d classification and particle picker images (:code:`image` suffix for both)
+- Listing of data collections now supports filtering by data collections that contain valid tomograms (when :code:`onlyTomograms` is set)
+
+**Changed**
+
+- Data collection groups now also include experiment type information
+- Session has been moved from being a child of :code:`proposals` to its own root endpoint (with :code:`proposal` being a query parameter)
+- Data collection groups have been moved from being a child of :code:`sessions` to its own root endpoint (with :code:`proposal` and :code:`session` being query parameters)
+- Data collections have been moved from being a child of :code:`dataGroups` to its own root endpoint (with :code:`groupId` being a query parameter)
+- Overhaul of item count query; significant performance improvement
+- Data collections now return all columns
+
+++++++++++
 v0.0.1 (06/12/2022)
 ++++++++++
 

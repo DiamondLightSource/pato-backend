@@ -13,6 +13,12 @@ class StateEnum(str, Enum):
     cancelled = "Cancelled"
 
 
+class RotationAxisEnum(str, Enum):
+    omega = "Omega"
+    kappa = "Kappa"
+    phi = "Phi"
+
+
 class DataPoint(BaseModel):
     x: float
     y: float
@@ -26,9 +32,9 @@ class OrmBaseModel(BaseModel):
 class ProposalOut(BaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
-    title: str = Field(..., max_length=200)
-    proposalCode: str = Field(..., max_length=45)
-    proposalNumber: str = Field(..., max_length=45)
+    title: Optional[str] = Field(..., max_length=200)
+    proposalCode: Optional[str] = Field(..., max_length=45)
+    proposalNumber: Optional[str] = Field(..., max_length=45)
     bltimeStamp: datetime
     proposalType: Optional[str] = Field(..., max_length=2)
     state = StateEnum.open
@@ -43,7 +49,7 @@ class VisitOut(OrmBaseModel):
     projectCode: Optional[str] = Field(..., max_length=45)
     startDate: Optional[datetime]
     endDate: Optional[datetime]
-    beamLineName: str = Field(..., max_length=45)
+    beamLineName: Optional[str] = Field(..., max_length=45)
     scheduled: Optional[int] = Field(..., lt=10)
     nbShifts: Optional[int] = Field(..., lt=1e9)
     comments: Optional[str] = Field(..., max_length=2000)
@@ -88,7 +94,9 @@ class DataCollectionSummaryOut(BaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
-    startTime: Optional[datetime]
+    startTime: Optional[datetime] = Field(
+        ..., description="Start time of the dataCollection"
+    )
     pixelSizeOnImage: Optional[float] = Field(
         ...,
         comment="Pixel size on image, calculated from magnification",
@@ -101,6 +109,111 @@ class DataCollectionSummaryOut(BaseModel):
     imageSizeY: Optional[int] = Field(
         ..., comment="Image size in y, in case crop has been used."
     )
+    experimenttype: Optional[str] = Field(..., max_length=24)
+    dataCollectionNumber: Optional[int]
+    endTime: Optional[datetime] = Field(
+        ..., description="End time of the dataCollection"
+    )
+    runStatus: Optional[str] = Field(..., max_length=255)
+    axisStart: Optional[float]
+    axisEnd: Optional[float]
+    axisRange: Optional[float]
+    overlap: Optional[float]
+    numberOfImages: Optional[int]
+    startImageNumber: Optional[int]
+    numberOfPasses: Optional[int]
+    exposureTime: Optional[float]
+    imageDirectory: Optional[str] = Field(
+        ...,
+        max_length=255,
+        description="The directory where files reside - should end with a slash",
+    )
+    imagePrefix: Optional[str] = Field(..., max_length=45)
+    imageSuffix: Optional[str] = Field(..., max_length=24)
+    imageContainerSubPath: Optional[str] = Field(
+        ...,
+        max_length=255,
+        description="""Internal path of a HDF5 file pointing to the data
+        for this data collection""",
+    )
+    fileTemplate: Optional[str] = Field(..., max_length=255)
+    wavelength: Optional[float]
+    resolution: Optional[float]
+    detectorDistance: Optional[float]
+    xBeam: Optional[float]
+    yBeam: Optional[float]
+    printableForReport: Optional[int]
+    CRYSTALCLASS: Optional[str] = Field(..., max_length=20)
+    slitGapVertical: Optional[float]
+    slitGapHorizontal: Optional[float]
+    transmission: Optional[float]
+    synchrotronMode: Optional[str] = Field(..., max_length=20)
+    xtalSnapshotFullPath1: Optional[str] = Field(..., max_length=255)
+    xtalSnapshotFullPath2: Optional[str] = Field(..., max_length=255)
+    xtalSnapshotFullPath3: Optional[str] = Field(..., max_length=255)
+    xtalSnapshotFullPath4: Optional[str] = Field(..., max_length=255)
+    rotationAxis: Optional[RotationAxisEnum]
+    phiStart: Optional[float]
+    kappaStart: Optional[float]
+    omegaStart: Optional[float]
+    chiStart: Optional[float]
+    resolutionAtCorner: Optional[float]
+    detector2Theta: Optional[float]
+    DETECTORMODE: Optional[str] = Field(..., max_length=255)
+    undulatorGap1: Optional[float]
+    undulatorGap2: Optional[float]
+    undulatorGap3: Optional[float]
+    beamSizeAtSampleX: Optional[float]
+    beamSizeAtSampleY: Optional[float]
+    centeringMethod: Optional[str] = Field(..., max_length=255)
+    averageTemperature: Optional[float]
+    ACTUALSAMPLEBARCODE: Optional[str] = Field(..., max_length=24)
+    ACTUALSAMPLESLOTINCONTAINER: Optional[int]
+    ACTUALCONTAINERBARCODE: Optional[str] = Field(..., max_length=24)
+    ACTUALCONTAINERSLOTINSC: Optional[int]
+    actualCenteringPosition: Optional[str] = Field(..., max_length=255)
+    beamShape: Optional[str] = Field(..., max_length=24)
+    dataCollectionGroupId: int
+    POSITIONID: Optional[int]
+    detectorId: Optional[int]
+    FOCALSPOTSIZEATSAMPLEX: Optional[float]
+    POLARISATION: Optional[float]
+    FOCALSPOTSIZEATSAMPLEY: Optional[float]
+    APERTUREID: Optional[int]
+    screeningOrigId: Optional[int]
+    startPositionId: Optional[int]
+    endPositionId: Optional[int]
+    flux: Optional[float]
+    strategySubWedgeOrigId: Optional[int]
+    blSubSampleId: Optional[int]
+    flux_end: Optional[float]
+    bestWilsonPlotPath: Optional[str] = Field(..., max_length=255)
+    processedDataFile: Optional[str] = Field(..., max_length=255)
+    datFullPath: Optional[str] = Field(..., max_length=255)
+    magnification: Optional[float]
+    totalAbsorbedDose: Optional[float]
+    binning: Optional[int]
+    particleDiameter: Optional[float]
+    boxSize_CTF: Optional[float]
+    minResolution: Optional[float]
+    minDefocus: Optional[float]
+    maxDefocus: Optional[float]
+    defocusStepSize: Optional[float]
+    amountAstigmatism: Optional[float]
+    extractSize: Optional[float]
+    bgRadius: Optional[float]
+    objAperture: Optional[float]
+    c1aperture: Optional[float]
+    c2aperture: Optional[float]
+    c3aperture: Optional[float]
+    c1lens: Optional[float]
+    c2lens: Optional[float]
+    c3lens: Optional[float]
+    totalExposedDose: Optional[float]
+    nominalMagnification: Optional[float]
+    nominalDefocus: Optional[float]
+    phasePlate: Optional[int]
+    dataCollectionPlanId: Optional[int]
     tomograms: int
 
 
