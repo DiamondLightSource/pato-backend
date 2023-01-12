@@ -1,7 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import auth, collection, image, list, tomogram
+from .routes import (
+    autoproc,
+    collections,
+    groups,
+    movies,
+    proposals,
+    sessions,
+    tomograms,
+)
 from .utils.database import get_session
 
 app = FastAPI()
@@ -21,8 +29,10 @@ async def get_session_as_middleware(request, call_next):
         return await call_next(request)
 
 
-app.include_router(auth.router)
-app.include_router(list.router)
-app.include_router(tomogram.router)
-app.include_router(image.router)
-app.include_router(collection.router)
+app.include_router(sessions.router)
+app.include_router(tomograms.router)
+app.include_router(movies.router)
+app.include_router(collections.router)
+app.include_router(groups.router)
+app.include_router(proposals.router)
+app.include_router(autoproc.router)

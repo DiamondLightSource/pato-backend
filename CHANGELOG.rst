@@ -3,6 +3,49 @@ Changelog
 ==========
 
 ++++++++++
+v0.1.0 (12/01/2023)
+++++++++++
+
+**Added**
+
+- New endpoint for getting processing jobs in data collections (:code:`/collections/{id}/processingJobs`)
+- Autoprocessing program endpoints (:code:`/autoProc/{id}/ctf`, :code:`/autoproc/{id}/classification`, :code:`/autoProc/{id}/particlePicker` and :code:`/autoProc/{id}/motion`)
+- Drift plot endpoint now support obtaining data directly from the DB instead of file (when :code:`fromDb` is set)
+- New endpoints for getting 2d classification and particle picker images (:code:`image` suffix for both)
+- Listing of data collections now supports filtering by data collections that contain valid tomograms (when :code:`onlyTomograms` is set)
+
+**Changed**
+
+- Data collection groups now also include experiment type information
+- Session has been moved from being a child of :code:`proposals` to its own root endpoint (with :code:`proposal` being a query parameter)
+- Data collection groups have been moved from being a child of :code:`sessions` to its own root endpoint (with :code:`proposal` and :code:`session` being query parameters)
+- Data collections have been moved from being a child of :code:`dataGroups` to its own root endpoint (with :code:`groupId` being a query parameter)
+- Overhaul of item count query; significant performance improvement
+- Data collections now return all columns
+
+++++++++++
+v0.0.1 (06/12/2022)
+++++++++++
+
+**Changed**
+
+- Search param :code:`s` renamed to :code:`search` for clarity
+- Motion correction endpoints no longer return drift, and now support regular pagination. Drift is accessed through :code:`movies/{movieId}/drift`
+- Moved :code:`image` endpoints to :code:`movies`
+- Moved :code:`visits` to :code:`sessions`
+
+++++++++++
+v0.0.1-rc4 (06/12/2022)
+++++++++++
+
+**Changed**
+
+- Authorisation and authentication is done through a separate microservice
+- Data collection listing moved from :code:`/collection?group={id}` to :code:`dataGroups/{id}/collections`
+- Visit listing moved from :code:`/visit?prop={id}` to :code:`proposals/{id}/visits`
+- Data collection groups listing from :code:`/dataCollectionGroups?visit={id}` to :code:`visits/{id}/dataGroups`
+
+++++++++++
 v0.0.1-rc3 (30/11/2022)
 ++++++++++
 

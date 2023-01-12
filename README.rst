@@ -18,10 +18,6 @@ The API supports a configuration file, that follows the example set in :code:`co
 - :code:`SQL_DATABASE_URL`: The URL for the database
 - :code:`CONFIG_PATH`: Path for the configuration file
 
-If you're not using OIDC for auth, you may also set :code:`AUTH_TYPE`:
-
-- :code:`AUTH_TYPE`: Either "oidc" or "dummy"
-
 ==========
 Deployment
 ==========

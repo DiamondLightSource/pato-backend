@@ -1,6 +1,6 @@
 image: python
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.0.2
+  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.0.4
 stages:
   - build
   - test
@@ -14,12 +14,12 @@ install-job:
 
 integration-test-job:
   stage: test
-  tags: 
+  tags:
     - argus
   before_script:
     - pip install .[dev]
   script:
-    - pytest tests
+    - pytest tests -W ignore::DeprecationWarning
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     reports:

@@ -1,10 +1,10 @@
-from .template import GenericAuthUser
+from .template import GenericUser
 
 
-class AuthUser(GenericAuthUser):
+class User(GenericUser):
     def __init__(self, token=""):
         super().__init__(token)
 
     @classmethod
     def auth(cls, _: str):
-        return "yrh59256"
+        return "aaa1111"

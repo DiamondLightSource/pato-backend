@@ -1,4 +1,5 @@
 import json
+from os.path import isfile
 
 from fastapi import HTTPException
 from sqlalchemy import inspect
@@ -39,3 +40,25 @@ def parse_json_file(path):
             status_code=500,
             detail="JSON file not in correct format",
         )
+
+
+def validate_path(func):
+    def wrap(*args, **kwargs):
+        try:
+            file = func(*args, **kwargs)
+            if not file:
+                raise ValueError
+        except (ValueError, TypeError):
+            raise HTTPException(
+                status_code=404,
+                detail="No file found in table",
+            )
+
+        if not isfile(file):
+            raise HTTPException(
+                status_code=404,
+                detail="File does not exist in filesystem",
+            )
+        return file
+
+    return wrap
