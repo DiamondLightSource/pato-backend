@@ -11,7 +11,7 @@ def file_mock():
         yield _fixture
 
 
-def test_get_admin(mock_permissions, file_mock, client):
+def test_get(mock_permissions, file_mock, client):
     """Get shift plot for motion correction"""
     resp = client.get("/tomograms/1/shiftPlot")
 

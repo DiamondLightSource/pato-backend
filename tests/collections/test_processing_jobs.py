@@ -1,4 +1,4 @@
-def test_get_admin(mock_permissions, client):
+def test_get(mock_permissions, client):
     """Get all processing jobs for a given collection"""
     resp = client.get("/dataCollections/6017408/processingJobs")
     assert resp.status_code == 200

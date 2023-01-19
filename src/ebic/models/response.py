@@ -400,7 +400,7 @@ class AutoProcProgram(OrmBaseModel):
     autoProcProgramId: int
     processingCommandLine: Optional[str] = Field(max_length=255)
     processingPrograms: Optional[str] = Field(max_length=255)
-    processingStatus: int
+    processingStatus: Optional[int]
     processingMessage: Optional[str] = Field(max_length=255)
     processingStartTime: Optional[datetime]
     processingEndTime: Optional[datetime]
@@ -411,6 +411,7 @@ class AutoProcProgram(OrmBaseModel):
 class ProcessingJobOut(BaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
+    status: str
 
 
 class ParticlePicker(OrmBaseModel):
@@ -419,6 +420,7 @@ class ParticlePicker(OrmBaseModel):
     particlePickerId: Optional[int]
     summaryFullImagePath: Optional[str]
     imageNumber: int
+    movieId: int
     createdTimeStamp: Optional[datetime]
 
 
@@ -440,3 +442,20 @@ class Classification2D(OrmBaseModel):
     estimatedResolution: float
     overallFourierCompleteness: float
     classDistribution: Optional[float]
+
+
+class RelativeIceThickness(OrmBaseModel):
+    minimum: float
+    q1: float
+    median: float
+    q3: float
+    maximum: float
+
+
+class IceThicknessWithAverage(OrmBaseModel):
+    current: RelativeIceThickness = Field(
+        comment="Ice thickness data for current selected movie",
+    )
+    avg: Optional[RelativeIceThickness] = Field(
+        comment="Average ice thickness data for movies belonging to autoproc. program",
+    )

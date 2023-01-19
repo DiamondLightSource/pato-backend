@@ -1,13 +1,15 @@
 from os.path import join as join_path
 
 from sqlalchemy import and_
+from sqlalchemy import func as f
 
-from ..models.response import GenericPlot
+from ..models.response import GenericPlot, IceThicknessWithAverage
 from ..models.table import (
     CTF,
     AutoProcProgramAttachment,
     MotionCorrection,
     MotionCorrectionDrift,
+    RelativeIceThickness,
     Tomogram,
 )
 from ..utils.database import db
@@ -81,3 +83,38 @@ def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
         )
 
     return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))
+
+
+def get_relative_ice_thickness(
+    movieId: int, getAverages: bool
+) -> IceThicknessWithAverage:
+    movie_data = (
+        db.session.query(RelativeIceThickness)
+        .select_from(MotionCorrection)
+        .filter_by(movieId=movieId)
+        .join(RelativeIceThickness)
+        .scalar()
+    )
+
+    if getAverages:
+        averages = (
+            db.session.query(
+                f.round(f.avg(RelativeIceThickness.minimum)).label("minimum"),
+                f.round(f.avg(RelativeIceThickness.maximum)).label("maximum"),
+                f.round(f.avg(RelativeIceThickness.q3)).label("q3"),
+                f.round(f.avg(RelativeIceThickness.q1)).label("q1"),
+                f.round(f.avg(RelativeIceThickness.median)).label("median"),
+            )
+            .select_from(MotionCorrection)
+            .filter_by(movieId=movieId)
+            .join(
+                RelativeIceThickness,
+                RelativeIceThickness.autoProcProgramId
+                == MotionCorrection.autoProcProgramId,
+            )
+            .first()
+        )
+
+        return IceThicknessWithAverage(avg=averages, current=movie_data)
+
+    return IceThicknessWithAverage(current=movie_data)

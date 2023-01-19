@@ -1,6 +1,7 @@
 from typing import Optional
 
 from fastapi import HTTPException
+from sqlalchemy import and_, case
 from sqlalchemy import func as f
 from sqlalchemy import or_
 
@@ -75,6 +76,23 @@ def get_collections(
     return paginate(check_session(query, user), limit, page, slow_count=True)
 
 
+_job_status_description = case(
+    [
+        (AutoProcProgram.processingJobId == None, "Submitted"),  # noqa: E711
+        (AutoProcProgram.processingStatus == 1, "Success"),
+        (AutoProcProgram.processingStatus == 0, "Fail"),
+        (
+            and_(
+                AutoProcProgram.processingStatus == None,  # noqa: E711
+                AutoProcProgram.processingStartTime != None,  # noqa: E711
+            ),
+            "Running",
+        ),
+    ],
+    else_="Queued",
+)
+
+
 def get_processing_jobs(
     limit: int,
     page: int,
@@ -82,7 +100,9 @@ def get_processing_jobs(
     search: str,
 ) -> Paged[ProcessingJobOut]:
     query = (
-        db.session.query(AutoProcProgram, ProcessingJob)
+        db.session.query(
+            AutoProcProgram, ProcessingJob, _job_status_description.label("status")
+        )
         .select_from(ProcessingJob)
         .join(AutoProcProgram)
     ).filter(ProcessingJob.dataCollectionId == collectionId)
