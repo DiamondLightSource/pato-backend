@@ -1,4 +1,4 @@
-def test_get_admin(mock_permissions, client):
+def test_get(mock_permissions, client):
     """Get motion correction in a tomogram (request for admin)"""
     resp = client.get("/tomograms/1/motion")
     resp_json = resp.json()

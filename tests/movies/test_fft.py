@@ -3,7 +3,7 @@ from unittest.mock import patch
 from ..conftest import mock_send
 
 
-def test_get_admin(mock_permissions, client):
+def test_get(mock_permissions, client):
     """Get theoretical FFT for motion correction"""
     with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
         resp = client.get("/movies/1/fft")

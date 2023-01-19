@@ -3,6 +3,18 @@ Changelog
 ==========
 
 ++++++++++
+v0.2.0 (19/01/2023)
+++++++++++
+
+**Added**
+
+- New endpoint for getting ice thickness data (:code:`/movie/{id}/iceThickness`)
+
+**Changed**
+
+- Job status for autoprocessing is inferred from other columns and returned as :code:`status`
+
+++++++++++
 v0.1.0 (12/01/2023)
 ++++++++++
 

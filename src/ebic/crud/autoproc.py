@@ -53,6 +53,7 @@ def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int
         db.session.query(
             *unravel(ParticlePicker),
             Movie.createdTimeStamp,
+            Movie.movieId,
             MotionCorrection.imageNumber
         )
         .select_from(MotionCorrection)

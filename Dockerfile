@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y libmariadb-dev
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
+COPY config.json /config/config.json
+
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["uvicorn"]
 CMD ["ebic.main:app", "--host", "0.0.0.0", "--port", "8000", "--root-path", "/api"]

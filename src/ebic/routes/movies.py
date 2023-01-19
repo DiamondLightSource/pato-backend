@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 
 from ..auth import Permissions
 from ..crud import movies as crud
-from ..models.response import GenericPlot
+from ..models.response import GenericPlot, IceThicknessWithAverage
 
 auth = Permissions.movie
 
@@ -26,3 +26,9 @@ def get_fft(movieId: int = Depends(auth)):
 def get_drift(movieId: int = Depends(auth), fromDb: bool = False):
     """Get drift from a JSON file or from the drift table"""
     return crud.get_drift(movieId=movieId, fromDb=fromDb)
+
+
+@router.get("/{movieId}/iceThickness", response_model=IceThicknessWithAverage)
+def get_relative_ice_thickness(movieId: int = Depends(auth), getAverages: bool = False):
+    """Get values for relative ice thickness for a given movie"""
+    return crud.get_relative_ice_thickness(movieId=movieId, getAverages=getAverages)
