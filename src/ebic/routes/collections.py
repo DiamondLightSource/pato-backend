@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import Permissions, User
-from ..crud import collections
+from ..crud import collections as crud
 from ..models.response import (
     DataCollectionSummaryOut,
     FullMovie,
@@ -28,7 +28,7 @@ def get_collections(
     user=Depends(User),
 ):
     """List collections belonging to a data collection group"""
-    return collections.get_collections(
+    return crud.get_collections(
         groupId=groupId, search=search, user=user, onlyTomograms=onlyTomograms, **page
     )
 
@@ -36,7 +36,7 @@ def get_collections(
 @router.get("/{collectionId}/tomogram", response_model=Tomogram)
 def get_tomogram(collectionId: int = Depends(auth)):
     """Get tomogram that belongs to the collection"""
-    return collections.get_tomogram(collectionId)
+    return crud.get_tomogram(collectionId)
 
 
 @router.get("/{collectionId}/processingJobs", response_model=Paged[ProcessingJobOut])
@@ -46,9 +46,7 @@ def get_processing_jobs(
     search: str = "",
 ):
     """Get processing jobs that belong to the collection"""
-    return collections.get_processing_jobs(
-        search=search, collectionId=collectionId, **page
-    )
+    return crud.get_processing_jobs(search=search, collectionId=collectionId, **page)
 
 
 @router.get("/{collectionId}/motion", response_model=Paged[FullMovie])
@@ -57,4 +55,4 @@ def get_motion_correction(
     page: dict[str, int] = Depends(pagination),
 ):
     """Get motion correction and tilt alignment data"""
-    return collections.get_motion_correction(collectionId=collectionId, **page)
+    return crud.get_motion_correction(collectionId=collectionId, **page)

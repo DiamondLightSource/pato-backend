@@ -1,41 +1,14 @@
-from os.path import join as join_path
-
-from sqlalchemy import and_
 from sqlalchemy import func as f
 
 from ..models.response import GenericPlot, IceThicknessWithAverage
 from ..models.table import (
     CTF,
-    AutoProcProgramAttachment,
     MotionCorrection,
     MotionCorrectionDrift,
     RelativeIceThickness,
-    Tomogram,
 )
 from ..utils.database import db
 from ..utils.generic import parse_json_file, validate_path
-
-
-@validate_path
-def get_tomogram_auto_proc_attachment(id: int, file_type: str = "Result") -> str:
-    paths = (
-        db.session.query(
-            AutoProcProgramAttachment.filePath, AutoProcProgramAttachment.fileName
-        )
-        .select_from(Tomogram)
-        .filter(Tomogram.tomogramId == id)
-        .join(
-            AutoProcProgramAttachment,
-            and_(
-                AutoProcProgramAttachment.autoProcProgramId
-                == Tomogram.autoProcProgramId,
-                AutoProcProgramAttachment.fileType == file_type,
-            ),
-        )
-        .first()
-    )
-
-    return join_path(paths["filePath"], paths["fileName"])
 
 
 @validate_path

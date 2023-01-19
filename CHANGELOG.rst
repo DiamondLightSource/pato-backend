@@ -9,10 +9,13 @@ v0.2.0 (19/01/2023)
 **Added**
 
 - New endpoint for getting ice thickness data (:code:`/movie/{id}/iceThickness`)
+- New endpoints for tomogram projection images (:code:`/tomograms/{id}/projection?axis={axis}`) and movie (:code:`/tomograms/{id}/movie`)
+- Endpoints for additional tomogram projections
 
 **Changed**
 
 - Job status for autoprocessing is inferred from other columns and returned as :code:`status`
+- Tomogram endpoints for central slice and XY shift plot obtain paths from new tomogram columns instead of autoprocessing attachments
 
 ++++++++++
 v0.1.0 (12/01/2023)
