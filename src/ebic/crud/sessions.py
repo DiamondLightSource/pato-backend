@@ -45,12 +45,15 @@ def get_sessions(
     if min_date is not None and max_date is not None:
         query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
 
-    query = query.filter(
-        or_(
-            BLSession.beamLineName.contains(search),
-            BLSession.visit_number.contains(search),
-            search == "",
-        )
+    query = check_session(
+        query.filter(
+            or_(
+                BLSession.beamLineName.contains(search),
+                BLSession.visit_number.contains(search),
+                search == "",
+            )
+        ),
+        user,
     )
 
     total = fast_count(query)
@@ -61,4 +64,4 @@ def get_sessions(
         .order_by(BLSession.visit_number)
     )
 
-    return paginate(check_session(query, user), limit, page, precounted_total=total)
+    return paginate(query, limit, page, precounted_total=total)

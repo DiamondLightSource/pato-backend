@@ -90,4 +90,4 @@ def get_relative_ice_thickness(
 
         return IceThicknessWithAverage(avg=averages, current=movie_data)
 
-    return IceThicknessWithAverage(current=movie_data)
+    return IceThicknessWithAverage(avg=None, current=movie_data)
