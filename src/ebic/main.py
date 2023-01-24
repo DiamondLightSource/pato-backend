@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from . import __version__
 from .routes import (
     autoproc,
     collections,
@@ -12,7 +13,7 @@ from .routes import (
 )
 from .utils.database import get_session
 
-app = FastAPI()
+app = FastAPI(version=__version__)
 
 app.add_middleware(
     CORSMiddleware,
