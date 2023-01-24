@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 
 from ..auth import Permissions
-from ..crud import autoproc
+from ..crud import autoproc as crud
 from ..models.response import (
     Classification2D,
     CtfImageNumberList,
@@ -28,14 +28,14 @@ def get_motion_correction(
     page: dict[str, int] = Depends(pagination),
 ):
     """Get motion correction and tilt alignment data (including drift plot)"""
-    return autoproc.get_motion_correction(autoProcId=autoProcId, **page)
+    return crud.get_motion_correction(autoProcId=autoProcId, **page)
 
 
 @router.get("/{autoProcId}/ctf", response_model=CtfImageNumberList)
 def get_ctf(autoProcId: int = Depends(auth)):
     """Get astigmatism, resolution and defocus as a function of motion correction
     image numbers"""
-    return autoproc.get_ctf(autoProcId=autoProcId)
+    return crud.get_ctf(autoProcId=autoProcId)
 
 
 @router.get("/{autoProcId}/particlePicker", response_model=Paged[ParticlePicker])
@@ -45,7 +45,7 @@ def get_particle_picker(
     page: dict[str, int] = Depends(pagination),
 ):
     """Get particle picking data"""
-    return autoproc.get_particle_picker(
+    return crud.get_particle_picker(
         autoProcId=autoProcId, filterNull=filterNull, **page
     )
 
@@ -57,7 +57,7 @@ def get_2d_classification(
     page: dict[str, int] = Depends(pagination),
 ):
     """Get 2d classification data"""
-    return autoproc.get_2d_classification(autoProcId=autoProcId, sortBy=sortBy, **page)
+    return crud.get_2d_classification(autoProcId=autoProcId, sortBy=sortBy, **page)
 
 
 @router.get(
@@ -66,7 +66,7 @@ def get_2d_classification(
 )
 def get_2d_classification_image(classificationId: int, autoProcId: int = Depends(auth)):
     """Get class image"""
-    return autoproc.get_2d_classification_image(classificationId=classificationId)
+    return crud.get_2d_classification_image(classificationId=classificationId)
 
 
 @router.get(
@@ -75,4 +75,4 @@ def get_2d_classification_image(classificationId: int, autoProcId: int = Depends
 )
 def get_particle_picker_image(particlePickerId: int, autoProcId: int = Depends(auth)):
     """Get class image"""
-    return autoproc.get_particle_picker_image(particlePickerId=particlePickerId)
+    return crud.get_particle_picker_image(particlePickerId=particlePickerId)

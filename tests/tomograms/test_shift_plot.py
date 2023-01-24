@@ -33,7 +33,7 @@ def test_file_not_found(mock_file, mock_permissions, client):
     assert resp.status_code == 404
 
 
-def test_inexistent_file(mock_permissions, client):
+def test_inexistent_db(mock_permissions, client):
     """Try to get shift plot file not in database"""
     resp = client.get("/tomograms/999/shiftPlot")
     assert resp.status_code == 404

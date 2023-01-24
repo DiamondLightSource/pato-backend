@@ -7139,7 +7139,7 @@ CREATE TABLE `TiltImageAlignment` (
 
 LOCK TABLES `TiltImageAlignment` WRITE;
 /*!40000 ALTER TABLE `TiltImageAlignment` DISABLE KEYS */;
-INSERT INTO `TiltImageAlignment` VALUES (1,1,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),(2,1,NULL,NULL,NULL,NULL,NULL,NULL,17,5,NULL),(3,1,NULL,NULL,NULL,NULL,NULL,NULL,18,5,NULL),(4,1,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL),(6,2,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),(7,2,NULL,NULL,NULL,NULL,NULL,NULL,17,5,NULL),(8,2,NULL,NULL,NULL,NULL,NULL,NULL,18,5,NULL),(9,2,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL);
+INSERT INTO `TiltImageAlignment` VALUES (1,1,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),(2,1,NULL,NULL,NULL,NULL,NULL,NULL,17,5,NULL),(3,1,NULL,NULL,NULL,NULL,NULL,NULL,18,5,NULL),(4,1,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL),(5,2,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),(6,2,NULL,NULL,NULL,NULL,NULL,NULL,17,5,NULL),(7,2,NULL,NULL,NULL,NULL,NULL,NULL,18,5,NULL),(8,2,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL);
 /*!40000 ALTER TABLE `TiltImageAlignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7165,11 +7165,21 @@ CREATE TABLE `Tomogram` (
   `xAxisCorrection` float DEFAULT NULL COMMENT 'X axis angle (etomo), unit: degrees',
   `tiltAngleOffset` float DEFAULT NULL COMMENT 'tilt Axis offset (etomo), unit: degrees',
   `zShift` float DEFAULT NULL COMMENT 'shift to center volumen in Z (etomo)',
+  `fileDirectory` varchar(255) DEFAULT NULL COMMENT 'Directory path for files referenced by this table',
+  `centralSliceImage` varchar(255) DEFAULT NULL COMMENT 'Tomogram central slice file',
+  `tomogramMovie` varchar(255) DEFAULT NULL COMMENT 'Movie traversing the tomogram across an axis',
+  `xyShiftPlot` varchar(255) DEFAULT NULL COMMENT 'XY shift plot file',
+  `projXY` varchar(255) DEFAULT NULL COMMENT 'XY projection file',
+  `projXZ` varchar(255) DEFAULT NULL COMMENT 'XZ projection file',
+  `processingJobId` int(11) unsigned DEFAULT NULL,
+  `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
+  KEY `Tomogram_fk_processingJobId` (`processingJobId`),
   CONSTRAINT `Tomogram_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Tomogram_fk_processingJobId` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -7179,7 +7189,7 @@ CREATE TABLE `Tomogram` (
 
 LOCK TABLES `Tomogram` WRITE;
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
-INSERT INTO `Tomogram` VALUES (1,6017406,56986676,'/dls/ebic/data/staff-scratch/AnnaH/align_output/aligned_file_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,6017408,56986677,'/dls/ebic/data/staff-scratch/AnnaH/align_output/aligned_file_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,6017409,56986678,'/dls/ebic/data/staff-scratch/AnnaH/align_output/aligned_file_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,6017411,56986679,'/dls/ebic/data/staff-scratch/AnnaH/align_output/aligned_file_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `Tomogram` VALUES (1,6017406,56986676,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png',NULL,'2023-01-19 14:15:44'),(2,6017408,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png',NULL,'2023-01-19 14:15:44'),(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png',NULL,'2023-01-19 14:15:44'),(4,6017411,56986679,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png',NULL,'2023-01-19 14:15:44');
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8405,4 +8415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-19 11:21:41
+-- Dump completed on 2023-01-19 14:32:01

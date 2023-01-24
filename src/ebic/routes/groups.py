@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import groups
+from ..crud import groups as crud
 from ..models.response import DataCollectionGroupSummaryOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -21,6 +21,6 @@ def get_collection_groups(
     user=Depends(User),
 ):
     """List collection groups belonging to a session"""
-    return groups.get_collection_groups(
+    return crud.get_collection_groups(
         session=session, proposal=proposal, search=search, user=user, **page
     )

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from ..auth import User
-from ..crud import sessions
+from ..crud import sessions as crud
 from ..models.response import VisitOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -19,7 +19,7 @@ def get_sessions(
     user=Depends(User),
 ):
     """List visits belonging to a proposal"""
-    return sessions.get_sessions(
+    return crud.get_sessions(
         user=user,
         proposal=proposal,
         search=search,
