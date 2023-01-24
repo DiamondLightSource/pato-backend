@@ -37,7 +37,7 @@ class ProposalOut(BaseModel):
     proposalNumber: Optional[str] = Field(..., max_length=45)
     bltimeStamp: datetime
     proposalType: Optional[str] = Field(..., max_length=2)
-    state = StateEnum.open
+    state: StateEnum
     sessions: int
 
 
@@ -54,8 +54,9 @@ class VisitOut(OrmBaseModel):
     nbShifts: Optional[int] = Field(..., lt=1e9)
     comments: Optional[str] = Field(..., max_length=2000)
     beamLineOperator: Optional[str]
-    bltimeStamp = datetime
-    visit_number: int = Field(..., lt=1e9)
+    bltimeStamp: datetime
+    parentProposal: str
+    visit_number: Optional[int] = Field(..., lt=1e9)
     usedFlag: Optional[int] = Field(
         ...,
         lt=2,
@@ -389,10 +390,10 @@ class Tomogram(OrmBaseModel):
 class ProcessingJob(OrmBaseModel):
     processingJobId: int
     dataCollectionId: int
-    displayName: Optional[str] = Field(max_length=80)
-    comments: Optional[str] = Field(max_length=255)
+    displayName: Optional[str] = Field(..., max_length=80)
+    comments: Optional[str] = Field(..., max_length=255)
     recordTimestamp: Optional[datetime]
-    recipe: Optional[str] = Field(max_length=50)
+    recipe: Optional[str] = Field(..., max_length=50)
     automatic: int
 
 
@@ -454,8 +455,10 @@ class RelativeIceThickness(OrmBaseModel):
 
 class IceThicknessWithAverage(OrmBaseModel):
     current: RelativeIceThickness = Field(
+        ...,
         comment="Ice thickness data for current selected movie",
     )
     avg: Optional[RelativeIceThickness] = Field(
+        ...,
         comment="Average ice thickness data for movies belonging to autoproc. program",
     )

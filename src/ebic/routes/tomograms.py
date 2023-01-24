@@ -43,7 +43,7 @@ def get_movie(tomogramId: int = Depends(auth)):
 
 
 @router.get("/{tomogramId}/projection", response_class=FileResponse)
-def get_projection(tomogramId: int = Depends(auth), axis=Literal["xy", "xz"]):
+def get_projection(axis: Literal["xy", "xz"], tomogramId: int = Depends(auth)):
     """Get tomogram projection image"""
     return crud.get_projection_path(tomogramId=tomogramId, axis=axis)
 

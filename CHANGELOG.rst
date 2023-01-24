@@ -3,7 +3,7 @@ Changelog
 ==========
 
 ++++++++++
-v0.2.0 (19/01/2023)
+v0.2.0 (24/01/2023)
 ++++++++++
 
 **Added**
@@ -16,6 +16,9 @@ v0.2.0 (19/01/2023)
 
 - Job status for autoprocessing is inferred from other columns and returned as :code:`status`
 - Tomogram endpoints for central slice and XY shift plot obtain paths from new tomogram columns instead of autoprocessing attachments
+- Sessions can be searched through their visit numbers as well
+- Sessions also return their parent proposals
+- Improvements to session query performance
 
 ++++++++++
 v0.1.0 (12/01/2023)

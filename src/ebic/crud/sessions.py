@@ -2,6 +2,7 @@ from typing import Optional
 
 from sqlalchemy import and_
 from sqlalchemy import func as f
+from sqlalchemy import or_
 
 from ..auth import User
 from ..models.response import VisitOut
@@ -21,6 +22,9 @@ def get_sessions(
 ) -> Paged[VisitOut]:
     query = db.session.query(
         *unravel(BLSession),
+        f.concat(Proposal.proposalCode, Proposal.proposalNumber).label(
+            "parentProposal"
+        ),
         f.count(DataCollectionGroup.dataCollectionGroupId).label("collectionGroups"),
     )
 
@@ -35,15 +39,23 @@ def get_sessions(
             )
             .join(BLSession)
         )
+    else:
+        query = query.join(Proposal)
 
     if min_date is not None and max_date is not None:
         query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
 
     query = (
-        query.filter(BLSession.beamLineName.contains(search))
+        query.filter(
+            or_(
+                BLSession.beamLineName.contains(search),
+                BLSession.visit_number.contains(search),
+                search == "",
+            )
+        )
         .join(DataCollectionGroup, isouter=True)
         .group_by(BLSession.visit_number)
         .order_by(BLSession.visit_number)
     )
 
-    return paginate(check_session(query, user), limit, page, slow_count=True)
+    return paginate(check_session(query, user), limit, page, slow_count=False)
