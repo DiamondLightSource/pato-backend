@@ -60,15 +60,23 @@ class Paged(GenericModel, Generic[T]):
         arbitrary_types_allowed = True
 
 
-def paginate(query: Query, items: int, page: int, slow_count=True):
-    if slow_count:
+def fast_count(query: Query) -> int:
+    return db.session.execute(
+        query.statement.with_only_columns([func.count(literal_column("1"))]).order_by(
+            None
+        )
+    ).scalar()
+
+
+def paginate(
+    query: Query, items: int, page: int, slow_count=True, precounted_total: int = None
+):
+    if precounted_total is not None:
+        total = precounted_total
+    elif slow_count:
         total = query.count()
     else:
-        total = db.session.execute(
-            query.statement.with_only_columns(
-                [func.count(literal_column("1"))]
-            ).order_by(None)
-        ).scalar()
+        total = fast_count(query)
 
     if not total:
         raise HTTPException(
@@ -77,7 +85,7 @@ def paginate(query: Query, items: int, page: int, slow_count=True):
         )
 
     if page < 0:
-        page = (total / items) + page
+        page = (total // items) + page
 
     data = query.limit(items).offset((page) * items).all()
 

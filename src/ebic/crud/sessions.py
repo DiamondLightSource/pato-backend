@@ -8,7 +8,7 @@ from ..auth import User
 from ..models.response import VisitOut
 from ..models.table import BLSession, DataCollectionGroup, Proposal
 from ..utils.auth import check_session
-from ..utils.database import Paged, db, paginate, unravel
+from ..utils.database import Paged, db, fast_count, paginate, unravel
 
 
 def get_sessions(
@@ -45,17 +45,20 @@ def get_sessions(
     if min_date is not None and max_date is not None:
         query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
 
-    query = (
-        query.filter(
-            or_(
-                BLSession.beamLineName.contains(search),
-                BLSession.visit_number.contains(search),
-                search == "",
-            )
+    query = query.filter(
+        or_(
+            BLSession.beamLineName.contains(search),
+            BLSession.visit_number.contains(search),
+            search == "",
         )
-        .join(DataCollectionGroup, isouter=True)
+    )
+
+    total = fast_count(query)
+
+    query = (
+        query.join(DataCollectionGroup, isouter=True)
         .group_by(BLSession.visit_number)
         .order_by(BLSession.visit_number)
     )
 
-    return paginate(check_session(query, user), limit, page, slow_count=False)
+    return paginate(check_session(query, user), limit, page, precounted_total=total)
