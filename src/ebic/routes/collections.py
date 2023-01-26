@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..auth import Permissions, User
 from ..crud import collections as crud
+from ..crud.generic import get_ice_histogram_generic
 from ..models.response import (
     DataCollectionSummaryOut,
     FullMovie,
@@ -56,3 +57,13 @@ def get_motion_correction(
 ):
     """Get motion correction and tilt alignment data"""
     return crud.get_motion_correction(collectionId=collectionId, **page)
+
+
+@router.get(
+    "/{collectionId}/iceThickness",
+)
+def get_ice_histogram(dataBin: float = 10000, collectionId: int = Depends(auth)):
+    """Get relative ice thickness histogram"""
+    return get_ice_histogram_generic(
+        parent_type="dataCollection", parent_id=collectionId, dataBin=dataBin
+    )

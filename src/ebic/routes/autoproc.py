@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 
 from ..auth import Permissions
 from ..crud import autoproc as crud
+from ..crud.generic import get_ice_histogram_generic
 from ..models.response import (
     Classification2D,
     CtfImageNumberList,
@@ -76,3 +77,13 @@ def get_2d_classification_image(classificationId: int, autoProcId: int = Depends
 def get_particle_picker_image(particlePickerId: int, autoProcId: int = Depends(auth)):
     """Get class image"""
     return crud.get_particle_picker_image(particlePickerId=particlePickerId)
+
+
+@router.get(
+    "/{autoProcId}/iceThickness",
+)
+def get_ice_histogram(dataBin: float = 10000, autoProcId: int = Depends(auth)):
+    """Get relative ice thickness histogram"""
+    return get_ice_histogram_generic(
+        parent_type="autoProc", parent_id=autoProcId, dataBin=dataBin
+    )

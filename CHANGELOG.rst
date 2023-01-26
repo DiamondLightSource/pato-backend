@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.3.0 (24/01/2023)
+++++++++++
+
+**Added**
+
+- Frequency data for ice thickness in data collections (:code:`/dataCollections/{id}/iceThickness`) and autoprocessing programs (:code:`/dataCollections/{id}/iceThickness`)
+
+++++++++++
 v0.2.0 (24/01/2023)
 ++++++++++
 
