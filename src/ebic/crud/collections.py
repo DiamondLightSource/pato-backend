@@ -1,24 +1,16 @@
-from typing import Optional
-
 from fastapi import HTTPException
 from sqlalchemy import and_, case
-from sqlalchemy import func as f
-from sqlalchemy import or_
 
-from ..auth import User
-from ..models.response import DataCollectionSummaryOut, FullMovie, ProcessingJobOut
+from ..models.response import FullMovie, ProcessingJobOut
 from ..models.table import (
     CTF,
     AutoProcProgram,
-    BLSession,
-    DataCollection,
     MotionCorrection,
     Movie,
     ProcessingJob,
     Tomogram,
 )
-from ..utils.auth import check_session
-from ..utils.database import Paged, db, paginate, unravel
+from ..utils.database import Paged, db, paginate
 
 
 def get_tomogram(collectionId: int):
@@ -45,35 +37,6 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
     )
 
     return paginate(query, limit, page, slow_count=True)
-
-
-def get_collections(
-    limit: int,
-    page: int,
-    groupId: Optional[int],
-    search: str,
-    user: User,
-    onlyTomograms: bool,
-) -> Paged[DataCollectionSummaryOut]:
-    query = (
-        db.session.query(
-            *unravel(DataCollection), f.count(Tomogram.tomogramId).label("tomograms")
-        )
-        .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
-        .join(Tomogram, isouter=(not onlyTomograms))
-        .filter(
-            or_(
-                DataCollection.comments.contains(search),
-                search == "",
-            ),
-        )
-        .group_by(DataCollection.dataCollectionId)
-    )
-
-    if groupId is not None:
-        query = query.filter(groupId == DataCollection.dataCollectionGroupId)
-
-    return paginate(check_session(query, user), limit, page, slow_count=True)
 
 
 _job_status_description = case(

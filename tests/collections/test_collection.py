@@ -11,6 +11,14 @@ def test_get_admin(mock_user, client):
     assert resp.json()["total"] == 2
 
 
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_index(mock_user, client):
+    """Get data collections matching search and maintain index"""
+    resp = client.get("/dataCollections?groupId=5440740&search=Processed")
+    assert resp.status_code == 200
+    assert resp.json()["items"][0]["index"] == 2
+
+
 @pytest.mark.parametrize("mock_user", [em_admin], indirect=True)
 def test_get_em_admin(mock_user, client):
     """Get all collections in visit belonging to EM (request for EM admin)"""
