@@ -33,11 +33,13 @@ build-image:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
     - docker-image
+  only:
+    - tags
   variables:
-    IMAGE_NAME: gcr.io/diamond-pubreg/em/ebic-backend:$(git describe --tags --abbrev=0)-$CI_COMMIT_SHORT_SHA
+    IMAGE_NAME: gcr.io/diamond-pubreg/em/ebic-backend:$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA
   image:
     name: quay.io/podman/stable
   script:
-    - podman login -u oauth2accesstoken -p $GCLOUD_TOKEN gcr.io
+    - echo $GCLOUD_TOKEN | podman login -u oauth2accesstoken --password-stdin gcr.io
     - podman build . -t $IMAGE_NAME
     - podman push $IMAGE_NAME
