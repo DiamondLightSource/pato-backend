@@ -3,36 +3,36 @@ from ebic.auth.template import GenericUser
 admin = GenericUser(
     fedid="admin",
     id=00,
-    family_name="Admin",
+    familyName="Admin",
     title="Dr.",
-    given_name="McAdmin",
+    givenName="McAdmin",
     permissions=[11],
 )
 
 em_admin = GenericUser(
     fedid="em_admin",
     id=18660,
-    family_name="EM",
+    familyName="EM",
     title="Dr.",
-    given_name="Admin",
+    givenName="Admin",
     permissions=[8],
 )
 
 user = GenericUser(
     fedid="user",
     id=18600,
-    family_name="Generic",
+    familyName="Generic",
     title="Dr.",
-    given_name="User",
+    givenName="User",
     permissions=[],
 )
 
 mx_admin = GenericUser(
     fedid="mx_admin",
     id=16000,
-    family_name="MX",
+    familyName="MX",
     title="Dr.",
-    given_name="Admin",
+    givenName="Admin",
     permissions=[1],
 )
 
