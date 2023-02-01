@@ -29,8 +29,6 @@ integration-test-job:
 
 build-image:
   stage: build
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
     - docker-image
   only:
