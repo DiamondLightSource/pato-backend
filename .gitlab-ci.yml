@@ -38,6 +38,6 @@ build-image:
   image:
     name: quay.io/podman/stable
   script:
-    - echo $GCLOUD_TOKEN | podman login -u oauth2accesstoken --password-stdin gcr.io
+    - podman login -u oauth2accesstoken -p $GCLOUD_TOKEN gcr.io
     - podman build . -t $IMAGE_NAME
     - podman push $IMAGE_NAME
