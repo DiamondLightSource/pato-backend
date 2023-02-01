@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.3.1 (01/02/2023)
+++++++++++
+
+**Changed**
+
+- Fixed auth information mappings for user object causing 500s
+
+++++++++++
 v0.3.0 (01/02/2023)
 ++++++++++
 

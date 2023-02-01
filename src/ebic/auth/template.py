@@ -5,9 +5,9 @@ from dataclasses import dataclass
 class GenericUser:
     fedid: str
     id: str
-    family_name: str
+    familyName: str
     title: str
-    given_name: str
+    givenName: str
     permissions: list[int]
 
 

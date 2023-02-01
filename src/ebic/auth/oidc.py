@@ -71,9 +71,9 @@ class User(GenericUser):
         )
 
         self.id = user.personId
-        self.family_name = user.familyName
+        self.familyName = user.familyName
         self.title = user.title
-        self.given_name = user.givenName
+        self.givenName = user.givenName
         self.permissions = [p.permissionId for p in query.all()]
 
     @classmethod
