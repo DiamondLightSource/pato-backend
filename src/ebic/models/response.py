@@ -111,7 +111,7 @@ class DataCollectionSummaryOut(BaseModel):
         ..., comment="Image size in y, in case crop has been used."
     )
     experimenttype: Optional[str] = Field(..., max_length=24)
-    dataCollectionNumber: Optional[int]
+    index: int
     endTime: Optional[datetime] = Field(
         ..., description="End time of the dataCollection"
     )

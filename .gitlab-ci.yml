@@ -2,11 +2,11 @@ image: python
 services:
   - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.1.0
 stages:
-  - build
   - test
+  - build
 
 install-job:
-  stage: build
+  stage: test
   tags:
     - argus
   script:
@@ -26,3 +26,18 @@ integration-test-job:
       coverage_report:
         coverage_format: cobertura
         path: cov.xml
+
+build-image:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  tags:
+    - docker-image
+  variables:
+    IMAGE_NAME: gcr.io/diamond-pubreg/em/ebic-backend:$(git describe --tags --abbrev=0)-$CI_COMMIT_SHORT_SHA
+  image:
+    name: quay.io/podman/stable
+  script:
+    - echo $GCLOUD_TOKEN | podman login -u oauth2accesstoken --password-stdin gcr.io
+    - podman build . -t $IMAGE_NAME
+    - podman push $IMAGE_NAME
