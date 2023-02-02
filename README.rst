@@ -1,4 +1,4 @@
-pato API
+PATo API
 ===========================
 
 |code_ci| |coverage| |license|
