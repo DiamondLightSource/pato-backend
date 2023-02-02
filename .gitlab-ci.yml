@@ -40,3 +40,14 @@ build-image:
     IMAGE_NAME: gcr.io/diamond-pubreg/em/ebic-backend:$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA
   script:
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile --destination $IMAGE_NAME
+
+sync-deploy-versions:
+  stage: build
+  tags:
+    - docker-image
+  image:
+    name: alpine/curl
+  only:
+    - tags
+  script:
+    - curl --request POST "https://${CI_SERVER_HOST}/api/v4/projects/6068/trigger/pipeline?token=${CI_PIPELINE_TRIGGER}&ref=${CI_DEFAULT_BRANCH}"
