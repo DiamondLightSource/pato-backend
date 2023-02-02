@@ -3,6 +3,15 @@ Changelog
 ==========
 
 ++++++++++
+v0.3.2 (02/02/2023)
+++++++++++
+
+**Changed**
+
+- Fixes error caused by lack of ProcessingJobId column
+- Updates database model
+
+++++++++++
 v0.3.1 (01/02/2023)
 ++++++++++
 

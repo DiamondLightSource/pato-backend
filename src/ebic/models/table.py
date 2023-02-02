@@ -5225,7 +5225,6 @@ class Tomogram(Base):
     xyShiftPlot = Column(String(255), comment="XY shift plot file")
     projXY = Column(String(255), comment="XY projection file")
     projXZ = Column(String(255), comment="XZ projection file")
-    processingJobId = Column(ForeignKey("ProcessingJob.processingJobId"), index=True)
     recordTimeStamp = Column(
         DateTime,
         server_default=text("current_timestamp()"),
@@ -5234,7 +5233,6 @@ class Tomogram(Base):
 
     AutoProcProgram = relationship("AutoProcProgram")
     DataCollection = relationship("DataCollection")
-    ProcessingJob = relationship("ProcessingJob")
 
 
 class ZcZocaloBuffer(Base):
