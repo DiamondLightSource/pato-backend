@@ -1,4 +1,4 @@
-from ebic.auth.template import GenericUser
+from pato.auth.template import GenericUser
 
 admin = GenericUser(
     fedid="admin",

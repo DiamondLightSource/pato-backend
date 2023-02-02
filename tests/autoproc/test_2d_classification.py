@@ -36,14 +36,14 @@ def test_sort_resolution(mock_permissions, client):
 
 def test_get_image(mock_permissions, client):
     """Get particle picking summary image"""
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.movies.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/classification/1/image")
     assert resp.status_code == 200
 
 
 def test_get_image_not_in_db(mock_permissions, client):
     """Get particle picking summary image not in database"""
-    with patch("ebic.routes.movies.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.movies.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/classification/999/image")
     assert resp.status_code == 404
 

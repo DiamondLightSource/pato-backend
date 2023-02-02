@@ -5,7 +5,7 @@ from tests.conftest import mock_send
 
 def test_get_xy(mock_permissions, client):
     """Get movie image"""
-    with patch("ebic.routes.tomograms.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get("/tomograms/1/movie")
     assert resp.status_code == 200
 

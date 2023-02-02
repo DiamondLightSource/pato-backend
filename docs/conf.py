@@ -7,15 +7,15 @@
 from pathlib import Path
 from subprocess import check_output
 
-import ebic
+import pato
 
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
-project = "ebic"
+project = "pato"
 
 # The full version, including alpha/beta/rc tags.
-release = ebic.__version__
+release = pato.__version__
 
 # The short X.Y version.
 if "+" in release:

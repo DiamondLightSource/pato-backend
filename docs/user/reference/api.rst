@@ -1,14 +1,14 @@
 API
 ===
 
-.. automodule:: ebic_backend
+.. automodule:: pato_backend
 
-    ``ebic_backend``
+    ``pato_backend``
     -----------------------------------
 
-This is the internal API reference for ebic_backend
+This is the internal API reference for pato_backend
 
-.. data:: ebic_backend.__version__
+.. data:: pato_backend.__version__
     :type: str
 
     Version number as calculated by https://github.com/pypa/setuptools_scm

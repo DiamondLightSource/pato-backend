@@ -13,17 +13,10 @@ from ..models.table import (
 from ..utils.database import Paged, db, paginate
 
 
-def get_tomogram(collectionId: int):
-    data = (
-        db.session.query(Tomogram)
-        .filter(Tomogram.dataCollectionId == collectionId)
-        .scalar()
-    )
+def get_tomograms(limit: int, page: int, collectionId: int):
+    query = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == collectionId)
 
-    if data is None:
-        raise HTTPException(status_code=404, detail="Tomogram not found")
-
-    return data
+    return paginate(query, limit, page)
 
 
 def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[FullMovie]:
