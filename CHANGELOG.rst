@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.3.3 (03/02/2023)
+++++++++++
+
+**Changed**
+
+- Adheres to new relations between data collections and tomograms, returns first tomogram instead of erroring out if there are more than 1
+
+++++++++++
 v0.3.2 (02/02/2023)
 ++++++++++
 
