@@ -36,7 +36,7 @@ def get_tomogram(autoProcId: int) -> TomogramOut:
     if not data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Session does not exist",
+            detail="Tomogram not found",
         )
 
     return data
