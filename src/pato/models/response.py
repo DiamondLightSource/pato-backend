@@ -330,7 +330,7 @@ class TiltImageAlignment(OrmBaseModel):
     residualError: Optional[float]
 
 
-class FullMovie(BaseModel):
+class FullMovie(OrmBaseModel):
     CTF: CTF
     Movie: Movie
     MotionCorrection: MotionCorrection
@@ -370,7 +370,7 @@ class GenericPlot(BaseModel):
     items: list[DataPoint]
 
 
-class Tomogram(OrmBaseModel):
+class TomogramOut(OrmBaseModel):
     tomogramId: int
     dataCollectionId: int
     autoProcProgramId: Optional[int]
@@ -394,7 +394,7 @@ class ProcessingJob(OrmBaseModel):
     comments: Optional[str] = Field(..., max_length=255)
     recordTimestamp: Optional[datetime]
     recipe: Optional[str] = Field(..., max_length=50)
-    automatic: int
+    automatic: Optional[int]
 
 
 class AutoProcProgram(OrmBaseModel):

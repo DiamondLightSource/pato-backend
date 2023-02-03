@@ -6,6 +6,10 @@ Changelog
 v0.4.0 (02/02/2023)
 ++++++++++
 
+**Added**
+
+- User can now retrieve tomogram that belongs to autoprocessing program (:code:`/autoProc/{autoProcId}/tomogram`)
+
 **Changed**
 
 - Collection can now return up to 3 tomograms, returns paged object for :code:`/tomograms` (renamed from :code:`/tomogram`)

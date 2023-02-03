@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy import and_, case
 
 from ..models.response import FullMovie, ProcessingJobOut
@@ -61,7 +60,9 @@ def get_processing_jobs(
         )
         .select_from(ProcessingJob)
         .join(AutoProcProgram)
-    ).filter(ProcessingJob.dataCollectionId == collectionId)
+        .filter(ProcessingJob.dataCollectionId == collectionId)
+        .order_by(ProcessingJob.processingJobId.desc())
+    )
 
     return paginate(
         query,
