@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends
 
 from ..auth import User
@@ -14,8 +16,10 @@ def get_sessions(
     page: dict[str, int] = Depends(pagination),
     proposal: str = None,
     search: str = "",
-    minDate: str = None,
-    maxDate: str = None,
+    minEndDate: datetime = None,
+    maxEndDate: datetime = None,
+    minStartDate: datetime = None,
+    maxStartDate: datetime = None,
     user=Depends(User),
 ):
     """List visits belonging to a proposal"""
@@ -23,7 +27,9 @@ def get_sessions(
         user=user,
         proposal=proposal,
         search=search,
-        min_date=minDate,
-        max_date=maxDate,
+        minEndDate=minEndDate,
+        maxEndDate=maxEndDate,
+        minStartDate=minStartDate,
+        maxStartDate=maxStartDate,
         **page
     )

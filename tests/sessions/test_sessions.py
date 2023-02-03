@@ -50,10 +50,20 @@ def test_get_forbidden(mock_user, client):
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
-def test_date(mock_user, client):
+def test_date_end(mock_user, client):
     """Try to get visits between two dates"""
     resp = client.get(
-        "/sessions?minDate=2022-10-21 09:00:00.000&maxDate=2024-10-21 09:00:00.000"
+        "/sessions?minEndDate=2022-10-21 09:00:00.000&maxEndDate=2024-10-21 09:00:00.000"  # noqa: E501
+    )
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 2
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_date_start(mock_user, client):
+    """Try to get visits between two dates"""
+    resp = client.get(
+        "/sessions?minStartDate=2022-10-21 09:00:00.000&maxStartDate=2024-10-21 09:00:00.000"  # noqa: E501
     )
     assert resp.status_code == 200
     assert resp.json()["total"] == 2

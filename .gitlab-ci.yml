@@ -1,6 +1,6 @@
 image: python
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.1.1
+  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.1.2
 stages:
   - test
   - build

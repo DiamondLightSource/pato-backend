@@ -9,6 +9,7 @@ v0.4.0 (02/02/2023)
 **Added**
 
 - User can now retrieve tomogram that belongs to autoprocessing program (:code:`/autoProc/{autoProcId}/tomogram`)
+- Added max/min end date, max/min start date query parameters to sessions endpoint
 
 **Changed**
 

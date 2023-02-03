@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import and_
@@ -17,8 +18,10 @@ def get_sessions(
     user: User,
     proposal: Optional[str],
     search: str,
-    min_date: Optional[str],
-    max_date: Optional[str],
+    minEndDate: Optional[datetime],
+    maxEndDate: Optional[datetime],
+    minStartDate: Optional[datetime],
+    maxStartDate: Optional[datetime],
 ) -> Paged[VisitOut]:
     query = db.session.query(
         *unravel(BLSession),
@@ -38,12 +41,22 @@ def get_sessions(
                 )
             )
             .join(BLSession)
+            .order_by(BLSession.visit_number)
         )
     else:
-        query = query.join(Proposal)
+        query = query.join(Proposal).order_by(BLSession.endDate.desc())
 
-    if min_date is not None and max_date is not None:
-        query = query.filter(and_(BLSession.startDate.between(min_date, max_date)))
+    if minEndDate is not None:
+        query = query.filter(BLSession.endDate >= minEndDate)
+
+    if maxEndDate is not None:
+        query = query.filter(BLSession.endDate <= maxEndDate)
+
+    if minStartDate is not None:
+        query = query.filter(BLSession.startDate >= minStartDate)
+
+    if maxStartDate is not None:
+        query = query.filter(BLSession.startDate <= maxStartDate)
 
     query = check_session(
         query.filter(
@@ -58,10 +71,8 @@ def get_sessions(
 
     total = fast_count(query)
 
-    query = (
-        query.join(DataCollectionGroup, isouter=True)
-        .group_by(BLSession.visit_number)
-        .order_by(BLSession.visit_number)
+    query = query.join(DataCollectionGroup, isouter=True).group_by(
+        BLSession.visit_number
     )
 
     return paginate(query, limit, page, precounted_total=total)
