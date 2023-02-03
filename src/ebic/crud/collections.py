@@ -17,7 +17,7 @@ def get_tomogram(collectionId: int):
     data = (
         db.session.query(Tomogram)
         .filter(Tomogram.dataCollectionId == collectionId)
-        .scalar()
+        .first()
     )
 
     if data is None:
