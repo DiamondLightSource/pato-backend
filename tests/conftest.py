@@ -2,10 +2,9 @@ from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
-
-from ebic.auth.micro import oauth2_scheme
-from ebic.main import app
-from ebic.utils.auth import User
+from pato.auth.micro import oauth2_scheme
+from pato.main import app
+from pato.utils.auth import User
 
 from .users import admin
 
@@ -51,11 +50,11 @@ def mock_user(request):
 @pytest.fixture(scope="function")
 def mock_permissions(request):
     app.dependency_overrides[oauth2_scheme] = lambda: "a"
-    with patch("ebic.auth.micro._check_perms", new=new_perms) as _fixture:
+    with patch("pato.auth.micro._check_perms", new=new_perms) as _fixture:
         yield _fixture
 
 
 @pytest.fixture(scope="function", autouse=True)
 def exists_mock():
-    with patch("ebic.utils.generic.isfile", return_value=True) as _fixture:
+    with patch("pato.utils.generic.isfile", return_value=True) as _fixture:
         yield _fixture

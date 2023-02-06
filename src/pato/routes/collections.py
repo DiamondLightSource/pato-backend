@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from ..auth import Permissions
 from ..crud import collections as crud
 from ..crud.generic import get_ice_histogram_generic
-from ..models.response import FullMovie, ProcessingJobOut, Tomogram
+from ..models.response import FullMovie, ProcessingJobOut, TomogramOut
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -15,10 +15,12 @@ router = APIRouter(
 )
 
 
-@router.get("/{collectionId}/tomogram", response_model=Tomogram)
-def get_tomogram(collectionId: int = Depends(auth)):
+@router.get("/{collectionId}/tomograms", response_model=Paged[TomogramOut])
+def get_tomograms(
+    collectionId: int = Depends(auth), page: dict[str, int] = Depends(pagination)
+):
     """Get tomogram that belongs to the collection"""
-    return crud.get_tomogram(collectionId)
+    return crud.get_tomograms(collectionId=collectionId, **page)
 
 
 @router.get("/{collectionId}/processingJobs", response_model=Paged[ProcessingJobOut])

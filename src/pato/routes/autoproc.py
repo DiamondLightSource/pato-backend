@@ -11,6 +11,7 @@ from ..models.response import (
     CtfImageNumberList,
     FullMovie,
     ParticlePicker,
+    TomogramOut,
 )
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -21,6 +22,15 @@ router = APIRouter(
     tags=["Auto Processing Programs"],
     prefix="/autoProc",
 )
+
+
+@router.get("/{autoProcId}/tomogram", response_model=TomogramOut)
+def get_tomogram(
+    autoProcId: int = Depends(auth),
+    page: dict[str, int] = Depends(pagination),
+):
+    """Get tomogram"""
+    return crud.get_tomogram(autoProcId=autoProcId)
 
 
 @router.get("/{autoProcId}/motion", response_model=Paged[FullMovie])

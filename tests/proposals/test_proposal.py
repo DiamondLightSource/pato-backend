@@ -22,9 +22,9 @@ def test_search_code(mock_user, client):
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
 def test_search_number(mock_user, client):
     """Get all proposals with a matching proposal number"""
-    resp = client.get("/proposals?search=1")
+    resp = client.get("/proposals?search=8")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 3
+    assert resp.json()["total"] == 1
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
@@ -33,6 +33,14 @@ def test_search_full(mock_user, client):
     resp = client.get("/proposals?search=cm31")
     assert resp.status_code == 200
     assert resp.json()["total"] == 1
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_search_title(mock_user, client):
+    """Get all proposals with a matching title"""
+    resp = client.get("/proposals?search=Test%20Proposal")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 2
 
 
 @pytest.mark.parametrize("mock_user", [em_admin], indirect=True)

@@ -1,8 +1,14 @@
 from typing import Literal
 
+from fastapi import HTTPException, status
 from sqlalchemy import and_
 
-from ..models.response import Classification2D, CtfImageNumberList, FullMovie
+from ..models.response import (
+    Classification2D,
+    CtfImageNumberList,
+    FullMovie,
+    TomogramOut,
+)
 from ..models.table import (
     CTF,
     CryoemInitialModel,
@@ -11,12 +17,29 @@ from ..models.table import (
     ParticleClassification,
     ParticleClassificationGroup,
     ParticlePicker,
+    Tomogram,
 )
 from ..models.table import (
     t_ParticleClassification_has_CryoemInitialModel as ParticleClassificationHasCryoem,
 )
 from ..utils.database import Paged, db, paginate, unravel
 from ..utils.generic import validate_path
+
+
+def get_tomogram(autoProcId: int) -> TomogramOut:
+    data = (
+        db.session.query(Tomogram)
+        .filter(Tomogram.autoProcProgramId == autoProcId)
+        .scalar()
+    )
+
+    if data is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tomogram not found",
+        )
+
+    return data
 
 
 def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullMovie]:

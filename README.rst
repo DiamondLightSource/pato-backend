@@ -1,13 +1,13 @@
-eBIC API
+PATo API
 ===========================
 
 |code_ci| |coverage| |license|
 
 ============== ==============================================================
-Source code    https://gitlab.diamond.ac.uk/yrh59256/ebic-backend
+Source code    https://gitlab.diamond.ac.uk/lims/pato-backend
 ============== ==============================================================
 
-API for tomogram and miscellaneous information relating to eBIC.
+Particle Analysis and Tomography Data API.
 
 ==========
 Configuration
@@ -26,7 +26,7 @@ Running development server on your machine:
 
 1. Install the package with :code:`pip install .` or :code:`pip install -e .`
 2. Set the `SQL_DATABASE_URL` environment variable according to your database's location
-3. Run :code:`uvicorn` with `uvicorn ebic.main:app --reload --port 8000`
+3. Run :code:`uvicorn` with `uvicorn pato.main:app --reload --port 8000`
 
 Running Kubernetes deployment for frontend and API:
 
@@ -46,12 +46,12 @@ Testing
     - You may change the port or where the container itself runs, just remember to update `.test.env`
 - Run :code:`pytest tests`
 
-.. |code_ci| image:: https://gitlab.diamond.ac.uk/lims/ebic-backend/badges/master/pipeline.svg
-    :target: https://gitlab.diamond.ac.uk/lims/ebic-backend/-/pipelines
+.. |code_ci| image:: https://gitlab.diamond.ac.uk/lims/pato-backend/badges/master/pipeline.svg
+    :target: https://gitlab.diamond.ac.uk/lims/pato-backend/-/pipelines
     :alt: Code CI
 
-.. |coverage| image:: https://gitlab.diamond.ac.uk/lims/ebic-backend/badges/master/coverage.svg
-    :target: https://gitlab.diamond.ac.uk/lims/ebic-backend/-/pipelines
+.. |coverage| image:: https://gitlab.diamond.ac.uk/lims/pato-backend/badges/master/coverage.svg
+    :target: https://gitlab.diamond.ac.uk/lims/pato-backend/-/pipelines
     :alt: Test Coverage
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg

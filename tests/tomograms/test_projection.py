@@ -5,14 +5,14 @@ from tests.conftest import mock_send
 
 def test_get_xy(mock_permissions, client):
     """Get projection on XY axis"""
-    with patch("ebic.routes.tomograms.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get("/tomograms/1/projection?axis=xy")
     assert resp.status_code == 200
 
 
 def test_get_xz(mock_permissions, client):
     """Get projection on XZ axis"""
-    with patch("ebic.routes.tomograms.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get("/tomograms/1/projection?axis=xz")
     assert resp.status_code == 200
 

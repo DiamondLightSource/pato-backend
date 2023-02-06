@@ -20,14 +20,14 @@ def test_get_user_not_null(mock_permissions, client):
 
 def test_get_image(mock_permissions, client):
     """Get particle picking summary image"""
-    with patch("ebic.routes.autoproc.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.autoproc.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/particlePicker/1/image")
     assert resp.status_code == 200
 
 
 def test_get_image_not_in_db(mock_permissions, client):
     """Get particle picking summary image not in database"""
-    with patch("ebic.routes.autoproc.FileResponse.__call__", new=mock_send):
+    with patch("pato.routes.autoproc.FileResponse.__call__", new=mock_send):
         resp = client.get("/autoProc/56986680/particlePicker/5/image")
     assert resp.status_code == 404
 

@@ -1,4 +1,5 @@
 from sqlalchemy import func as f
+from sqlalchemy import or_
 
 from ..auth import User
 from ..models.response import ProposalOut
@@ -15,7 +16,12 @@ def get_proposals(limit: int, page: int, search: str, user: User) -> Paged[Propo
             f.count(BLSession.sessionId).label("sessions"),
         )
         .filter(
-            f.concat(Proposal.proposalCode, Proposal.proposalNumber).contains(search)
+            or_(
+                f.concat(Proposal.proposalCode, Proposal.proposalNumber).contains(
+                    search
+                ),
+                Proposal.title.contains(search),
+            )
         )
         .join(BLSession)
         .group_by(Proposal.proposalId)

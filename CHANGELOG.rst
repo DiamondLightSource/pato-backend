@@ -2,6 +2,20 @@
 Changelog
 ==========
 
+v0.4.0 (07/02/2023)
+++++++++++
+
+**Added**
+
+- User can now retrieve tomogram that belongs to autoprocessing program (:code:`/autoProc/{autoProcId}/tomogram`)
+- Added max/min end date, max/min start date query parameters to sessions endpoint
+
+**Changed**
+
+- Collection can now return up to 3 tomograms, returns paged object for :code:`/tomograms` (renamed from :code:`/tomogram`)
+- Proposal search also searches through title
+
+
 ++++++++++
 v0.3.3 (03/02/2023)
 ++++++++++
@@ -9,6 +23,7 @@ v0.3.3 (03/02/2023)
 **Changed**
 
 - Adheres to new relations between data collections and tomograms, returns first tomogram instead of erroring out if there are more than 1
+
 
 ++++++++++
 v0.3.2 (02/02/2023)

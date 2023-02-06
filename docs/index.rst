@@ -14,13 +14,13 @@ The documentation is split into 2 sections:
         :link: user/index
         :link-type: doc
 
-        The User Guide contains documentation on how to install and use ebic_backend.
+        The User Guide contains documentation on how to install and use pato_backend.
 
     .. grid-item-card:: :material-regular:`code;4em`
         :link: developer/index
         :link-type: doc
 
-        The Developer Guide contains documentation on how to develop and contribute changes back to ebic_backend.
+        The Developer Guide contains documentation on how to develop and contribute changes back to pato_backend.
 
 .. toctree::
     :hidden:
