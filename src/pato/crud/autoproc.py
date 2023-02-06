@@ -33,7 +33,7 @@ def get_tomogram(autoProcId: int) -> TomogramOut:
         .scalar()
     )
 
-    if not data:
+    if data is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Tomogram not found",
