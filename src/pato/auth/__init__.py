@@ -8,10 +8,6 @@ def is_admin(perms: list[int]):
     return bool(set(Config.auth.read_all_perms) & set(perms))
 
 
-def is_em_staff(perms: list[int]):
-    return bool(set(Config.auth.read_em_perms) & set(perms))
-
-
 if auth_type == "micro":
     from ..auth.micro import Permissions, User
 elif auth_type == "dummy":
