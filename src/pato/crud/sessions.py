@@ -6,7 +6,7 @@ from sqlalchemy import func as f
 from sqlalchemy import or_
 
 from ..auth import User
-from ..models.response import VisitOut
+from ..models.response import SessionResponse
 from ..models.table import BLSession, DataCollectionGroup, Proposal
 from ..utils.auth import check_session
 from ..utils.database import Paged, db, fast_count, paginate, unravel
@@ -22,7 +22,7 @@ def get_sessions(
     maxEndDate: Optional[datetime],
     minStartDate: Optional[datetime],
     maxStartDate: Optional[datetime],
-) -> Paged[VisitOut]:
+) -> Paged[SessionResponse]:
     query = db.session.query(
         *unravel(BLSession),
         f.concat(Proposal.proposalCode, Proposal.proposalNumber).label(

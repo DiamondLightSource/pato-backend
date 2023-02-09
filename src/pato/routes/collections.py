@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 
 from ..auth import Permissions
 from ..crud import collections as crud
 from ..crud.generic import get_ice_histogram_generic
-from ..models.response import FullMovie, ProcessingJobOut, TomogramOut
+from ..models.parameters import ReprocessingParameters
+from ..models.response import FullMovie, ProcessingJobResponse, TomogramResponse
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -15,7 +16,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{collectionId}/tomograms", response_model=Paged[TomogramOut])
+@router.get("/{collectionId}/tomograms", response_model=Paged[TomogramResponse])
 def get_tomograms(
     collectionId: int = Depends(auth), page: dict[str, int] = Depends(pagination)
 ):
@@ -23,7 +24,17 @@ def get_tomograms(
     return crud.get_tomograms(collectionId=collectionId, **page)
 
 
-@router.get("/{collectionId}/processingJobs", response_model=Paged[ProcessingJobOut])
+@router.post("/{collectionId}/tomograms/reprocessing")
+def initiate_reprocessing(
+    parameters: ReprocessingParameters = Body(), collectionId: int = Depends(auth)
+):
+    """Initiate data reprocessing"""
+    return crud.initiate_reprocessing(parameters, collectionId)
+
+
+@router.get(
+    "/{collectionId}/processingJobs", response_model=Paged[ProcessingJobResponse]
+)
 def get_processing_jobs(
     collectionId: int = Depends(auth),
     page: dict[str, int] = Depends(pagination),

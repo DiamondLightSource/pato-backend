@@ -4,6 +4,10 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 
+class ConfigurationError(Exception):
+    pass
+
+
 @dataclass
 class Auth:
     endpoint: str = "https://localhost/auth"
@@ -19,9 +23,19 @@ class ISPyB:
     overflow: int = 20
 
 
+@dataclass
+class MQ:
+    host: str
+    port: int
+    queue: str
+    user: str = "guest"
+    password: str = "guest"
+
+
 class Config:
     auth: Auth
     ispyb: ISPyB
+    mq: MQ
 
     @staticmethod
     def set():
@@ -30,5 +44,17 @@ class Config:
                 conf = json.load(fp)
                 Config.auth = Auth(**conf["auth"])
                 Config.ispyb = ISPyB(**conf["ispyb"])
-        except (FileNotFoundError, KeyError):
-            pass
+                Config.mq = MQ(**conf["mq"])
+
+                Config.mq.user = os.environ["MQ_USER"]
+                Config.mq.password = os.environ["MQ_PASS"]
+        except (FileNotFoundError, TypeError) as exc:
+            raise ConfigurationError(str(exc).replace(".__init__()", "")) from exc
+        except KeyError as exc:
+            msg = str(exc)
+            if msg.isupper():
+                raise ConfigurationError(f"Environment variable {str(exc)} is missing")
+            else:
+                raise ConfigurationError(
+                    f"Key {str(exc)} missing from configuration file"
+                )

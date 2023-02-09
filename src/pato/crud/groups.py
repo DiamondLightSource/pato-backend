@@ -4,7 +4,7 @@ from sqlalchemy import func as f
 from sqlalchemy import or_
 
 from ..auth import User
-from ..models.response import DataCollectionGroupSummaryOut, DataCollectionSummaryOut
+from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..models.table import (
     BLSession,
     DataCollection,
@@ -24,7 +24,7 @@ def get_collection_groups(
     proposal: Optional[str],
     search: str,
     user: User,
-) -> Paged[DataCollectionGroupSummaryOut]:
+) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         db.session.query(
             *unravel(DataCollectionGroup),
@@ -75,7 +75,7 @@ def get_collections(
     search: str,
     user: User,
     onlyTomograms: bool,
-) -> Paged[DataCollectionSummaryOut]:
+) -> Paged[DataCollectionSummary]:
     sub_with_row = check_session(
         (
             db.session.query(

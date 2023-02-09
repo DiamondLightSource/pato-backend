@@ -2,11 +2,23 @@ from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+
 from pato.auth.micro import oauth2_scheme
 from pato.main import app
 from pato.utils.auth import User
+from pato.utils.database import db
+from pato.utils.session import _session
 
 from .users import admin
+
+engine = create_engine(
+    url="mysql://root:ispyb-root@127.0.0.1/ispyb",
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    pool_size=3,
+    max_overflow=5,
+)
 
 
 async def mock_send(_, _1, _2, s):
@@ -28,7 +40,15 @@ def new_perms(item_id, _, _0):
 
 @pytest.fixture(scope="session")
 def client():
+    conn = engine.connect()
+    transaction = conn.begin()
+    session = _session(bind=conn)
+    db.set_session(session)
+
     yield TestClient(app)
+
+    transaction.rollback()
+    conn.close()
 
 
 def empty_method():

@@ -29,7 +29,7 @@ class OrmBaseModel(BaseModel):
         orm_mode = True
 
 
-class ProposalOut(BaseModel):
+class ProposalResponse(BaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
     title: Optional[str] = Field(..., max_length=200)
@@ -41,7 +41,7 @@ class ProposalOut(BaseModel):
     sessions: int
 
 
-class VisitOut(OrmBaseModel):
+class SessionResponse(OrmBaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     beamLineSetupId: Optional[int]
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
@@ -91,7 +91,7 @@ class VisitOut(OrmBaseModel):
     dataCollectionGroupId: Optional[int]
 
 
-class DataCollectionSummaryOut(BaseModel):
+class DataCollectionSummary(BaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
@@ -218,7 +218,7 @@ class DataCollectionSummaryOut(BaseModel):
     tomograms: int
 
 
-class DataCollectionGroupSummaryOut(BaseModel):
+class DataCollectionGroupSummaryResponse(BaseModel):
     dataCollectionGroupId: int = Field(
         ..., lt=1e9, description="Data Collection Group ID"
     )
@@ -370,7 +370,7 @@ class GenericPlot(BaseModel):
     items: list[DataPoint]
 
 
-class TomogramOut(OrmBaseModel):
+class TomogramResponse(OrmBaseModel):
     tomogramId: int
     dataCollectionId: int
     autoProcProgramId: Optional[int]
@@ -409,7 +409,7 @@ class AutoProcProgram(OrmBaseModel):
     recordTimeStamp: Optional[datetime]
 
 
-class ProcessingJobOut(BaseModel):
+class ProcessingJobResponse(BaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
     status: str
