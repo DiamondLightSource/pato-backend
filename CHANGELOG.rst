@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.5.0 (--/02/2023)
+++++++++++
+
+**Added**
+
+- User can now initiate tomogram reprocessing for a given data collection :code:`dataCollections/{collectionId}/tomograms/reprocessing`
+
+++++++++++
 v0.4.0 (07/02/2023)
 ++++++++++
 

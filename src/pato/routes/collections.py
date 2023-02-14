@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, status
 
 from ..auth import Permissions
 from ..crud import collections as crud
 from ..crud.generic import get_ice_histogram_generic
 from ..models.parameters import ReprocessingParameters
-from ..models.response import FullMovie, ProcessingJobResponse, TomogramResponse
+from ..models.response import (
+    FullMovie,
+    ProcessingJobResponse,
+    ReprocessingResponse,
+    TomogramResponse,
+)
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -24,7 +29,11 @@ def get_tomograms(
     return crud.get_tomograms(collectionId=collectionId, **page)
 
 
-@router.post("/{collectionId}/tomograms/reprocessing")
+@router.post(
+    "/{collectionId}/tomograms/reprocessing",
+    response_model=ReprocessingResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
 def initiate_reprocessing(
     parameters: ReprocessingParameters = Body(), collectionId: int = Depends(auth)
 ):

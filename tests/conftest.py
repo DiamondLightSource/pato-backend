@@ -1,14 +1,14 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from pato.auth.micro import oauth2_scheme
 from pato.main import app
 from pato.utils.auth import User
 from pato.utils.database import db
-from pato.utils.session import _session
 
 from .users import admin
 
@@ -19,6 +19,10 @@ engine = create_engine(
     pool_size=3,
     max_overflow=5,
 )
+
+Session = sessionmaker()
+app.user_middleware.clear()
+app.middleware_stack = app.build_middleware_stack()
 
 
 async def mock_send(_, _1, _2, s):
@@ -38,14 +42,16 @@ def new_perms(item_id, _, _0):
     return item_id
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def client():
+    client = TestClient(app)
     conn = engine.connect()
     transaction = conn.begin()
-    session = _session(bind=conn)
+    session = Session(bind=conn, join_transaction_mode="create_savepoint")
+
     db.set_session(session)
 
-    yield TestClient(app)
+    yield client
 
     transaction.rollback()
     conn.close()
@@ -65,6 +71,17 @@ def mock_user(request):
     app.dependency_overrides[User] = lambda: request.param
     yield
     app.dependency_overrides[User] = old_overrides
+
+
+class NewPika:
+    def __init__(self):
+        self.publish = MagicMock()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def mock_pika():
+    with patch("pato.crud.collections.pika_publisher", new=NewPika()) as _fixture:
+        yield _fixture
 
 
 @pytest.fixture(scope="function")

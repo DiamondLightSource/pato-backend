@@ -3,7 +3,7 @@ import os
 import re
 
 from fastapi import HTTPException, status
-from sqlalchemy import and_, case
+from sqlalchemy import Column, and_, case, select
 
 from ..models.parameters import ReprocessingParameters
 from ..models.response import FullMovie, ProcessingJobResponse
@@ -18,7 +18,7 @@ from ..models.table import (
     Tomogram,
 )
 from ..utils.database import Paged, db, paginate
-from ..utils.pika import send_message
+from ..utils.pika import pika_publisher
 
 
 def get_tomograms(limit: int, page: int, collectionId: int):
@@ -41,23 +41,21 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
 
 
 _job_status_description = case(
-    [
-        (AutoProcProgram.processingJobId == None, "Submitted"),  # noqa: E711
-        (AutoProcProgram.processingStatus == 1, "Success"),
-        (AutoProcProgram.processingStatus == 0, "Fail"),
-        (
-            and_(
-                AutoProcProgram.processingStatus == None,  # noqa: E711
-                AutoProcProgram.processingStartTime != None,  # noqa: E711
-            ),
-            "Running",
+    (AutoProcProgram.processingJobId == None, "Submitted"),  # noqa: E711
+    (AutoProcProgram.processingStatus == 1, "Success"),
+    (AutoProcProgram.processingStatus == 0, "Fail"),
+    (
+        and_(
+            AutoProcProgram.processingStatus == None,  # noqa: E711
+            AutoProcProgram.processingStartTime != None,  # noqa: E711
         ),
-    ],
+        "Running",
+    ),
     else_="Queued",
 )
 
 
-def _generate_proc_job_params(proc_job_id: int, params: dict):
+def _generate_proc_job_params(proc_job_id: int | Column[int], params: dict):
     return [
         ProcessingJobParameter(
             processingJobId=proc_job_id, parameterKey=key, parameterValue=value
@@ -75,20 +73,13 @@ def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
     db.session.add(new_job)
     db.session.flush()
 
-    motion_correction_records = (
-        db.session.query(MotionCorrection.movieId, MotionCorrection.micrographFullPath)
+    motion_correction_records = db.session.execute(
+        select(MotionCorrection.movieId, MotionCorrection.micrographFullPath)
         .select_from(Tomogram)
         .filter_by(dataCollectionId=collectionId)
         .join(TiltImageAlignment)
         .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
-        .all()
     )
-
-    if motion_correction_records is None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Data collection has no valid motion correction records",
-        )
 
     input_file_list = []
 
@@ -119,20 +110,32 @@ def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
                 detail="Micrograph file name has invalid tilt angle",
             )
 
-    stack_file = (
-        db.session.query(Tomogram.stackFile)
-        .filter_by(dataCollectionId=collectionId)
-        .order_by(Tomogram.tomogramId)
-        .limit(1)
-        .scalar()
-    )
-
-    if stack_file is None:
+    if len(input_file_list) == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="No tomogram found in collection for reprocessing",
+            detail="Data collection has no valid motion correction records",
         )
 
+    stack_files = db.session.execute(
+        select(Tomogram.stackFile)
+        .filter_by(dataCollectionId=collectionId)
+        .order_by(Tomogram.tomogramId)
+        .limit(3)
+    ).all()
+
+    if stack_files is None or len(stack_files) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No valid tomogram found in collection for reprocessing",
+        )
+
+    if len(stack_files) > 2:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Too many autoprocessing programs already exist",
+        )
+
+    stack_file: str = stack_files[0].stackFile
     stack_file_regex = re.match(r".*\(([0-9]+)\)", stack_file)
 
     # The stack file name should be the name of a stack file present in one of the
@@ -167,7 +170,7 @@ def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
         },
     }
 
-    send_message(json.dumps(message))
+    pika_publisher.publish(json.dumps(message))
 
     return {"processingJobId": new_job.processingJobId}
 
