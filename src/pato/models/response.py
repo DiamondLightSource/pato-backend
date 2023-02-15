@@ -25,7 +25,7 @@ class OrmBaseModel(BaseModel):
 
 
 class DataPoint(OrmBaseModel):
-    x: float
+    x: float | str
     y: float
 
 

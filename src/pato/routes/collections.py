@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Depends, status
 
 from ..auth import Permissions
 from ..crud import collections as crud
-from ..crud.generic import get_ice_histogram_generic
+from ..crud import generic
 from ..models.parameters import ReprocessingParameters
 from ..models.response import (
     FullMovie,
@@ -65,8 +65,58 @@ def get_motion_correction(
 @router.get(
     "/{collectionId}/iceThickness",
 )
-def get_ice_histogram(dataBin: float = 10000, collectionId: int = Depends(auth)):
+def get_ice_histogram(
+    dataBin: float = 10000, minimum: float = 0, collectionId: int = Depends(auth)
+):
     """Get relative ice thickness histogram"""
-    return get_ice_histogram_generic(
-        parent_type="dataCollection", parent_id=collectionId, dataBin=dataBin
+    return generic.get_ice_histogram(
+        parent_type="dataCollection",
+        parent_id=collectionId,
+        minimum=minimum,
+        dataBin=dataBin,
+    )
+
+
+@router.get(
+    "/{collectionId}/totalMotion",
+)
+def get_motion_histogram(
+    dataBin: float = 50, minimum: float = 0, collectionId: int = Depends(auth)
+):
+    """Get total motion histogram"""
+    return generic.get_motion(
+        parent_type="dataCollection",
+        parent_id=collectionId,
+        minimum=minimum,
+        dataBin=dataBin,
+    )
+
+
+@router.get(
+    "/{collectionId}/resolution",
+)
+def get_resolution(
+    dataBin: float = 1, minimum: float = 0, collectionId: int = Depends(auth)
+):
+    """Get estimated resolution histogram"""
+    return generic.get_resolution(
+        parent_type="dataCollection",
+        parent_id=collectionId,
+        minimum=minimum,
+        dataBin=dataBin,
+    )
+
+
+@router.get(
+    "/{collectionId}/particles",
+)
+def get_particle_count(
+    dataBin: float = 50, minimum: float = 0, collectionId: int = Depends(auth)
+):
+    """Get particle count histogram"""
+    return generic.get_particle_count(
+        parent_type="dataCollection",
+        parent_id=collectionId,
+        minimum=minimum,
+        dataBin=dataBin,
     )
