@@ -2,6 +2,20 @@
 Changelog
 ==========
 
+++++++++++
+v0.5.0 (--/02/2023)
+++++++++++
+
+**Added**
+
+- User can now initiate tomogram reprocessing for a given data collection :code:`dataCollections/{collectionId}/tomograms/reprocessing`
+- Collection/autoprocessing (:code:`/dataCollections/{collectionId}` and :code:`/autoProc/{autoProcId}`) program frequency data is available for total motion (:code:`/motion`), estimated resolution (:code:`/resolution`) and particle count (:code:`/particles`)
+
+**Changed**
+
+- Fixes bug with histograms that omitted bins with no items
+
+++++++++++
 v0.4.0 (07/02/2023)
 ++++++++++
 

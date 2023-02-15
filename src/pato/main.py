@@ -12,6 +12,7 @@ from .routes import (
     tomograms,
 )
 from .utils.database import get_session
+from .utils.pika import pika_publisher
 
 app = FastAPI(version=__version__)
 
@@ -28,6 +29,11 @@ app.add_middleware(
 async def get_session_as_middleware(request, call_next):
     with get_session():
         return await call_next(request)
+
+
+@app.on_event("startup")
+async def startup():
+    pika_publisher.connect()
 
 
 app.include_router(sessions.router)

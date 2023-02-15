@@ -1,7 +1,7 @@
 from sqlalchemy import or_
 from sqlalchemy.orm import Query
 
-from ..auth import User, is_admin, is_em_staff
+from ..auth import User, is_admin
 from ..models.table import BLSession, ProposalHasPerson, SessionHasPerson
 from .config import Config
 
@@ -20,9 +20,6 @@ def check_session(query: Query, user: User):
     if is_admin(user.permissions):
         return query
 
-    if is_em_staff(user.permissions):
-        return query.filter(BLSession.beamLineName.like("m__"))
-
     return query.join(SessionHasPerson, isouter=True).filter(
         or_(
             BLSession.beamLineName.in_(get_allowed_beamlines(user.permissions)),
@@ -34,9 +31,6 @@ def check_session(query: Query, user: User):
 def check_proposal(query: Query, user: User):
     if is_admin(user.permissions):
         return query
-
-    if is_em_staff(user.permissions):
-        return query.filter(BLSession.beamLineName.like("m__"))
 
     return query.join(ProposalHasPerson, isouter=True).filter(
         or_(

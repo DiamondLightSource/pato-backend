@@ -1,9 +1,7 @@
-import contextlib
 import os
-from typing import Any, Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 from .config import Config
 
@@ -16,16 +14,3 @@ engine = create_engine(
 )
 
 _session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-@contextlib.contextmanager
-def get_session() -> Generator[Session, Any, None]:
-    session = _session()
-    try:
-        yield session
-        session.commit()
-    except:  # noqa
-        session.rollback()
-        raise
-    finally:
-        session.close()

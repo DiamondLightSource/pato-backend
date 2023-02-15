@@ -2,22 +2,16 @@
   "auth": {
     "endpoint": "https://ebic-staging.diamond.ac.uk/auth/",
     "read_all_perms": [11, 26],
-    "read_em_perms": [8],
     "type": "micro",
     "beamline_mapping": {
       "1": ["i03"],
-      "95": ["b18"],
-      "98": ["i08"],
-      "101": ["i11"],
-      "104": ["i14"],
-      "107": ["i16"],
-      "110": ["i18"],
-      "113": ["i20"],
-      "116": ["k11"],
-      "119": ["i12"],
-      "122": ["i13"],
-      "125": ["b24"]
+      "8": ["m12"]
     }
+  },
+  "mq": {
+    "host": "127.0.0.1",
+    "port": 5672,
+    "queue": "processing_recipe"
   },
   "ispyb": { "pool": 10, "overflow": 20 }
 }

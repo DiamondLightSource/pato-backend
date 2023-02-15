@@ -4,14 +4,14 @@ from fastapi import APIRouter, Depends
 
 from ..auth import User
 from ..crud import sessions as crud
-from ..models.response import VisitOut
+from ..models.response import SessionResponse
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
 router = APIRouter(tags=["Sessions"], prefix="/sessions")
 
 
-@router.get("", response_model=Paged[VisitOut])
+@router.get("", response_model=Paged[SessionResponse])
 def get_sessions(
     page: dict[str, int] = Depends(pagination),
     proposal: str = None,

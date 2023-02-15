@@ -7,7 +7,7 @@ from ..models.response import (
     Classification2D,
     CtfImageNumberList,
     FullMovie,
-    TomogramOut,
+    TomogramResponse,
 )
 from ..models.table import (
     CTF,
@@ -26,7 +26,7 @@ from ..utils.database import Paged, db, paginate, unravel
 from ..utils.generic import validate_path
 
 
-def get_tomogram(autoProcId: int) -> TomogramOut:
+def get_tomogram(autoProcId: int) -> TomogramResponse:
     data = (
         db.session.query(Tomogram)
         .filter(Tomogram.autoProcProgramId == autoProcId)

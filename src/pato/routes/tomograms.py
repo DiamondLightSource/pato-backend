@@ -18,7 +18,7 @@ router = APIRouter(
 
 @router.get("/{tomogramId}/shiftPlot", response_model=GenericPlot)
 def get_shift_plot(tomogramId: int = Depends(auth)):
-    "Get X-Y shift plot data"
+    """Get X-Y shift plot data"""
     return crud.get_shift_plot(tomogramId)
 
 
@@ -26,7 +26,7 @@ def get_shift_plot(tomogramId: int = Depends(auth)):
 def get_motion_correction(
     tomogramId: int = Depends(auth), page: dict[str, int] = Depends(pagination)
 ):
-    "Get motion correction data for the given tomogram"
+    """Get motion correction data for the given tomogram"""
     return crud.get_motion_correction(tomogramId=tomogramId, **page)
 
 
