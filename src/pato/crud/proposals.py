@@ -27,6 +27,7 @@ def get_proposals(
         )
         .join(BLSession)
         .group_by(Proposal.proposalId)
+        .order_by(BLSession.startDate.desc())
     )
 
     return paginate(check_proposal(query, user), limit, page, slow_count=True)
