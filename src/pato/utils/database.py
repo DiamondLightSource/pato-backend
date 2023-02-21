@@ -38,7 +38,6 @@ def get_session() -> sqlalchemy.orm.Session:
     try:
         Database.set_session(db_session)
         yield db_session
-        db_session.commit()
     except Exception:
         db_session.rollback()
         raise
@@ -58,11 +57,12 @@ class Paged(GenericModel, Generic[T]):
 
     class Config:
         arbitrary_types_allowed = True
+        orm_mode = True
 
 
 def fast_count(query: Query) -> int:
     return db.session.execute(
-        query.statement.with_only_columns([func.count(literal_column("1"))]).order_by(
+        query.statement.with_only_columns(func.count(literal_column("1"))).order_by(
             None
         )
     ).scalar()

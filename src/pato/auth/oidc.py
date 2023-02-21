@@ -4,9 +4,7 @@ import requests
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from ..auth import is_admin, is_em_staff
-from ..models.response import Tomogram
-from ..models.table import BLSession, DataCollection, Movie, Person, SessionHasPerson
+from ..models.table import BLSession, DataCollection, Movie, Person
 from ..models.table import t_UserGroup_has_Permission as GroupHasPerm
 from ..models.table import t_UserGroup_has_Person as GroupHasPerson
 from ..utils.config import Config
@@ -92,42 +90,7 @@ class User(GenericUser):
 def _session_check(user: User, session: int) -> Literal[True]:
     """Checks if the user has permission to view data related to a session,
     or raises an error"""
-    if session is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Object does not exist in database",
-        )
-
-    if is_admin(user.permissions):
-        _session_exists(session)
-        return True
-
-    if is_em_staff(user.permissions):
-        if (
-            db.session.query(BLSession.sessionId)
-            .filter(
-                BLSession.sessionId == session,
-                BLSession.beamLineName.like("m__"),
-            )
-            .scalar()
-            is not None
-        ):
-            return True
-
-    if (
-        db.session.query(SessionHasPerson.sessionId)
-        .filter_by(sessionId=session, personId=user.id)
-        .scalar()
-        is not None
-    ):
-        return True
-
-    _session_exists(session)
-
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail="User not in the parent session",
-    )
+    raise NotImplementedError
 
 
 def _validate_collection(user: User, col_id: int):
@@ -141,17 +104,7 @@ def _validate_collection(user: User, col_id: int):
 
 
 def _validate_tomogram(user: User, tomo_id: int):
-    session_id = (
-        db.session.query(DataCollection.SESSIONID)
-        .select_from(Tomogram)
-        .filter_by(tomogramId=tomo_id)
-        .join(
-            DataCollection,
-            DataCollection.dataCollectionId == Tomogram.dataCollectionId,
-        )
-    ).scalar()
-
-    return _session_check(user, session_id)
+    raise NotImplementedError
 
 
 def _validate_movie(user: User, mov_id: int):

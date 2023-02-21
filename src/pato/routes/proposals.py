@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..auth import User
 from ..crud import proposals as crud
-from ..models.response import ProposalOut
+from ..models.response import ProposalResponse
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=Paged[ProposalOut])
+@router.get("", response_model=Paged[ProposalResponse])
 def get_proposals(
     page: dict[str, int] = Depends(pagination), search: str = "", user=Depends(User)
 ):

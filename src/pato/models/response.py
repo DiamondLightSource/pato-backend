@@ -19,17 +19,17 @@ class RotationAxisEnum(str, Enum):
     phi = "Phi"
 
 
-class DataPoint(BaseModel):
-    x: float
-    y: float
-
-
 class OrmBaseModel(BaseModel):
     class Config:
         orm_mode = True
 
 
-class ProposalOut(BaseModel):
+class DataPoint(OrmBaseModel):
+    x: float | str
+    y: float
+
+
+class ProposalResponse(OrmBaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
     title: Optional[str] = Field(..., max_length=200)
@@ -41,7 +41,7 @@ class ProposalOut(BaseModel):
     sessions: int
 
 
-class VisitOut(OrmBaseModel):
+class SessionResponse(OrmBaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     beamLineSetupId: Optional[int]
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
@@ -91,7 +91,7 @@ class VisitOut(OrmBaseModel):
     dataCollectionGroupId: Optional[int]
 
 
-class DataCollectionSummaryOut(BaseModel):
+class DataCollectionSummary(OrmBaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
     SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
@@ -168,19 +168,11 @@ class DataCollectionSummaryOut(BaseModel):
     beamSizeAtSampleY: Optional[float]
     centeringMethod: Optional[str] = Field(..., max_length=255)
     averageTemperature: Optional[float]
-    ACTUALSAMPLEBARCODE: Optional[str] = Field(..., max_length=24)
-    ACTUALSAMPLESLOTINCONTAINER: Optional[int]
-    ACTUALCONTAINERBARCODE: Optional[str] = Field(..., max_length=24)
-    ACTUALCONTAINERSLOTINSC: Optional[int]
     actualCenteringPosition: Optional[str] = Field(..., max_length=255)
     beamShape: Optional[str] = Field(..., max_length=24)
     dataCollectionGroupId: int
     POSITIONID: Optional[int]
     detectorId: Optional[int]
-    FOCALSPOTSIZEATSAMPLEX: Optional[float]
-    POLARISATION: Optional[float]
-    FOCALSPOTSIZEATSAMPLEY: Optional[float]
-    APERTUREID: Optional[int]
     screeningOrigId: Optional[int]
     startPositionId: Optional[int]
     endPositionId: Optional[int]
@@ -218,7 +210,7 @@ class DataCollectionSummaryOut(BaseModel):
     tomograms: int
 
 
-class DataCollectionGroupSummaryOut(BaseModel):
+class DataCollectionGroupSummaryResponse(OrmBaseModel):
     dataCollectionGroupId: int = Field(
         ..., lt=1e9, description="Data Collection Group ID"
     )
@@ -370,7 +362,7 @@ class GenericPlot(BaseModel):
     items: list[DataPoint]
 
 
-class TomogramOut(OrmBaseModel):
+class TomogramResponse(OrmBaseModel):
     tomogramId: int
     dataCollectionId: int
     autoProcProgramId: Optional[int]
@@ -409,7 +401,7 @@ class AutoProcProgram(OrmBaseModel):
     recordTimeStamp: Optional[datetime]
 
 
-class ProcessingJobOut(BaseModel):
+class ProcessingJobResponse(OrmBaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
     status: str
@@ -462,3 +454,7 @@ class IceThicknessWithAverage(OrmBaseModel):
         ...,
         comment="Average ice thickness data for movies belonging to autoproc. program",
     )
+
+
+class ReprocessingResponse(BaseModel):
+    processingJobId: int

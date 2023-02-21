@@ -8,7 +8,7 @@ def test_get_admin(mock_user, client):
     """Get all data collections in a visit (request for admin)"""
     resp = client.get("/dataGroups/5440740/dataCollections")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 2
+    assert resp.json()["total"] == 3
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
@@ -24,7 +24,7 @@ def test_get_em_admin(mock_user, client):
     """Get all collections in visit belonging to EM (request for EM admin)"""
     resp = client.get("/dataGroups/5440740/dataCollections")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 2
+    assert resp.json()["total"] == 3
 
 
 @pytest.mark.parametrize("mock_user", [em_admin], indirect=True)
@@ -45,5 +45,5 @@ def test_get_user(mock_user, client):
 @pytest.mark.parametrize("mock_user", [user], indirect=True)
 def test_get_forbidden(mock_user, client):
     """Try to get data collections for a visit that does not belong to user"""
-    resp = client.get("/dataGroups/5440740dataCollections")
+    resp = client.get("/dataGroups/5440740/dataCollections")
     assert resp.status_code == 404

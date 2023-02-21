@@ -5,13 +5,13 @@ from fastapi.responses import FileResponse
 
 from ..auth import Permissions
 from ..crud import autoproc as crud
-from ..crud.generic import get_ice_histogram_generic
+from ..crud import generic
 from ..models.response import (
     Classification2D,
     CtfImageNumberList,
     FullMovie,
     ParticlePicker,
-    TomogramOut,
+    TomogramResponse,
 )
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -24,7 +24,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{autoProcId}/tomogram", response_model=TomogramOut)
+@router.get("/{autoProcId}/tomogram", response_model=TomogramResponse)
 def get_tomogram(
     autoProcId: int = Depends(auth),
     page: dict[str, int] = Depends(pagination),
@@ -92,8 +92,46 @@ def get_particle_picker_image(particlePickerId: int, autoProcId: int = Depends(a
 @router.get(
     "/{autoProcId}/iceThickness",
 )
-def get_ice_histogram(dataBin: float = 10000, autoProcId: int = Depends(auth)):
+def get_ice_histogram(
+    dataBin: float = 10000, minimum: float = 0, autoProcId: int = Depends(auth)
+):
     """Get relative ice thickness histogram"""
-    return get_ice_histogram_generic(
-        parent_type="autoProc", parent_id=autoProcId, dataBin=dataBin
+    return generic.get_ice_histogram(
+        parent_type="autoProc", parent_id=autoProcId, minimum=minimum, dataBin=dataBin
+    )
+
+
+@router.get(
+    "/{autoProcId}/totalMotion",
+)
+def get_motion(
+    dataBin: float = 50, minimum: float = 0, autoProcId: int = Depends(auth)
+):
+    """Get total motion histogram"""
+    return generic.get_motion(
+        parent_type="autoProc", parent_id=autoProcId, minimum=minimum, dataBin=dataBin
+    )
+
+
+@router.get(
+    "/{autoProcId}/resolution",
+)
+def get_resolution(
+    dataBin: float = 1, minimum: float = 0, autoProcId: int = Depends(auth)
+):
+    """Get estimated resolution histogram"""
+    return generic.get_resolution(
+        parent_type="autoProc", parent_id=autoProcId, minimum=minimum, dataBin=dataBin
+    )
+
+
+@router.get(
+    "/{autoProcId}/particles",
+)
+def get_particle_count(
+    dataBin: float = 1, minimum: float = 0, autoProcId: int = Depends(auth)
+):
+    """Get particle count histogram"""
+    return generic.get_particle_count(
+        parent_type="autoProc", parent_id=autoProcId, minimum=minimum, dataBin=dataBin
     )

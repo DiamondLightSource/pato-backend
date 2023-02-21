@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..auth import User
 from ..crud import groups as crud
-from ..models.response import DataCollectionGroupSummaryOut, DataCollectionSummaryOut
+from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=Paged[DataCollectionGroupSummaryOut])
+@router.get("", response_model=Paged[DataCollectionGroupSummaryResponse])
 def get_collection_groups(
     session: int = None,
     proposal: str = None,
@@ -26,9 +26,7 @@ def get_collection_groups(
     )
 
 
-@router.get(
-    "/{groupId}/dataCollections", response_model=Paged[DataCollectionSummaryOut]
-)
+@router.get("/{groupId}/dataCollections", response_model=Paged[DataCollectionSummary])
 def get_collections(
     groupId: int = None,
     page: dict[str, int] = Depends(pagination),
