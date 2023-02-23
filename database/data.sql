@@ -4562,7 +4562,7 @@ CREATE TABLE `ParticleClassification` (
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Results of 2D or 2D classification';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Results of 2D or 2D classification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4571,7 +4571,7 @@ CREATE TABLE `ParticleClassification` (
 
 LOCK TABLES `ParticleClassification` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
-INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3);
+INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3),(6,1,'/mnt/test.jpg',30000,15,15,10,15,2,0.3),(7,1,'/mnt/test.jpg',40000,15,15,12,15,2,0.2),(8,1,'/mnt/test.jpg',60000,15,15,15,15,2,0.1);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4596,7 +4596,7 @@ CREATE TABLE `ParticleClassificationGroup` (
   KEY `ParticleClassificationGroup_fk_programId` (`programId`),
   CONSTRAINT `ParticleClassificationGroup_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ParticleClassificationGroup_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4605,7 +4605,7 @@ CREATE TABLE `ParticleClassificationGroup` (
 
 LOCK TABLES `ParticleClassificationGroup` WRITE;
 /*!40000 ALTER TABLE `ParticleClassificationGroup` DISABLE KEYS */;
-INSERT INTO `ParticleClassificationGroup` VALUES (1,1,56986680,'2D',1,10000,20000,'1');
+INSERT INTO `ParticleClassificationGroup` VALUES (1,1,56986680,'2D',1,10000,20000,'1'),(2,3,56986680,'3D',1,10000,20000,'1');
 /*!40000 ALTER TABLE `ParticleClassificationGroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4656,7 +4656,7 @@ CREATE TABLE `ParticlePicker` (
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4665,7 +4665,7 @@ CREATE TABLE `ParticlePicker` (
 
 LOCK TABLES `ParticlePicker` WRITE;
 /*!40000 ALTER TABLE `ParticlePicker` DISABLE KEYS */;
-INSERT INTO `ParticlePicker` VALUES (1,56986680,21,NULL,1,10,'/mnt/test.jpg'),(2,56986680,21,NULL,1,40,'/mnt/test.jpg');
+INSERT INTO `ParticlePicker` VALUES (1,56986680,21,NULL,1,10,'/mnt/test.jpg'),(2,56986680,21,NULL,1,40,'/mnt/test.jpg'),(3,56986680,21,NULL,1,40,'/mnt/test.jpg');
 /*!40000 ALTER TABLE `ParticlePicker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5160,7 +5160,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1166 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=1175 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5219,7 +5219,7 @@ CREATE TABLE `ProcessingJobParameter` (
   PRIMARY KEY (`processingJobParameterId`),
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2789 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2809 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8412,4 +8412,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-15 11:42:11
+-- Dump completed on 2023-02-23 10:12:48
