@@ -1,7 +1,7 @@
 from typing import Optional
 
 from sqlalchemy import func as f
-from sqlalchemy import or_
+from sqlalchemy import select
 
 from ..auth import User
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
@@ -26,27 +26,24 @@ def get_collection_groups(
     user: User,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
-        db.session.query(
+        select(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
             f.count(DataCollection.dataCollectionId).label("collections"),
         )
         .select_from(DataCollectionGroup)
-        .where(
-            or_(
-                DataCollectionGroup.comments.contains(search),
-                search == "",
-            ),
-        )
         .join(ExperimentType, isouter=True)
         .join(BLSession)
         .join(DataCollection)
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
+    if search != "":
+        query = query.filter(DataCollectionGroup.comments.contains(search))
+
     if proposal:
         session_id_query = (
-            db.session.query(BLSession.sessionId)
+            select(BLSession.sessionId)
             .select_from(Proposal)
             .where(f.concat(Proposal.proposalCode, Proposal.proposalNumber) == proposal)
             .join(BLSession)
@@ -58,11 +55,13 @@ def get_collection_groups(
             )
 
             query = query.filter(
-                DataCollectionGroup.sessionId == session_id_query.scalar()
+                DataCollectionGroup.sessionId == db.session.scalar(session_id_query)
             )
         else:
             query = query.filter(
-                DataCollectionGroup.sessionId.in_(session_id_query.all())
+                DataCollectionGroup.sessionId.in_(
+                    db.session.execute(session_id_query).all()
+                )
             )
 
     return paginate(check_session(query, user), limit, page, slow_count=True)
@@ -78,7 +77,7 @@ def get_collections(
 ) -> Paged[DataCollectionSummary]:
     sub_with_row = check_session(
         (
-            db.session.query(
+            select(
                 f.row_number()
                 .over(order_by=DataCollection.dataCollectionId)
                 .label("index"),
@@ -101,11 +100,9 @@ def get_collections(
 
     sub_result = sub_with_row.subquery()
 
-    query = db.session.query(*sub_result.c).filter(
-        or_(
-            sub_result.c.comments.contains(search),
-            search == "",
-        ),
-    )
+    query = select(*sub_result.c)
+
+    if search != "":
+        query = query.filter(sub_result.c.comments.contains(search))
 
     return paginate(query, limit, page, slow_count=True)

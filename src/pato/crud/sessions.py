@@ -3,13 +3,13 @@ from typing import Optional
 
 from sqlalchemy import and_
 from sqlalchemy import func as f
-from sqlalchemy import or_
+from sqlalchemy import or_, select
 
 from ..auth import User
 from ..models.response import SessionResponse
 from ..models.table import BLSession, DataCollectionGroup, Proposal
 from ..utils.auth import check_session
-from ..utils.database import Paged, db, fast_count, paginate, unravel
+from ..utils.database import Paged, fast_count, paginate, unravel
 
 
 def get_sessions(
@@ -23,7 +23,7 @@ def get_sessions(
     minStartDate: Optional[datetime],
     maxStartDate: Optional[datetime],
 ) -> Paged[SessionResponse]:
-    query = db.session.query(
+    query = select(
         *unravel(BLSession),
         f.concat(Proposal.proposalCode, Proposal.proposalNumber).label(
             "parentProposal"
@@ -58,16 +58,15 @@ def get_sessions(
     if maxStartDate is not None:
         query = query.filter(BLSession.startDate <= maxStartDate)
 
-    query = check_session(
-        query.filter(
+    if search != "":
+        query = query.filter(
             or_(
                 BLSession.beamLineName.contains(search),
                 BLSession.visit_number.contains(search),
-                search == "",
             )
-        ),
-        user,
-    )
+        )
+
+    query = check_session(query, user)
 
     total = fast_count(query)
 

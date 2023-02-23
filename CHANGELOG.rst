@@ -10,6 +10,10 @@ v0.6.0 (--/02/2023)
 
 - Support for 3D classification in single particle analysis
 
+**Changed**
+
+- Performance improvements for session, data collection group and data collection listing queries
+
 ++++++++++
 v0.5.0 (21/02/2023)
 ++++++++++

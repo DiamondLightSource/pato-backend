@@ -1,5 +1,4 @@
-from sqlalchemy import or_
-from sqlalchemy.orm import Query
+from sqlalchemy import Select, or_
 
 from ..auth import User, is_admin
 from ..models.table import BLSession, ProposalHasPerson, SessionHasPerson
@@ -16,7 +15,7 @@ def get_allowed_beamlines(perms: list[int]) -> set[str]:
     return allowed_beamlines
 
 
-def check_session(query: Query, user: User):
+def check_session(query: Select, user: User):
     if is_admin(user.permissions):
         return query
 
@@ -28,7 +27,7 @@ def check_session(query: Query, user: User):
     )
 
 
-def check_proposal(query: Query, user: User):
+def check_proposal(query: Select, user: User):
     if is_admin(user.permissions):
         return query
 

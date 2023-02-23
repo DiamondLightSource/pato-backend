@@ -1,7 +1,7 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from fastapi import HTTPException, status
-from sqlalchemy import and_
+from sqlalchemy import Column, and_, select
 
 from ..models.response import (
     Classification,
@@ -27,10 +27,8 @@ from ..utils.generic import validate_path
 
 
 def get_tomogram(autoProcId: int) -> TomogramResponse:
-    data = (
-        db.session.query(Tomogram)
-        .filter(Tomogram.autoProcProgramId == autoProcId)
-        .scalar()
+    data = db.session.scalar(
+        select(Tomogram).filter(Tomogram.autoProcProgramId == autoProcId)
     )
 
     if data is None:
@@ -44,7 +42,7 @@ def get_tomogram(autoProcId: int) -> TomogramResponse:
 
 def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullMovie]:
     query = (
-        db.session.query(MotionCorrection, CTF, Movie)
+        select(MotionCorrection, CTF, Movie)
         .filter(MotionCorrection.autoProcProgramId == autoProcId)
         .join(Movie)
         .join(CTF)
@@ -55,8 +53,8 @@ def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullM
 
 
 def get_ctf(autoProcId: int):
-    data = (
-        db.session.query(
+    data = db.session.execute(
+        select(
             CTF.estimatedResolution,
             CTF.estimatedDefocus,
             CTF.astigmatism,
@@ -65,15 +63,14 @@ def get_ctf(autoProcId: int):
         .filter(MotionCorrection.autoProcProgramId == autoProcId)
         .join(CTF)
         .order_by(MotionCorrection.imageNumber)
-        .all()
-    )
+    ).all()
 
     return CtfImageNumberList(items=data)
 
 
 def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int):
     query = (
-        db.session.query(
+        select(
             *unravel(ParticlePicker),
             Movie.createdTimeStamp,
             Movie.movieId,
@@ -89,7 +86,7 @@ def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int
     return paginate(query, limit, page)
 
 
-_2d_ordering = {
+_2d_ordering: dict[str, Column] = {
     "class": ParticleClassification.classDistribution,
     "resolution": ParticleClassification.estimatedResolution,
     "particles": ParticleClassification.particlesPerClass,
@@ -104,7 +101,7 @@ def get_classification(
     classType: Literal["2d", "3d"],
 ) -> Classification:
     query = (
-        db.session.query(
+        select(
             *unravel(ParticleClassificationGroup),
             *unravel(ParticleClassification),
             *unravel(CryoemInitialModel)
@@ -125,18 +122,18 @@ def get_classification(
 
 
 @validate_path
-def get_classification_image(classificationId: int) -> str:
-    return (
-        db.session.query(ParticleClassification.classImageFullPath)
-        .filter_by(particleClassificationId=classificationId)
-        .scalar()
+def get_classification_image(classificationId: int) -> Optional[str]:
+    return db.session.scalar(
+        select(ParticleClassification.classImageFullPath).filter_by(
+            particleClassificationId=classificationId
+        )
     )
 
 
 @validate_path
-def get_particle_picker_image(particlePickerId: int) -> str:
-    return (
-        db.session.query(ParticlePicker.summaryImageFullPath)
-        .filter_by(particlePickerId=particlePickerId)
-        .scalar()
+def get_particle_picker_image(particlePickerId: int) -> Optional[str]:
+    return db.session.scalar(
+        select(ParticlePicker.summaryImageFullPath).filter_by(
+            particlePickerId=particlePickerId
+        )
     )

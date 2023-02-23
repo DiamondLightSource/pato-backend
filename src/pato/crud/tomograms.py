@@ -1,8 +1,9 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from fastapi import HTTPException
 from sqlalchemy import Column
 from sqlalchemy import func as f
+from sqlalchemy import select
 
 from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
@@ -10,12 +11,12 @@ from ..utils.database import db, paginate
 from ..utils.generic import parse_json_file, validate_path
 
 
-def _get_generic_tomogram_file(tomogramId: int, column: Column) -> str:
-    return (
-        db.session.query(f.concat(Tomogram.fileDirectory, "/", column))
-        .filter(Tomogram.tomogramId == tomogramId)
-        .scalar()
-    )
+def _get_generic_tomogram_file(tomogramId: int, column: Column) -> Optional[str]:
+    return db.session.execute(
+        select(f.concat(Tomogram.fileDirectory, "/", column)).filter(
+            Tomogram.tomogramId == tomogramId
+        )
+    ).scalar()
 
 
 @validate_path
@@ -34,7 +35,7 @@ def get_shift_plot(tomogramId: int):
 
 def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWithTilt:
     query = (
-        db.session.query(MotionCorrection, TiltImageAlignment, CTF, Movie)
+        select(MotionCorrection, TiltImageAlignment, CTF, Movie)
         .filter(TiltImageAlignment.tomogramId == tomogramId)
         .join(
             MotionCorrection,
@@ -47,31 +48,35 @@ def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWi
 
     motion = dict(paginate(query, limit, page))
 
-    raw_total = (
-        db.session.query(
+    raw_total = db.session.execute(
+        select(
             f.count(Movie.movieId).label("total"),
         )
         .select_from(Tomogram)
-        .where(Tomogram.tomogramId == tomogramId)
+        .filter(Tomogram.tomogramId == tomogramId)
         .join(Movie, Movie.dataCollectionId == Tomogram.dataCollectionId)
-        .scalar()
-    )
+    ).scalar()
 
     return FullMovieWithTilt(**motion, rawTotal=raw_total)
 
 
 def get_ctf(tomogramId: int):
     data = (
-        db.session.query(
-            CTF.estimatedResolution,
-            CTF.estimatedDefocus,
-            CTF.astigmatism,
-            TiltImageAlignment.refinedTiltAngle,
+        db.session.execute(
+            select(
+                CTF.estimatedResolution,
+                CTF.estimatedDefocus,
+                CTF.astigmatism,
+                TiltImageAlignment.refinedTiltAngle,
+            )
+            .filter(TiltImageAlignment.tomogramId == tomogramId)
+            .join(
+                MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId
+            )
+            .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+            .order_by(TiltImageAlignment.refinedTiltAngle)
         )
-        .filter(TiltImageAlignment.tomogramId == tomogramId)
-        .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
-        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-        .order_by(TiltImageAlignment.refinedTiltAngle)
+        .scalars()
         .all()
     )
 
@@ -79,17 +84,17 @@ def get_ctf(tomogramId: int):
 
 
 @validate_path
-def get_slice_path(tomogramId: int) -> str:
+def get_slice_path(tomogramId: int):
     return _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
 
 
 @validate_path
-def get_movie_path(tomogramId: int) -> str:
+def get_movie_path(tomogramId: int):
     return _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
 
 
 @validate_path
-def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]) -> str:
+def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]):
     return _get_generic_tomogram_file(
         tomogramId, Tomogram.projXZ if axis == "xz" else Tomogram.projXY
     )
