@@ -3,7 +3,15 @@ Changelog
 ==========
 
 ++++++++++
-v0.5.0 (--/02/2023)
+v0.6.0 (--/02/2023)
+++++++++++
+
+**Added**
+
+- Support for 3D classification in single particle analysis
+
+++++++++++
+v0.5.0 (21/02/2023)
 ++++++++++
 
 **Added**

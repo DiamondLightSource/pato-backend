@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import and_
 
 from ..models.response import (
-    Classification2D,
+    Classification,
     CtfImageNumberList,
     FullMovie,
     TomogramResponse,
@@ -96,12 +96,13 @@ _2d_ordering = {
 }
 
 
-def get_2d_classification(
+def get_classification(
     autoProcId: int,
     limit: int,
     page: int,
     sortBy: Literal["class", "particles", "resolution"],
-) -> Classification2D:
+    classType: Literal["2d", "3d"],
+) -> Classification:
     query = (
         db.session.query(
             *unravel(ParticleClassificationGroup),
@@ -111,7 +112,7 @@ def get_2d_classification(
         .filter(
             and_(
                 ParticleClassificationGroup.programId == autoProcId,
-                ParticleClassificationGroup.type == "2d",
+                ParticleClassificationGroup.type == classType.upper(),
             )
         )
         .join(ParticleClassification, isouter=True)
@@ -124,7 +125,7 @@ def get_2d_classification(
 
 
 @validate_path
-def get_2d_classification_image(classificationId: int) -> str:
+def get_classification_image(classificationId: int) -> str:
     return (
         db.session.query(ParticleClassification.classImageFullPath)
         .filter_by(particleClassificationId=classificationId)

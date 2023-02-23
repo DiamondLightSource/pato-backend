@@ -7,7 +7,7 @@ from ..auth import Permissions
 from ..crud import autoproc as crud
 from ..crud import generic
 from ..models.response import (
-    Classification2D,
+    Classification,
     CtfImageNumberList,
     FullMovie,
     ParticlePicker,
@@ -61,23 +61,26 @@ def get_particle_picker(
     )
 
 
-@router.get("/{autoProcId}/classification", response_model=Paged[Classification2D])
-def get_2d_classification(
+@router.get("/{autoProcId}/classification", response_model=Paged[Classification])
+def get_classification(
     autoProcId: int = Depends(auth),
     sortBy: Literal["class", "particles", "resolution"] = "particles",
+    classType: Literal["2d", "3d"] = "2d",
     page: dict[str, int] = Depends(pagination),
 ):
-    """Get 2d classification data"""
-    return crud.get_2d_classification(autoProcId=autoProcId, sortBy=sortBy, **page)
+    """Get classification data"""
+    return crud.get_classification(
+        autoProcId=autoProcId, sortBy=sortBy, classType=classType, **page
+    )
 
 
 @router.get(
     "/{autoProcId}/classification/{classificationId}/image",
     response_class=FileResponse,
 )
-def get_2d_classification_image(classificationId: int, autoProcId: int = Depends(auth)):
-    """Get class image"""
-    return crud.get_2d_classification_image(classificationId=classificationId)
+def get_classification_image(classificationId: int, autoProcId: int = Depends(auth)):
+    """Get class' image representation or MRC file"""
+    return crud.get_classification_image(classificationId=classificationId)
 
 
 @router.get(
