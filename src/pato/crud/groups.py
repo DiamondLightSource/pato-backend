@@ -22,7 +22,7 @@ def get_collection_groups(
     page: int,
     session: Optional[int],
     proposal: Optional[str],
-    search: str,
+    search: Optional[str],
     user: User,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
@@ -38,7 +38,7 @@ def get_collection_groups(
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
-    if search != "":
+    if search is not None:
         query = query.filter(DataCollectionGroup.comments.contains(search))
 
     if proposal:
@@ -71,7 +71,7 @@ def get_collections(
     limit: int,
     page: int,
     groupId: Optional[int],
-    search: str,
+    search: Optional[str],
     user: User,
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
@@ -102,7 +102,7 @@ def get_collections(
 
     query = select(*sub_result.c)
 
-    if search != "":
+    if search is not None:
         query = query.filter(sub_result.c.comments.contains(search))
 
     return paginate(query, limit, page, slow_count=True)

@@ -16,30 +16,30 @@ from ..utils.generic import parse_json_file, validate_path
 
 @validate_path
 def get_fft_path(movieId: int) -> Optional[str]:
-    return db.session.execute(
+    return db.session.scalar(
         select(CTF.fftTheoreticalFullPath)
         .select_from(MotionCorrection)
         .filter(MotionCorrection.movieId == movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-    ).scalar()
+    )
 
 
 @validate_path
 def get_micrograph_path(movieId: int) -> Optional[str]:
-    return db.session.execute(
+    return db.session.scalar(
         select(MotionCorrection.micrographSnapshotFullPath).filter(
             MotionCorrection.movieId == movieId
         )
-    ).scalar()
+    )
 
 
 @validate_path
 def _get_drift_path(movieId: int) -> Optional[str]:
-    return db.session.execute(
+    return db.session.scalar(
         select(MotionCorrection.driftPlotFullPath).filter(
             MotionCorrection.movieId == movieId
         )
-    ).scalar()
+    )
 
 
 def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
@@ -65,12 +65,12 @@ def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
 def get_relative_ice_thickness(
     movieId: int, getAverages: bool
 ) -> IceThicknessWithAverage:
-    movie_data = db.session.execute(
+    movie_data = db.session.scalar(
         select(RelativeIceThickness)
         .select_from(MotionCorrection)
         .filter_by(movieId=movieId)
         .join(RelativeIceThickness)
-    ).scalar()
+    )
 
     if getAverages:
         averages = db.session.execute(

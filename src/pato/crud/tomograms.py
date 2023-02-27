@@ -12,11 +12,11 @@ from ..utils.generic import parse_json_file, validate_path
 
 
 def _get_generic_tomogram_file(tomogramId: int, column: Column) -> Optional[str]:
-    return db.session.execute(
+    return db.session.scalar(
         select(f.concat(Tomogram.fileDirectory, "/", column)).filter(
             Tomogram.tomogramId == tomogramId
         )
-    ).scalar()
+    )
 
 
 @validate_path
@@ -48,37 +48,31 @@ def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWi
 
     motion = dict(paginate(query, limit, page))
 
-    raw_total = db.session.execute(
+    raw_total = db.session.scalar(
         select(
             f.count(Movie.movieId).label("total"),
         )
         .select_from(Tomogram)
         .filter(Tomogram.tomogramId == tomogramId)
         .join(Movie, Movie.dataCollectionId == Tomogram.dataCollectionId)
-    ).scalar()
+    )
 
     return FullMovieWithTilt(**motion, rawTotal=raw_total)
 
 
 def get_ctf(tomogramId: int):
-    data = (
-        db.session.execute(
-            select(
-                CTF.estimatedResolution,
-                CTF.estimatedDefocus,
-                CTF.astigmatism,
-                TiltImageAlignment.refinedTiltAngle,
-            )
-            .filter(TiltImageAlignment.tomogramId == tomogramId)
-            .join(
-                MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId
-            )
-            .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-            .order_by(TiltImageAlignment.refinedTiltAngle)
+    data = db.session.scalars(
+        select(
+            CTF.estimatedResolution,
+            CTF.estimatedDefocus,
+            CTF.astigmatism,
+            TiltImageAlignment.refinedTiltAngle,
         )
-        .scalars()
-        .all()
-    )
+        .filter(TiltImageAlignment.tomogramId == tomogramId)
+        .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
+        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .order_by(TiltImageAlignment.refinedTiltAngle)
+    ).all()
 
     return CtfTiltAlignList(items=data)
 

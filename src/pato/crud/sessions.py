@@ -17,7 +17,7 @@ def get_sessions(
     page: int,
     user: User,
     proposal: Optional[str],
-    search: str,
+    search: Optional[str],
     minEndDate: Optional[datetime],
     maxEndDate: Optional[datetime],
     minStartDate: Optional[datetime],
@@ -58,7 +58,7 @@ def get_sessions(
     if maxStartDate is not None:
         query = query.filter(BLSession.startDate <= maxStartDate)
 
-    if search != "":
+    if search is not None:
         query = query.filter(
             or_(
                 BLSession.beamLineName.contains(search),

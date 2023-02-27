@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 
@@ -14,12 +15,12 @@ router = APIRouter(tags=["Sessions"], prefix="/sessions")
 @router.get("", response_model=Paged[SessionResponse])
 def get_sessions(
     page: dict[str, int] = Depends(pagination),
-    proposal: str = None,
-    search: str = "",
-    minEndDate: datetime = None,
-    maxEndDate: datetime = None,
-    minStartDate: datetime = None,
-    maxStartDate: datetime = None,
+    proposal: Optional[str] = None,
+    search: Optional[str] = None,
+    minEndDate: Optional[datetime] = None,
+    maxEndDate: Optional[datetime] = None,
+    minStartDate: Optional[datetime] = None,
+    maxStartDate: Optional[datetime] = None,
     user=Depends(User),
 ):
     """List visits belonging to a proposal"""
