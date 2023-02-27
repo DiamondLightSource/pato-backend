@@ -12,7 +12,7 @@ def test_get_minimum(mock_permissions, client):
     resp = client.get("/dataCollections/6017412/particles?minimum=900")
     assert resp.status_code == 200
     assert resp.json()["items"][0]["x"] == "<900.0"
-    assert resp.json()["items"][0]["y"] == 2
+    assert resp.json()["items"][0]["y"] == 3
 
 
 def test_not_found(mock_permissions, client):

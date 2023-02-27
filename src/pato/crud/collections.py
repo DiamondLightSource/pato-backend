@@ -17,19 +17,19 @@ from ..models.table import (
     TiltImageAlignment,
     Tomogram,
 )
-from ..utils.database import Paged, db, paginate
+from ..utils.database import Paged, db, paginate, unravel
 from ..utils.pika import pika_publisher
 
 
 def get_tomograms(limit: int, page: int, collectionId: int):
-    query = db.session.query(Tomogram).filter(Tomogram.dataCollectionId == collectionId)
+    query = select(*unravel(Tomogram)).filter(Tomogram.dataCollectionId == collectionId)
 
     return paginate(query, limit, page)
 
 
 def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[FullMovie]:
     query = (
-        db.session.query(MotionCorrection, CTF, Movie)
+        select(MotionCorrection, CTF, Movie)
         .filter(Movie.dataCollectionId == collectionId)
         .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
@@ -79,7 +79,7 @@ def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
         .filter_by(dataCollectionId=collectionId)
         .join(TiltImageAlignment)
         .join(MotionCorrection, MotionCorrection.movieId == TiltImageAlignment.movieId)
-    )
+    ).all()
 
     input_file_list = []
 
@@ -182,17 +182,11 @@ def get_processing_jobs(
     search: str,
 ) -> Paged[ProcessingJobResponse]:
     query = (
-        db.session.query(
-            AutoProcProgram, ProcessingJob, _job_status_description.label("status")
-        )
+        select(AutoProcProgram, ProcessingJob, _job_status_description.label("status"))
         .select_from(ProcessingJob)
         .join(AutoProcProgram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
         .order_by(ProcessingJob.processingJobId.desc())
     )
 
-    return paginate(
-        query,
-        limit,
-        page,
-    )
+    return paginate(query, limit, page, slow_count=False)

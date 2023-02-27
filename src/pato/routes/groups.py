@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends
 
 from ..auth import User
@@ -14,10 +16,10 @@ router = APIRouter(
 
 @router.get("", response_model=Paged[DataCollectionGroupSummaryResponse])
 def get_collection_groups(
-    session: int = None,
-    proposal: str = None,
+    session: Optional[int] = None,
+    proposal: Optional[str] = None,
     page: dict[str, int] = Depends(pagination),
-    search: str = "",
+    search: Optional[str] = None,
     user=Depends(User),
 ):
     """List collection groups belonging to a session"""
@@ -28,9 +30,9 @@ def get_collection_groups(
 
 @router.get("/{groupId}/dataCollections", response_model=Paged[DataCollectionSummary])
 def get_collections(
-    groupId: int = None,
+    groupId: Optional[int] = None,
     page: dict[str, int] = Depends(pagination),
-    search: str = "",
+    search: Optional[str] = None,
     onlyTomograms: bool = False,
     user=Depends(User),
 ):
