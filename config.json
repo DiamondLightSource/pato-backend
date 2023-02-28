@@ -1,6 +1,6 @@
 {
   "auth": {
-    "endpoint": "https://ebic-staging.diamond.ac.uk/auth/",
+    "endpoint": "http://localhost",
     "read_all_perms": [11, 26],
     "type": "micro",
     "beamline_mapping": {
