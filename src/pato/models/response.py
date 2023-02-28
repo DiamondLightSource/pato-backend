@@ -417,7 +417,7 @@ class ParticlePicker(OrmBaseModel):
     createdTimeStamp: Optional[datetime]
 
 
-class Classification2D(OrmBaseModel):
+class Classification(OrmBaseModel):
     particleClassificationGroupId: int
     particlePickerId: int
     programId: int
@@ -428,7 +428,7 @@ class Classification2D(OrmBaseModel):
     symmetry: str
     particleClassificationId: int
     classNumber: int
-    classImageFullPath: str
+    classImageFullPath: Optional[str]
     particlesPerClass: Optional[int]
     rotationAccuracy: float
     translationAccuracy: float

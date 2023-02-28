@@ -7,7 +7,7 @@ def test_get_user(mock_permissions, client):
     """Get particle picking data for an autoprocessing program"""
     resp = client.get("/autoProc/56986680/particlePicker")
     assert resp.status_code == 200
-    assert len(resp.json()["items"]) == 6
+    assert len(resp.json()["items"]) == 7
 
 
 def test_get_user_not_null(mock_permissions, client):
@@ -15,7 +15,7 @@ def test_get_user_not_null(mock_permissions, client):
     particle picking rows)"""
     resp = client.get("/autoProc/56986680/particlePicker?filterNull=true")
     assert resp.status_code == 200
-    assert len(resp.json()["items"]) == 2
+    assert len(resp.json()["items"]) == 3
 
 
 def test_get_image(mock_permissions, client):

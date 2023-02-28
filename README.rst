@@ -30,12 +30,7 @@ Running development server on your machine:
 
 Running Kubernetes deployment for frontend and API:
 
-1. Build and push frontend/backend images to your local repository (remember to change the location in the configuration file).
-2. Create a secret (or alter the configuration file) containing the SQL database URL, placing it under the :code:`SQL_DATABASE_URL` environment variable in the Kubernetes deployment section.
-3. Apply the changes and create the LoadBalancer service, ingress and pod with :code:`kubectl apply -f deployment.yaml`
-4. Access the deployment (in the frontend) through the host provided to the ingress, and communicate with the API through the same host, followed by :code:`/api`
-
-Note: you may need to adapt some deployment configurations for it to work on an environment that differs from the one used here. It is recommended to carefully study all configuration options as they could possibly break your deployment.
+1. View `PATo Helm <https://gitlab.diamond.ac.uk/lims/pato-helm>`_.
 
 ============
 Testing

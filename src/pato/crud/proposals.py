@@ -1,11 +1,11 @@
 from sqlalchemy import func as f
-from sqlalchemy import or_
+from sqlalchemy import or_, select
 
 from ..auth import User
 from ..models.response import ProposalResponse
 from ..models.table import BLSession, Proposal
 from ..utils.auth import check_proposal
-from ..utils.database import Paged, db, paginate
+from ..utils.database import Paged, paginate
 
 
 def get_proposals(
@@ -13,7 +13,7 @@ def get_proposals(
 ) -> Paged[ProposalResponse]:
     cols = [c for c in Proposal.__table__.columns if c.name != "externalId"]
     query = (
-        db.session.query(
+        select(
             *cols,
             f.count(BLSession.sessionId).label("sessions"),
         )
