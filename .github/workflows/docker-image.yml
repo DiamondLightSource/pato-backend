@@ -1,4 +1,10 @@
-on:
+on: 
+  workflow_dispatch:
+   inputs:
+      environment:
+        type: string
+        default: DEV
+        required: true
   push:
     paths:
       - "database/**"
