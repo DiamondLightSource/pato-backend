@@ -1,10 +1,10 @@
 PATo API
 ===========================
 
-|code_ci| |coverage| |license|
+|license|
 
 ============== ==============================================================
-Source code    https://gitlab.diamond.ac.uk/lims/pato-backend
+Source code    https://github.com/DiamondLightSource/pato-backend
 ============== ==============================================================
 
 Particle Analysis and Tomography Data API.
@@ -28,10 +28,6 @@ Running development server on your machine:
 2. Set the `SQL_DATABASE_URL` environment variable according to your database's location
 3. Run :code:`uvicorn` with `uvicorn pato.main:app --reload --port 8000`
 
-Running Kubernetes deployment for frontend and API:
-
-1. View `PATo Helm <https://gitlab.diamond.ac.uk/lims/pato-helm>`_.
-
 ============
 Testing
 ============
@@ -44,10 +40,6 @@ Testing
 .. |code_ci| image:: https://gitlab.diamond.ac.uk/lims/pato-backend/badges/master/pipeline.svg
     :target: https://gitlab.diamond.ac.uk/lims/pato-backend/-/pipelines
     :alt: Code CI
-
-.. |coverage| image:: https://gitlab.diamond.ac.uk/lims/pato-backend/badges/master/coverage.svg
-    :target: https://gitlab.diamond.ac.uk/lims/pato-backend/-/pipelines
-    :alt: Test Coverage
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
