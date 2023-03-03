@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "endpoint": "http://localhost:8050/",
+    "read_all_perms": [11, 26],
+    "type": "micro",
+    "beamline_mapping": {
+      "1": ["i03"],
+      "8": ["m12"]
+    }
+  },
+  "mq": {
+    "host": "127.0.0.1",
+    "port": 5672,
+    "queue": "processing_recipe"
+  },
+  "ispyb": { "pool": 10, "overflow": 20 }
+}
