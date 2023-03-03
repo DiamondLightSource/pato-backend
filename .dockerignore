@@ -1,0 +1,8 @@
+build/
+dist/
+.mypy_cache
+.tox
+.venv*
+venv*
+.env
+*.pem
