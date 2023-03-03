@@ -27,4 +27,4 @@ jobs:
         env:
           CONFIG_PATH: /home/runner/work/pato-backend/pato-backend/config.json
         run: |
-          pytest tests -W ignore::DeprecationWarning
+          ls && pytest tests -W ignore::DeprecationWarning
