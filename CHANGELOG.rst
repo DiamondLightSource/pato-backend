@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.7.0 (--/02/2023)
+++++++++++
+
+**Changed**
+
+- Removes unused support for OIDC auth
+
+++++++++++
 v0.6.0 (28/02/2023)
 ++++++++++
 

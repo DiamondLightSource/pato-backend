@@ -11,7 +11,7 @@ class ConfigurationError(Exception):
 @dataclass
 class Auth:
     endpoint: str = "https://localhost/auth"
-    type: Literal["oidc", "dummy", "micro"] = "micro"
+    type: Literal["dummy", "micro"] = "micro"
     read_all_perms: list[int] = field(default_factory=lambda: [11, 26])
     read_em_perms: list[int] = field(default_factory=lambda: [8])
     beamline_mapping: dict[str, list[str]] = field(default_factory=lambda: {})
