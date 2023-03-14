@@ -3,12 +3,13 @@ Changelog
 ==========
 
 ++++++++++
-v0.7.0 (--/02/2023)
+v0.7.0 (14/03/2023)
 ++++++++++
 
 **Changed**
 
 - Removes unused support for OIDC auth
+- Fixes CTF data endpoint
 
 ++++++++++
 v0.6.0 (28/02/2023)
