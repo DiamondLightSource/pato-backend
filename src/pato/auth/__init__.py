@@ -13,5 +13,3 @@ if auth_type == "micro":
 elif auth_type == "dummy":
     from ..auth.template import GenericPermissions as Permissions
     from ..auth.template import GenericUser as User
-elif auth_type == "oidc":
-    from ..auth.oidc import Permissions, User
