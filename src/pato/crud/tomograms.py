@@ -74,8 +74,6 @@ def get_ctf(tomogramId: int):
         .order_by(TiltImageAlignment.refinedTiltAngle)
     ).all()
 
-    print(data)
-
     return CtfTiltAlignList(items=data)
 
 
