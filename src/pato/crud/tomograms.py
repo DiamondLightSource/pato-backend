@@ -61,7 +61,7 @@ def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWi
 
 
 def get_ctf(tomogramId: int):
-    data = db.session.scalars(
+    data = db.session.execute(
         select(
             CTF.estimatedResolution,
             CTF.estimatedDefocus,
@@ -73,6 +73,8 @@ def get_ctf(tomogramId: int):
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
         .order_by(TiltImageAlignment.refinedTiltAngle)
     ).all()
+
+    print(data)
 
     return CtfTiltAlignList(items=data)
 
