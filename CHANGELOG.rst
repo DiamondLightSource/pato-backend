@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.8.0 (28/03/2023)
+++++++++++
+
+**Added**
+
+- Enables cookie authentication support
+
+++++++++++
 v0.7.0 (14/03/2023)
 ++++++++++
 
