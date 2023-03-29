@@ -11,7 +11,7 @@ class ConfigurationError(Exception):
 @dataclass
 class Auth:
     endpoint: str = "https://localhost/auth"
-    type: Literal["oidc", "dummy", "micro"] = "micro"
+    type: Literal["dummy", "micro"] = "micro"
     read_all_perms: list[int] = field(default_factory=lambda: [11, 26])
     read_em_perms: list[int] = field(default_factory=lambda: [8])
     beamline_mapping: dict[str, list[str]] = field(default_factory=lambda: {})
@@ -46,8 +46,8 @@ class Config:
                 Config.ispyb = ISPyB(**conf["ispyb"])
                 Config.mq = MQ(**conf["mq"])
 
-                Config.mq.user = os.environ["MQ_USER"]
-                Config.mq.password = os.environ["MQ_PASS"]
+                Config.mq.user = os.environ.get("MQ_USER")
+                Config.mq.password = os.environ.get("MQ_PASS")
         except (FileNotFoundError, TypeError) as exc:
             raise ConfigurationError(str(exc).replace(".__init__()", "")) from exc
         except KeyError as exc:
