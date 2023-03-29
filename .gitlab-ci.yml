@@ -58,8 +58,6 @@ sync-github:
     - docker-image
   image:
     name: alpine/git
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   only:
     - tags
   script:
