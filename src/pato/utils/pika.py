@@ -35,7 +35,7 @@ class PikaPublisher:
         self.connect()
 
     def connect(self):
-        if self._conn is None or self._conn.is_closed:
+        if (self._conn is None or self._conn.is_closed) and Config.mq.user is not None:
             self._conn = pika.BlockingConnection(_parameters)
             self._channel = self._conn.channel()
 
