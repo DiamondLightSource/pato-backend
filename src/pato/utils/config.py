@@ -46,8 +46,8 @@ class Config:
                 Config.ispyb = ISPyB(**conf["ispyb"])
                 Config.mq = MQ(**conf["mq"])
 
-                Config.mq.user = os.environ["MQ_USER"]
-                Config.mq.password = os.environ["MQ_PASS"]
+                Config.mq.user = os.environ.get("MQ_USER")
+                Config.mq.password = os.environ.get("MQ_PASS")
         except (FileNotFoundError, TypeError) as exc:
             raise ConfigurationError(str(exc).replace(".__init__()", "")) from exc
         except KeyError as exc:

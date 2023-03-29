@@ -1,11 +1,11 @@
 import requests
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
 
+from ..utils.bearer import OAuth2PasswordBearerCookie
 from ..utils.config import Config
 from .template import GenericPermissions, GenericUser
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearerCookie(tokenUrl="token")
 
 
 class User(GenericUser):
