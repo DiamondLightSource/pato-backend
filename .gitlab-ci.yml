@@ -58,9 +58,8 @@ sync-github:
     - docker-image
   image:
     name: alpine/git
-  only:
-    - tags
-    - triggers
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - rm -rf .git
     - git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream && cd github-upstream
