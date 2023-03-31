@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.8.1 (31/03/2023)
+++++++++++
+
+**Changed**
+
+- Tomogram endpoint returns refined tilt axis
+
+++++++++++
 v0.8.0 (28/03/2023)
 ++++++++++
 

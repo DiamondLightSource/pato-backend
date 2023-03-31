@@ -1,6 +1,6 @@
 {
   "auth": {
-    "endpoint": "http://localhost",
+    "endpoint": "http://localhost:8050/",
     "read_all_perms": [11, 26],
     "type": "micro",
     "beamline_mapping": {
