@@ -109,7 +109,7 @@ def test_tomogram_too_many(mock_permissions, client):
 def test_tomogram_no_tilt(mock_permissions, client):
     """Try to process data collection tomogram with no tilt alignment data"""
     resp = client.post(
-        "/dataCollections/6017411/tomograms/reprocessing",
+        "/dataCollections/6017409/tomograms/reprocessing",
         json={"pixelSize": 51, "tiltOffset": 1},
     )
 
