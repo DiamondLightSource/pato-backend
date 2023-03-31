@@ -27,7 +27,6 @@ router = APIRouter(
 @router.get("/{autoProcId}/tomogram", response_model=TomogramResponse)
 def get_tomogram(
     autoProcId: int = Depends(auth),
-    page: dict[str, int] = Depends(pagination),
 ):
     """Get tomogram"""
     return crud.get_tomogram(autoProcId=autoProcId)

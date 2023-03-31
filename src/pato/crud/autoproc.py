@@ -17,6 +17,7 @@ from ..models.table import (
     ParticleClassification,
     ParticleClassificationGroup,
     ParticlePicker,
+    TiltImageAlignment,
     Tomogram,
 )
 from ..models.table import (
@@ -27,9 +28,12 @@ from ..utils.generic import validate_path
 
 
 def get_tomogram(autoProcId: int) -> TomogramResponse:
-    data = db.session.scalar(
-        select(Tomogram).filter(Tomogram.autoProcProgramId == autoProcId)
-    )
+    data = db.session.execute(
+        select(*unravel(Tomogram), TiltImageAlignment.refinedTiltAxis)
+        .filter(Tomogram.autoProcProgramId == autoProcId)
+        .join(TiltImageAlignment)
+        .limit(1)
+    ).first()
 
     if data is None:
         raise HTTPException(
@@ -37,7 +41,7 @@ def get_tomogram(autoProcId: int) -> TomogramResponse:
             detail="Tomogram not found",
         )
 
-    return data
+    return data.tuple()
 
 
 def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullMovie]:

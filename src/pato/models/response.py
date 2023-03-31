@@ -377,6 +377,7 @@ class TomogramResponse(OrmBaseModel):
     xAxisCorrection: Optional[float]
     tiltAngleOffset: Optional[float]
     zShift: Optional[float]
+    refinedTiltAxis: Optional[float]
 
 
 class ProcessingJob(OrmBaseModel):
