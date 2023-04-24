@@ -362,24 +362,6 @@ class GenericPlot(BaseModel):
     items: list[DataPoint]
 
 
-class TomogramResponse(OrmBaseModel):
-    tomogramId: int
-    dataCollectionId: int
-    autoProcProgramId: Optional[int]
-    volumeFile: Optional[str] = Field(..., max_length=255)
-    stackFile: Optional[str] = Field(..., max_length=255)
-    sizeX: Optional[int]
-    sizeY: Optional[int]
-    sizeZ: Optional[int]
-    pixelSpacing: Optional[float]
-    residualErrorMean: Optional[float]
-    residualErrorSD: Optional[float]
-    xAxisCorrection: Optional[float]
-    tiltAngleOffset: Optional[float]
-    zShift: Optional[float]
-    refinedTiltAxis: Optional[float]
-
-
 class ProcessingJob(OrmBaseModel):
     processingJobId: int
     dataCollectionId: int
@@ -406,6 +388,26 @@ class ProcessingJobResponse(OrmBaseModel):
     AutoProcProgram: AutoProcProgram
     ProcessingJob: ProcessingJob
     status: str
+
+
+class TomogramResponse(OrmBaseModel):
+    tomogramId: int
+    volumeFile: Optional[str] = Field(..., max_length=255)
+    stackFile: Optional[str] = Field(..., max_length=255)
+    sizeX: Optional[int]
+    sizeY: Optional[int]
+    sizeZ: Optional[int]
+    pixelSpacing: Optional[float]
+    residualErrorMean: Optional[float]
+    residualErrorSD: Optional[float]
+    xAxisCorrection: Optional[float]
+    tiltAngleOffset: Optional[float]
+    zShift: Optional[float]
+    refinedTiltAxis: Optional[float]
+
+
+class TomogramFullResponse(ProcessingJobResponse):
+    Tomogram: Optional[TomogramResponse]
 
 
 class ParticlePicker(OrmBaseModel):
