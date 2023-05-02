@@ -61,9 +61,10 @@ sync-github:
   only:
     - tags
   script:
-    - rm -rf .git
-    - git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream && cd github-upstream
-    - cp -r ../src/* src
+    - rm -rf .git README.rst .gitlab-ci.yml nginx
+    - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream 
+    - rsync -r --delete pato-backend/ github-upstream
+    - cd github-upstream
     - git config --local user.name "Guilherme de Freitas"
     - git config --local user.email guilherme.de-freitas@diamond.ac.uk
     - git add .
