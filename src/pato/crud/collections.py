@@ -6,7 +6,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import Column, and_, case, select
 
 from ..models.parameters import ReprocessingParameters
-from ..models.response import FullMovie, ProcessingJobResponse
+from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
 from ..models.table import (
     CTF,
     AutoProcProgram,
@@ -17,28 +17,8 @@ from ..models.table import (
     TiltImageAlignment,
     Tomogram,
 )
-from ..utils.database import Paged, db, paginate, unravel
+from ..utils.database import Paged, db, paginate
 from ..utils.pika import pika_publisher
-
-
-def get_tomograms(limit: int, page: int, collectionId: int):
-    query = select(*unravel(Tomogram)).filter(Tomogram.dataCollectionId == collectionId)
-
-    return paginate(query, limit, page)
-
-
-def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[FullMovie]:
-    query = (
-        select(MotionCorrection, CTF, Movie)
-        .filter(Movie.dataCollectionId == collectionId)
-        .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
-        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-        .order_by(MotionCorrection.imageNumber)
-        .group_by(Movie.movieId)
-    )
-
-    return paginate(query, limit, page, slow_count=True)
-
 
 _job_status_description = case(
     (AutoProcProgram.processingJobId == None, "Submitted"),  # noqa: E711
@@ -62,6 +42,39 @@ def _generate_proc_job_params(proc_job_id: int | Column[int], params: dict):
         )
         for (key, value) in params.items()
     ]
+
+
+def get_tomograms(
+    limit: int, page: int, collectionId: int
+) -> Paged[TomogramFullResponse]:
+    query = (
+        select(
+            Tomogram,
+            AutoProcProgram,
+            ProcessingJob,
+            _job_status_description.label("status"),
+        )
+        .select_from(ProcessingJob)
+        .join(AutoProcProgram)
+        .outerjoin(Tomogram)
+        .filter(ProcessingJob.dataCollectionId == collectionId)
+        .order_by(ProcessingJob.processingJobId.desc())
+    )
+
+    return paginate(query, limit, page, slow_count=False)
+
+
+def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[FullMovie]:
+    query = (
+        select(MotionCorrection, CTF, Movie)
+        .filter(Movie.dataCollectionId == collectionId)
+        .join(MotionCorrection, MotionCorrection.movieId == Movie.movieId)
+        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .order_by(MotionCorrection.imageNumber)
+        .group_by(Movie.movieId)
+    )
+
+    return paginate(query, limit, page, slow_count=True)
 
 
 def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):

@@ -8,7 +8,7 @@ from ..models.response import (
     FullMovie,
     ProcessingJobResponse,
     ReprocessingResponse,
-    TomogramResponse,
+    TomogramFullResponse,
 )
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
@@ -21,7 +21,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{collectionId}/tomograms", response_model=Paged[TomogramResponse])
+@router.get("/{collectionId}/tomograms", response_model=Paged[TomogramFullResponse])
 def get_tomograms(
     collectionId: int = Depends(auth), page: dict[str, int] = Depends(pagination)
 ):
