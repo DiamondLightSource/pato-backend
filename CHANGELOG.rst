@@ -3,6 +3,39 @@ Changelog
 ==========
 
 ++++++++++
+v0.9.0 (24/04/2023)
+++++++++++
+
+**Added**
+
+- Tomogram endpoint now includes processing data information
+
+++++++++++
+v0.8.1 (31/03/2023)
+++++++++++
+
+**Changed**
+
+- Tomogram endpoint returns refined tilt axis
+
+++++++++++
+v0.8.0 (28/03/2023)
+++++++++++
+
+**Added**
+
+- Enables cookie authentication support
+
+++++++++++
+v0.7.0 (14/03/2023)
+++++++++++
+
+**Changed**
+
+- Removes unused support for OIDC auth
+- Fixes CTF data endpoint
+
+++++++++++
 v0.6.0 (28/02/2023)
 ++++++++++
 
