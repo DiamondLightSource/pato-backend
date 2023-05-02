@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.9.0 (24/04/2023)
+++++++++++
+
+**Added**
+
+- Tomogram endpoint now includes processing data information
+
+++++++++++
 v0.8.1 (31/03/2023)
 ++++++++++
 
