@@ -65,11 +65,16 @@ def get_classification(
     autoProcId: int = Depends(auth),
     sortBy: Literal["class", "particles", "resolution"] = "particles",
     classType: Literal["2d", "3d"] = "2d",
+    filterUnselected: bool = False,
     page: dict[str, int] = Depends(pagination),
 ):
     """Get classification data"""
     return crud.get_classification(
-        autoProcId=autoProcId, sortBy=sortBy, classType=classType, **page
+        autoProcId=autoProcId,
+        sortBy=sortBy,
+        classType=classType,
+        filterUnselected=filterUnselected,
+        **page
     )
 
 
