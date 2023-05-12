@@ -64,9 +64,9 @@ sync-github:
     - apk add rsync
   script:
     - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream 
-    - ls
     - rsync -r --exclude={.git/,README.rst,.gitlab-ci.yml,nginx/,.github/} --delete pato-backend/ github-upstream
     - cd github-upstream
+    - ls
     - git config --local user.name "Guilherme de Freitas"
     - git config --local user.email guilherme.de-freitas@diamond.ac.uk
     - git add .
