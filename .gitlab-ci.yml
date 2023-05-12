@@ -68,7 +68,9 @@ sync-github:
     - cd github-upstream
     - git config --local user.name "Guilherme de Freitas"
     - git config --local user.email guilherme.de-freitas@diamond.ac.uk
-    - git checkout master
+    - git remote update
+    - git fetch 
+    - git checkout --track origin/master
     - git add .
     - git commit -m "Release $CI_COMMIT_TAG"
     - git push origin $CI_DEFAULT_BRANCH
