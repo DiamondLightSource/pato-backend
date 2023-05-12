@@ -64,13 +64,13 @@ sync-github:
     - apk add rsync
   script:
     - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream 
-    - rsync -r --exclude={.git/,README.rst,.gitlab-ci.yml,nginx/,.github/} --delete pato-backend/ github-upstream
     - cd github-upstream
-    - git config --local user.name "Guilherme de Freitas"
-    - git config --local user.email guilherme.de-freitas@diamond.ac.uk
     - git remote update
     - git fetch 
     - git checkout --track origin/master
+    - rsync -r --exclude={.git/,README.rst,.gitlab-ci.yml,nginx/,.github/} --delete ../pato-backend .
+    - git config --local user.name "Guilherme de Freitas"
+    - git config --local user.email guilherme.de-freitas@diamond.ac.uk
     - git add .
     - git commit -m "Release $CI_COMMIT_TAG"
     - git push origin $CI_DEFAULT_BRANCH
