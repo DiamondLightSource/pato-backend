@@ -3,6 +3,14 @@ Changelog
 ==========
 
 ++++++++++
+v0.10.0 (16/05/2023)
+++++++++++
+
+**Added**
+
+- User can now filter classes by selection status
+
+++++++++++
 v0.9.0 (24/04/2023)
 ++++++++++
 
