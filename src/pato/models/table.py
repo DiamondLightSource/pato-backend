@@ -5851,6 +5851,8 @@ class ParticleClassification(Base):
         comment="Provides a figure of merit for the class, higher number is better",
     )
 
+    selected = Column(TINYINT(1))
+
     ParticleClassificationGroup = relationship("ParticleClassificationGroup")
 
 

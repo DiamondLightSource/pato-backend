@@ -438,6 +438,7 @@ class Classification(OrmBaseModel):
     estimatedResolution: float
     overallFourierCompleteness: float
     classDistribution: Optional[float]
+    selected: Optional[bool]
 
 
 class RelativeIceThickness(OrmBaseModel):

@@ -1835,6 +1835,36 @@ LOCK TABLES `CalendarHash` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Component`
+--
+
+DROP TABLE IF EXISTS `Component`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Component` (
+  `componentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `componentTypeId` int(11) unsigned NOT NULL,
+  `proposalId` int(10) unsigned DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `composition` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`componentId`),
+  KEY `componentTypeId` (`componentTypeId`),
+  KEY `proposalId` (`proposalId`),
+  CONSTRAINT `Component_ibfk_1` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`),
+  CONSTRAINT `Component_ibfk_2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Description of a component that can be used inside a crystal or a sample.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Component`
+--
+
+LOCK TABLES `Component` WRITE;
+/*!40000 ALTER TABLE `Component` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Component` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ComponentLattice`
 --
 
@@ -2419,6 +2449,40 @@ LOCK TABLES `Crystal` WRITE;
 /*!40000 ALTER TABLE `Crystal` DISABLE KEYS */;
 INSERT INTO `Crystal` VALUES (3918,NULL,4380,NULL,'Crystal 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3921,NULL,4383,NULL,'Crystal 02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3924,NULL,4386,NULL,'Crystal 03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3927,NULL,4389,NULL,'Crystal 04',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3930,NULL,4392,NULL,'Crystal 05',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3933,NULL,4395,NULL,'Crystal 06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3936,NULL,4398,NULL,'Crystal 07',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3939,NULL,4401,NULL,'Crystal 08',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3942,NULL,4404,NULL,'Crystal 09',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3945,NULL,4407,NULL,'Crystal 10',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3948,NULL,4407,NULL,'Crystal 11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3951,NULL,4410,NULL,'Crystal 12',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3954,NULL,4410,NULL,'Crystal 13',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3957,NULL,4413,NULL,'Crystal 14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(3960,NULL,4413,NULL,'Crystal 15',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),(310037,NULL,121393,NULL,'crystal-4-cm14451-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:58:00',NULL,NULL),(333301,NULL,123491,NULL,NULL,'P41212',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:58:00',NULL,NULL),(333308,NULL,123497,NULL,'SampleType01','P12121',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'sample type comments ...',NULL,NULL,'2017-03-23 22:06:42',NULL,NULL);
 /*!40000 ALTER TABLE `Crystal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `CrystalComposition`
+--
+
+DROP TABLE IF EXISTS `CrystalComposition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CrystalComposition` (
+  `crystalCompositionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `componentId` int(11) unsigned NOT NULL,
+  `crystalId` int(11) unsigned NOT NULL,
+  `concentrationTypeId` int(10) unsigned DEFAULT NULL,
+  `abundance` float DEFAULT NULL COMMENT 'Abundance or concentration in the unit defined by concentrationTypeId.',
+  `ratio` float DEFAULT NULL,
+  `pH` float DEFAULT NULL,
+  PRIMARY KEY (`crystalCompositionId`),
+  KEY `componentId` (`componentId`),
+  KEY `crystalId` (`crystalId`),
+  KEY `concentrationTypeId` (`concentrationTypeId`),
+  CONSTRAINT `CrystalComposition_ibfk_1` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
+  CONSTRAINT `CrystalComposition_ibfk_2` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`),
+  CONSTRAINT `CrystalComposition_ibfk_3` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Links a crystal to its components with a specified abundance or ratio.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `CrystalComposition`
+--
+
+LOCK TABLES `CrystalComposition` WRITE;
+/*!40000 ALTER TABLE `CrystalComposition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CrystalComposition` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3241,6 +3305,93 @@ INSERT INTO `EnergyScan` VALUES (49661,55167,NULL,'Vortex1_MCAScaler','/dls/i03/
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Event`
+--
+
+DROP TABLE IF EXISTS `Event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Event` (
+  `eventId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `eventChainId` int(11) unsigned NOT NULL,
+  `componentId` int(11) unsigned DEFAULT NULL,
+  `eventTypeId` int(11) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `offset` float NOT NULL COMMENT 'Start of the event relative to data collection start time in seconds.',
+  `duration` float DEFAULT NULL COMMENT 'Duration of the event if applicable.',
+  `period` float DEFAULT NULL COMMENT 'Repetition period if applicable in seconds.',
+  `repetition` float DEFAULT NULL COMMENT 'Number of repetitions if applicable.',
+  PRIMARY KEY (`eventId`),
+  KEY `eventChainId` (`eventChainId`),
+  KEY `componentId` (`componentId`),
+  KEY `eventTypeId` (`eventTypeId`),
+  CONSTRAINT `Event_ibfk_1` FOREIGN KEY (`eventChainId`) REFERENCES `EventChain` (`eventChainId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Event_ibfk_2` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
+  CONSTRAINT `Event_ibfk_3` FOREIGN KEY (`eventTypeId`) REFERENCES `EventType` (`eventTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Describes an event that occurred during a data collection and should be taken into account for data analysis. Can optionally be repeated at a specified frequency.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Event`
+--
+
+LOCK TABLES `Event` WRITE;
+/*!40000 ALTER TABLE `Event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EventChain`
+--
+
+DROP TABLE IF EXISTS `EventChain`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EventChain` (
+  `eventChainId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dataCollectionId` int(11) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`eventChainId`),
+  KEY `dataCollectionId` (`dataCollectionId`),
+  CONSTRAINT `EventChain_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Groups events together in a data collection.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EventChain`
+--
+
+LOCK TABLES `EventChain` WRITE;
+/*!40000 ALTER TABLE `EventChain` DISABLE KEYS */;
+/*!40000 ALTER TABLE `EventChain` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EventType`
+--
+
+DROP TABLE IF EXISTS `EventType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EventType` (
+  `eventTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`eventTypeId`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Defines the list of event types which can occur during a data collection.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EventType`
+--
+
+LOCK TABLES `EventType` WRITE;
+/*!40000 ALTER TABLE `EventType` DISABLE KEYS */;
+INSERT INTO `EventType` VALUES (3,'LaserExcitation'),(4,'ReactionTrigger'),(1,'XrayDetection'),(2,'XrayExposure');
+/*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Experiment`
 --
 
@@ -3769,6 +3920,61 @@ CREATE TABLE `IspybReference` (
 LOCK TABLES `IspybReference` WRITE;
 /*!40000 ALTER TABLE `IspybReference` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybReference` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `LDAPSearchBase`
+--
+
+DROP TABLE IF EXISTS `LDAPSearchBase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LDAPSearchBase` (
+  `ldapSearchBaseId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ldapSearchParametersId` int(11) unsigned NOT NULL COMMENT 'The other LDAP search parameters to be used with this search base',
+  `searchBase` varchar(200) NOT NULL COMMENT 'Name of the object we search for',
+  `sequenceNumber` tinyint(3) unsigned NOT NULL COMMENT 'The number in the sequence of searches where this search base should be attempted',
+  PRIMARY KEY (`ldapSearchBaseId`),
+  KEY `LDAPSearchBase_fk_ldapSearchParametersId` (`ldapSearchParametersId`),
+  CONSTRAINT `LDAPSearchBase_fk_ldapSearchParametersId` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='LDAP search base and the sequence number in which it should be attempted';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `LDAPSearchBase`
+--
+
+LOCK TABLES `LDAPSearchBase` WRITE;
+/*!40000 ALTER TABLE `LDAPSearchBase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LDAPSearchBase` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `LDAPSearchParameters`
+--
+
+DROP TABLE IF EXISTS `LDAPSearchParameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LDAPSearchParameters` (
+  `ldapSearchParametersId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `accountType` enum('group_member','staff_account','functional_account') NOT NULL COMMENT 'The entity type returned by the search',
+  `accountTypeGroupName` varchar(100) DEFAULT NULL COMMENT 'all accounts of this type must be members of this group',
+  `oneOrMany` enum('one','many') NOT NULL COMMENT 'Expected number of search results',
+  `hostURL` varchar(200) NOT NULL COMMENT 'URL for the LDAP host',
+  `filter` varchar(200) DEFAULT NULL COMMENT 'A filter string for the search',
+  `attributes` varchar(255) NOT NULL COMMENT 'Comma-separated list of search attributes',
+  PRIMARY KEY (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='All necessary parameters to run an LDAP search, except the search base';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `LDAPSearchParameters`
+--
+
+LOCK TABLES `LDAPSearchParameters` WRITE;
+/*!40000 ALTER TABLE `LDAPSearchParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LDAPSearchParameters` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -4559,6 +4765,7 @@ CREATE TABLE `ParticleClassification` (
   `overallFourierCompleteness` float DEFAULT NULL,
   `particleClassificationGroupId` int(10) unsigned DEFAULT NULL,
   `classDistribution` float DEFAULT NULL COMMENT 'Provides a figure of merit for the class, higher number is better',
+  `selected` tinyint(1) DEFAULT 0 COMMENT 'Indicates whether the group is selected for processing or not.',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -4571,7 +4778,7 @@ CREATE TABLE `ParticleClassification` (
 
 LOCK TABLES `ParticleClassification` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
-INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3),(6,1,'/mnt/test.jpg',30000,15,15,10,15,2,0.3),(7,1,'/mnt/test.jpg',40000,15,15,12,15,2,0.2),(8,1,'/mnt/test.jpg',60000,15,15,15,15,2,0.1);
+INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1,0),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2,0),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1,0),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01,1),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3,1),(6,1,'/mnt/test.jpg',30000,15,15,10,15,2,0.3,1),(7,1,'/mnt/test.jpg',40000,15,15,12,15,2,0.2,1),(8,1,'/mnt/test.jpg',60000,15,15,15,15,2,0.1,1);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5160,7 +5367,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1293 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=1311 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5219,7 +5426,7 @@ CREATE TABLE `ProcessingJobParameter` (
   PRIMARY KEY (`processingJobParameterId`),
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3049 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3089 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5935,6 +6142,39 @@ LOCK TABLES `SAXSDATACOLLECTIONGROUP` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `SSXDataCollection`
+--
+
+DROP TABLE IF EXISTS `SSXDataCollection`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SSXDataCollection` (
+  `dataCollectionId` int(11) unsigned NOT NULL COMMENT 'Primary key is same as dataCollection (1 to 1).',
+  `repetitionRate` float DEFAULT NULL,
+  `energyBandwidth` float DEFAULT NULL,
+  `monoStripe` varchar(255) DEFAULT NULL,
+  `jetSpeed` float DEFAULT NULL COMMENT 'For jet experiments.',
+  `jetSize` float DEFAULT NULL COMMENT 'For jet experiments.',
+  `chipPattern` varchar(255) DEFAULT NULL COMMENT 'For chip experiments.',
+  `chipModel` varchar(255) DEFAULT NULL COMMENT 'For chip experiments.',
+  `reactionDuration` float DEFAULT NULL COMMENT 'When images are taken at constant time relative to reaction start.',
+  `laserEnergy` float DEFAULT NULL,
+  `experimentName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`dataCollectionId`),
+  CONSTRAINT `SSXDataCollection_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Extends DataCollection with SSX-specific fields.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SSXDataCollection`
+--
+
+LOCK TABLES `SSXDataCollection` WRITE;
+/*!40000 ALTER TABLE `SSXDataCollection` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SSXDataCollection` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `SW_onceToken`
 --
 
@@ -5988,6 +6228,40 @@ CREATE TABLE `SafetyLevel` (
 LOCK TABLES `SafetyLevel` WRITE;
 /*!40000 ALTER TABLE `SafetyLevel` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SafetyLevel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SampleComposition`
+--
+
+DROP TABLE IF EXISTS `SampleComposition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SampleComposition` (
+  `sampleCompositionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `componentId` int(11) unsigned NOT NULL,
+  `blSampleId` int(11) unsigned NOT NULL,
+  `concentrationTypeId` int(11) unsigned DEFAULT NULL,
+  `abundance` float DEFAULT NULL COMMENT 'Abundance or concentration in the unit defined by concentrationTypeId.',
+  `ratio` float DEFAULT NULL,
+  `pH` float DEFAULT NULL,
+  PRIMARY KEY (`sampleCompositionId`),
+  KEY `componentId` (`componentId`),
+  KEY `blSampleId` (`blSampleId`),
+  KEY `concentrationTypeId` (`concentrationTypeId`),
+  CONSTRAINT `SampleComposition_ibfk_1` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
+  CONSTRAINT `SampleComposition_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
+  CONSTRAINT `SampleComposition_ibfk_3` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Links a sample to its components with a specified abundance or ratio.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SampleComposition`
+--
+
+LOCK TABLES `SampleComposition` WRITE;
+/*!40000 ALTER TABLE `SampleComposition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SampleComposition` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -7216,6 +7490,33 @@ INSERT INTO `UserGroup` VALUES (39,'autocollect'),(17,'bag_stats'),(20,'bl_stats
 UNLOCK TABLES;
 
 --
+-- Table structure for table `UserGroup_has_LDAPSearchParameters`
+--
+
+DROP TABLE IF EXISTS `UserGroup_has_LDAPSearchParameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `UserGroup_has_LDAPSearchParameters` (
+  `userGroupId` int(11) unsigned NOT NULL,
+  `ldapSearchParametersId` int(11) unsigned NOT NULL,
+  `name` varchar(200) NOT NULL COMMENT 'Name of the object we search for',
+  PRIMARY KEY (`userGroupId`,`ldapSearchParametersId`,`name`),
+  KEY `UserGroup_has_LDAPSearchParameters_fk2` (`ldapSearchParametersId`),
+  CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`),
+  CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk2` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Gives the LDAP search parameters needed to find a set of usergroup members';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UserGroup_has_LDAPSearchParameters`
+--
+
+LOCK TABLES `UserGroup_has_LDAPSearchParameters` WRITE;
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `UserGroup_has_Permission`
 --
 
@@ -7553,6 +7854,33 @@ CREATE TABLE `XRFFluorescenceMappingROI` (
 LOCK TABLES `XRFFluorescenceMappingROI` WRITE;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `XrayCentring`
+--
+
+DROP TABLE IF EXISTS `XrayCentring`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `XrayCentring` (
+  `xrayCentringId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dataCollectionGroupId` int(11) NOT NULL COMMENT 'references DataCollectionGroup table',
+  `status` enum('success','failed','pending') DEFAULT NULL,
+  `xrayCentringType` enum('2d','3d') DEFAULT NULL,
+  PRIMARY KEY (`xrayCentringId`),
+  KEY `dataCollectionGroupId` (`dataCollectionGroupId`),
+  CONSTRAINT `XrayCentring_ibfk_1` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring analysis associated with one or more grid scans.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `XrayCentring`
+--
+
+LOCK TABLES `XrayCentring` WRITE;
+/*!40000 ALTER TABLE `XrayCentring` DISABLE KEYS */;
+/*!40000 ALTER TABLE `XrayCentring` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -8412,4 +8740,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24  9:54:20
+-- Dump completed on 2023-05-11 13:57:26
