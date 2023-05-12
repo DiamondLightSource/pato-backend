@@ -57,5 +57,5 @@ def test_get_image_not_found(mock_permissions, exists_mock, client):
 
 def test_filter_unselected(mock_permissions, client):
     """Get only selected classes"""
-    resp = client.get("/autoProc/56986680/classification?filterUnselected=true")
+    resp = client.get("/autoProc/56986680/classification?excludeUnselected=true")
     assert resp.json()["total"] == 2

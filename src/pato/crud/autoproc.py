@@ -103,7 +103,7 @@ def get_classification(
     page: int,
     sortBy: Literal["class", "particles", "resolution"],
     classType: Literal["2d", "3d"],
-    filterUnselected: bool,
+    excludeUnselected: bool,
 ) -> Classification:
     query = (
         select(
@@ -123,7 +123,7 @@ def get_classification(
         .order_by(_2d_ordering[sortBy].desc())
     )
 
-    if filterUnselected:
+    if excludeUnselected:
         query = query.filter(ParticleClassification.selected != 0)
 
     return paginate(query, limit, page)
