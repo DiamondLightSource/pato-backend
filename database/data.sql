@@ -4778,7 +4778,7 @@ CREATE TABLE `ParticleClassification` (
 
 LOCK TABLES `ParticleClassification` WRITE;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
-INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1,0),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2,0),(3,1,'/mnt/test.jpg',60000,15,15,15,15,1,0.1,0),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01,1),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3,1),(6,1,'/mnt/test.jpg',30000,15,15,10,15,2,0.3,1),(7,1,'/mnt/test.jpg',40000,15,15,12,15,2,0.2,1),(8,1,'/mnt/test.jpg',60000,15,15,15,15,2,0.1,1);
+INSERT INTO `ParticleClassification` VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1,0),(2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2,0),(3,1,'/mnt/test.jpg',60000,15,15,0,15,1,0.1,0),(4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01,1),(5,1,'/mnt/test.jpg',30000,15,15,10,15,1,0.3,1),(6,1,'/mnt/test.jpg',30000,15,15,10,15,2,0.3,1),(7,1,'/mnt/test.jpg',40000,15,15,0,15,2,0.2,1),(8,1,'/mnt/test.jpg',60000,15,15,15,15,2,0.1,1);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5367,7 +5367,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1311 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=1401 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5426,7 +5426,7 @@ CREATE TABLE `ProcessingJobParameter` (
   PRIMARY KEY (`processingJobParameterId`),
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3089 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3289 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8740,4 +8740,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-11 13:57:26
+-- Dump completed on 2023-05-25 15:45:12

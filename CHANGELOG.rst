@@ -10,6 +10,10 @@ v0.11.0 (30/05/2023)
 
 - Logs HTTP exceptions server-side
 
+**Changed**
+
+- Classes are sorted in ascending order when estimated resolution is selected as sorting criterion
+
 ++++++++++
 v0.10.0 (16/05/2023)
 ++++++++++
