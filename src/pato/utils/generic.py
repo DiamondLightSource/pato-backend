@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy import inspect
 
 from ..models.response import DataPoint
+from ..utils.logging import app_logger
 
 
 def flatten_join(tup_list, preserve_dups=[]):
@@ -49,12 +50,23 @@ def validate_path(func):
             if not file:
                 raise ValueError
         except (ValueError, TypeError):
+            app_logger.error(
+                "File not in table when executing %s with arguments %s",
+                func.__name__,
+                args,
+            )
             raise HTTPException(
                 status_code=404,
                 detail="No file found in table",
             )
 
         if not isfile(file):
+            app_logger.error(
+                "%s not in filesystem when executing %s with arguments %s",
+                file,
+                func.__name__,
+                args,
+            )
             raise HTTPException(
                 status_code=404,
                 detail="File does not exist in filesystem",
