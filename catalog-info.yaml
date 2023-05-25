@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pato-api
+  title: PATo API
+  description: >
+    API for PATo, a SPA/tomography visualisation tool. Has endpoints for data collections, tomograms, proposals, sessions, etc.
+  links:
+    - url: https://ebic-pato.diamond.ac.uk/api/docs
+      title: Live server API documentation
+spec:
+  type: service
+  lifecycle: production
+  owner: group:lims
+  providesApis:
+    - pato-api
