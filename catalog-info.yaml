@@ -1,8 +1,17 @@
 apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: pato
+  title: PATo
+  description: Single particle analysis and tomograpghy visualisation tool/API
+spec:
+  owner: group:lims
+---
+apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: pato-backend
-  title: PATo
+  title: PATo Backend
   description: >
     API for PATo, a SPA/tomography visualisation tool. Has endpoints for data collections, tomograms, proposals, sessions, etc.
   links:
