@@ -21,6 +21,7 @@ spec:
   type: service
   lifecycle: experimental
   owner: group:lims
+  system: pato
   providesApis:
     - pato-api
 ---
@@ -34,5 +35,6 @@ spec:
   type: openapi
   lifecycle: experimental
   owner: group:lims
+  system: pato
   definition:
     $text: https://ebic-pato.diamond.ac.uk/api/openapi.json
