@@ -1,3 +1,4 @@
+
 from typing import Literal
 
 from fastapi import APIRouter, Depends
@@ -31,9 +32,9 @@ def get_motion_correction(
 
 
 @router.get("/{tomogramId}/centralSlice", response_class=FileResponse)
-def get_slice(tomogramId: int = Depends(auth)):
+def get_slice(tomogramId: int = Depends(auth), denoised: bool = False):
     """Get tomogram central slice image"""
-    return crud.get_slice_path(tomogramId)
+    return crud.get_slice_path(tomogramId, denoised)
 
 
 @router.get("/{tomogramId}/movie", response_class=FileResponse)

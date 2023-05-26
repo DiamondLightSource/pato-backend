@@ -1,3 +1,4 @@
+import os
 from typing import Literal, Optional
 
 from fastapi import HTTPException
@@ -78,8 +79,16 @@ def get_ctf(tomogramId: int):
 
 
 @validate_path
-def get_slice_path(tomogramId: int):
-    return _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
+def get_slice_path(tomogramId: int, denoised: bool):
+    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
+
+    # Denoised images have the same exact path, except for the .denoise prefix
+    # before the extension
+    if denoised and base_path:
+        file, extension = os.path.splitext(base_path)
+        base_path = file + ".denoise" + extension
+
+    return base_path
 
 
 @validate_path
