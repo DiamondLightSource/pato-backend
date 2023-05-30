@@ -1,5 +1,5 @@
 import requests
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 
 from ..utils.bearer import OAuth2PasswordBearerCookie
 from ..utils.config import Config
@@ -9,7 +9,7 @@ oauth2_scheme = OAuth2PasswordBearerCookie(tokenUrl="token")
 
 
 class User(GenericUser):
-    def __init__(self, token=Depends(oauth2_scheme)):
+    def __init__(self, request: Request, token=Depends(oauth2_scheme)):
         response = requests.get(
             Config.auth.endpoint + "user",
             headers={"Authorization": f"Bearer {token}"},
@@ -20,7 +20,11 @@ class User(GenericUser):
                 status_code=response.status_code, detail=response.json().get("detail")
             )
 
-        super().__init__(**response.json())
+        user = response.json()
+
+        request.state.user = user.get("fedid")
+
+        super().__init__(**user)
 
 
 def _check_perms(data_id: str | int, endpoint: str, token=str):

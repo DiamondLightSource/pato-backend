@@ -1,7 +1,7 @@
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column, and_, select
+from sqlalchemy import UnaryExpression, and_, or_, select
 
 from ..models.response import (
     Classification,
@@ -90,10 +90,10 @@ def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int
     return paginate(query, limit, page)
 
 
-_2d_ordering: dict[str, Column] = {
-    "class": ParticleClassification.classDistribution,
-    "resolution": ParticleClassification.estimatedResolution,
-    "particles": ParticleClassification.particlesPerClass,
+_2d_ordering: dict[str, UnaryExpression] = {
+    "class": ParticleClassification.classDistribution.desc(),
+    "resolution": ParticleClassification.estimatedResolution.asc(),
+    "particles": ParticleClassification.particlesPerClass.desc(),
 }
 
 
@@ -104,7 +104,7 @@ def get_classification(
     sortBy: Literal["class", "particles", "resolution"],
     classType: Literal["2d", "3d"],
     excludeUnselected: bool,
-) -> Classification:
+) -> Paged[Classification]:
     query = (
         select(
             *unravel(ParticleClassificationGroup),
@@ -120,8 +120,20 @@ def get_classification(
         .join(ParticleClassification, isouter=True)
         .join(ParticleClassificationHasCryoem, isouter=True)
         .join(CryoemInitialModel, isouter=True)
-        .order_by(_2d_ordering[sortBy].desc())
     )
+
+    if sortBy == "resolution":
+        query = query.order_by(
+            # Instead of null, the default value for estimated resolutions is 0.
+            # I do not know if this will change, hence, check both.
+            or_(
+                ParticleClassification.estimatedResolution == 0,
+                ParticleClassification.estimatedResolution.is_(None),
+            ),
+            ParticleClassification.estimatedResolution.asc(),
+        )
+    else:
+        query = query.order_by(_2d_ordering[sortBy])
 
     if excludeUnselected:
         query = query.filter(ParticleClassification.selected != 0)
