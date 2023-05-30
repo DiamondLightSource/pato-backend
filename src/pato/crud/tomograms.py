@@ -86,14 +86,20 @@ def get_slice_path(tomogramId: int, denoised: bool):
     # before the extension
     if denoised and base_path:
         file, extension = os.path.splitext(base_path)
-        base_path = file + ".denoise" + extension
+        base_path = file + ".denoised_thumbnail" + extension
 
     return base_path
 
 
 @validate_path
-def get_movie_path(tomogramId: int):
-    return _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
+def get_movie_path(tomogramId: int, denoised: bool):
+    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
+
+    if denoised and base_path:
+        file, extension = os.path.splitext(base_path)
+        base_path = file + ".denoised_movie" + extension
+
+    return base_path
 
 
 @validate_path

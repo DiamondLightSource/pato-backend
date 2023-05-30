@@ -14,7 +14,7 @@ def test_get_denoised(mock_permissions, exists_mock, client):
     """Get central slice for tomogram"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get("/tomograms/1/centralSlice?denoised=true")
-        exists_mock.assert_called_with("/dls/test.denoise.png")
+        exists_mock.assert_called_with("/dls/test.denoised_thumbnail.png")
     assert resp.status_code == 200
 
 

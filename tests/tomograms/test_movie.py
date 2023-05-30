@@ -3,10 +3,18 @@ from unittest.mock import patch
 from tests.conftest import mock_send
 
 
-def test_get_xy(mock_permissions, client):
+def test_get_movie(mock_permissions, client):
     """Get movie image"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get("/tomograms/1/movie")
+    assert resp.status_code == 200
+
+
+def test_get_denoised(mock_permissions, exists_mock, client):
+    """Get denoised movie"""
+    with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
+        resp = client.get("/tomograms/1/movie?denoised=true")
+        exists_mock.assert_called_with("/dls/test.denoised_movie.png")
     assert resp.status_code == 200
 
 
