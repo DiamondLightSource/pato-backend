@@ -15,7 +15,7 @@ install-job:
 integration-test-job:
   stage: test
   tags:
-    - pato
+    - argus
   before_script:
     - pip install .[dev]
   script:
