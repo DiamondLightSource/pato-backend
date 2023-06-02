@@ -1,3 +1,4 @@
+import re
 from typing import Literal, Optional
 
 from fastapi import HTTPException
@@ -11,12 +12,22 @@ from ..utils.database import db, paginate
 from ..utils.generic import parse_json_file, validate_path
 
 
+@validate_path
 def _get_generic_tomogram_file(tomogramId: int, column: Column) -> Optional[str]:
     return db.session.scalar(
         select(f.concat(Tomogram.fileDirectory, "/", column)).filter(
             Tomogram.tomogramId == tomogramId
         )
     )
+
+
+@validate_path
+def _prepend_denoise(base_path: str, image_type: Literal["thumbnail", "movie"]):
+    split_file = re.split(f"(_{image_type})", base_path)
+    if len(split_file) != 3:
+        raise HTTPException(status_code=500, detail="Unexpected filename")
+
+    return split_file[0] + ".denoised" + "".join(split_file[1:3])
 
 
 @validate_path
@@ -77,17 +88,16 @@ def get_ctf(tomogramId: int):
     return CtfTiltAlignList(items=data)
 
 
-@validate_path
-def get_slice_path(tomogramId: int):
-    return _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
+def get_slice_path(tomogramId: int, denoised: bool):
+    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
+    return _prepend_denoise(base_path, "thumbnail") if denoised else base_path
 
 
-@validate_path
-def get_movie_path(tomogramId: int):
-    return _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
+def get_movie_path(tomogramId: int, denoised: bool):
+    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
+    return _prepend_denoise(base_path, "movie") if denoised else base_path
 
 
-@validate_path
 def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]):
     return _get_generic_tomogram_file(
         tomogramId, Tomogram.projXZ if axis == "xz" else Tomogram.projXY
