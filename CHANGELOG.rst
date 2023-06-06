@@ -3,15 +3,7 @@ Changelog
 ==========
 
 +++++++++
-v0.13.0 (06/06/2023)
-+++++++++
-
-**Added**
-
-- countCollections option for session query
-
-+++++++++
-v0.12.0 (06/06/2023)
+v0.12.0 (02/06/2023)
 +++++++++
 
 **Added**
