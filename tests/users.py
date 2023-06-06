@@ -6,7 +6,7 @@ admin = GenericUser(
     familyName="Admin",
     title="Dr.",
     givenName="McAdmin",
-    permissions=[11],
+    permissions=["super_admin"],
 )
 
 em_admin = GenericUser(
@@ -15,7 +15,7 @@ em_admin = GenericUser(
     familyName="EM",
     title="Dr.",
     givenName="Admin",
-    permissions=[8],
+    permissions=["em_admin"],
 )
 
 user = GenericUser(
@@ -33,7 +33,7 @@ mx_admin = GenericUser(
     familyName="MX",
     title="Dr.",
     givenName="Admin",
-    permissions=[1],
+    permissions=["mx_admin"],
 )
 
 
