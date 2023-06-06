@@ -17,6 +17,9 @@ metadata:
   links:
     - url: https://ebic-pato.diamond.ac.uk/api/docs
       title: Live server API documentation
+  tags:
+    - python
+    - ispyb
 spec:
   type: service
   lifecycle: experimental
@@ -24,6 +27,8 @@ spec:
   system: pato
   providesApis:
     - pato-api
+  dependsOn:
+    - resource:ispyb-database
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
