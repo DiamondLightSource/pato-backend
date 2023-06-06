@@ -87,7 +87,7 @@ class SessionResponse(OrmBaseModel):
         lt=2,
         description="The data for the session is archived and no longer available on disk",  # noqa: E501
     )
-    collectionGroups: int
+    collectionGroups: Optional[int]
     dataCollectionGroupId: Optional[int]
 
 
