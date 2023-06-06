@@ -60,10 +60,14 @@ sync-github:
     name: alpine/git
   only:
     - tags
+  before_script:
+    - apk add rsync
   script:
-    - rm -rf .git
-    - git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream && cd github-upstream
-    - cp -r ../src/* src
+    - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream 
+    - cd github-upstream
+    - git remote update
+    - git fetch 
+    - rsync -r --exclude=.git --exclude=README.rst --exclude=.gitlab-ci.yml --exclude=nginx --exclude=.github --delete ../pato-backend/ .
     - git config --local user.name "Guilherme de Freitas"
     - git config --local user.email guilherme.de-freitas@diamond.ac.uk
     - git add .
