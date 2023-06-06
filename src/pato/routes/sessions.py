@@ -21,6 +21,7 @@ def get_sessions(
     maxEndDate: Optional[datetime] = None,
     minStartDate: Optional[datetime] = None,
     maxStartDate: Optional[datetime] = None,
+    countCollections: bool = False,
     user=Depends(User),
 ):
     """List visits belonging to a proposal"""
@@ -32,5 +33,6 @@ def get_sessions(
         maxEndDate=maxEndDate,
         minStartDate=minStartDate,
         maxStartDate=maxStartDate,
+        countCollections=countCollections,
         **page
     )
