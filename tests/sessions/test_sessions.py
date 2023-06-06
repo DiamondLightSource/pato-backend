@@ -12,6 +12,17 @@ def test_get_admin(mock_user, client):
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_collection_groups(mock_user, client):
+    """Get all visits with collection count"""
+    resp = client.get("/sessions?countCollections=true")
+    sessions = resp.json()
+
+    assert resp.status_code == 200
+    assert sessions["total"] == 9
+    assert sessions["items"][0]["collectionGroups"] == 1
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
 def test_get_inexistent_proposal(mock_user, client):
     """Try to get visits for proposal that does not exist"""
     resp = client.get("/sessions?proposal=xx12345")

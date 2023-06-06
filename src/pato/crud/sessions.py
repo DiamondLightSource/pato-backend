@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import and_
+from sqlalchemy import Label, and_
 from sqlalchemy import func as f
 from sqlalchemy import or_, select
 
@@ -22,14 +22,18 @@ def get_sessions(
     maxEndDate: Optional[datetime],
     minStartDate: Optional[datetime],
     maxStartDate: Optional[datetime],
+    countCollections: bool,
 ) -> Paged[SessionResponse]:
-    query = select(
-        *unravel(BLSession),
-        f.concat(Proposal.proposalCode, Proposal.proposalNumber).label(
-            "parentProposal"
-        ),
-        f.count(DataCollectionGroup.dataCollectionGroupId).label("collectionGroups"),
-    )
+    fields: list[Label[str] | Label[int]] = [
+        f.concat(Proposal.proposalCode, Proposal.proposalNumber).label("parentProposal")
+    ]
+
+    if countCollections:
+        fields.append(
+            f.count(DataCollectionGroup.dataCollectionGroupId).label("collectionGroups")
+        )
+
+    query = select(*unravel(BLSession), *fields)
 
     if proposal is not None:
         query = (
@@ -70,8 +74,9 @@ def get_sessions(
 
     total = fast_count(query)
 
-    query = query.join(DataCollectionGroup, isouter=True).group_by(
-        BLSession.visit_number
-    )
+    if countCollections:
+        query = query.join(DataCollectionGroup, isouter=True).group_by(
+            BLSession.visit_number, BLSession.proposalId
+        )
 
     return paginate(query, limit, page, precounted_total=total)
