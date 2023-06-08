@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v0.12.1 (08/06/2023)
++++++++++
+
+**Changed**
+
+- Permission lists take in strings rather than integers
+
++++++++++
 v0.12.0 (06/06/2023)
 +++++++++
 
