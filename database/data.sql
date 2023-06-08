@@ -5367,7 +5367,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1401 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=1509 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5426,7 +5426,7 @@ CREATE TABLE `ProcessingJobParameter` (
   PRIMARY KEY (`processingJobParameterId`),
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3289 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3529 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7460,7 +7460,7 @@ CREATE TABLE `Tomogram` (
 
 LOCK TABLES `Tomogram` WRITE;
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
-INSERT INTO `Tomogram` VALUES (1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack(1).mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44');
+INSERT INTO `Tomogram` VALUES (1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack(1).mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test_thumbnail.png','test_movie.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44'),(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44');
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8740,4 +8740,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-25 15:45:12
+-- Dump completed on 2023-05-31 16:44:14

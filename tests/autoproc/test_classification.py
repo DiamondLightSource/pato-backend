@@ -27,16 +27,6 @@ def test_sort_resolution(is_3d, value, mock_permissions, client):
     )
     assert resp.status_code == 200
     assert resp.json()["items"][0]["estimatedResolution"] == value
-
-
-@pytest.mark.parametrize("is_3d", [False, True])
-def test_sort_resolution_nulls_last(is_3d, mock_permissions, client):
-    """Get classification data for an autoprocessing program and sort by estimated
-    resolution. Null/0 values should be last"""
-    resp = client.get(
-        include_type("/autoProc/56986680/classification?sortBy=resolution", is_3d)
-    )
-    assert resp.status_code == 200
     assert resp.json()["items"][-1]["estimatedResolution"] == 0
 
 

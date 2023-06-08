@@ -2,6 +2,15 @@
 Changelog
 ==========
 
++++++++++
+v0.12.0 (06/06/2023)
++++++++++
+
+**Added**
+
+- Adds denoised central slices
+- countCollections option for session query
+
 ++++++++++
 v0.11.0 (30/05/2023)
 ++++++++++
