@@ -61,7 +61,7 @@ def get_motion_correction(
             )
 
         limit = 1
-        page = total // 2
+        page = (total // 2) - 1
 
     query = (
         select(MotionCorrection, TiltImageAlignment, CTF, Movie)
