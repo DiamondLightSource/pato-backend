@@ -60,8 +60,8 @@ def get_motion_correction(
                 detail="No items found",
             )
 
-        page = total // 2
         limit = 1
+        page = total // 2
 
     query = (
         select(MotionCorrection, TiltImageAlignment, CTF, Movie)
