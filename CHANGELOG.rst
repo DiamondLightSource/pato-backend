@@ -11,6 +11,14 @@ v0.13.0 (13/06/2023)
 - Adds `getMiddle` option to tomogram motion correction endpoint
 
 +++++++++
+v0.12.1 (08/06/2023)
++++++++++
+
+**Changed**
+
+- Permission lists take in strings rather than integers
+
++++++++++
 v0.12.0 (06/06/2023)
 +++++++++
 
