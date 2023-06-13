@@ -1,10 +1,10 @@
 import re
 from typing import Literal, Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import Column
 from sqlalchemy import func as f
-from sqlalchemy import select
+from sqlalchemy import literal_column, select
 
 from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
@@ -44,7 +44,25 @@ def get_shift_plot(tomogramId: int):
     return GenericPlot(items=data)
 
 
-def get_motion_correction(limit: int, page: int, tomogramId: int) -> FullMovieWithTilt:
+def get_motion_correction(
+    limit: int, page: int, tomogramId: int, getMiddle: bool
+) -> FullMovieWithTilt:
+    if getMiddle:
+        total = db.session.scalar(
+            select(f.count(literal_column("1")))
+            .filter(TiltImageAlignment.tomogramId == tomogramId)
+            .order_by(TiltImageAlignment.refinedTiltAngle)
+        )
+
+        if not total:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No items found",
+            )
+
+        limit = 1
+        page = (total // 2) - 1
+
     query = (
         select(MotionCorrection, TiltImageAlignment, CTF, Movie)
         .filter(TiltImageAlignment.tomogramId == tomogramId)

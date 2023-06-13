@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v0.13.0 (13/06/2023)
++++++++++
+
+**Added**
+
+- Adds `getMiddle` option to tomogram motion correction endpoint
+
++++++++++
 v0.12.1 (08/06/2023)
 +++++++++
 

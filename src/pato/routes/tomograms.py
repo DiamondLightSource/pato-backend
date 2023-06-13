@@ -1,6 +1,6 @@
 from typing import Literal
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import FileResponse
 
 from ..auth import Permissions
@@ -24,10 +24,17 @@ def get_shift_plot(tomogramId: int = Depends(auth)):
 
 @router.get("/{tomogramId}/motion", response_model=FullMovieWithTilt)
 def get_motion_correction(
-    tomogramId: int = Depends(auth), page: dict[str, int] = Depends(pagination)
+    tomogramId: int = Depends(auth),
+    page: dict[str, int] = Depends(pagination),
+    getMiddle=Query(
+        False,
+        description="Get index closest to the middle. Limit is set to 1, page is ignored",
+    ),
 ):
     """Get motion correction data for the given tomogram"""
-    return crud.get_motion_correction(tomogramId=tomogramId, **page)
+    return crud.get_motion_correction(
+        tomogramId=tomogramId, getMiddle=getMiddle, **page
+    )
 
 
 @router.get("/{tomogramId}/centralSlice", response_class=FileResponse)
