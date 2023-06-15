@@ -3,7 +3,7 @@
 # The devcontainer should use the build target and run as root with podman
 # or docker with user namespaces.
 #
-FROM docker.io/library/python:3.10 as build
+FROM docker.io/library/python:3.10.12-slim-bullseye as build
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get upgrade -y && \
@@ -11,6 +11,7 @@ RUN apt-get update && apt-get upgrade -y && \
     build-essential \
     busybox \
     git \
+    libmariadb-dev \
     net-tools \
     && rm -rf /var/lib/apt/lists/* \
     && busybox --install
