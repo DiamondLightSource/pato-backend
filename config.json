@@ -13,5 +13,6 @@
     "port": 5672,
     "queue": "processing_recipe"
   },
-  "ispyb": { "pool": 10, "overflow": 20 }
+  "ispyb": { "pool": 3, "overflow": 6 },
+  "facility": { "contact_email": "admin@facility.co.uk", "smtp_port": 8025, "smtp_server": "mail.service.com" }
 }
