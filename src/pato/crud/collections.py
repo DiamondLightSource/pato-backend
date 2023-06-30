@@ -5,7 +5,10 @@ import re
 from fastapi import HTTPException, status
 from sqlalchemy import Column, and_, case, select
 
-from ..models.parameters import ReprocessingParameters
+from ..models.parameters import (
+    SPAReprocessingParameters,
+    TomogramReprocessingParameters,
+)
 from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
 from ..models.table import (
     CTF,
@@ -77,7 +80,9 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
     return paginate(query, limit, page, slow_count=True)
 
 
-def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
+def initiate_reprocessing_tomogram(
+    params: TomogramReprocessingParameters, collectionId: int
+):
     new_job = ProcessingJob(
         displayName="Tomogram Reconstruction",
         recipe="em-tomo-align-reproc",
@@ -186,6 +191,10 @@ def initiate_reprocessing(params: ReprocessingParameters, collectionId: int):
     pika_publisher.publish(json.dumps(message))
 
     return {"processingJobId": new_job.processingJobId}
+
+
+def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: int):
+    raise NotImplementedError()
 
 
 def get_processing_jobs(

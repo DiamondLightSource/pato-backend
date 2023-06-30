@@ -74,3 +74,7 @@ def validate_path(func):
         return file
 
     return wrap
+
+
+def filter_dict(original_dict: dict, filter: list[str]):
+    return {key: value for key, value in original_dict.items() if key not in filter}
