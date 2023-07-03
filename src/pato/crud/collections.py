@@ -3,7 +3,7 @@ import os
 import re
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column, and_, case, select
+from sqlalchemy import Column, and_, case, extract, func, select
 
 from ..models.parameters import (
     SPAReprocessingParameters,
@@ -13,10 +13,14 @@ from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResp
 from ..models.table import (
     CTF,
     AutoProcProgram,
+    BLSession,
+    DataCollection,
+    DataCollectionGroup,
     MotionCorrection,
     Movie,
     ProcessingJob,
     ProcessingJobParameter,
+    Proposal,
     TiltImageAlignment,
     Tomogram,
 )
@@ -83,14 +87,6 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
 def initiate_reprocessing_tomogram(
     params: TomogramReprocessingParameters, collectionId: int
 ):
-    new_job = ProcessingJob(
-        displayName="Tomogram Reconstruction",
-        recipe="em-tomo-align-reproc",
-        dataCollectionId=collectionId,
-    )
-    db.session.add(new_job)
-    db.session.flush()
-
     motion_correction_records = db.session.execute(
         select(MotionCorrection.movieId, MotionCorrection.micrographFullPath)
         .select_from(Tomogram)
@@ -173,6 +169,14 @@ def initiate_reprocessing_tomogram(
         "movie_id": input_file_list[0][2],
     }
 
+    new_job = ProcessingJob(
+        displayName="Tomogram Reconstruction",
+        recipe="em-tomo-align-reproc",
+        dataCollectionId=collectionId,
+    )
+    db.session.add(new_job)
+    db.session.flush()
+
     db.session.bulk_save_objects(
         _generate_proc_job_params(new_job.processingJobId, proc_job_params)
     )
@@ -194,7 +198,53 @@ def initiate_reprocessing_tomogram(
 
 
 def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: int):
-    raise NotImplementedError()
+    session = db.session.execute(
+        select(
+            DataCollection.imageDirectory,
+            DataCollection.fileTemplate,
+            BLSession.beamLineName,
+            extract("year", BLSession.bltimeStamp).label("year"),
+            func.concat(
+                Proposal.proposalCode,
+                Proposal.proposalNumber,
+                "-",
+                BLSession.visit_number,
+            ).label("name"),
+        )
+        .select_from(DataCollection)
+        .join(DataCollectionGroup)
+        .join(BLSession)
+        .join(Proposal)
+    ).one()
+
+    # TODO: Make the gain reference path string pattern configurable?
+    gr_path = f"/dls/{session.beamLineName}/data/{session.year}/{session.name}"
+
+    full_params = {
+        **params,
+        "import_images": session.imageDirectory + session.fileTemplate,
+        "motioncor_gainreference": gr_path,
+    }
+
+    new_job = ProcessingJob(
+        displayName="RELION",
+        recipe="relion",
+        automatic=0,
+        comments="Submitted via PATo",
+        dataCollectionId=collectionId,
+    )
+    db.session.add(new_job)
+    db.session.flush()
+
+    db.session.bulk_save_objects(
+        _generate_proc_job_params(new_job.processingJobId, full_params)
+    )
+    db.session.commit()
+
+    message = {"parameters": {"ispyb_process": new_job.processingJobId}}
+    pika_publisher.publish(json.dumps(message))
+
+    return {"processingJobId": new_job.processingJobId}
 
 
 def get_processing_jobs(
