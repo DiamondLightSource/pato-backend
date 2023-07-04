@@ -211,6 +211,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
                 BLSession.visit_number,
             ).label("name"),
         )
+        .filter(DataCollection.dataCollectionId == collectionId)
         .select_from(DataCollection)
         .join(DataCollectionGroup)
         .join(BLSession)
@@ -221,7 +222,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     gr_path = f"/dls/{session.beamLineName}/data/{session.year}/{session.name}"
 
     full_params = {
-        **params,
+        **params.dict(),
         "import_images": session.imageDirectory + session.fileTemplate,
         "motioncor_gainreference": gr_path,
     }
@@ -258,7 +259,10 @@ def get_processing_jobs(
         .select_from(ProcessingJob)
         .join(AutoProcProgram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
-        .order_by(ProcessingJob.processingJobId.desc())
+        .order_by(
+            ProcessingJob.processingJobId.desc(),
+            AutoProcProgram.autoProcProgramId.desc(),
+        )
     )
 
     return paginate(query, limit, page, slow_count=False)

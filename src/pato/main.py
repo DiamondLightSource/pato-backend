@@ -11,6 +11,7 @@ from .routes import (
     feedback,
     groups,
     movies,
+    procjob,
     proposals,
     sessions,
     tomograms,
@@ -70,3 +71,4 @@ app.include_router(groups.router)
 app.include_router(proposals.router)
 app.include_router(autoproc.router)
 app.include_router(feedback.router)
+app.include_router(procjob.router)
