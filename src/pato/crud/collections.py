@@ -219,7 +219,10 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     ).one()
 
     # TODO: Make the gain reference path string pattern configurable?
-    gr_path = f"/dls/{session.beamLineName}/data/{session.year}/{session.name}"
+    gr_path = (
+        f"/dls/{session.beamLineName}/data/{session.year}/{session.name}"
+        f"/processing/{params.motioncor_gainreference}",
+    )
 
     full_params = {
         **params.dict(),

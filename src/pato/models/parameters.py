@@ -55,7 +55,7 @@ class SPAReprocessingParameters(BaseModel):
     extract_boxsize: float = Field(min=0.1, max=1024, alias="boxSize")
     extract_small_boxsize: float = Field(min=0.1, max=1024, alias="downsampleBoxSize")
     performCalculation: bool = Field(default=True, exclude=True)
-    use_fsc_criterion: bool = Field(default=False, alias="useFSCCriterion")
+    use_fsc_criterion: bool = Field(default=False, alias="useFscCriterion")
     do_class2d_pass2: bool = Field(default=True, alias="perform2DSecondPass")
     do_class3d_pass2: bool = Field(default=False, alias="perform3DSecondPass")
     autopick_LoG_diam_min: Optional[float] = Field(
