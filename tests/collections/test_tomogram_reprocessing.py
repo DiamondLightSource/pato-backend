@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from pato.models.table import ProcessingJob, ProcessingJobParameter
+from pato.models.table import ProcessingJobParameter
 from pato.utils.database import db
 
 
@@ -12,11 +12,7 @@ def test_post_user(mock_permissions, client):
     )
     assert resp.status_code == 202
 
-    proc_id = db.session.scalars(
-        select(ProcessingJob.processingJobId)
-        .filter(ProcessingJob.dataCollectionId == 6017406)
-        .order_by(ProcessingJob.processingJobId.desc())
-    ).first()
+    proc_id = resp.json()["processingJobId"]
 
     # Should create five entries in the processing job parameters table with the
     # respective given values
@@ -41,11 +37,7 @@ def test_post_custom(mock_permissions, client):
     )
     assert resp.status_code == 202
 
-    proc_id = db.session.scalars(
-        select(ProcessingJob.processingJobId)
-        .filter(ProcessingJob.dataCollectionId == 6017406)
-        .order_by(ProcessingJob.processingJobId.desc())
-    ).first()
+    proc_id = resp.json()["processingJobId"]
 
     # Values added should match user provided values
 
@@ -68,11 +60,7 @@ def test_post_message(mock_permissions, mock_pika, client):
     )
     assert resp.status_code == 202
 
-    proc_id = db.session.scalars(
-        select(ProcessingJob.processingJobId)
-        .filter(ProcessingJob.dataCollectionId == 6017406)
-        .order_by(ProcessingJob.processingJobId.desc())
-    ).first()
+    proc_id = resp.json()["processingJobId"]
 
     mock_pika.publish.assert_called_with(
         (
@@ -145,11 +133,7 @@ def test_tomogram_with_suffix(mock_permissions, client):
 
     assert resp.status_code == 202
 
-    proc_id = db.session.scalars(
-        select(ProcessingJob.processingJobId)
-        .filter(ProcessingJob.dataCollectionId == 6017406)
-        .order_by(ProcessingJob.processingJobId.desc())
-    ).first()
+    proc_id = resp.json()["processingJobId"]
 
     assert (
         db.session.scalars(

@@ -48,7 +48,10 @@ class PikaPublisher:
                 properties=_properties,
                 exchange="",
             )
-        except pika.exceptions.ConnectionClosed:
+        except (
+            pika.exceptions.ChannelWrongStateError,
+            pika.exceptions.ConnectionClosed,
+        ):
             self.connect()
             self.publish(message)
 
