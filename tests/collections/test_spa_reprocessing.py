@@ -1,3 +1,4 @@
+import pytest
 from sqlalchemy import select
 
 from pato.models.table import ProcessingJobParameter
@@ -71,3 +72,31 @@ def test_post_perform_calculation(mock_permissions, client):
 
     parameters = _get_parameters(resp.json()["processingJobId"])
     assert len(parameters) == 19
+
+
+@pytest.mark.parametrize(
+    ["key", "expected_value"],
+    [
+        ["motioncor_gainreference", "/dls/i03/data/2015/cm14451-1/processing/gain.mrc"],
+        [
+            "import_images",
+            "/dls/i03/data/2021/proposal/data/file.h5",
+        ],
+    ],
+)
+def test_generated_paths(key, expected_value, mock_permissions, client):
+    """Build file paths dynamically and insert them into the appropriate columns"""
+    resp = client.post(
+        "/dataCollections/6017405/reprocessing/spa",
+        json=full_params,
+    )
+    assert resp.status_code == 202
+
+    value = db.session.scalar(
+        select(ProcessingJobParameter.parameterValue).filter(
+            ProcessingJobParameter.processingJobId == resp.json()["processingJobId"],
+            ProcessingJobParameter.parameterKey == key,
+        )
+    )
+
+    assert value == expected_value
