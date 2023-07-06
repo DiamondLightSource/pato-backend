@@ -58,7 +58,7 @@ def test_post_stop_after_ctf_estimation(mock_permissions, client):
     assert resp.status_code == 202
 
     parameters = _get_parameters(resp.json()["processingJobId"])
-    assert len(parameters) == 11
+    assert len(parameters) == 9
 
 
 def test_post_perform_calculation(mock_permissions, client):

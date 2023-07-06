@@ -15,6 +15,8 @@ _omit_when_stopping = [
     "do_class3d_pass2",
     "autopick_LoG_diam_min",
     "autopick_LoG_diam_max",
+    "use_fsc_criterion",
+    "extract_downscale",
 ]
 
 _omit_when_autocalculating = [
@@ -65,6 +67,7 @@ class SPAReprocessingParameters(BaseModel):
         min=0.02, max=4000.0, alias="maximumDiameter"
     )
     motioncor_gainreference: str = Field(default="gain.mrc", alias="gainReferenceFile")
+    extract_downscale: bool = Field(default=False, alias="extractDownscale")
 
     @root_validator(skip_on_failure=True)
     def check_dynamically_required_fields(cls, values):
@@ -94,7 +97,5 @@ class SPAReprocessingParameters(BaseModel):
                 "autopick_LoG_diam_max"
             ):
                 raise ValueError("maximumDiameter must be greater than minimumDiameter")
-
-        values["extract_downscale"] = not values.get("stop_after_ctf_estimation")
 
         return values
