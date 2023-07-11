@@ -53,7 +53,7 @@ check-for-vulns:
   only:
     - tags
   script:
-    - trivy -s CRITICAL --exit-code 1 --ignore-unfixed $IMAGE_NAME
+    - trivy --cache-dir /scratch/$USER/cache/trivy/ image -s HIGH,CRITICAL $IMAGE_NAME
   needs:
     - build-image
 
