@@ -3,6 +3,18 @@ Changelog
 ==========
 
 +++++++++
+v1.1.0 (04/07/2023)
++++++++++
+
+**Added**
+- GET endpoint for processing job parameters (:code:`dataCollections/{collectionId}/reprocessing`)
+- POST endpoint for firing off SPA reprocessing pipeline (:code:`dataCollections/{collectionId}/reprocessing/spa`)
+
+**Changed**
+- Processing job list endpoint is now ordered by both processing job and autoprocessing job
+- Tomogram reprocessing endpoint moved to :code:`dataCollections/{collectionId}/reprocessing/tomograms`
+
++++++++++
 v1.0.0 (20/06/2023)
 +++++++++
 

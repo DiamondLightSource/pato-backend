@@ -3,7 +3,7 @@ variables:
 
 image: python
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.2.8
+  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.2.10
 stages:
   - test
   - build
@@ -79,10 +79,10 @@ sync-github:
   before_script:
     - apk add rsync
   script:
-    - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream 
+    - cd .. && git clone https://$CI_GITHUB_USER:$CI_GITHUB_TOKEN@github.com/diamondLightSource/pato-backend.git github-upstream
     - cd github-upstream
     - git remote update
-    - git fetch 
+    - git fetch
     - rsync -r --exclude=.git --exclude=README.rst --exclude=.gitlab-ci.yml --exclude=nginx --exclude=.github --delete ../pato-backend/ .
     - git config --local user.name "Guilherme de Freitas"
     - git config --local user.email guilherme.de-freitas@diamond.ac.uk
