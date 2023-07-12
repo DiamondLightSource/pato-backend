@@ -27,3 +27,7 @@ class GenericPermissions:
     @staticmethod
     def autoproc_program(autoProcProgramId: int) -> int:
         return autoProcProgramId
+
+    @staticmethod
+    def processing_job(processingJobId: int) -> int:
+        return processingJobId

@@ -8,7 +8,10 @@ from ..utils.config import Config
 
 _credentials = pika.PlainCredentials(Config.mq.user, Config.mq.password)
 _parameters = pika.ConnectionParameters(
-    Config.mq.host, Config.mq.port, credentials=_credentials
+    Config.mq.host,
+    Config.mq.port,
+    credentials=_credentials,
+    virtual_host=Config.mq.vhost,
 )
 _headers = {"zocalo.go.user": Config.mq.user, "zocalo.go.host": socket.gethostname()}
 _properties = pika.BasicProperties(headers=_headers, delivery_mode=2)
@@ -48,7 +51,10 @@ class PikaPublisher:
                 properties=_properties,
                 exchange="",
             )
-        except pika.exceptions.ConnectionClosed:
+        except (
+            pika.exceptions.ChannelWrongStateError,
+            pika.exceptions.ConnectionClosed,
+        ):
             self.connect()
             self.publish(message)
 

@@ -9,6 +9,13 @@ class ConfigurationError(Exception):
 
 
 @dataclass
+class Facility:
+    contact_email: str
+    smtp_server: str
+    smtp_port: int = 587
+
+
+@dataclass
 class Auth:
     endpoint: str = "https://localhost/auth"
     type: Literal["dummy", "micro"] = "micro"
@@ -29,12 +36,14 @@ class MQ:
     queue: str
     user: str = "guest"
     password: str = "guest"
+    vhost: str = "zocalo"
 
 
 class Config:
     auth: Auth
     ispyb: ISPyB
     mq: MQ
+    facility: Facility
 
     @staticmethod
     def set():
@@ -44,6 +53,7 @@ class Config:
                 Config.auth = Auth(**conf["auth"])
                 Config.ispyb = ISPyB(**conf["ispyb"])
                 Config.mq = MQ(**conf["mq"])
+                Config.facility = Facility(**conf["facility"])
 
                 Config.mq.user = os.environ.get("MQ_USER")
                 Config.mq.password = os.environ.get("MQ_PASS")

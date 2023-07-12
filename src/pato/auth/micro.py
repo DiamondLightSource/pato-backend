@@ -65,3 +65,7 @@ class Permissions(GenericPermissions):
     @staticmethod
     def autoproc_program(autoProcId: int, token=Depends(oauth2_scheme)):
         return _check_perms(autoProcId, "autoProc", token)
+
+    @staticmethod
+    def processing_job(processingJobId: int, token=Depends(oauth2_scheme)):
+        return _check_perms(processingJobId, "processingJob", token)

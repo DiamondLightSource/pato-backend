@@ -3,7 +3,10 @@ from fastapi import APIRouter, Body, Depends, status
 from ..auth import Permissions
 from ..crud import collections as crud
 from ..crud import generic
-from ..models.parameters import ReprocessingParameters
+from ..models.parameters import (
+    SPAReprocessingParameters,
+    TomogramReprocessingParameters,
+)
 from ..models.response import (
     FullMovie,
     ProcessingJobResponse,
@@ -30,15 +33,28 @@ def get_tomograms(
 
 
 @router.post(
-    "/{collectionId}/tomograms/reprocessing",
+    "/{collectionId}/reprocessing/tomograms",
     response_model=ReprocessingResponse,
     status_code=status.HTTP_202_ACCEPTED,
 )
-def initiate_reprocessing(
-    parameters: ReprocessingParameters = Body(), collectionId: int = Depends(auth)
+def initiate_tomogram_reprocessing(
+    parameters: TomogramReprocessingParameters = Body(),
+    collectionId: int = Depends(auth),
 ):
     """Initiate data reprocessing"""
-    return crud.initiate_reprocessing(parameters, collectionId)
+    return crud.initiate_reprocessing_tomogram(parameters, collectionId)
+
+
+@router.post(
+    "/{collectionId}/reprocessing/spa",
+    response_model=ReprocessingResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def initiate_spa_reprocessing(
+    parameters: SPAReprocessingParameters = Body(), collectionId: int = Depends(auth)
+):
+    """Initiate data reprocessing"""
+    return crud.initiate_reprocessing_spa(parameters, collectionId)
 
 
 @router.get(
