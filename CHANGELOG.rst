@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.1.2 (12/07/2023)
++++++++++
+
+**Changed**
+
+- Fix duplicate sessions for non-admin users
+
++++++++++
 v1.1.1 (12/07/2023)
 +++++++++
 
