@@ -36,6 +36,7 @@ class MQ:
     queue: str
     user: str = "guest"
     password: str = "guest"
+    vhost: str = "zocalo"
 
 
 class Config:

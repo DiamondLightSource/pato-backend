@@ -3,7 +3,15 @@ Changelog
 ==========
 
 +++++++++
-v1.1.0 (04/07/2023)
+v1.1.1 (12/07/2023)
++++++++++
+
+**Added**
+
+- Virtual host can be set in message queue configs
+
++++++++++
+v1.1.0 (11/07/2023)
 +++++++++
 
 **Added**
