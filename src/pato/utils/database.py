@@ -1,6 +1,6 @@
 import contextlib
 import contextvars
-from typing import Generic, Optional, TypeVar
+from typing import Generator, Generic, Optional, TypeVar
 
 import sqlalchemy.orm
 from fastapi import HTTPException, status
@@ -21,9 +21,10 @@ class Database:
     @property
     def session(cls) -> sqlalchemy.orm.Session:
         try:
-            if _session.get() is None:
+            new_session = _session.get()
+            if new_session is None:
                 raise AttributeError
-            return _session.get()
+            return new_session
         except (AttributeError, LookupError):
             raise Exception("Can't get session. Please call Database.set_session()")
 
@@ -32,7 +33,7 @@ db = Database()
 
 
 @contextlib.contextmanager
-def get_session() -> sqlalchemy.orm.Session:
+def get_session() -> Generator[sqlalchemy.orm.Session, None, None]:
     db_session = sqlsession()
     try:
         Database.set_session(db_session)
