@@ -1,10 +1,13 @@
+import datetime
 import json
 from os.path import isfile
+from typing import Optional
 
 from fastapi import HTTPException
 from sqlalchemy import inspect
 
 from ..models.response import DataPoint
+from ..utils.config import Config
 from ..utils.logging import app_logger
 
 
@@ -78,3 +81,17 @@ def validate_path(func):
 
 def filter_dict(original_dict: dict, filter: list[str]):
     return {key: value for key, value in original_dict.items() if key not in filter}
+
+
+def time_ago(delta: datetime.timedelta):
+    today = datetime.date.today()
+    return today - delta
+
+
+def check_session_active(end_date: Optional[datetime.datetime]):
+    return (
+        end_date.date()
+        > time_ago(datetime.timedelta(weeks=Config.facility.active_session_cutoff))
+        if end_date
+        else False
+    )

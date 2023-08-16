@@ -25,6 +25,7 @@ from ..models.table import (
     Tomogram,
 )
 from ..utils.database import Paged, db, paginate
+from ..utils.generic import check_session_active
 from ..utils.pika import pika_publisher
 
 _job_status_description = case(
@@ -49,6 +50,22 @@ def _generate_proc_job_params(proc_job_id: int | Column[int], params: dict):
         )
         for (key, value) in params.items()
     ]
+
+
+def _validate_session_active(collectionId: int):
+    end_date = db.session.scalar(
+        select(BLSession.endDate)
+        .select_from(DataCollection)
+        .filter_by(dataCollectionId=collectionId)
+        .join(DataCollectionGroup)
+        .join(BLSession)
+    )
+
+    if not check_session_active(end_date):
+        raise HTTPException(
+            status_code=status.HTTP_423_LOCKED,
+            detail="Reprocessing cannot be fired on an inactive session",
+        )
 
 
 def get_tomograms(
@@ -87,6 +104,8 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
 def initiate_reprocessing_tomogram(
     params: TomogramReprocessingParameters, collectionId: int
 ):
+    _validate_session_active(collectionId)
+
     motion_correction_records = db.session.execute(
         select(MotionCorrection.movieId, MotionCorrection.micrographFullPath)
         .select_from(Tomogram)
@@ -198,6 +217,8 @@ def initiate_reprocessing_tomogram(
 
 
 def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: int):
+    _validate_session_active(collectionId)
+
     session = db.session.execute(
         select(
             DataCollection.imageDirectory,
