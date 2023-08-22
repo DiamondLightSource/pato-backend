@@ -3,12 +3,21 @@ Changelog
 ==========
 
 +++++++++
-v1.1.2 (12/07/2023)
+v1.1.3 (22/08/2023)
++++++++++
+
+**Changed**
+
+- Update internal dependencies due to vulnerabilities (certifi)
+
++++++++++
+v1.1.2 (14/07/2023)
 +++++++++
 
 **Changed**
 
 - Fix duplicate sessions for non-admin users
+- Disable reprocessing on inactive visits
 
 +++++++++
 v1.1.1 (12/07/2023)

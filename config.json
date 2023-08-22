@@ -5,15 +5,37 @@
     "type": "micro",
     "beamline_mapping": {
       "mx_admin": ["i03"],
-      "em_admin": ["m12"]
+      "em_admin": [
+        "m01",
+        "m02",
+        "m03",
+        "m04",
+        "m05",
+        "m06",
+        "m07",
+        "m08",
+        "m09",
+        "m10",
+        "m11",
+        "m12",
+        "m13",
+        "m14",
+        "m15",
+        "m16"
+      ]
     }
   },
   "mq": {
     "host": "127.0.0.1",
     "port": 5672,
     "queue": "processing_recipe",
-    "vhost": "zocalo"
+    "vhost": "/"
   },
   "ispyb": { "pool": 3, "overflow": 6 },
-  "facility": { "contact_email": "admin@facility.co.uk", "smtp_port": 8025, "smtp_server": "mail.service.com" }
+  "facility": {
+    "contact_email": "admin@facility.co.uk",
+    "smtp_port": 8025,
+    "smtp_server": "mail.service.com",
+    "active_session_cutoff": 5
+  }
 }

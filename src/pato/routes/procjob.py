@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from ..auth import Permissions
 from ..crud import procjob as crud
+from ..models.response import ProcessingJobParameters
 
 auth = Permissions.processing_job
 
@@ -13,7 +14,7 @@ router = APIRouter(
 
 @router.get(
     "/{processingJobId}/parameters",
-    response_model=dict[str, str],
+    response_model=ProcessingJobParameters,
 )
 def initiate_tomogram_reprocessing(
     processingJobId: int = Depends(auth),

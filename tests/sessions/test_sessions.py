@@ -3,6 +3,23 @@ import pytest
 from ..users import admin, em_admin, mx_admin, user
 
 
+@pytest.mark.parametrize(
+    ["mock_user", "expected_count"],
+    [
+        pytest.param(mx_admin, 5, id="mx"),
+        pytest.param(user, 1, id="user"),
+        pytest.param(em_admin, 2, id="em"),
+        pytest.param(admin, 9, id="admin"),
+    ],
+    indirect=["mock_user"],
+)
+def test_get(mock_user, expected_count, client):
+    """Get all sessions"""
+    resp = client.get("/sessions")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == expected_count
+
+
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
 def test_get_admin(mock_user, client):
     """Get all visits (request from admin)"""

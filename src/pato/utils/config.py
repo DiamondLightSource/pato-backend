@@ -13,6 +13,7 @@ class Facility:
     contact_email: str
     smtp_server: str
     smtp_port: int = 587
+    active_session_cutoff: int = 5
 
 
 @dataclass

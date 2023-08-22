@@ -30,4 +30,4 @@ def get_proposals(
         .order_by(BLSession.startDate.desc())
     )
 
-    return paginate(check_proposal(query, user), limit, page, slow_count=True)
+    return paginate(check_proposal(query, user), limit, page)

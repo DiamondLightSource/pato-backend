@@ -226,6 +226,11 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
         return v or "Single Particle"
 
 
+class ProcessingJobParameters(OrmBaseModel):
+    items: dict[str, str]
+    allowReprocessing: bool
+
+
 class CTF(OrmBaseModel):
     ctfId: int
     boxSizeX: Optional[float] = Field(..., title="Box size in x", unit="pixels")
