@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.1.3 (22/08/2023)
++++++++++
+
+**Changed**
+
+- Update internal dependencies due to vulnerabilities (certifi)
+
++++++++++
 v1.1.2 (14/07/2023)
 +++++++++
 
