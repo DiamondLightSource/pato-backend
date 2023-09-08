@@ -44,20 +44,19 @@ def _get_drift_path(movieId: int) -> Optional[str]:
 
 def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
     if fromDb:
-        return GenericPlot(
-            items=(
-                db.session.execute(
-                    select(
-                        MotionCorrectionDrift.deltaX.label("x"),
-                        MotionCorrectionDrift.deltaY.label("y"),
-                    )
-                    .select_from(MotionCorrection)
-                    .filter_by(movieId=movieId)
-                    .join(MotionCorrectionDrift)
-                    .order_by(MotionCorrectionDrift.frameNumber)
-                ).all()
+        items = db.session.execute(
+            select(
+                MotionCorrectionDrift.deltaX.label("x"),
+                MotionCorrectionDrift.deltaY.label("y"),
             )
-        )
+            .select_from(MotionCorrection)
+            .filter_by(movieId=movieId)
+            .join(MotionCorrectionDrift)
+            .order_by(MotionCorrectionDrift.frameNumber)
+        ).all()
+
+        if items:
+            return GenericPlot(items=items)
 
     return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))
 
