@@ -3,12 +3,20 @@ Changelog
 ==========
 
 +++++++++
-v1.1.3 (08/07/2023)
+v1.1.4 (08/09/2023)
 +++++++++
 
 **Changed**
 
 - Motion correction drift (:code:`/movies/{movieId}/drift`) endpoint falls back to gathering data from file if database entries do not exist
+
++++++++++
+v1.1.3 (22/08/2023)
++++++++++
+
+**Changed**
+
+- Update internal dependencies due to vulnerabilities (certifi)
 
 +++++++++
 v1.1.2 (14/07/2023)
