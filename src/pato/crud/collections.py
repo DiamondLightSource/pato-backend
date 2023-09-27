@@ -281,6 +281,7 @@ def get_processing_jobs(
         .join(AutoProcProgram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
         .order_by(
+            ProcessingJob.recipe.desc(),
             ProcessingJob.processingJobId.desc(),
             AutoProcProgram.autoProcProgramId.desc(),
         )
