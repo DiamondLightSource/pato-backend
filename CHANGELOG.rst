@@ -3,6 +3,23 @@ Changelog
 ==========
 
 +++++++++
+v1.1.5 (27/09/2023)
++++++++++
+
+**Changed**
+
+- Consider recipe in processing job ordering
+
++++++++++
+v1.1.4 (08/09/2023)
++++++++++
+
+**Changed**
+
+- Motion correction drift (:code:`/movies/{movieId}/drift`) endpoint falls back to gathering data from file if database entries do not exist
+
+
++++++++++
 v1.1.4 (08/09/2023)
 +++++++++
 
