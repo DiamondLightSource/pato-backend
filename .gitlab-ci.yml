@@ -3,7 +3,7 @@ variables:
 
 image: python
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.2.12
+  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.2.13
 stages:
   - test
   - build
