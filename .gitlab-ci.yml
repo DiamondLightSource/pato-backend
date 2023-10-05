@@ -1,9 +1,9 @@
 variables:
   IMAGE_NAME: gcr.io/diamond-pubreg/pato/backend:$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA
 
-image: python
+image: python:3.11
 services:
-  - gcr.io/diamond-privreg/lims/ipsyb-tomogram:v0.2.12
+  - gcr.io/diamond-privreg/lims/ipsyb-mock:v1.0.0
 stages:
   - test
   - build
