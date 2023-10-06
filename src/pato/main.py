@@ -16,19 +16,21 @@ from .routes import (
     sessions,
     tomograms,
 )
+from .utils.config import Config
 from .utils.database import get_session
 from .utils.logging import EndpointFilter, app_logger, uvicorn_logger
 from .utils.pika import pika_publisher
 
 app = FastAPI(version=__version__)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if Config.cors:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 uvicorn_logger.addFilter(EndpointFilter())
