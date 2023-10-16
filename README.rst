@@ -17,6 +17,8 @@ The API supports a configuration file, that follows the example set in :code:`co
 
 - :code:`SQL_DATABASE_URL`: The URL for the database
 - :code:`CONFIG_PATH`: Path for the configuration file
+- :code:`MQ_USER`: Message queue user
+- :code:`MQ_PASS`: Message queue password
 
 ==========
 Deployment
