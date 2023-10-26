@@ -45,6 +45,7 @@ class Config:
     ispyb: ISPyB
     mq: MQ
     facility: Facility
+    cors: bool = False
 
     @staticmethod
     def set():
@@ -55,6 +56,7 @@ class Config:
                 Config.ispyb = ISPyB(**conf["ispyb"])
                 Config.mq = MQ(**conf["mq"])
                 Config.facility = Facility(**conf["facility"])
+                Config.cors = conf["enable_cors"]
 
                 Config.mq.user = os.environ.get("MQ_USER")
                 Config.mq.password = os.environ.get("MQ_PASS")
