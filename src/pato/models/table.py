@@ -5397,22 +5397,6 @@ class MXMRRunBlob(Base):
     MXMRRun = relationship("MXMRRun")
 
 
-class MotionCorrectionDrift(Base):
-    __tablename__ = "MotionCorrectionDrift"
-
-    motionCorrectionDriftId = Column(INTEGER(11), primary_key=True)
-    motionCorrectionId = Column(
-        ForeignKey("MotionCorrection.motionCorrectionId"), index=True
-    )
-    frameNumber = Column(
-        SMALLINT(5), comment="Frame number of the movie these drift values relate to"
-    )
-    deltaX = Column(Float, comment="Drift in x, Units: A")
-    deltaY = Column(Float, comment="Drift in y, Units: A")
-
-    MotionCorrection = relationship("MotionCorrection")
-
-
 class PDBEntryHasAutoProcProgram(Base):
     __tablename__ = "PDBEntry_has_AutoProcProgram"
 

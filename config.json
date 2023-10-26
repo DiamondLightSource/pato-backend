@@ -37,5 +37,6 @@
     "smtp_port": 8025,
     "smtp_server": "mail.service.com",
     "active_session_cutoff": 5
-  }
+  },
+  "enable_cors": false
 }

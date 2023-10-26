@@ -3,6 +3,22 @@ Changelog
 ==========
 
 +++++++++
+v1.1.7 (26/10/2023)
++++++++++
+
+**Removed**
+
+- User can no longer get motion correction drift data from table
+
++++++++++
+v1.1.6 (05/10/2023)
++++++++++
+
+**Added**
+
+- Added option to disable CORS
+
++++++++++
 v1.1.5 (27/09/2023)
 +++++++++
 

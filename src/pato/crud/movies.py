@@ -4,12 +4,7 @@ from sqlalchemy import func as f
 from sqlalchemy import select
 
 from ..models.response import GenericPlot, IceThicknessWithAverage
-from ..models.table import (
-    CTF,
-    MotionCorrection,
-    MotionCorrectionDrift,
-    RelativeIceThickness,
-)
+from ..models.table import CTF, MotionCorrection, RelativeIceThickness
 from ..utils.database import db
 from ..utils.generic import parse_json_file, validate_path
 
@@ -42,22 +37,7 @@ def _get_drift_path(movieId: int) -> Optional[str]:
     )
 
 
-def get_drift(movieId: int, fromDb: bool) -> GenericPlot:
-    if fromDb:
-        items = db.session.execute(
-            select(
-                MotionCorrectionDrift.deltaX.label("x"),
-                MotionCorrectionDrift.deltaY.label("y"),
-            )
-            .select_from(MotionCorrection)
-            .filter_by(movieId=movieId)
-            .join(MotionCorrectionDrift)
-            .order_by(MotionCorrectionDrift.frameNumber)
-        ).all()
-
-        if items:
-            return GenericPlot(items=items)
-
+def get_drift(movieId: int) -> GenericPlot:
     return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))
 
 
