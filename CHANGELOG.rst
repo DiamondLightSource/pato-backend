@@ -3,20 +3,17 @@ Changelog
 ==========
 
 +++++++++
-v1.1.8 (26/10/2023)
+v1.1.8 (30/10/2023)
 +++++++++
 
 **Changed**
 
 - :code:`phasePlate` field in data collection endpoints now returns a string rather than an integer value
+- Drift plot X is read and passed down from file, rather than inferred from linear sequence generated from the range of the array's length
 
 +++++++++
 v1.1.7 (26/10/2023)
 +++++++++
-
-**Changed**
-
-- Drift plot X is read and passed down from file, rather than inferred from linear sequence generated from the range of the array's length
 
 **Removed**
 
