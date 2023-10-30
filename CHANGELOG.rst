@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.1.8 (26/10/2023)
++++++++++
+
+**Changed**
+
+- :code:`phasePlate` field in data collection endpoints now returns a string rather than an integer value
+
++++++++++
 v1.1.7 (26/10/2023)
 +++++++++
 
