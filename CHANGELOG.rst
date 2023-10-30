@@ -16,7 +16,7 @@ v1.1.7 (26/10/2023)
 
 **Changed**
 
-- Drift plot X is read and passed down from file, rather than using generated linear sequence
+- Drift plot X is read and passed down from file, rather than inferred from linear sequence generated from the range of the array's length
 
 **Removed**
 
