@@ -8,7 +8,7 @@ def file_mock():
     with patch(
         "builtins.open",
         new_callable=mock_open,
-        read_data='{"data": [{"y": [1,2,3,4]}]}',
+        read_data='{"data": [{"y": [1,2,3,4],"x": [9,8,4,5]}]}',
     ) as _fixture:
         yield _fixture
 
@@ -18,6 +18,7 @@ def test_get(mock_permissions, client):
     resp = client.get("/movies/1/drift")
     assert resp.status_code == 200
     assert resp.json()["items"][0]["y"] == 1
+    assert resp.json()["items"][0]["x"] == 9
 
 
 def test_inexistent_file(mock_permissions, exists_mock, client):

@@ -14,6 +14,10 @@ v1.1.8 (26/10/2023)
 v1.1.7 (26/10/2023)
 +++++++++
 
+**Changed**
+
+- Drift plot X is read and passed down from file, rather than using generated linear sequence
+
 **Removed**
 
 - User can no longer get motion correction drift data from table

@@ -33,9 +33,9 @@ def flatten_join(tup_list, preserve_dups=[]):
 def parse_json_file(path):
     try:
         with open(path, "r") as file:
+            data = json.load(file)["data"][0]
             return [
-                DataPoint(x=i, y=val)
-                for (i, val) in enumerate(json.load(file)["data"][0]["y"])
+                DataPoint(x=val, y=data["y"][i]) for (i, val) in enumerate(data["x"])
             ]
     except (FileNotFoundError, KeyError, IndexError, TypeError):
         return []
