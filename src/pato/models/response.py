@@ -205,9 +205,13 @@ class DataCollectionSummary(OrmBaseModel):
     totalExposedDose: Optional[float]
     nominalMagnification: Optional[float]
     nominalDefocus: Optional[float]
-    phasePlate: Optional[int]
+    phasePlate: Optional[str]
     dataCollectionPlanId: Optional[int]
     tomograms: int
+
+    @validator("phasePlate")
+    def to_bool_str(cls, v):
+        return "Yes" if v else "No"
 
 
 class DataCollectionGroupSummaryResponse(OrmBaseModel):
