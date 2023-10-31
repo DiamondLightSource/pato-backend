@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.1.9 (31/10/2023)
++++++++++
+
+**Changed**
+
+- Phase plate status now accounts for column possibly being a string
+
++++++++++
 v1.1.8 (30/10/2023)
 +++++++++
 
