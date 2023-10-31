@@ -6,7 +6,9 @@ import pytest
 @pytest.fixture(scope="module", autouse=True)
 def file_mock():
     with patch(
-        "builtins.open", new_callable=mock_open, read_data='{"data": [{"y": [1,2,3]}]}'
+        "builtins.open",
+        new_callable=mock_open,
+        read_data='{"data": [{"y": [1,2,3], "x": [1,2,3]}]}',
     ) as _fixture:
         yield _fixture
 
