@@ -211,7 +211,8 @@ class DataCollectionSummary(OrmBaseModel):
 
     @validator("phasePlate")
     def to_bool_str(cls, v):
-        return "Yes" if v else "No"
+        phase_plate_used = v is not None and int(v)
+        return "Yes" if phase_plate_used else "No"
 
 
 class DataCollectionGroupSummaryResponse(OrmBaseModel):

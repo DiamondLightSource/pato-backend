@@ -47,3 +47,27 @@ def test_get_forbidden(mock_user, client):
     """Try to get data collections for a visit that does not belong to user"""
     resp = client.get("/dataGroups/5440740/dataCollections")
     assert resp.status_code == 404
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_phase_plate_unused(mock_user, client):
+    """Get phase plate status when column is set to not used"""
+    resp = client.get("/dataGroups/5440740/dataCollections")
+    assert resp.status_code == 200
+    assert resp.json()["items"][0]["phasePlate"] == "No"
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_phase_plate_used(mock_user, client):
+    """Get phase plate status when column is set to used"""
+    resp = client.get("/dataGroups/5440740/dataCollections")
+    assert resp.status_code == 200
+    assert resp.json()["items"][1]["phasePlate"] == "Yes"
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_phase_plate_null(mock_user, client):
+    """Get phase plate status when column is set to null"""
+    resp = client.get("/dataGroups/5440740/dataCollections")
+    assert resp.status_code == 200
+    assert resp.json()["items"][2]["phasePlate"] == "No"
