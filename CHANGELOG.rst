@@ -2,6 +2,15 @@
 Changelog
 ==========
 
+
++++++++++
+v1.1.10 (16/11/2023)
++++++++++
+
+**Changed**
+
+- Include image directory in :code:`dataCollectionGroups` endpoint
+
 +++++++++
 v1.1.9 (31/10/2023)
 +++++++++

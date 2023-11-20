@@ -223,6 +223,7 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     experimentType: Optional[str]
     experimentTypeId: Optional[int] = 37
     experimentTypeName: Optional[str] = "Single Particle"
+    imageDirectory: Optional[str]
     comments: Optional[str]
     collections: int
 

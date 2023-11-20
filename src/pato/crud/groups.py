@@ -29,6 +29,7 @@ def get_collection_groups(
         select(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
+            DataCollection.imageDirectory,
             f.count(DataCollection.dataCollectionId).label("collections"),
         )
         .select_from(DataCollectionGroup)
