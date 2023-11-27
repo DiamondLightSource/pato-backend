@@ -2,6 +2,13 @@
 Changelog
 ==========
 
++++++++++
+v1.1.11 (27/11/2023)
++++++++++
+
+**Changed**
+
+- Return pixel size on image in data collections in angstroms rather than nanometres
 
 +++++++++
 v1.1.10 (16/11/2023)
