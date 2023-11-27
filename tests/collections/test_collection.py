@@ -71,3 +71,19 @@ def test_get_phase_plate_null(mock_user, client):
     resp = client.get("/dataGroups/5440740/dataCollections")
     assert resp.status_code == 200
     assert resp.json()["items"][2]["phasePlate"] == "No"
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_pixel_size(mock_user, client):
+    """Get pixel size in ångstroms, when the value in the table is stored in nanometres"""
+    resp = client.get("/dataGroups/5440740/dataCollections")
+    assert resp.status_code == 200
+    assert resp.json()["items"][1]["pixelSizeOnImage"] == 100
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_get_pixel_size_null(mock_user, client):
+    """Get pixel size when the value in the table is null"""
+    resp = client.get("/dataGroups/988855/dataCollections")
+    assert resp.status_code == 200
+    assert resp.json()["items"][0]["pixelSizeOnImage"] is None
