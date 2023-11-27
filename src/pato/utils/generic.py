@@ -35,7 +35,7 @@ def parse_json_file(path):
         with open(path, "r") as file:
             data = json.load(file)["data"][0]
             return [
-                DataPoint(x=val, y=data["y"][i]) for (i, val) in enumerate(data["x"])
+                DataPoint(x=x_val, y=y_val) for (x_val, y_val) in zip(data["x"], data["y"])
             ]
     except (FileNotFoundError, KeyError, IndexError, TypeError):
         return []

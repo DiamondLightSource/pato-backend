@@ -18,6 +18,32 @@ The API supports a configuration file, that follows the example set in :code:`co
 - :code:`SQL_DATABASE_URL`: The URL for the database
 - :code:`CONFIG_PATH`: Path for the configuration file
 
+Additionally, the following environment variables can be set to enable message queue support:
+
+- :code:`MQ_USER`: Message queue user
+- :code:`MQ_PASS`: Message queue password
+
+As for the JSON configuration file, details are as follows:
+
+- auth
+    - endpoint: URL for the chosen auth method
+    - read_all_perms: Permission groups that should be granted full read permissions
+    - type: Authentication type. Can be :code:`micro` or :code:`dummy`
+    - beamline_mapping: A map of permission groups and the beamlines that permission group should be allowed to viewing
+- mq
+    - host: Message queue host
+    - port: Mesasge queue port 
+    - queue: Queue name
+    - vhost: Message queue virtual host
+- ispyb
+    - pool: Connection pool size
+    - overflow: Connection pool overflow max size
+- facility
+    - contact_email: Contact email to be used across the application
+    - smtp_server: SMTP server host
+    - smtp_port: SMTP port to be used for emailing reports
+    - active_session_cutoff: Time, in weeks, to be used as a threshold for determining if a session is active or not, following the end of the first processing pipeline. For example, a session would be considered inactive if there were no new actions for the past 5 weeks, by default.
+
 ==========
 Deployment
 ==========
