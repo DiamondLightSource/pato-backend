@@ -87,8 +87,8 @@ class SessionResponse(OrmBaseModel):
         lt=2,
         description="The data for the session is archived and no longer available on disk",  # noqa: E501
     )
-    collectionGroups: Optional[int]
-    dataCollectionGroupId: Optional[int]
+    collectionGroups: Optional[int] = None
+    dataCollectionGroupId: Optional[int] = None
 
 
 class DataCollectionSummary(OrmBaseModel):
@@ -209,10 +209,14 @@ class DataCollectionSummary(OrmBaseModel):
     dataCollectionPlanId: Optional[int]
     tomograms: int
 
-    @validator("phasePlate")
+    @validator("phasePlate", pre=True)
     def to_bool_str(cls, v):
-        phase_plate_used = v is not None and int(v)
+        phase_plate_used = v is not None and v != "0" and v != 0
         return "Yes" if phase_plate_used else "No"
+
+    @validator("pixelSizeOnImage")
+    def to_angstrom(cls, v):
+        return v if v is None else v * 10
 
 
 class DataCollectionGroupSummaryResponse(OrmBaseModel):
