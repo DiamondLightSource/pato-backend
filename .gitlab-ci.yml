@@ -16,6 +16,15 @@ install-job:
   script:
     - pip install .[dev]
 
+lint-job:
+  stage: test
+  tags:
+    - argus
+  before_script:
+    - pip install .[dev]
+  script:
+    - tox -e pre-commit
+
 integration-test-job:
   stage: test
   tags:
@@ -23,7 +32,7 @@ integration-test-job:
   before_script:
     - pip install .[dev]
   script:
-    - pytest tests -W ignore::DeprecationWarning
+    - tox -e pytest
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     reports:

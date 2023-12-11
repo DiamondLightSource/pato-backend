@@ -4,30 +4,11 @@ from os.path import isfile
 from typing import Optional
 
 from fastapi import HTTPException
-from sqlalchemy import inspect
+from pydantic import BaseModel
 
 from ..models.response import DataPoint
 from ..utils.config import Config
 from ..utils.logging import app_logger
-
-
-def flatten_join(tup_list, preserve_dups=[]):
-    if tup_list is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Request did not return any data",
-        )
-    flattened = {}
-
-    for inner in tup_list:
-        for c in inspect(inner).mapper.column_attrs:
-            key = c.key
-            if c.key in preserve_dups:
-                key = key + "_" + inner.__table__.name
-
-            flattened[key] = getattr(inner, c.key)
-
-    return flattened
 
 
 def parse_json_file(path):
@@ -35,7 +16,8 @@ def parse_json_file(path):
         with open(path, "r") as file:
             data = json.load(file)["data"][0]
             return [
-                DataPoint(x=x_val, y=y_val) for (x_val, y_val) in zip(data["x"], data["y"])
+                DataPoint(x=x_val, y=y_val)
+                for (x_val, y_val) in zip(data["x"], data["y"])
             ]
     except (FileNotFoundError, KeyError, IndexError, TypeError):
         return []
@@ -95,3 +77,20 @@ def check_session_active(end_date: Optional[datetime.datetime]):
         if end_date
         else False
     )
+
+
+class ProposalReference(BaseModel):
+    code: str
+    number: int
+    visit_number: int | None = None
+
+
+def parse_proposal(proposalReference: str, visit_number: int | None = None):
+    try:
+        return ProposalReference(
+            code=proposalReference[0:2],
+            number=int(proposalReference[2:]),
+            visit_number=visit_number,
+        )
+    except ValueError:
+        raise ValueError("Proposal reference must be formatted as aa12345")

@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.2.0 (11/12/2023)
++++++++++
+
+**Changed**
+
+- Add single session endpoint (:code:`/proposals/{proposalReference}/sessions/{visitNumber}`)
+
++++++++++
 v1.1.11 (27/11/2023)
 +++++++++
 

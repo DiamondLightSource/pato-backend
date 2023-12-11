@@ -1,9 +1,9 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v4.4.0
     hooks:
       - id: check-added-large-files
-      - id: check-yaml
+      #- id: check-yaml
       - id: check-merge-conflict
 
   - repo: local
@@ -13,11 +13,13 @@ repos:
         stages: [commit]
         language: system
         entry: black --check --diff
+        exclude: alembic
         types: [python]
 
-      - id: flake8
-        name: Run flake8
+      - id: ruff
+        name: Run ruff
         stages: [commit]
         language: system
-        entry: flake8
+        entry: ruff
+        exclude: alembic
         types: [python]

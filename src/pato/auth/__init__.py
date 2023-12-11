@@ -9,7 +9,6 @@ def is_admin(perms: list[int]):
 
 
 if auth_type == "micro":
-    from ..auth.micro import Permissions, User
+    pass
 elif auth_type == "dummy":
-    from ..auth.template import GenericPermissions as Permissions
-    from ..auth.template import GenericUser as User
+    pass
