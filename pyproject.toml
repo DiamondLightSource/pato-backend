@@ -73,6 +73,7 @@ addopts = """
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = "error"
+env_override_existing_values = 1
 env_files = [
     ".test.env"
 ]
@@ -94,11 +95,9 @@ skipsdist=True
 [testenv:{pre-commit,mypy,pytest}]
 # Don't create a virtualenv for the command, requires tox-direct plugin
 direct = True
+passenv = *
 allowlist_externals =
     pytest
-    pytest-dotenv
-    black
-    ruff
     pre-commit
     mypy
     sphinx-build
