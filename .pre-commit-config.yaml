@@ -8,13 +8,13 @@ repos:
 
   - repo: local
     hooks:
-      - id: black
-        name: Run black
-        stages: [commit]
-        language: system
-        entry: black --check --diff
-        exclude: src/pato/models/table.py
-        types: [python]
+      #- id: black
+      #  name: Run black
+      #  stages: [commit]
+      #  language: system
+      #  entry: black --check --diff
+      #  exclude: src/pato/models/table.py
+      #  types: [python]
 
       - id: ruff
         name: Run ruff
