@@ -78,7 +78,7 @@ def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int
             *unravel(ParticlePicker),
             Movie.createdTimeStamp,
             Movie.movieId,
-            MotionCorrection.imageNumber
+            MotionCorrection.imageNumber,
         )
         .select_from(MotionCorrection)
         .filter_by(autoProcProgramId=autoProcId)
@@ -109,7 +109,7 @@ def get_classification(
         select(
             *unravel(ParticleClassificationGroup),
             *unravel(ParticleClassification),
-            *unravel(CryoemInitialModel)
+            *unravel(CryoemInitialModel),
         )
         .filter(
             and_(
