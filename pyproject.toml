@@ -97,6 +97,8 @@ direct = True
 allowlist_externals =
     pytest
     pytest-dotenv
+    black
+    ruff
     pre-commit
     mypy
     sphinx-build
