@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException, Request
 
 from ..utils.bearer import OAuth2PasswordBearerCookie
 from ..utils.config import Config
+from ..utils.generic import parse_proposal
 from .template import GenericPermissions, GenericUser
 
 oauth2_scheme = OAuth2PasswordBearerCookie(tokenUrl="token")
@@ -50,6 +51,12 @@ def _check_perms(data_id: str | int, endpoint: str, token=str):
 
 
 class Permissions(GenericPermissions):
+    @staticmethod
+    def session(proposalReference: str, visitNumber: int, token=Depends(oauth2_scheme)):
+        _check_perms(f"{proposalReference}-{visitNumber}", "session", token)
+
+        return parse_proposal(proposalReference, visitNumber)
+
     @staticmethod
     def collection(collectionId: int, token=Depends(oauth2_scheme)):
         return _check_perms(collectionId, "collection", token)

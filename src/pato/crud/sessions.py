@@ -1,15 +1,16 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Label, and_
+from fastapi import HTTPException, status
+from sqlalchemy import Label, and_, or_, select
 from sqlalchemy import func as f
-from sqlalchemy import or_, select
 
 from ..auth import User
 from ..models.response import SessionResponse
 from ..models.table import BLSession, DataCollectionGroup, Proposal
 from ..utils.auth import check_session
-from ..utils.database import Paged, fast_count, paginate, unravel
+from ..utils.database import Paged, db, fast_count, paginate, unravel
+from ..utils.generic import ProposalReference, parse_proposal
 
 
 def get_sessions(
@@ -36,12 +37,13 @@ def get_sessions(
     query = select(*unravel(BLSession), *fields)
 
     if proposal is not None:
+        proposal_reference = parse_proposal(proposal)
         query = (
             query.select_from(Proposal)
             .filter(
                 and_(
-                    Proposal.proposalCode == proposal[:2],
-                    Proposal.proposalNumber == proposal[2:],
+                    Proposal.proposalCode == proposal_reference.code,
+                    Proposal.proposalNumber == proposal_reference.number,
                 )
             )
             .join(BLSession)
@@ -80,3 +82,30 @@ def get_sessions(
         )
 
     return paginate(query, limit, page, precounted_total=total)
+
+
+def get_session(proposalReference: ProposalReference):
+    query = (
+        select(
+            *unravel(BLSession),
+            f.concat(Proposal.proposalCode, Proposal.proposalNumber).label(
+                "parentProposal"
+            ),
+        )
+        .select_from(Proposal)
+        .filter(
+            Proposal.proposalCode == proposalReference.code,
+            Proposal.proposalNumber == proposalReference.number,
+        )
+        .join(BLSession)
+        .filter(BLSession.visit_number == proposalReference.visit_number)
+    )
+
+    session = db.session.execute(query).first()
+
+    if session is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Session does not exist"
+        )
+
+    return session

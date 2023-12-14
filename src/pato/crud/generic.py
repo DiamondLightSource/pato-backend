@@ -1,9 +1,8 @@
 from typing import Literal
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column, and_, case
+from sqlalchemy import Column, and_, case, literal_column, select
 from sqlalchemy import func as f
-from sqlalchemy import literal_column, select
 
 from ..models.response import GenericPlot
 from ..models.table import (
@@ -42,7 +41,7 @@ def _generate_buckets(bin: float, minimum: float, column: Column):
 
 def _parse_count(query):
     data = db.session.execute(query.order_by(literal_column("1"))).mappings().one()
-    if not any([value != 0 for value in data.values()]):
+    if not any(value != 0 for value in data.values()):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No items found",

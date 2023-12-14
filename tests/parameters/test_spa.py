@@ -18,7 +18,7 @@ _base = {
 def test_fields_omitted_with_stop_after_ctf():
     """Some fields must be omitted when opting to stop after CTF estimation"""
     params = SPAReprocessingParameters(**_base, stopAfterCtfEstimation=True).dict()
-    assert not any([x in params.keys() for x in _omit_when_stopping])
+    assert not any(x in params.keys() for x in _omit_when_stopping)
 
 
 def test_fields_included_with_no_stop_after_ctf():
@@ -28,9 +28,9 @@ def test_fields_included_with_no_stop_after_ctf():
         stopAfterCtfEstimation=False,
         minimumDiameter=3,
         maximumDiameter=4,
-        performCalculation=False
+        performCalculation=False,
     ).dict()
-    assert set(_omit_when_stopping).issubset(set([*params.keys()]))
+    assert set(_omit_when_stopping).issubset({*params.keys()})
 
 
 def test_invalid_diameter_size():
@@ -55,6 +55,6 @@ def test_field_omitted_when_autocalculating():
         stopAfterCtfEstimation=False,
         minimumDiameter=3,
         maximumDiameter=4,
-        performCalculation=True
+        performCalculation=True,
     ).dict()
-    assert not any([x in params.keys() for x in _omit_when_autocalculating])
+    assert not any(x in params.keys() for x in _omit_when_autocalculating)

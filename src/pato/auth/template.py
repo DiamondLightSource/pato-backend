@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from ..utils.generic import parse_proposal
+
 
 @dataclass
 class GenericUser:
@@ -31,3 +33,7 @@ class GenericPermissions:
     @staticmethod
     def processing_job(processingJobId: int) -> int:
         return processingJobId
+
+    @staticmethod
+    def session(proposalReference: str, visitNumber: int):
+        return parse_proposal(proposalReference, visitNumber)
