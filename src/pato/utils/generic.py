@@ -3,7 +3,7 @@ import json
 from os.path import isfile
 from typing import Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from pydantic import BaseModel
 
 from ..models.response import DataPoint
@@ -93,4 +93,7 @@ def parse_proposal(proposalReference: str, visit_number: int | None = None):
             visit_number=visit_number,
         )
     except ValueError:
-        raise ValueError("Proposal reference must be formatted as aa12345")
+        raise HTTPException(
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Proposal reference must be formatted as aa12345",
+        )
