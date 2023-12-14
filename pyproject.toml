@@ -37,15 +37,15 @@ dev = [
     "pytest",
     "pytest-cov",
     "ruff",
-    "sphinx-autobuild",
-    "sphinx-copybutton",
-    "sphinx-design",
+    # "sphinx-autobuild",
+    # "sphinx-copybutton",
+    # "sphinx-design",
     "tox-direct",
     "types-mock",
     "pytest-asyncio",
     "pytest-dotenv",
     "httpx",
-    "pydata-sphinx-theme < 0.10.1",
+    # "pydata-sphinx-theme < 0.10.1",
     "setuptools_scm[toml]>=6.2"
 ]
 
@@ -100,8 +100,8 @@ allowlist_externals =
     pytest
     pre-commit
     mypy
-    sphinx-build
-    sphinx-autobuild
+    # sphinx-build
+    # sphinx-autobuild
 commands =
     pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml -W ignore::DeprecationWarning {posargs}
     mypy: mypy src tests {posargs}
