@@ -97,4 +97,4 @@ def paginate(
 
 
 def unravel(model: Base):
-    return [c for c in model.__table__.columns]
+    return list(model.__table__.columns)
