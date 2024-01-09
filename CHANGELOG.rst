@@ -3,12 +3,13 @@ Changelog
 ==========
 
 +++++++++
-v1.2.0 (11/12/2023)
+v1.2.0 (09/01/2024)
 +++++++++
 
 **Changed**
 
 - Add single session endpoint (:code:`/proposals/{proposalReference}/sessions/{visitNumber}`)
+- Fix data collections not showing up, due to table model mismatch
 
 +++++++++
 v1.1.11 (27/11/2023)
