@@ -2,9 +2,8 @@ import re
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column
+from sqlalchemy import Column, literal_column, select
 from sqlalchemy import func as f
-from sqlalchemy import literal_column, select
 
 from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
 from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram

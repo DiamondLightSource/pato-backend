@@ -29,6 +29,14 @@ async def mock_send(_, _1, _2, s):
     await s({"type": "http.response.start", "status": 200, "headers": {}})
 
 
+@pytest.fixture(scope="function", autouse=True)
+def mock_config():
+    with patch(
+        "pato.utils.config._read_config", return_value={"auth": "this"}
+    ) as _fixture:
+        yield _fixture
+
+
 class MockResponse:
     def __init__(self, status=200, data={"details": ""}):
         self.status_code = status

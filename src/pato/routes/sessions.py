@@ -34,5 +34,5 @@ def get_sessions(
         minStartDate=minStartDate,
         maxStartDate=maxStartDate,
         countCollections=countCollections,
-        **page
+        **page,
     )

@@ -74,7 +74,7 @@ def get_classification(
         sortBy=sortBy,
         classType=classType,
         excludeUnselected=excludeUnselected,
-        **page
+        **page,
     )
 
 

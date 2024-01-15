@@ -8,6 +8,13 @@ class ConfigurationError(Exception):
     pass
 
 
+def _read_config():
+    with open(os.environ.get("CONFIG_PATH", "config.json"), "r") as fp:
+        conf = json.load(fp)
+
+    return conf
+
+
 @dataclass
 class Facility:
     contact_email: str
@@ -50,16 +57,15 @@ class Config:
     @staticmethod
     def set():
         try:
-            with open(os.environ.get("CONFIG_PATH") or "config.json", "r") as fp:
-                conf = json.load(fp)
-                Config.auth = Auth(**conf["auth"])
-                Config.ispyb = ISPyB(**conf["ispyb"])
-                Config.mq = MQ(**conf["mq"])
-                Config.facility = Facility(**conf["facility"])
-                Config.cors = conf["enable_cors"]
+            conf = _read_config()
+            Config.auth = Auth(**conf["auth"])
+            Config.ispyb = ISPyB(**conf["ispyb"])
+            Config.mq = MQ(**conf["mq"])
+            Config.facility = Facility(**conf["facility"])
+            Config.cors = conf["enable_cors"]
 
-                Config.mq.user = os.environ.get("MQ_USER")
-                Config.mq.password = os.environ.get("MQ_PASS")
+            Config.mq.user = os.environ.get("MQ_USER")
+            Config.mq.password = os.environ.get("MQ_PASS")
         except (FileNotFoundError, TypeError) as exc:
             raise ConfigurationError(str(exc).replace(".__init__()", "")) from exc
         except KeyError as exc:

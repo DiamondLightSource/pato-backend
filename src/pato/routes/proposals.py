@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from ..auth import User
+from ..auth import Permissions, User
 from ..crud import proposals as crud
-from ..models.response import ProposalResponse
+from ..crud import sessions as sessions_crud
+from ..models.response import ProposalResponse, SessionResponse
 from ..utils.database import Paged
 from ..utils.dependencies import pagination
 
@@ -18,3 +19,13 @@ def get_proposals(
 ):
     """List proposals"""
     return crud.get_proposals(search=search, user=user, **page)
+
+
+@router.get(
+    "/{proposalReference}/sessions/{visitNumber}",
+    response_model=SessionResponse,
+    tags=["Sessions"],
+)
+def get_session(proposalReference=Depends(Permissions.session)):
+    """Get individual session"""
+    return sessions_crud.get_session(proposalReference)
