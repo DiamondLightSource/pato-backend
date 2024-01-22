@@ -39,7 +39,7 @@ class DataPoint(OrmBaseModel):
 class ProposalResponse(OrmBaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
-    title: Optional[str] = Field(..., max_length=200)
+    title: Optional[str] = Field(..., max_length=255)
     proposalCode: Optional[str] = Field(..., max_length=45)
     proposalNumber: Optional[str] = Field(..., max_length=45)
     bltimeStamp: datetime

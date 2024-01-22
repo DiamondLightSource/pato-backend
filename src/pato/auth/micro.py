@@ -11,10 +11,14 @@ oauth2_scheme = CookieOrHTTPBearer(cookie_key="diamond-uauth-session")
 
 
 class User(GenericUser):
-    def __init__(self, request: Request, token=Depends(oauth2_scheme)):
+    def __init__(
+        self,
+        request: Request,
+        token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+    ):
         response = requests.get(
             Config.auth.endpoint + "user",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={"Authorization": f"Bearer {token.credentials}"},
         )
 
         if response.status_code != 200:
