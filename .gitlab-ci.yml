@@ -3,18 +3,13 @@ variables:
 
 image: python:3.12
 services:
-  - gcr.io/diamond-privreg/lims/ispyb-mock:v2.0.0
+  - gcr.io/diamond-privreg/lims/ispyb-mock:v1.2.1
 stages:
   - test
   - build
   - sync
 
 install-job:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: "$CI_COMMIT_BRANCH"
   stage: test
   tags:
     - argus
@@ -22,11 +17,6 @@ install-job:
     - pip install .[dev]
 
 lint-job:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: "$CI_COMMIT_BRANCH"
   stage: test
   tags:
     - argus
@@ -36,11 +26,6 @@ lint-job:
     - tox -e pre-commit
 
 integration-test-job:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: "$CI_COMMIT_BRANCH"
   stage: test
   tags:
     - argus
