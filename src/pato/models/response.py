@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ..utils.database import Paged
 
@@ -217,7 +217,7 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     comments: Optional[str]
     collections: int
 
-    @validator("experimentTypeName")
+    @field_validator("experimentTypeName")
     def replace_none(cls, v):
         return v or "Single Particle"
 
