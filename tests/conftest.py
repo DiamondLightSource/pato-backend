@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+from fastapi.security import HTTPAuthorizationCredentials
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -94,7 +95,9 @@ def mock_pika():
 
 @pytest.fixture(scope="function")
 def mock_permissions(request):
-    app.dependency_overrides[oauth2_scheme] = lambda: "a"
+    app.dependency_overrides[oauth2_scheme] = lambda: HTTPAuthorizationCredentials(
+        credentials="a", scheme="Bearer"
+    )
     with patch("pato.auth.micro._check_perms", new=new_perms) as _fixture:
         yield _fixture
 
