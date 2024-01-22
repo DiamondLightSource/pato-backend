@@ -1,12 +1,13 @@
 import requests
 from fastapi import Depends, HTTPException, Request
+from fastapi.security import HTTPAuthorizationCredentials
+from lims_utils.auth import CookieOrHTTPBearer, GenericUser
 
-from ..utils.bearer import OAuth2PasswordBearerCookie
 from ..utils.config import Config
 from ..utils.generic import parse_proposal
-from .template import GenericPermissions, GenericUser
+from .template import GenericPermissions
 
-oauth2_scheme = OAuth2PasswordBearerCookie(tokenUrl="token")
+oauth2_scheme = CookieOrHTTPBearer(cookie_key="diamond-uauth-session")
 
 
 class User(GenericUser):
@@ -28,7 +29,7 @@ class User(GenericUser):
         super().__init__(**user)
 
 
-def _check_perms(data_id: str | int, endpoint: str, token=str):
+def _check_perms(data_id: str | int, endpoint: str, token: str):
     response = requests.get(
         "".join(
             [
@@ -52,27 +53,42 @@ def _check_perms(data_id: str | int, endpoint: str, token=str):
 
 class Permissions(GenericPermissions):
     @staticmethod
-    def session(proposalReference: str, visitNumber: int, token=Depends(oauth2_scheme)):
-        _check_perms(f"{proposalReference}-{visitNumber}", "session", token)
+    def session(
+        proposalReference: str,
+        visitNumber: int,
+        token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+    ):
+        _check_perms(f"{proposalReference}-{visitNumber}", "session", token.credentials)
 
         return parse_proposal(proposalReference, visitNumber)
 
     @staticmethod
-    def collection(collectionId: int, token=Depends(oauth2_scheme)):
-        return _check_perms(collectionId, "collection", token)
+    def collection(
+        collectionId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        return _check_perms(collectionId, "collection", token.credentials)
 
     @staticmethod
-    def tomogram(tomogramId: int, token=Depends(oauth2_scheme)):
-        return _check_perms(tomogramId, "tomogram", token)
+    def tomogram(
+        tomogramId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        return _check_perms(tomogramId, "tomogram", token.credentials)
 
     @staticmethod
-    def movie(movieId: int, token=Depends(oauth2_scheme)):
-        return _check_perms(movieId, "movie", token)
+    def movie(
+        movieId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        return _check_perms(movieId, "movie", token.credentials)
 
     @staticmethod
-    def autoproc_program(autoProcId: int, token=Depends(oauth2_scheme)):
-        return _check_perms(autoProcId, "autoProc", token)
+    def autoproc_program(
+        autoProcId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        return _check_perms(autoProcId, "autoProc", token.credentials)
 
     @staticmethod
-    def processing_job(processingJobId: int, token=Depends(oauth2_scheme)):
-        return _check_perms(processingJobId, "processingJob", token)
+    def processing_job(
+        processingJobId: int,
+        token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+    ):
+        return _check_perms(processingJobId, "processingJob", token.credentials)

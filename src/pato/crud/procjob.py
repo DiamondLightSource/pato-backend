@@ -1,14 +1,15 @@
 from fastapi import HTTPException, status
-from sqlalchemy import select
-
-from ..models.response import ProcessingJobParameters
-from ..models.table import (
+from lims_utils.tables import (
     BLSession,
     DataCollection,
     DataCollectionGroup,
     ProcessingJob,
     ProcessingJobParameter,
 )
+from sqlalchemy import select
+
+from ..models.response import ProcessingJobParameters
+from ..utils.config import Config
 from ..utils.database import db
 from ..utils.generic import check_session_active
 
@@ -38,5 +39,5 @@ def get_parameters(processingJob: int) -> ProcessingJobParameters:
 
     return ProcessingJobParameters(
         items={row.parameterKey: row.parameterValue for row in parameters},
-        allowReprocessing=check_session_active(end_date),
+        allowReprocessing=(bool(Config.mq.user) and check_session_active(end_date)),
     )

@@ -1,11 +1,7 @@
 from typing import Literal
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column, and_, case, literal_column, select
-from sqlalchemy import func as f
-
-from ..models.response import GenericPlot
-from ..models.table import (
+from lims_utils.tables import (
     CTF,
     AutoProcProgram,
     DataCollection,
@@ -15,6 +11,10 @@ from ..models.table import (
     ProcessingJob,
     RelativeIceThickness,
 )
+from sqlalchemy import Column, and_, case, literal_column, select
+from sqlalchemy import func as f
+
+from ..models.response import GenericPlot
 from ..utils.database import db
 
 

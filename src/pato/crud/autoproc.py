@@ -1,15 +1,7 @@
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
-from sqlalchemy import UnaryExpression, and_, or_, select
-
-from ..models.response import (
-    Classification,
-    CtfImageNumberList,
-    FullMovie,
-    TomogramResponse,
-)
-from ..models.table import (
+from lims_utils.tables import (
     CTF,
     CryoemInitialModel,
     MotionCorrection,
@@ -20,8 +12,16 @@ from ..models.table import (
     TiltImageAlignment,
     Tomogram,
 )
-from ..models.table import (
+from lims_utils.tables import (
     t_ParticleClassification_has_CryoemInitialModel as ParticleClassificationHasCryoem,
+)
+from sqlalchemy import UnaryExpression, and_, or_, select
+
+from ..models.response import (
+    Classification,
+    CtfImageNumberList,
+    FullMovie,
+    TomogramResponse,
 )
 from ..utils.database import Paged, db, paginate, unravel
 from ..utils.generic import validate_path

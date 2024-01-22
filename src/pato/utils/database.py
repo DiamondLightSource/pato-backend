@@ -4,10 +4,10 @@ from typing import Generator, Generic, Optional, TypeVar
 
 import sqlalchemy.orm
 from fastapi import HTTPException, status
-from pydantic.generics import GenericModel
+from lims_utils.tables import Base
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import Select, func, literal_column, select
 
-from ..models.table import Base
 from .session import _session as sqlsession
 
 _session = contextvars.ContextVar("_session", default=None)
@@ -49,15 +49,13 @@ def get_session() -> Generator[sqlalchemy.orm.Session, None, None]:
 T = TypeVar("T")
 
 
-class Paged(GenericModel, Generic[T]):
+class Paged(BaseModel, Generic[T]):
     items: list[T]
     total: int
     page: int
     limit: int
 
-    class Config:
-        arbitrary_types_allowed = True
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
 
 def fast_count(query: Select) -> int:

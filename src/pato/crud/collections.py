@@ -3,14 +3,7 @@ import os
 import re
 
 from fastapi import HTTPException, status
-from sqlalchemy import Column, and_, case, extract, func, select
-
-from ..models.parameters import (
-    SPAReprocessingParameters,
-    TomogramReprocessingParameters,
-)
-from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
-from ..models.table import (
+from lims_utils.tables import (
     CTF,
     AutoProcProgram,
     BLSession,
@@ -24,6 +17,13 @@ from ..models.table import (
     TiltImageAlignment,
     Tomogram,
 )
+from sqlalchemy import Column, and_, case, extract, func, select
+
+from ..models.parameters import (
+    SPAReprocessingParameters,
+    TomogramReprocessingParameters,
+)
+from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
 from ..utils.database import Paged, db, paginate
 from ..utils.generic import check_session_active
 from ..utils.pika import pika_publisher

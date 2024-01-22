@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
+from lims_utils.tables import ProcessingJobParameter
 from sqlalchemy import select
 
-from pato.models.table import ProcessingJobParameter
 from pato.utils.database import db
 
 
