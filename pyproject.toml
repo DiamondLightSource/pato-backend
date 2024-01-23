@@ -16,13 +16,14 @@ description = "PATO's backend"
 dependencies = [
     "pika~=1.3.2",
     "SQLAlchemy~=2.0.16",
-    "fastapi~=0.104.0",
+    "fastapi~=0.109.0",
     "uvicorn[standard]~=0.22.0",
     "requests~=2.31.0",
     "mysqlclient~=2.1.1",
-    "mysql-connector-python~=8.0.33",
-    "pydantic~=1.10.13",
-    "types-requests"
+    "mysql-connector-python~=8.2.0",
+    "pydantic~=2.5.3",
+    "types-requests",
+    "lims-utils~=0.1.1"
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
@@ -44,7 +45,6 @@ dev = [
     "tox-direct",
     "types-mock",
     "pytest-asyncio",
-    "pytest-dotenv",
     "httpx",
     # "pydata-sphinx-theme < 0.10.1",
     "setuptools_scm[toml]>=6.2"
@@ -74,10 +74,6 @@ addopts = """
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = "error"
-env_override_existing_values = 1
-env_files = [
-    ".test.env"
-]
 
 [tool.coverage.run]
 data_file = "/tmp/pato.coverage"
@@ -107,6 +103,11 @@ commands =
     pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml -W ignore::DeprecationWarning {posargs}
     mypy: mypy src tests {posargs}
     pre-commit: pre-commit run --all-files {posargs}
+setenv = 
+    SQL_DATABASE_URL=mysql://root:ispyb-root@127.0.0.1/ispyb
+    CONFIG_PATH=config.json
+    MQ_USER=guest
+    MQ_PASS=guest
 """
 
 

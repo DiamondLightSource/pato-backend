@@ -1,11 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import func as f
-from sqlalchemy import select
-
-from ..auth import User
-from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
-from ..models.table import (
+from lims_utils.tables import (
     BLSession,
     DataCollection,
     DataCollectionGroup,
@@ -13,6 +8,11 @@ from ..models.table import (
     Proposal,
     Tomogram,
 )
+from sqlalchemy import func as f
+from sqlalchemy import select
+
+from ..auth import User
+from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
 from ..utils.database import Paged, db, paginate, unravel
 

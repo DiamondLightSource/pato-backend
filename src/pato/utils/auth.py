@@ -1,7 +1,7 @@
+from lims_utils.tables import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
 from sqlalchemy import Select, and_, or_
 
 from ..auth import User, is_admin
-from ..models.table import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
 from .config import Config
 
 

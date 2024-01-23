@@ -1,16 +1,4 @@
-from dataclasses import dataclass
-
 from ..utils.generic import parse_proposal
-
-
-@dataclass
-class GenericUser:
-    fedid: str
-    id: str
-    familyName: str
-    title: str
-    givenName: str
-    permissions: list[int]
 
 
 class GenericPermissions:
