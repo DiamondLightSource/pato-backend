@@ -1,4 +1,4 @@
-from pato.auth.template import GenericUser
+from lims_utils.auth import GenericUser
 
 admin = GenericUser(
     fedid="admin",

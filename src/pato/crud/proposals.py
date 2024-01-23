@@ -1,9 +1,9 @@
+from lims_utils.tables import BLSession, Proposal
 from sqlalchemy import func as f
 from sqlalchemy import or_, select
 
 from ..auth import User
 from ..models.response import ProposalResponse
-from ..models.table import BLSession, Proposal
 from ..utils.auth import check_proposal
 from ..utils.database import Paged, paginate
 

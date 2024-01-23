@@ -21,5 +21,4 @@ repos:
         stages: [commit]
         language: system
         entry: ruff
-        exclude: src/pato/models/table.py
         types: [python]

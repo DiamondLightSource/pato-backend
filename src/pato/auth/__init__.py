@@ -1,8 +1,10 @@
 # flake8: noqa F401
 import importlib
 
+from lims_utils.auth import GenericUser
+
 from ..utils.config import Config
-from .template import GenericPermissions, GenericUser
+from .template import GenericPermissions
 
 auth_type = Config.auth.type.lower()
 

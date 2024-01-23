@@ -36,9 +36,9 @@ class SPAReprocessingParameters(BaseModel):
     voltage: Literal[200, 300] = 300
     Cs: float = Field(default=2.7, alias="sphericalAberration")
     ctffind_do_phaseshift: bool = Field(default=False, alias="phasePlateUsed")
-    angpix: float = Field(min=0.02, max=100, alias="pixelSize")
+    angpix: float = Field(ge=0.02, lt=100, alias="pixelSize")
     motioncor_binning: Literal[1, 2] = Field(default=1, alias="motionCorrectionBinning")
-    motioncor_doseperframe: float = Field(min=0.003, max=5, alias="dosePerFrame")
+    motioncor_doseperframe: float = Field(ge=0.003, lt=5, alias="dosePerFrame")
     stop_after_ctf_estimation: bool = Field(
         default=False, alias="stopAfterCtfEstimation"
     )
@@ -50,21 +50,21 @@ class SPAReprocessingParameters(BaseModel):
     do_class3d: bool = Field(default=True, alias="doClass3D")
     do_class2d: bool = Field(default=True, alias="doClass2D")
     mask_diameter: float = Field(
-        min=0.1,
-        max=1024,
+        ge=0.1,
+        le=1024,
         alias="maskDiameter",
     )
-    extract_boxsize: float = Field(min=0.1, max=1024, alias="boxSize")
-    extract_small_boxsize: float = Field(min=0.1, max=1024, alias="downsampleBoxSize")
+    extract_boxsize: float = Field(ge=0.1, le=1024, alias="boxSize")
+    extract_small_boxsize: float = Field(ge=0.1, le=1024, alias="downsampleBoxSize")
     performCalculation: bool = Field(default=True, exclude=True)
     use_fsc_criterion: bool = Field(default=False, alias="useFscCriterion")
     do_class2d_pass2: bool = Field(default=True, alias="perform2DSecondPass")
     do_class3d_pass2: bool = Field(default=False, alias="perform3DSecondPass")
     autopick_LoG_diam_min: Optional[float] = Field(
-        min=0.02, max=1024.0, alias="minimumDiameter"
+        ge=0.02, le=1024.0, alias="minimumDiameter", default=None
     )
     autopick_LoG_diam_max: Optional[float] = Field(
-        min=0.02, max=4000.0, alias="maximumDiameter"
+        ge=0.02, le=4000.0, alias="maximumDiameter", default=None
     )
     motioncor_gainreference: str = Field(default="gain.mrc", alias="gainReferenceFile")
     extract_downscale: bool = Field(default=False, alias="extractDownscale")

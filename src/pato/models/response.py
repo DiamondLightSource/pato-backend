@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ..utils.database import Paged
 
@@ -20,19 +20,26 @@ class RotationAxisEnum(str, Enum):
 
 
 class OrmBaseModel(BaseModel):
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
 
 class DataPoint(OrmBaseModel):
-    x: float | str
+    x: str | float
     y: float
+
+    @field_validator("x")
+    @classmethod
+    def coerce_into_float_by_default(cls, v: str):
+        try:
+            return float(v)
+        except ValueError:
+            return v
 
 
 class ProposalResponse(OrmBaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
-    title: Optional[str] = Field(..., max_length=200)
+    title: Optional[str] = Field(..., max_length=255)
     proposalCode: Optional[str] = Field(..., max_length=45)
     proposalNumber: Optional[str] = Field(..., max_length=45)
     bltimeStamp: datetime
@@ -46,7 +53,6 @@ class SessionResponse(OrmBaseModel):
     beamLineSetupId: Optional[int]
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     beamCalendarId: Optional[int]
-    projectCode: Optional[str] = Field(..., max_length=45)
     startDate: Optional[datetime]
     endDate: Optional[datetime]
     beamLineName: Optional[str] = Field(..., max_length=45)
@@ -62,25 +68,9 @@ class SessionResponse(OrmBaseModel):
         lt=2,
         description="Indicates if session has Datacollections or XFE or EnergyScans attached",  # noqa: E501
     )
-    sessionTitle: Optional[str] = Field(..., max_length=255)
-    structureDeterminations: Optional[float]
-    dewarTransport: Optional[float]
-    databackupFrance: Optional[float] = Field(
-        ..., description="Data backup and express delivery France"
-    )
-    databackupEurope: Optional[float] = Field(
-        ..., description="Data backup and express delivery Europe"
-    )
-    expSessionPk: Optional[int] = Field(..., lt=1e10)
-    operatorSiteNumber: Optional[str] = Field(
-        ..., max_length=10, description="Matricule site"
-    )
     lastUpdate: Optional[datetime] = Field(
         ...,
         description="Last update timestamp: by default the end of the session, the last collect",  # noqa: E501
-    )
-    protectedData: Optional[str] = Field(
-        ..., max_length=1024, description="Indicates if the data is protected or not"
     )
     archived: int = Field(
         ...,
@@ -93,22 +83,21 @@ class SessionResponse(OrmBaseModel):
 
 class DataCollectionSummary(OrmBaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
-    SESSIONID: int = Field(..., lt=1e9, description="Session ID")
     comments: Optional[str]
     startTime: Optional[datetime] = Field(
         ..., description="Start time of the dataCollection"
     )
     pixelSizeOnImage: Optional[float] = Field(
         ...,
-        comment="Pixel size on image, calculated from magnification",
+        description="Pixel size on image, calculated from magnification",
     )
-    voltage: Optional[float] = Field(..., comment="Unit: kV")
+    voltage: Optional[float] = None
     imageSizeX: Optional[int] = Field(
         ...,
-        comment="Image size in x, in case crop has been used.",
+        description="Image size in x, in case crop has been used.",
     )
     imageSizeY: Optional[int] = Field(
-        ..., comment="Image size in y, in case crop has been used."
+        ..., description="Image size in y, in case crop has been used."
     )
     experimenttype: Optional[str] = Field(..., max_length=24)
     index: int
@@ -144,7 +133,6 @@ class DataCollectionSummary(OrmBaseModel):
     xBeam: Optional[float]
     yBeam: Optional[float]
     printableForReport: Optional[int]
-    CRYSTALCLASS: Optional[str] = Field(..., max_length=20)
     slitGapVertical: Optional[float]
     slitGapHorizontal: Optional[float]
     transmission: Optional[float]
@@ -160,7 +148,6 @@ class DataCollectionSummary(OrmBaseModel):
     chiStart: Optional[float]
     resolutionAtCorner: Optional[float]
     detector2Theta: Optional[float]
-    DETECTORMODE: Optional[str] = Field(..., max_length=255)
     undulatorGap1: Optional[float]
     undulatorGap2: Optional[float]
     undulatorGap3: Optional[float]
@@ -171,7 +158,6 @@ class DataCollectionSummary(OrmBaseModel):
     actualCenteringPosition: Optional[str] = Field(..., max_length=255)
     beamShape: Optional[str] = Field(..., max_length=24)
     dataCollectionGroupId: int
-    POSITIONID: Optional[int]
     detectorId: Optional[int]
     screeningOrigId: Optional[int]
     startPositionId: Optional[int]
@@ -209,12 +195,12 @@ class DataCollectionSummary(OrmBaseModel):
     dataCollectionPlanId: Optional[int]
     tomograms: int
 
-    @validator("phasePlate", pre=True)
+    @field_validator("phasePlate", mode="before")
     def to_bool_str(cls, v):
         phase_plate_used = v is not None and v != "0" and v != 0
         return "Yes" if phase_plate_used else "No"
 
-    @validator("pixelSizeOnImage")
+    @field_validator("pixelSizeOnImage")
     def to_angstrom(cls, v):
         return v if v is None else v * 10
 
@@ -231,7 +217,7 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     comments: Optional[str]
     collections: int
 
-    @validator("experimentTypeName")
+    @field_validator("experimentTypeName")
     def replace_none(cls, v):
         return v or "Single Particle"
 
@@ -243,20 +229,18 @@ class ProcessingJobParameters(OrmBaseModel):
 
 class CTF(OrmBaseModel):
     ctfId: int
-    boxSizeX: Optional[float] = Field(..., title="Box size in x", unit="pixels")
-    boxSizeY: Optional[float] = Field(..., title="Box size in y", unit="pixels")
-    minResolution: Optional[float] = Field(
-        ..., title="Minimum resolution for CTF", unit="A"
-    )
-    maxResolution: Optional[float] = Field(..., unit="A")
-    minDefocus: Optional[float] = Field(..., unit="A")
-    maxDefocus: Optional[float] = Field(..., unit="A")
-    defocusStepSize: Optional[float] = Field(..., unit="A")
-    astigmatism: Optional[float] = Field(..., unit="A")
-    astigmatismAngle: Optional[float] = Field(..., unit="deg?")
-    estimatedResolution: Optional[float] = Field(..., unit="A")
-    estimatedDefocus: Optional[float] = Field(..., unit="A")
-    amplitudeContrast: Optional[float] = Field(..., unit="%?")
+    boxSizeX: Optional[float] = Field(..., title="Box size in x")
+    boxSizeY: Optional[float] = Field(..., title="Box size in y")
+    minResolution: Optional[float] = Field(..., title="Minimum resolution for CTF")
+    maxResolution: Optional[float] = None
+    minDefocus: Optional[float] = None
+    maxDefocus: Optional[float] = None
+    defocusStepSize: Optional[float] = None
+    astigmatism: Optional[float] = None
+    astigmatismAngle: Optional[float] = None
+    estimatedResolution: Optional[float] = None
+    estimatedDefocus: Optional[float] = None
+    amplitudeContrast: Optional[float] = None
     ccValue: Optional[float] = Field(..., title="Correlation value")
     fftTheoreticalFullPath: Optional[str] = Field(
         ..., max_length=255, title="Full path to the jpg image of the simulated FFT"
@@ -271,10 +255,8 @@ class Movie(OrmBaseModel):
     createdTimeStamp: datetime
     positionX: Optional[float]
     positionY: Optional[float]
-    nominalDefocus: Optional[float] = Field(..., title="Nominal defocus", unit="A")
-    angle: Optional[float] = Field(
-        ..., unit="degrees relative to perpendicular to beam"
-    )
+    nominalDefocus: Optional[float] = Field(..., title="Nominal defocus")
+    angle: Optional[float] = None
     fluence: Optional[float] = Field(
         ...,
         title="accumulated electron fluence from start to end of acquisition of movie",
@@ -294,11 +276,11 @@ class MotionCorrection(OrmBaseModel):
     )
     firstFrame: Optional[int] = Field(..., title="First frame of movie used")
     lastFrame: Optional[int] = Field(..., title="Last frame of movie used")
-    dosePerFrame: Optional[float] = Field(..., title="Dose per frame", unit="e-/A^2")
+    dosePerFrame: Optional[float] = Field(..., title="Dose per frame")
     doseWeight: Optional[float] = Field(..., title="Dose weight")
-    totalMotion: Optional[float] = Field(..., title="Total motion", unit="A")
+    totalMotion: Optional[float] = Field(..., title="Total motion")
     averageMotionPerFrame: Optional[float] = Field(
-        ..., title="Average motion per frame", unit="A"
+        ..., title="Average motion per frame"
     )
     driftPlotFullPath: Optional[str] = Field(
         ..., max_length=255, title="Path to drift plot"
@@ -324,7 +306,7 @@ class MotionCorrection(OrmBaseModel):
     comments: Optional[str] = Field(..., max_length=255)
 
 
-class TiltImageAlignment(OrmBaseModel):
+class TiltImageAlignmentOut(OrmBaseModel):
     movieId: int
     defocusU: Optional[float]
     defocusV: Optional[float]
@@ -341,14 +323,11 @@ class FullMovie(OrmBaseModel):
     CTF: CTF
     Movie: Movie
     MotionCorrection: MotionCorrection
-    TiltImageAlignment: Optional[TiltImageAlignment]
+    TiltImageAlignment: Optional[TiltImageAlignmentOut] = None
 
 
 class FullMovieWithTilt(Paged[FullMovie]):
     rawTotal: int
-
-    class Config:
-        orm_mode = True
 
 
 class CtfBase(OrmBaseModel):
@@ -418,7 +397,7 @@ class TomogramResponse(OrmBaseModel):
     xAxisCorrection: Optional[float]
     tiltAngleOffset: Optional[float]
     zShift: Optional[float]
-    refinedTiltAxis: Optional[float]
+    refinedTiltAxis: Optional[float] = None
 
 
 class TomogramFullResponse(ProcessingJobResponse):
@@ -429,7 +408,7 @@ class ParticlePicker(OrmBaseModel):
     particleDiameter: Optional[float]
     numberOfParticles: Optional[int]
     particlePickerId: Optional[int]
-    summaryFullImagePath: Optional[str]
+    summaryFullImagePath: Optional[str] = None
     imageNumber: int
     movieId: int
     createdTimeStamp: Optional[datetime]
@@ -467,11 +446,11 @@ class RelativeIceThickness(OrmBaseModel):
 class IceThicknessWithAverage(OrmBaseModel):
     current: RelativeIceThickness = Field(
         ...,
-        comment="Ice thickness data for current selected movie",
+        description="Ice thickness data for current selected movie",
     )
     avg: Optional[RelativeIceThickness] = Field(
         ...,
-        comment="Average ice thickness data for movies belonging to autoproc. program",
+        description="Average ice thickness data for movies belonging to autoproc. program",
     )
 
 

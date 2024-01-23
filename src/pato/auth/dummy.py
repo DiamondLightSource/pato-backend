@@ -1,4 +1,6 @@
-from .template import GenericUser
+from lims_utils.auth import GenericUser
+
+from .template import GenericPermissions
 
 
 class User(GenericUser):
@@ -8,3 +10,7 @@ class User(GenericUser):
     @classmethod
     def auth(cls, _: str):
         return "aaa1111"
+
+
+class Permissions(GenericPermissions):
+    pass

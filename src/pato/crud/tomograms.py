@@ -2,11 +2,11 @@ import re
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
+from lims_utils.tables import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from sqlalchemy import Column, literal_column, select
 from sqlalchemy import func as f
 
 from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
-from ..models.table import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
 from ..utils.database import db, paginate
 from ..utils.generic import parse_json_file, validate_path
 
@@ -76,14 +76,14 @@ def get_motion_correction(
 
     motion = dict(paginate(query, limit, page))
 
-    raw_total = db.session.scalar(
+    raw_total = db.session.execute(
         select(
             f.count(Movie.movieId).label("total"),
         )
         .select_from(Tomogram)
         .filter(Tomogram.tomogramId == tomogramId)
         .join(Movie, Movie.dataCollectionId == Tomogram.dataCollectionId)
-    )
+    ).scalar_one()
 
     return FullMovieWithTilt(**motion, rawTotal=raw_total)
 

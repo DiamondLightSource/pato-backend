@@ -94,6 +94,6 @@ def parse_proposal(proposalReference: str, visit_number: int | None = None):
         )
     except ValueError:
         raise HTTPException(
-            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Proposal reference must be formatted as aa12345",
         )

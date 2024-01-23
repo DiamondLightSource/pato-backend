@@ -1,10 +1,10 @@
 from typing import Optional
 
+from lims_utils.tables import CTF, MotionCorrection, RelativeIceThickness
 from sqlalchemy import func as f
 from sqlalchemy import select
 
 from ..models.response import GenericPlot, IceThicknessWithAverage
-from ..models.table import CTF, MotionCorrection, RelativeIceThickness
 from ..utils.database import db
 from ..utils.generic import parse_json_file, validate_path
 
