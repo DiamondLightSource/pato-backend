@@ -223,7 +223,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     session = db.session.execute(
         select(
             DataCollection.imageDirectory,
-            DataCollection.fileTemplate,
+            DataCollection.imageSuffix,
             BLSession.beamLineName,
             extract("year", BLSession.bltimeStamp).label("year"),
             func.concat(
@@ -245,7 +245,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
 
     full_params = {
         **params.model_dump(exclude_none=True),
-        "import_images": session.imageDirectory + session.fileTemplate,
+        "import_images": f"{session.imageDirectory}/GridSquare*/data/*{session.imageSuffix}",
         "motioncor_gainreference": gr_path,
     }
 
