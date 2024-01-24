@@ -3,6 +3,7 @@ import os
 import re
 
 from fastapi import HTTPException, status
+from lims_utils.models import Paged
 from lims_utils.tables import (
     CTF,
     AutoProcProgram,
@@ -24,7 +25,7 @@ from ..models.parameters import (
     TomogramReprocessingParameters,
 )
 from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
-from ..utils.database import Paged, db, paginate
+from ..utils.database import db, paginate
 from ..utils.generic import check_session_active
 from ..utils.pika import pika_publisher
 
@@ -243,7 +244,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     gr_path = f"/dls/{session.beamLineName}/data/{session.year}/{session.name}/processing/{params.motioncor_gainreference}"  # noqa: E501
 
     full_params = {
-        **params.dict(),
+        **params.model_dump(exclude_none=True),
         "import_images": session.imageDirectory + session.fileTemplate,
         "motioncor_gainreference": gr_path,
     }

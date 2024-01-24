@@ -4,11 +4,11 @@ from os.path import isfile
 from typing import Optional
 
 from fastapi import HTTPException, status
+from lims_utils.logging import app_logger
 from pydantic import BaseModel
 
 from ..models.response import DataPoint
 from ..utils.config import Config
-from ..utils.logging import app_logger
 
 
 def parse_json_file(path):
@@ -61,8 +61,12 @@ def validate_path(func):
     return wrap
 
 
-def filter_dict(original_dict: dict, filter: list[str]):
-    return {key: value for key, value in original_dict.items() if key not in filter}
+def filter_dict(original: BaseModel, filter: list[str]):
+    for key in original.model_fields.keys():
+        if key in filter:
+            setattr(original, key, None)
+
+    return original
 
 
 def time_ago(delta: datetime.timedelta):

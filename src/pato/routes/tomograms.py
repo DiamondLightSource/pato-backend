@@ -2,11 +2,11 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import FileResponse
+from lims_utils.models import pagination
 
 from ..auth import Permissions
 from ..crud import tomograms as crud
 from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
-from ..utils.dependencies import pagination
 
 auth = Permissions.tomogram
 
