@@ -3,6 +3,23 @@ Changelog
 ==========
 
 +++++++++
+v1.2.2 (24/01/2024)
++++++++++
+
+**Fixed**
+
+- Fixed input validation on SPA reprocessing
+
++++++++++
+v1.2.1 (23/01/2024)
++++++++++
+
+**Changed**
+
+- If there is no message queue user set, :code:`reprocessingAvailable` is always false
+- Updated database models
+
++++++++++
 v1.2.0 (09/01/2024)
 +++++++++
 
