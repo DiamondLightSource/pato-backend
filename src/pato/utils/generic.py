@@ -61,7 +61,7 @@ def validate_path(func):
     return wrap
 
 
-def filter_dict(original: BaseModel, filter: list[str]):
+def filter_model(original: BaseModel, filter: list[str]):
     for key in original.model_fields.keys():
         if key in filter:
             setattr(original, key, None)

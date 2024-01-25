@@ -2,7 +2,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
-from ..utils.generic import filter_dict
+from ..utils.generic import filter_model
 
 _omit_when_stopping = [
     "autopick_do_cryolo",
@@ -82,12 +82,12 @@ class SPAReprocessingParameters(BaseModel):
     @model_validator(mode="after")
     def check_dynamically_required_fields(self):
         if self.stop_after_ctf_estimation:
-            filter_dict(self, _omit_when_stopping)
+            filter_model(self, _omit_when_stopping)
             if not self.do_class3d:
-                filter_dict(self, ["useFscCriterion"])
+                filter_model(self, ["useFscCriterion"])
         else:
             if self.performCalculation:
-                filter_dict(self, _omit_when_autocalculating)
+                filter_model(self, _omit_when_autocalculating)
 
             required = [
                 "autopick_LoG_diam_min",
