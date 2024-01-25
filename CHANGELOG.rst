@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.2.2 (24/01/2024)
++++++++++
+
+**Fixed**
+
+- Fixed input validation on SPA reprocessing
+
++++++++++
 v1.2.1 (23/01/2024)
 +++++++++
 

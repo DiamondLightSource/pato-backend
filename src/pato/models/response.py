@@ -2,9 +2,8 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
+from lims_utils.models import Paged
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-
-from ..utils.database import Paged
 
 
 class StateEnum(str, Enum):

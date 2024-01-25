@@ -2,12 +2,11 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends
+from lims_utils.models import Paged, pagination
 
 from ..auth import User
 from ..crud import sessions as crud
 from ..models.response import SessionResponse
-from ..utils.database import Paged
-from ..utils.dependencies import pagination
 
 router = APIRouter(tags=["Sessions"], prefix="/sessions")
 

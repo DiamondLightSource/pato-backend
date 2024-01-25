@@ -1,61 +1,12 @@
-import contextlib
-import contextvars
-from typing import Generator, Generic, Optional, TypeVar
+from typing import Optional
 
-import sqlalchemy.orm
 from fastapi import HTTPException, status
+from lims_utils.database import Database
+from lims_utils.models import Paged
 from lims_utils.tables import Base
-from pydantic import BaseModel, ConfigDict
 from sqlalchemy import Select, func, literal_column, select
 
-from .session import _session as sqlsession
-
-_session = contextvars.ContextVar("_session", default=None)
-
-
-class Database:
-    @classmethod
-    def set_session(cls, session):
-        _session.set(session)
-
-    @property
-    def session(cls) -> sqlalchemy.orm.Session:
-        try:
-            new_session = _session.get()
-            if new_session is None:
-                raise AttributeError
-            return new_session
-        except (AttributeError, LookupError):
-            raise Exception("Can't get session. Please call Database.set_session()")
-
-
 db = Database()
-
-
-@contextlib.contextmanager
-def get_session() -> Generator[sqlalchemy.orm.Session, None, None]:
-    db_session = sqlsession()
-    try:
-        Database.set_session(db_session)
-        yield db_session
-    except Exception:
-        db_session.rollback()
-        raise
-    finally:
-        Database.set_session(None)
-        db_session.close()
-
-
-T = TypeVar("T")
-
-
-class Paged(BaseModel, Generic[T]):
-    items: list[T]
-    total: int
-    page: int
-    limit: int
-
-    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
 
 def fast_count(query: Select) -> int:
