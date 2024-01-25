@@ -1,5 +1,6 @@
 from typing import Optional
 
+from lims_utils.models import Paged
 from lims_utils.tables import (
     BLSession,
     DataCollection,
@@ -14,7 +15,7 @@ from sqlalchemy import select
 from ..auth import User
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
-from ..utils.database import Paged, db, paginate, unravel
+from ..utils.database import db, paginate, unravel
 
 
 def get_collection_groups(

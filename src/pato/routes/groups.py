@@ -1,12 +1,11 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends
+from lims_utils.models import Paged, pagination
 
 from ..auth import User
 from ..crud import groups as crud
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
-from ..utils.database import Paged
-from ..utils.dependencies import pagination
 
 router = APIRouter(
     tags=["Data Collection Groups"],

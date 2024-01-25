@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
+from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions, User
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
 from ..models.response import ProposalResponse, SessionResponse
-from ..utils.database import Paged
-from ..utils.dependencies import pagination
 
 router = APIRouter(
     tags=["Proposals"],

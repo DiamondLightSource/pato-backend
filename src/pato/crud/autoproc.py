@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
+from lims_utils.models import Paged
 from lims_utils.tables import (
     CTF,
     CryoemInitialModel,
@@ -23,7 +24,7 @@ from ..models.response import (
     FullMovie,
     TomogramResponse,
 )
-from ..utils.database import Paged, db, paginate, unravel
+from ..utils.database import db, paginate, unravel
 from ..utils.generic import validate_path
 
 
@@ -41,7 +42,7 @@ def get_tomogram(autoProcId: int) -> TomogramResponse:
             detail="Tomogram not found",
         )
 
-    return data.tuple()
+    return data._tuple()
 
 
 def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullMovie]:

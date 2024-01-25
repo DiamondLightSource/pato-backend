@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, status
+from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions
 from ..crud import collections as crud
@@ -13,8 +14,6 @@ from ..models.response import (
     ReprocessingResponse,
     TomogramFullResponse,
 )
-from ..utils.database import Paged
-from ..utils.dependencies import pagination
 
 auth = Permissions.collection
 

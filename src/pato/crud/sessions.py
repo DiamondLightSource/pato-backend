@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import HTTPException, status
+from lims_utils.models import Paged
 from lims_utils.tables import BLSession, DataCollectionGroup, Proposal
 from sqlalchemy import Label, and_, or_, select
 from sqlalchemy import func as f
@@ -9,7 +10,7 @@ from sqlalchemy import func as f
 from ..auth import User
 from ..models.response import SessionResponse
 from ..utils.auth import check_session
-from ..utils.database import Paged, db, fast_count, paginate, unravel
+from ..utils.database import db, fast_count, paginate, unravel
 from ..utils.generic import ProposalReference, parse_proposal
 
 

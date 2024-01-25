@@ -1,8 +1,8 @@
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 
-from ..utils.generic import filter_dict
+from ..utils.generic import filter_model
 
 _omit_when_stopping = [
     "autopick_do_cryolo",
@@ -47,19 +47,21 @@ class SPAReprocessingParameters(BaseModel):
         alias="useCryolo",
         default=False,
     )
-    do_class3d: bool = Field(default=True, alias="doClass3D")
-    do_class2d: bool = Field(default=True, alias="doClass2D")
-    mask_diameter: float = Field(
-        ge=0.1,
-        le=1024,
-        alias="maskDiameter",
+    do_class3d: Optional[bool] = Field(default=True, alias="doClass3D")
+    do_class2d: Optional[bool] = Field(default=True, alias="doClass2D")
+    mask_diameter: Optional[float] = Field(
+        ge=0.1, le=1024, alias="maskDiameter", default=None
     )
-    extract_boxsize: float = Field(ge=0.1, le=1024, alias="boxSize")
-    extract_small_boxsize: float = Field(ge=0.1, le=1024, alias="downsampleBoxSize")
+    extract_boxsize: Optional[float] = Field(
+        ge=0.1, le=1024, alias="boxSize", default=None
+    )
+    extract_small_boxsize: Optional[float] = Field(
+        ge=0.1, le=1024, alias="downsampleBoxSize", default=None
+    )
     performCalculation: bool = Field(default=True, exclude=True)
-    use_fsc_criterion: bool = Field(default=False, alias="useFscCriterion")
-    do_class2d_pass2: bool = Field(default=True, alias="perform2DSecondPass")
-    do_class3d_pass2: bool = Field(default=False, alias="perform3DSecondPass")
+    use_fsc_criterion: Optional[bool] = Field(default=False, alias="useFscCriterion")
+    do_class2d_pass2: Optional[bool] = Field(default=True, alias="perform2DSecondPass")
+    do_class3d_pass2: Optional[bool] = Field(default=False, alias="perform3DSecondPass")
     autopick_LoG_diam_min: Optional[float] = Field(
         ge=0.02, le=1024.0, alias="minimumDiameter", default=None
     )
@@ -67,35 +69,44 @@ class SPAReprocessingParameters(BaseModel):
         ge=0.02, le=4000.0, alias="maximumDiameter", default=None
     )
     motioncor_gainreference: str = Field(default="gain.mrc", alias="gainReferenceFile")
-    extract_downscale: bool = Field(default=False, alias="extractDownscale")
+    extract_downscale: Optional[bool] = Field(default=False, alias="extractDownscale")
 
-    @root_validator(skip_on_failure=True)
-    def check_dynamically_required_fields(cls, values):
-        if values.get("stop_after_ctf_estimation"):
-            values = filter_dict(values, _omit_when_stopping)
-            if not values.get("do_class_3d"):
-                filter_dict(values, ["use_fsc_criterion"])
+    @model_validator(mode="before")
+    def empty_string_to_none(cls, values):
+        for key, value in values.items():
+            if value == "":
+                values[key] = None
+
+        return values
+
+    @model_validator(mode="after")
+    def check_dynamically_required_fields(self):
+        if self.stop_after_ctf_estimation:
+            filter_model(self, _omit_when_stopping)
+            if not self.do_class3d:
+                filter_model(self, ["useFscCriterion"])
         else:
-            if values.get("performCalculation"):
-                values = filter_dict(values, _omit_when_autocalculating)
+            if self.performCalculation:
+                filter_model(self, _omit_when_autocalculating)
 
-            alias_map = {
-                "autopick_LoG_diam_min": "minimumDiameter",
-                "autopick_LoG_diam_max": "maximumDiameter",
-            }
-            missing_keys = [
-                value for key, value in alias_map.items() if values.get(key) is None
+            required = [
+                "autopick_LoG_diam_min",
+                "autopick_LoG_diam_max",
             ]
+
+            missing_keys = [key for key in required if getattr(self, key) is None]
 
             if len(missing_keys) > 0:
                 raise ValueError(
                     " and ".join(missing_keys)
-                    + " must be set when stopAfterCtfEstimation is set"
+                    + " must be set when stopAfterCtfEstimation is not set"
                 )
 
-            if values.get("autopick_LoG_diam_min") > values.get(
-                "autopick_LoG_diam_max"
-            ):
+            assert isinstance(self.autopick_LoG_diam_min, float) and isinstance(
+                self.autopick_LoG_diam_max, float
+            )
+
+            if self.autopick_LoG_diam_min > self.autopick_LoG_diam_max:
                 raise ValueError("maximumDiameter must be greater than minimumDiameter")
 
-        return values
+        return self

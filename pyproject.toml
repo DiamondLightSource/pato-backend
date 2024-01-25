@@ -100,7 +100,7 @@ allowlist_externals =
     # sphinx-build
     # sphinx-autobuild
 commands =
-    pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml -W ignore::DeprecationWarning {posargs}
+    pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml {posargs}
     mypy: mypy src tests {posargs}
     pre-commit: pre-commit run --all-files {posargs}
 setenv = 

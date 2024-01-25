@@ -1,3 +1,4 @@
+from lims_utils.models import Paged
 from lims_utils.tables import BLSession, Proposal
 from sqlalchemy import func as f
 from sqlalchemy import or_, select
@@ -5,7 +6,7 @@ from sqlalchemy import or_, select
 from ..auth import User
 from ..models.response import ProposalResponse
 from ..utils.auth import check_proposal
-from ..utils.database import Paged, paginate
+from ..utils.database import paginate
 
 
 def get_proposals(

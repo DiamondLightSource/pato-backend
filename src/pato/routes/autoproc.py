@@ -2,6 +2,7 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
+from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions
 from ..crud import autoproc as crud
@@ -13,8 +14,6 @@ from ..models.response import (
     ParticlePicker,
     TomogramResponse,
 )
-from ..utils.database import Paged
-from ..utils.dependencies import pagination
 
 auth = Permissions.autoproc_program
 

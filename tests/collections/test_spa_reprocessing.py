@@ -27,7 +27,7 @@ full_params = {
     "maskDiameter": "154",
     "boxSize": "140",
     "downsampleBoxSize": "48",
-    "import_images": "/dls/m06/data/2022/bi23047-76/raw//GridSquare_*/Data/*.mrc",
+    "import_images": "/dls/m06/data/2022/bi23047-76/raw/GridSquare_*/Data/*.mrc",
     "acquisition_software": "EPU",
     "gainReferenceFile": "gain.mrc",
     "performCalculation": False,
@@ -102,7 +102,7 @@ def test_post_perform_calculation(mock_permissions, client):
         ["motioncor_gainreference", "/dls/i03/data/2015/cm14451-1/processing/gain.mrc"],
         [
             "import_images",
-            "/dls/i03/data/2021/proposal/data/file.h5",
+            "/dls/i03/data/2021/proposal/data/GridSquare*/data/*.h5",
         ],
     ],
 )

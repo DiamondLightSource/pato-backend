@@ -1,8 +1,13 @@
+import os
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
-from fastapi.exception_handlers import http_exception_handler
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.requests import Request
+from lims_utils.database import get_session
+from lims_utils.logging import log_exception_handler, register_loggers
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from . import __version__
 from .routes import (
@@ -17,11 +22,26 @@ from .routes import (
     tomograms,
 )
 from .utils.config import Config
-from .utils.database import get_session
-from .utils.logging import EndpointFilter, app_logger, uvicorn_logger
 from .utils.pika import pika_publisher
 
-app = FastAPI(version=__version__)
+engine = create_engine(
+    url=os.environ.get("SQL_DATABASE_URL", "mysql://admin:admin@localhost:8000/ispyb"),
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    pool_size=Config.ispyb.pool,
+    max_overflow=Config.ispyb.overflow,
+)
+
+session_factory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    pika_publisher.connect()
+    yield
+
+
+app = FastAPI(version=__version__, lifespan=lifespan)
 
 if Config.cors:
     app.add_middleware(
@@ -32,37 +52,16 @@ if Config.cors:
         allow_headers=["*"],
     )
 
-
-uvicorn_logger.addFilter(EndpointFilter())
+register_loggers()
 
 
 @app.middleware("http")
 async def get_session_as_middleware(request, call_next):
-    with get_session():
+    with get_session(session_factory):
         return await call_next(request)
 
 
-@app.exception_handler(HTTPException)
-async def log_exception_handler(request: Request, exc: HTTPException):
-    if exc.status_code != 401:
-        user = "Unknown user"
-        try:
-            user = request.state.__getattr__("user")
-        except AttributeError:
-            pass
-        finally:
-            app_logger.warning(
-                "%s @ %s: %s",
-                user,
-                request.url,
-                exc.detail,
-            )
-    return await http_exception_handler(request, exc)
-
-
-@app.on_event("startup")
-async def startup():
-    pika_publisher.connect()
+app.add_exception_handler(HTTPException, log_exception_handler)
 
 
 app.include_router(sessions.router)
