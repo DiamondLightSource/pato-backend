@@ -245,7 +245,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
 
     full_params = {
         **params.model_dump(exclude_none=True),
-        "import_images": f"{session.imageDirectory}/GridSquare*/data/*{session.imageSuffix}",
+        "import_images": f"{session.imageDirectory}/GridSquare*/Data/*{session.imageSuffix}",
         "motioncor_gainreference": gr_path,
     }
 

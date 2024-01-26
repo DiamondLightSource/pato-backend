@@ -42,7 +42,7 @@ class PikaPublisher:
             self._conn = pika.BlockingConnection(_parameters)
             self._channel = self._conn.channel()
 
-    def publish(self, message):
+    def publish(self, message, has_failed=False):
         try:
             self._channel.basic_publish(
                 routing_key=Config.mq.queue,
@@ -54,9 +54,13 @@ class PikaPublisher:
         except (
             pika.exceptions.ChannelWrongStateError,
             pika.exceptions.ConnectionClosed,
-        ):
+            pika.exceptions.StreamLostError,
+        ) as e:
+            if has_failed:
+                raise e
+
             self.connect()
-            self.publish(message)
+            self.publish(message, has_failed=True)
 
 
 pika_publisher = PikaPublisher()
