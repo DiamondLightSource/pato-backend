@@ -3,6 +3,18 @@ Changelog
 ==========
 
 +++++++++
+v1.2.3 (05/02/2024)
++++++++++
+
+**Changed**
+
+- :code:`Extract downscale is now true by default`
+
+**Fixed**
+
+- Processing parameters now generate correct gain reference path
+
++++++++++
 v1.2.2 (24/01/2024)
 +++++++++
 
