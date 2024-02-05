@@ -225,7 +225,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
             DataCollection.imageDirectory,
             DataCollection.imageSuffix,
             BLSession.beamLineName,
-            extract("year", BLSession.bltimeStamp).label("year"),
+            extract("year", BLSession.startDate).label("year"),
             func.concat(
                 Proposal.proposalCode,
                 Proposal.proposalNumber,

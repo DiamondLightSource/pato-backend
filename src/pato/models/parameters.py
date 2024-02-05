@@ -69,7 +69,7 @@ class SPAReprocessingParameters(BaseModel):
         ge=0.02, le=4000.0, alias="maximumDiameter", default=None
     )
     motioncor_gainreference: str = Field(default="gain.mrc", alias="gainReferenceFile")
-    extract_downscale: Optional[bool] = Field(default=False, alias="extractDownscale")
+    extract_downscale: Optional[bool] = Field(default=True, alias="extractDownscale")
 
     @model_validator(mode="before")
     def empty_string_to_none(cls, values):

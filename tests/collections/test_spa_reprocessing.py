@@ -99,7 +99,7 @@ def test_post_perform_calculation(mock_permissions, client):
 @pytest.mark.parametrize(
     ["key", "expected_value"],
     [
-        ["motioncor_gainreference", "/dls/i03/data/2015/cm14451-1/processing/gain.mrc"],
+        ["motioncor_gainreference", "/dls/i03/data/2016/cm14451-1/processing/gain.mrc"],
         [
             "import_images",
             "/dls/i03/data/2021/proposal/data/GridSquare*/Data/*.h5",
