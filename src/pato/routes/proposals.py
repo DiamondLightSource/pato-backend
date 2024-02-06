@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends, status
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions, User
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
-from ..models.response import ProposalResponse, SessionResponse
+from ..models.parameters import DataCollectionCreationParameters
+from ..models.response import BaseDataCollectionOut, ProposalResponse, SessionResponse
 
 router = APIRouter(
     tags=["Proposals"],
@@ -28,3 +29,16 @@ def get_proposals(
 def get_session(proposalReference=Depends(Permissions.session)):
     """Get individual session"""
     return sessions_crud.get_session(proposalReference)
+
+
+@router.post(
+    "/{proposalReference}/sessions/{visitNumber}/dataCollections",
+    response_model=BaseDataCollectionOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_data_collection(
+    proposalReference=Depends(Permissions.session),
+    parameters: DataCollectionCreationParameters = Body(),
+):
+    """Create data collection"""
+    return sessions_crud.create_data_collection(proposalReference, parameters)
