@@ -34,7 +34,7 @@ def _validate_session_active(proposalReference: ProposalReference):
             detail="Reprocessing cannot be fired on an inactive session",
         )
 
-    return BLSession.sessionId
+    return session.sessionId
 
 
 def _check_raw_files_exist(file_directory: str, glob_path: str):
@@ -166,7 +166,7 @@ def create_data_collection(
             ).label("name"),
         )
         .filter(BLSession.sessionId == session_id)
-        .join(Proposal)
+        .join(Proposal, Proposal.proposalId == BLSession.proposalId)
     ).one()
 
     # TODO: Make the path string pattern configurable?
