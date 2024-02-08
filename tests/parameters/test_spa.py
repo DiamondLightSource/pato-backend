@@ -16,9 +16,6 @@ _omit_when_stopping = [
     "do_class3d",
     "mask_diameter",
     "extract_boxsize",
-    "extract_small_boxsize",
-    "do_class2d_pass2",
-    "do_class3d_pass2",
     "autopick_LoG_diam_min",
     "autopick_LoG_diam_max",
     "use_fsc_criterion",
@@ -28,7 +25,6 @@ _omit_when_stopping = [
 _omit_when_autocalculating = [
     "mask_diameter",
     "extract_box_size",
-    "extract_small_boxsize",
 ]
 
 
@@ -88,8 +84,8 @@ def test_empty_string_to_none():
         minimumDiameter=3,
         maximumDiameter=4,
         maskDiameter="",
-        downsampleBoxSize="",
+        extractDownscale="",
     )
 
     assert params.mask_diameter is None
-    assert params.extract_small_boxsize is None
+    assert params.extract_downscale is None

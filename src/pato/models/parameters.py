@@ -10,9 +10,6 @@ _omit_when_stopping = [
     "do_class3d",
     "mask_diameter",
     "extract_boxsize",
-    "extract_small_boxsize",
-    "do_class2d_pass2",
-    "do_class3d_pass2",
     "autopick_LoG_diam_min",
     "autopick_LoG_diam_max",
     "use_fsc_criterion",
@@ -22,7 +19,6 @@ _omit_when_stopping = [
 _omit_when_autocalculating = [
     "mask_diameter",
     "extract_box_size",
-    "extract_small_boxsize",
 ]
 
 
@@ -55,13 +51,8 @@ class SPAReprocessingParameters(BaseModel):
     extract_boxsize: Optional[float] = Field(
         ge=0.1, le=1024, alias="boxSize", default=None
     )
-    extract_small_boxsize: Optional[float] = Field(
-        ge=0.1, le=1024, alias="downsampleBoxSize", default=None
-    )
     performCalculation: bool = Field(default=True, exclude=True)
     use_fsc_criterion: Optional[bool] = Field(default=False, alias="useFscCriterion")
-    do_class2d_pass2: Optional[bool] = Field(default=True, alias="perform2DSecondPass")
-    do_class3d_pass2: Optional[bool] = Field(default=False, alias="perform3DSecondPass")
     autopick_LoG_diam_min: Optional[float] = Field(
         ge=0.02, le=1024.0, alias="minimumDiameter", default=None
     )
