@@ -115,3 +115,8 @@ class SPAReprocessingParameters(BaseModel):
 class DataCollectionCreationParameters(BaseModel):
     fileDirectory: str
     fileExtension: str
+
+
+# mypy doesn't support type aliases yet
+
+DataCollectionSortTypes = Literal["dataCollectionId", "globalAlignmentQuality"]
