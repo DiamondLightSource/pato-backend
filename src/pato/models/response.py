@@ -80,12 +80,29 @@ class SessionResponse(OrmBaseModel):
     dataCollectionGroupId: Optional[int] = None
 
 
-class DataCollectionSummary(OrmBaseModel):
+class BaseDataCollectionOut(OrmBaseModel):
     dataCollectionId: int = Field(..., lt=1e9, description="Data Collection ID")
-    comments: Optional[str]
+    dataCollectionGroupId: int
+    index: Optional[int] = None
     startTime: Optional[datetime] = Field(
         ..., description="Start time of the dataCollection"
     )
+    endTime: Optional[datetime] = Field(
+        ..., description="End time of the dataCollection"
+    )
+    experimenttype: Optional[str] = Field(..., max_length=24)
+    fileTemplate: Optional[str] = Field(..., max_length=255)
+    imageSuffix: Optional[str] = Field(..., max_length=24)
+    imageDirectory: Optional[str] = Field(
+        ...,
+        max_length=255,
+        description="The directory where files reside - should end with a slash",
+    )
+    imagePrefix: Optional[str] = Field(..., max_length=45)
+
+
+class DataCollectionSummary(BaseDataCollectionOut):
+    comments: Optional[str]
     pixelSizeOnImage: Optional[float] = Field(
         ...,
         description="Pixel size on image, calculated from magnification",
@@ -98,11 +115,6 @@ class DataCollectionSummary(OrmBaseModel):
     imageSizeY: Optional[int] = Field(
         ..., description="Image size in y, in case crop has been used."
     )
-    experimenttype: Optional[str] = Field(..., max_length=24)
-    index: int
-    endTime: Optional[datetime] = Field(
-        ..., description="End time of the dataCollection"
-    )
     runStatus: Optional[str] = Field(..., max_length=255)
     axisStart: Optional[float]
     axisEnd: Optional[float]
@@ -112,20 +124,12 @@ class DataCollectionSummary(OrmBaseModel):
     startImageNumber: Optional[int]
     numberOfPasses: Optional[int]
     exposureTime: Optional[float]
-    imageDirectory: Optional[str] = Field(
-        ...,
-        max_length=255,
-        description="The directory where files reside - should end with a slash",
-    )
-    imagePrefix: Optional[str] = Field(..., max_length=45)
-    imageSuffix: Optional[str] = Field(..., max_length=24)
     imageContainerSubPath: Optional[str] = Field(
         ...,
         max_length=255,
         description="""Internal path of a HDF5 file pointing to the data
         for this data collection""",
     )
-    fileTemplate: Optional[str] = Field(..., max_length=255)
     wavelength: Optional[float]
     resolution: Optional[float]
     detectorDistance: Optional[float]
@@ -156,7 +160,6 @@ class DataCollectionSummary(OrmBaseModel):
     averageTemperature: Optional[float]
     actualCenteringPosition: Optional[str] = Field(..., max_length=255)
     beamShape: Optional[str] = Field(..., max_length=24)
-    dataCollectionGroupId: int
     detectorId: Optional[int]
     screeningOrigId: Optional[int]
     startPositionId: Optional[int]
