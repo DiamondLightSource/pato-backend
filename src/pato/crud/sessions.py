@@ -101,7 +101,7 @@ def get_sessions(
     if maxStartDate is not None:
         query = query.filter(BLSession.startDate <= maxStartDate)
 
-    if search is not None:
+    if search is not None and search != "":
         query = query.filter(
             or_(
                 BLSession.beamLineName.contains(search),

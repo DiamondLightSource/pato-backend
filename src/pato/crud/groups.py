@@ -17,6 +17,7 @@ from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
 from ..utils.database import db, paginate, unravel
+from ..utils.generic import parse_proposal
 
 
 def get_collection_groups(
@@ -27,6 +28,7 @@ def get_collection_groups(
     search: Optional[str],
     user: User,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
+
     query = (
         select(
             *unravel(DataCollectionGroup),
@@ -41,14 +43,18 @@ def get_collection_groups(
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
-    if search is not None:
+    if search is not None and search != "":
         query = query.filter(DataCollectionGroup.comments.contains(search))
 
     if proposal:
+        proposal_reference = parse_proposal(proposal)
         session_id_query = (
             select(BLSession.sessionId)
             .select_from(Proposal)
-            .where(f.concat(Proposal.proposalCode, Proposal.proposalNumber) == proposal)
+            .where(
+                Proposal.proposalCode == proposal_reference.code,
+                Proposal.proposalNumber == proposal_reference.number,
+            )
             .join(BLSession)
         )
 
@@ -60,6 +66,7 @@ def get_collection_groups(
             query = query.filter(
                 DataCollectionGroup.sessionId == db.session.scalar(session_id_query)
             )
+
         else:
             query = query.filter(
                 DataCollectionGroup.sessionId.in_(
@@ -112,7 +119,7 @@ def get_collections(
 
     query = select(*sub_result.c)
 
-    if search is not None:
+    if search is not None and search != "":
         query = query.filter(sub_result.c.comments.contains(search))
 
     return paginate(query, limit, page, slow_count=True)
