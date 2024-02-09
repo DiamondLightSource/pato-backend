@@ -67,7 +67,6 @@ def get_collection_groups(
                 DataCollectionGroup.sessionId == db.session.scalar(session_id_query)
             )
 
-            print(query)
         else:
             query = query.filter(
                 DataCollectionGroup.sessionId.in_(
