@@ -9,6 +9,7 @@ v1.3.0 (07/02/2024)
 **Added**
 
 - Data collection creation endpoint (:code:`/proposals/{propId}/sessions/{sessionId}/dataCollections`)
+- :code:`sortBy` argument to data collection listing endpoint
 
 +++++++++
 v1.2.3 (05/02/2024)

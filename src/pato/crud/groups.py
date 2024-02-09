@@ -13,6 +13,7 @@ from sqlalchemy import func as f
 from sqlalchemy import select
 
 from ..auth import User
+from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
 from ..utils.database import db, paginate, unravel
@@ -74,24 +75,31 @@ def get_collections(
     page: int,
     groupId: Optional[int],
     search: Optional[str],
+    sortBy: DataCollectionSortTypes,
     user: User,
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
+    sort = (
+        Tomogram.globalAlignmentQuality.desc()
+        if sortBy == "globalAlignmentQuality"
+        else DataCollection.dataCollectionId
+    )
+
+    base_sub_query = (
+        select(
+            f.row_number().over(order_by=sort).label("index"),
+            *unravel(DataCollection),
+            f.count(Tomogram.tomogramId).label("tomograms"),
+            Tomogram.globalAlignmentQuality,
+        )
+        .select_from(DataCollection)
+        .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
+        .join(Tomogram, isouter=(not onlyTomograms))
+        .group_by(DataCollection.dataCollectionId)
+    )
+
     sub_with_row = check_session(
-        (
-            select(
-                f.row_number()
-                .over(order_by=DataCollection.dataCollectionId)
-                .label("index"),
-                *unravel(DataCollection),
-                f.count(Tomogram.tomogramId).label("tomograms"),
-            )
-            .select_from(DataCollection)
-            .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
-            .join(Tomogram, isouter=(not onlyTomograms))
-            .group_by(DataCollection.dataCollectionId)
-            .order_by(DataCollection.dataCollectionId)
-        ),
+        base_sub_query,
         user,
     )
 

@@ -26,14 +26,11 @@ full_params = {
     "maximumDiameter": "140",
     "maskDiameter": "154",
     "boxSize": "140",
-    "downsampleBoxSize": "48",
     "import_images": "/dls/m06/data/2022/bi23047-76/raw/GridSquare_*/Data/*.mrc",
     "acquisition_software": "EPU",
     "gainReferenceFile": "gain.mrc",
     "performCalculation": False,
     "useFscCriterion": False,
-    "perform2DSecondPass": False,
-    "perform3DSecondPass": False,
 }
 
 
@@ -55,7 +52,7 @@ def test_post(mock_permissions, client):
     assert resp.status_code == 202
 
     parameters = _get_parameters(resp.json()["processingJobId"])
-    assert len(parameters) == 21
+    assert len(parameters) == 18
 
 
 def test_inactive_session(mock_permissions, client):
@@ -92,7 +89,7 @@ def test_post_perform_calculation(mock_permissions, client):
     assert resp.status_code == 202
 
     parameters = _get_parameters(resp.json()["processingJobId"])
-    assert len(parameters) == 19
+    assert len(parameters) == 17
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)

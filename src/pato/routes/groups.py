@@ -5,6 +5,7 @@ from lims_utils.models import Paged, pagination
 
 from ..auth import User
 from ..crud import groups as crud
+from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 
 router = APIRouter(
@@ -33,9 +34,15 @@ def get_collections(
     page: dict[str, int] = Depends(pagination),
     search: Optional[str] = None,
     onlyTomograms: bool = False,
+    sortBy: DataCollectionSortTypes = "dataCollectionId",
     user=Depends(User),
 ):
     """List collections belonging to a data collection group"""
     return crud.get_collections(
-        groupId=groupId, search=search, user=user, onlyTomograms=onlyTomograms, **page
+        groupId=groupId,
+        search=search,
+        user=user,
+        onlyTomograms=onlyTomograms,
+        sortBy=sortBy,
+        **page,
     )
