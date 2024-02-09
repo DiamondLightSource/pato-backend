@@ -87,3 +87,13 @@ def test_get_pixel_size_null(mock_user, client):
     resp = client.get("/dataGroups/988855/dataCollections")
     assert resp.status_code == 200
     assert resp.json()["items"][0]["pixelSizeOnImage"] is None
+
+
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_sort_by_global_alignment_quality(mock_user, client):
+    """Get data collections sorted by alignment quality"""
+    resp = client.get(
+        "/dataGroups/5440740/dataCollections?sortBy=globalAlignmentQuality"
+    )
+    assert resp.status_code == 200
+    assert resp.json()["items"][0]["dataCollectionId"] == 6017413

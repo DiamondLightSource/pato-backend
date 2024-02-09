@@ -13,9 +13,11 @@ from sqlalchemy import func as f
 from sqlalchemy import select
 
 from ..auth import User
+from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
 from ..utils.database import db, paginate, unravel
+from ..utils.generic import parse_proposal
 
 
 def get_collection_groups(
@@ -26,6 +28,7 @@ def get_collection_groups(
     search: Optional[str],
     user: User,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
+
     query = (
         select(
             *unravel(DataCollectionGroup),
@@ -40,14 +43,18 @@ def get_collection_groups(
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
-    if search is not None:
+    if search is not None and search != "":
         query = query.filter(DataCollectionGroup.comments.contains(search))
 
     if proposal:
+        proposal_reference = parse_proposal(proposal)
         session_id_query = (
             select(BLSession.sessionId)
             .select_from(Proposal)
-            .where(f.concat(Proposal.proposalCode, Proposal.proposalNumber) == proposal)
+            .where(
+                Proposal.proposalCode == proposal_reference.code,
+                Proposal.proposalNumber == proposal_reference.number,
+            )
             .join(BLSession)
         )
 
@@ -59,6 +66,7 @@ def get_collection_groups(
             query = query.filter(
                 DataCollectionGroup.sessionId == db.session.scalar(session_id_query)
             )
+
         else:
             query = query.filter(
                 DataCollectionGroup.sessionId.in_(
@@ -74,24 +82,31 @@ def get_collections(
     page: int,
     groupId: Optional[int],
     search: Optional[str],
+    sortBy: DataCollectionSortTypes,
     user: User,
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
+    sort = (
+        Tomogram.globalAlignmentQuality.desc()
+        if sortBy == "globalAlignmentQuality"
+        else DataCollection.dataCollectionId
+    )
+
+    base_sub_query = (
+        select(
+            f.row_number().over(order_by=sort).label("index"),
+            *unravel(DataCollection),
+            f.count(Tomogram.tomogramId).label("tomograms"),
+            Tomogram.globalAlignmentQuality,
+        )
+        .select_from(DataCollection)
+        .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
+        .join(Tomogram, isouter=(not onlyTomograms))
+        .group_by(DataCollection.dataCollectionId)
+    )
+
     sub_with_row = check_session(
-        (
-            select(
-                f.row_number()
-                .over(order_by=DataCollection.dataCollectionId)
-                .label("index"),
-                *unravel(DataCollection),
-                f.count(Tomogram.tomogramId).label("tomograms"),
-            )
-            .select_from(DataCollection)
-            .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
-            .join(Tomogram, isouter=(not onlyTomograms))
-            .group_by(DataCollection.dataCollectionId)
-            .order_by(DataCollection.dataCollectionId)
-        ),
+        base_sub_query,
         user,
     )
 
@@ -104,7 +119,7 @@ def get_collections(
 
     query = select(*sub_result.c)
 
-    if search is not None:
+    if search is not None and search != "":
         query = query.filter(sub_result.c.comments.contains(search))
 
     return paginate(query, limit, page, slow_count=True)
