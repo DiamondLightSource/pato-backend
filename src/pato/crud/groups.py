@@ -100,7 +100,8 @@ def get_collections(
             Tomogram.globalAlignmentQuality,
         )
         .select_from(DataCollection)
-        .join(BLSession, BLSession.sessionId == DataCollection.SESSIONID)
+        .join(DataCollectionGroup)
+        .join(BLSession, BLSession.sessionId == DataCollectionGroup.sessionId)
         .join(Tomogram, isouter=(not onlyTomograms))
         .group_by(DataCollection.dataCollectionId)
     )

@@ -227,6 +227,9 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
 
 class ProcessingJobParameters(OrmBaseModel):
     items: dict[str, str]
+
+
+class SessionAllowsReprocessing(OrmBaseModel):
     allowReprocessing: bool
 
 
