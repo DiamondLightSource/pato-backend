@@ -234,7 +234,5 @@ def check_reprocessing_enabled(proposalReference: ProposalReference):
     )
 
     return SessionAllowsReprocessing(
-        allowReprocessing=(
-            (not bool(Config.mq.user)) and check_session_active(end_date)
-        ),
+        allowReprocessing=((bool(Config.mq.user)) and check_session_active(end_date)),
     )
