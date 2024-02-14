@@ -5,7 +5,12 @@ from ..auth import Permissions, User
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
 from ..models.parameters import DataCollectionCreationParameters
-from ..models.response import BaseDataCollectionOut, ProposalResponse, SessionResponse
+from ..models.response import (
+    BaseDataCollectionOut,
+    ProposalResponse,
+    SessionAllowsReprocessing,
+    SessionResponse,
+)
 
 router = APIRouter(
     tags=["Proposals"],
@@ -42,3 +47,12 @@ def create_data_collection(
 ):
     """Create data collection"""
     return sessions_crud.create_data_collection(proposalReference, parameters)
+
+
+@router.get(
+    "/{proposalReference}/sessions/{visitNumber}/reprocessingEnabled",
+    response_model=SessionAllowsReprocessing,
+)
+def check_reprocessing_enabled(proposalReference=Depends(Permissions.session)):
+    """Check if reprocessing is enabled for session"""
+    return sessions_crud.check_reprocessing_enabled(proposalReference)

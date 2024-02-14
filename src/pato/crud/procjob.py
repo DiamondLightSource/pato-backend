@@ -1,17 +1,9 @@
 from fastapi import HTTPException, status
-from lims_utils.tables import (
-    BLSession,
-    DataCollection,
-    DataCollectionGroup,
-    ProcessingJob,
-    ProcessingJobParameter,
-)
+from lims_utils.tables import ProcessingJobParameter
 from sqlalchemy import select
 
 from ..models.response import ProcessingJobParameters
-from ..utils.config import Config
 from ..utils.database import db
-from ..utils.generic import check_session_active
 
 
 def get_parameters(processingJob: int) -> ProcessingJobParameters:
@@ -22,22 +14,12 @@ def get_parameters(processingJob: int) -> ProcessingJobParameters:
         ).filter(ProcessingJobParameter.processingJobId == processingJob)
     ).all()
 
-    end_date = db.session.scalar(
-        select(BLSession.endDate)
-        .select_from(ProcessingJob)
-        .filter(ProcessingJob.processingJobId == processingJob)
-        .join(DataCollection)
-        .join(DataCollectionGroup)
-        .join(BLSession)
-    )
-
-    if len(parameters) < 1 and end_date is None:
+    if len(parameters) < 1:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No items found",
         )
 
     return ProcessingJobParameters(
-        items={row.parameterKey: row.parameterValue for row in parameters},
-        allowReprocessing=(bool(Config.mq.user) and check_session_active(end_date)),
+        items={row.parameterKey: row.parameterValue for row in parameters}
     )
