@@ -9,8 +9,9 @@ from sqlalchemy import Label, and_, extract, func, insert, or_, select
 
 from ..auth import User
 from ..models.parameters import DataCollectionCreationParameters
-from ..models.response import SessionResponse
+from ..models.response import SessionAllowsReprocessing, SessionResponse
 from ..utils.auth import check_session
+from ..utils.config import Config
 from ..utils.database import db, fast_count, paginate, unravel
 from ..utils.generic import ProposalReference, check_session_active, parse_proposal
 
@@ -218,3 +219,22 @@ def create_data_collection(
     db.session.commit()
 
     return data_collection
+
+
+def check_reprocessing_enabled(proposalReference: ProposalReference):
+    end_date = db.session.scalar(
+        select(BLSession.endDate)
+        .select_from(Proposal)
+        .filter(
+            Proposal.proposalCode == proposalReference.code,
+            Proposal.proposalNumber == proposalReference.number,
+            BLSession.visit_number == proposalReference.visit_number,
+        )
+        .join(BLSession)
+    )
+
+    return SessionAllowsReprocessing(
+        allowReprocessing=(
+            (not bool(Config.mq.user)) and check_session_active(end_date)
+        ),
+    )

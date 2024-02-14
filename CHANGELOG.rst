@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.3.1 (14/02/2024)
++++++++++
+
+**Changed**
+
+- "Reprocessing enabled" check moved to individual endpoint (:code:`/proposals/{proposalReference}/sessions/{visitNumber}/reprocessingEnabled`)
+- :code:`allowReprocessing` removed from processing job parameters endpoint
+
++++++++++
 v1.3.0 (07/02/2024)
 +++++++++
 
