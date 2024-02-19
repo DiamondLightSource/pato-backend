@@ -83,8 +83,6 @@ def test_post_message(mock_permissions, mock_pika, client):
 
     proc_id = resp.json()["processingJobId"]
 
-    print(mock_pika.publish.call_args)
-
     mock_pika.publish.assert_called_with(
         (
             json.dumps(
