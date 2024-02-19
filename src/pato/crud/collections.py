@@ -135,7 +135,7 @@ def initiate_reprocessing_tomogram(
                 (
                     record.micrographFullPath,
                     float(tilt_angle_regex.group(1)),
-                    record.movieId,
+                    # record.movieId,
                 )
             )
         except ValueError:
@@ -150,7 +150,7 @@ def initiate_reprocessing_tomogram(
             detail="Data collection has no valid motion correction records",
         )
 
-    stack_files = db.session.execute(
+    stack_files = db.session.scalars(
         select(Tomogram.stackFile)
         .filter_by(dataCollectionId=collectionId)
         .order_by(Tomogram.tomogramId)
@@ -169,24 +169,24 @@ def initiate_reprocessing_tomogram(
             detail="Too many autoprocessing programs already exist",
         )
 
-    stack_file: str = stack_files[0].stackFile
-    stack_file_regex = re.match(r".*\(([0-9]+)\)", stack_file)
+    stack_file: str = stack_files[0]
+
+    stack_file_regex = re.match(r".*\_reprocess([0-9]+)", stack_file)
 
     # The stack file name should be the name of a stack file present in one of the
     # tomograms, with an unique suffix
     if stack_file_regex is not None:
-        stack_file = (
-            f"{stack_file.split('(')[0]}({int(stack_file_regex.group(1))+1}).mrc"
-        )
+        index = int(stack_file_regex.group(1)) + 1
+        stack_file = f"{stack_file.split('_reprocess')[0]}_reprocess{index}.mrc"
     else:
-        stack_file = f"{os.path.splitext(stack_file)[0]}(1).mrc"
+        stack_file = f"{os.path.splitext(stack_file)[0]}_reprocess1.mrc"
 
     proc_job_params = {
-        "pix_size": params.pixelSize,
-        "manual_tilt_offset": params.tiltOffset,
+        "path_pattern": "",
         "dcid": collectionId,
         "stack_file": stack_file,
-        "movie_id": input_file_list[0][2],
+        "pix_size": params.pixelSize,
+        "manual_tilt_offset": params.tiltOffset,
     }
 
     new_job = ProcessingJob(
@@ -206,9 +206,12 @@ def initiate_reprocessing_tomogram(
     db.session.commit()
 
     message = {
+        "recipes": ["em-tomo-align"],
         "parameters": {
             "input_file_list": input_file_list,
-            "proc_job": new_job.processingJobId,
+            # This is not a typo, the expected key for the processing job ID is appid
+            "appid": new_job.processingJobId,
+            **proc_job_params,
         },
     }
 

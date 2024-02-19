@@ -29,6 +29,8 @@ spec:
     - pato-api
   dependsOn:
     - resource:ispyb-database
+  consumesApis:
+    - microauth-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
