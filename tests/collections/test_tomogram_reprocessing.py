@@ -1,3 +1,4 @@
+import json
 from unittest.mock import patch
 
 from lims_utils.tables import ProcessingJobParameter
@@ -82,14 +83,29 @@ def test_post_message(mock_permissions, mock_pika, client):
 
     proc_id = resp.json()["processingJobId"]
 
+    print(mock_pika.publish.call_args)
+
     mock_pika.publish.assert_called_with(
         (
-            '{"parameters": {"input_file_list": '
-            '[["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0, 1], '
-            '["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0, 2], '
-            '["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0, 3], '
-            '["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0, 4]], '
-            f'"proc_job": {proc_id}{"}}"}'
+            json.dumps(
+                {
+                    "recipes": ["em-tomo-align"],
+                    "parameters": {
+                        "input_file_list": [
+                            ["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0],
+                            ["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0],
+                            ["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0],
+                            ["/dls/m02/raw/Position_2_11_45.00_abc.jpeg", 45.0],
+                        ],
+                        "appid": proc_id,
+                        "path_pattern": "",
+                        "dcid": 6017406,
+                        "stack_file": "/dls/m02/data/align_output/Position_1_9_stack_reprocess2.mrc",
+                        "pix_size": 51,
+                        "manual_tilt_offset": 1.0,
+                    },
+                }
+            )
         ),
     )
 
@@ -168,5 +184,5 @@ def test_tomogram_with_suffix(mock_permissions, client):
                 ProcessingJobParameter.parameterKey == "stack_file",
             )
         ).one()
-        == "/dls/m02/data/align_output/Position_1_9_stack(2).mrc"
+        == "/dls/m02/data/align_output/Position_1_9_stack_reprocess2.mrc"
     )
