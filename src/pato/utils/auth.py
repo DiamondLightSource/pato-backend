@@ -19,6 +19,12 @@ def check_session(query: Select, user: User):
     if is_admin(user.permissions):
         return query
 
+    allowed_beamlines = get_allowed_beamlines(user.permissions)
+    or_expressions = [SessionHasPerson.personId == user.id]
+
+    if allowed_beamlines:
+        or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
+
     return query.join(
         SessionHasPerson,
         and_(
@@ -26,12 +32,7 @@ def check_session(query: Select, user: User):
             SessionHasPerson.personId == user.id,
         ),
         isouter=True,
-    ).filter(
-        or_(
-            SessionHasPerson.personId == user.id,
-            BLSession.beamLineName.in_(get_allowed_beamlines(user.permissions)),
-        ),
-    )
+    ).filter(or_(*or_expressions))
 
 
 def check_proposal(query: Select, user: User):

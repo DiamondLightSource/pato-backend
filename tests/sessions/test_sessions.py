@@ -1,15 +1,14 @@
 import pytest
 
-from ..users import admin, em_admin, mx_admin, user
+from ..users import admin, em_admin, user
 
 
 @pytest.mark.parametrize(
     ["mock_user", "expected_count"],
     [
-        pytest.param(mx_admin, 5, id="mx"),
         pytest.param(user, 1, id="user"),
         pytest.param(em_admin, 2, id="em"),
-        pytest.param(admin, 9, id="admin"),
+        pytest.param(admin, 2, id="admin"),
     ],
     indirect=["mock_user"],
 )
@@ -23,9 +22,9 @@ def test_get(mock_user, expected_count, client):
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
 def test_get_admin(mock_user, client):
     """Get all visits (request from admin)"""
-    resp = client.get("/sessions?proposal=cm14451")
+    resp = client.get("/sessions?proposal=cm31111")
     assert resp.status_code == 200
-    assert resp.json()["total"] == 3
+    assert resp.json()["total"] == 2
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)
@@ -35,7 +34,7 @@ def test_get_collection_groups(mock_user, client):
     sessions = resp.json()
 
     assert resp.status_code == 200
-    assert sessions["total"] == 9
+    assert sessions["total"] == 2
     assert sessions["items"][0]["collectionGroups"] == 1
 
 
@@ -60,14 +59,6 @@ def test_get_user(mock_user, client):
     resp = client.get("/sessions?proposal=cm31111")
     assert resp.status_code == 200
     assert resp.json()["total"] == 1
-
-
-@pytest.mark.parametrize("mock_user", [mx_admin], indirect=True)
-def test_get_mx_admin(mock_user, client):
-    """Get all proposals belonging to MX (request for MX admin)"""
-    resp = client.get("/sessions?proposal=cm1")
-    assert resp.status_code == 200
-    assert resp.json()["total"] == 3
 
 
 @pytest.mark.parametrize("mock_user", [user], indirect=True)

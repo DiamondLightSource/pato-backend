@@ -72,7 +72,9 @@ def get_sessions(
             )
         )
 
-    query = select(*unravel(BLSession), *fields)
+    query = select(*unravel(BLSession), *fields).filter(
+        BLSession.beamLineName.like("m%"),
+    )
 
     if proposal is not None:
         proposal_reference = parse_proposal(proposal)
