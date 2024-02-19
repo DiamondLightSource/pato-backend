@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.3.2 (19/02/2024)
++++++++++
+
+**Changed**
+
+- Improved performance for :code:`/sessions` endpoint, only returns eBIC sessions
+- Fixed parameter generation for tomogram reprocessing
+
++++++++++
 v1.3.1 (14/02/2024)
 +++++++++
 
