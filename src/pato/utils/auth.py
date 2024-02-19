@@ -39,6 +39,12 @@ def check_proposal(query: Select, user: User):
     if is_admin(user.permissions):
         return query
 
+    allowed_beamlines = get_allowed_beamlines(user.permissions)
+    or_expressions = [ProposalHasPerson.personId == user.id]
+
+    if allowed_beamlines:
+        or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
+
     return query.join(
         ProposalHasPerson,
         and_(
@@ -47,8 +53,5 @@ def check_proposal(query: Select, user: User):
         ),
         isouter=True,
     ).filter(
-        or_(
-            ProposalHasPerson.personId == user.id,
-            BLSession.beamLineName.in_(get_allowed_beamlines(user.permissions)),
-        ),
+        or_(*or_expressions),
     )
