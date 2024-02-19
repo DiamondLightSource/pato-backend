@@ -59,6 +59,7 @@ def get_relative_ice_thickness(
                 f.round(f.avg(RelativeIceThickness.q3)).label("q3"),
                 f.round(f.avg(RelativeIceThickness.q1)).label("q1"),
                 f.round(f.avg(RelativeIceThickness.median)).label("median"),
+                f.round(f.stddev(RelativeIceThickness.median)).label("stddev"),
             )
             .select_from(MotionCorrection)
             .filter_by(movieId=movieId)
