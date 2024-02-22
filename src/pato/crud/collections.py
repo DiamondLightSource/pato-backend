@@ -80,7 +80,7 @@ def get_tomograms(
             _job_status_description.label("status"),
         )
         .select_from(ProcessingJob)
-        .join(AutoProcProgram)
+        .outerjoin(AutoProcProgram)
         .outerjoin(Tomogram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
         .order_by(ProcessingJob.processingJobId.desc())

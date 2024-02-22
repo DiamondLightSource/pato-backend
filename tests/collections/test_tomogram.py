@@ -16,3 +16,10 @@ def test_get_no_tomogram(mock_permissions, client):
     resp = client.get("/dataCollections/6017413/tomograms")
     assert resp.status_code == 200
     assert resp.json()["items"][1]["Tomogram"] is None
+
+
+def test_get_no_autoproc(mock_permissions, client):
+    """Get tomograms with no linked autoprocessing programs"""
+    resp = client.get("/dataCollections/6017406/tomograms")
+    assert resp.status_code == 200
+    assert resp.json()["total"] == 29
