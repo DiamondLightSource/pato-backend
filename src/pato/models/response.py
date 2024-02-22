@@ -385,7 +385,7 @@ class AutoProcProgram(OrmBaseModel):
 
 
 class ProcessingJobResponse(OrmBaseModel):
-    AutoProcProgram: AutoProcProgram
+    AutoProcProgram: Optional[AutoProcProgram]
     ProcessingJob: ProcessingJob
     status: str
 

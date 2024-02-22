@@ -39,14 +39,11 @@ dev = [
     "pytest",
     "pytest-cov",
     "ruff",
-    # "sphinx-autobuild",
-    # "sphinx-copybutton",
-    # "sphinx-design",
     "tox-direct",
     "types-mock",
     "pytest-asyncio",
-    "httpx",
-    # "pydata-sphinx-theme < 0.10.1",
+    # https://github.com/encode/httpx/blob/master/CHANGELOG.md#0270-21st-february-2024
+    "httpx~=0.26.0",
     "setuptools_scm[toml]>=6.2"
 ]
 
