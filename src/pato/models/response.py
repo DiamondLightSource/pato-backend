@@ -447,6 +447,7 @@ class RelativeIceThickness(OrmBaseModel):
     median: float
     q3: float
     maximum: float
+    stddev: Optional[float] = None
 
 
 class IceThicknessWithAverage(OrmBaseModel):

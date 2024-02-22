@@ -3,7 +3,7 @@ import json
 from os.path import isfile
 from typing import Optional
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from lims_utils.logging import app_logger
 from pydantic import BaseModel
 
@@ -90,14 +90,18 @@ class ProposalReference(BaseModel):
 
 
 def parse_proposal(proposalReference: str, visit_number: int | None = None):
-    try:
-        return ProposalReference(
-            code=proposalReference[0:2],
-            number=int(proposalReference[2:]),
-            visit_number=visit_number,
-        )
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Proposal reference must be formatted as aa12345",
-        )
+    assert (
+        len(proposalReference) > 2
+    ), "Proposal reference must be at least 3 characters long"
+
+    code = proposalReference[0:2]
+    number = proposalReference[2:]
+
+    assert code.isalpha(), "Proposal code must be a two letter code"
+    assert number.isdigit(), "Proposal number must be a valid integer"
+
+    return ProposalReference(
+        code=code,
+        number=int(number),
+        visit_number=visit_number,
+    )
