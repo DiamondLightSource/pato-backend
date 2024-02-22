@@ -20,8 +20,9 @@ from sqlalchemy import UnaryExpression, and_, or_, select
 
 from ..models.response import (
     Classification,
-    CtfImageNumberList,
+    CtfBaseSpa,
     FullMovie,
+    ItemList,
     TomogramResponse,
 )
 from ..utils.database import db, paginate, unravel
@@ -63,14 +64,16 @@ def get_ctf(autoProcId: int):
             CTF.estimatedResolution,
             CTF.estimatedDefocus,
             CTF.astigmatism,
+            ParticlePicker.numberOfParticles,
             MotionCorrection.imageNumber,
         )
         .filter(MotionCorrection.autoProcProgramId == autoProcId)
         .join(CTF)
+        .join(ParticlePicker)
         .order_by(MotionCorrection.imageNumber)
     ).all()
 
-    return CtfImageNumberList(items=data)
+    return ItemList[CtfBaseSpa](items=data)
 
 
 def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int):

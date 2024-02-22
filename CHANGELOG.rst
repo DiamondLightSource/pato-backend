@@ -10,6 +10,7 @@ v1.3.2 (19/02/2024)
 
 - Improved performance for :code:`/sessions` endpoint, only returns eBIC sessions
 - Fixed parameter generation for tomogram reprocessing
+- CTF endpoint for autoprocessing programs now returns particle count
 
 +++++++++
 v1.3.1 (14/02/2024)
