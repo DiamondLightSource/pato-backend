@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 
 from ..auth import Permissions
 from ..crud import movies as crud
-from ..models.response import GenericPlot, IceThicknessWithAverage
+from ..models.response import DataPoint, IceThicknessWithAverage, ItemList
 
 auth = Permissions.movie
 
@@ -22,7 +22,7 @@ def get_fft(movieId: int = Depends(auth)):
     return crud.get_fft_path(movieId)
 
 
-@router.get("/{movieId}/drift", response_model=GenericPlot)
+@router.get("/{movieId}/drift", response_model=ItemList[DataPoint])
 def get_drift(movieId: int = Depends(auth)):
     """Get drift from a JSON file or from the drift table"""
     return crud.get_drift(movieId=movieId)

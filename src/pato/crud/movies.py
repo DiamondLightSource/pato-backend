@@ -4,7 +4,7 @@ from lims_utils.tables import CTF, MotionCorrection, RelativeIceThickness
 from sqlalchemy import func as f
 from sqlalchemy import select
 
-from ..models.response import GenericPlot, IceThicknessWithAverage
+from ..models.response import DataPoint, IceThicknessWithAverage, ItemList
 from ..utils.database import db
 from ..utils.generic import parse_json_file, validate_path
 
@@ -37,8 +37,8 @@ def _get_drift_path(movieId: int) -> Optional[str]:
     )
 
 
-def get_drift(movieId: int) -> GenericPlot:
-    return GenericPlot(items=parse_json_file(_get_drift_path(movieId)))
+def get_drift(movieId: int) -> ItemList[DataPoint]:
+    return ItemList[DataPoint](items=parse_json_file(_get_drift_path(movieId)))
 
 
 def get_relative_ice_thickness(

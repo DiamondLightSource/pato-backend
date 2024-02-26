@@ -14,7 +14,7 @@ from lims_utils.tables import (
 from sqlalchemy import Column, and_, case, literal_column, select
 from sqlalchemy import func as f
 
-from ..models.response import GenericPlot
+from ..models.response import DataPoint, ItemList
 from ..utils.database import db
 
 
@@ -47,7 +47,7 @@ def _parse_count(query):
             detail="No items found",
         )
 
-    return GenericPlot(
+    return ItemList[DataPoint](
         items=[{"x": key, "y": value} for (key, value) in dict(data).items()]
     )
 
@@ -57,7 +57,7 @@ def get_ice_histogram(
     parent_id: int,
     dataBin: float,
     minimum: float,
-) -> GenericPlot:
+) -> ItemList[DataPoint]:
     query = _generate_buckets(dataBin, minimum, RelativeIceThickness.median)
 
     if parent_type == "autoProc":
@@ -81,7 +81,7 @@ def get_motion(
     parent_id: int,
     dataBin: float,
     minimum: float,
-) -> GenericPlot:
+) -> ItemList[DataPoint]:
     query = _generate_buckets(dataBin, minimum, MotionCorrection.totalMotion)
 
     if parent_type == "autoProc":
@@ -102,7 +102,7 @@ def get_resolution(
     parent_id: int,
     dataBin: float,
     minimum: float,
-) -> GenericPlot:
+) -> ItemList[DataPoint]:
     query = _generate_buckets(dataBin, minimum, CTF.estimatedResolution)
 
     if parent_type == "autoProc":
@@ -124,7 +124,7 @@ def get_particle_count(
     parent_id: int,
     dataBin: float,
     minimum: float,
-) -> GenericPlot:
+) -> ItemList[DataPoint]:
     query = _generate_buckets(dataBin, minimum, ParticlePicker.numberOfParticles)
 
     if parent_type == "autoProc":

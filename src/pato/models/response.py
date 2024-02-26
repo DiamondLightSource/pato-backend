@@ -1,9 +1,11 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Generic, Optional, TypeVar
 
 from lims_utils.models import Paged
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+T = TypeVar("T")
 
 
 class StateEnum(str, Enum):
@@ -350,16 +352,12 @@ class CtfImageNumber(CtfBase):
     imageNumber: int
 
 
-class CtfTiltAlignList(BaseModel):
-    items: list[CtfTiltAlign]
+class CtfBaseSpa(CtfImageNumber):
+    numberOfParticles: Optional[int]
 
 
-class CtfImageNumberList(BaseModel):
-    items: list[CtfImageNumber]
-
-
-class GenericPlot(BaseModel):
-    items: list[DataPoint]
+class ItemList(BaseModel, Generic[T]):
+    items: list[T]
 
 
 class ProcessingJob(OrmBaseModel):
