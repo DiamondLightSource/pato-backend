@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.4.0 (05/03/2024)
++++++++++
+
+**Added**
+
+- CTF endpoint for SPA now returns particle count for all image numbers
+- Standard deviation is returned for average ice thickness
+
++++++++++
 v1.3.2 (19/02/2024)
 +++++++++
 
