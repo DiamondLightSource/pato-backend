@@ -9,8 +9,9 @@ from ..crud import autoproc as crud
 from ..crud import generic
 from ..models.response import (
     Classification,
-    CtfImageNumberList,
+    CtfBaseSpa,
     FullMovie,
+    ItemList,
     ParticlePicker,
     TomogramResponse,
 )
@@ -40,10 +41,10 @@ def get_motion_correction(
     return crud.get_motion_correction(autoProcId=autoProcId, **page)
 
 
-@router.get("/{autoProcId}/ctf", response_model=CtfImageNumberList)
+@router.get("/{autoProcId}/ctf", response_model=ItemList[CtfBaseSpa])
 def get_ctf(autoProcId: int = Depends(auth)):
-    """Get astigmatism, resolution and defocus as a function of motion correction
-    image numbers"""
+    """Get astigmatism, resolution, particle count and defocus as a function of motion correction
+    image numbers. Meant to be used with SPA processing jobs"""
     return crud.get_ctf(autoProcId=autoProcId)
 
 

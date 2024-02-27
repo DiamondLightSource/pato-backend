@@ -282,7 +282,7 @@ def get_processing_jobs(
     query = (
         select(AutoProcProgram, ProcessingJob, _job_status_description.label("status"))
         .select_from(ProcessingJob)
-        .join(AutoProcProgram)
+        .outerjoin(AutoProcProgram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
         .order_by(
             ProcessingJob.recipe.desc(),

@@ -6,7 +6,12 @@ from lims_utils.models import pagination
 
 from ..auth import Permissions
 from ..crud import tomograms as crud
-from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
+from ..models.response import (
+    CtfTiltAlign,
+    DataPoint,
+    FullMovieWithTilt,
+    ItemList,
+)
 
 auth = Permissions.tomogram
 
@@ -16,7 +21,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{tomogramId}/shiftPlot", response_model=GenericPlot)
+@router.get("/{tomogramId}/shiftPlot", response_model=ItemList[DataPoint])
 def get_shift_plot(tomogramId: int = Depends(auth)):
     """Get X-Y shift plot data"""
     return crud.get_shift_plot(tomogramId)
@@ -55,7 +60,7 @@ def get_projection(axis: Literal["xy", "xz"], tomogramId: int = Depends(auth)):
     return crud.get_projection_path(tomogramId=tomogramId, axis=axis)
 
 
-@router.get("/{tomogramId}/ctf", response_model=CtfTiltAlignList)
+@router.get("/{tomogramId}/ctf", response_model=ItemList[CtfTiltAlign])
 def get_ctf(tomogramId: int = Depends(auth)):
     """Get astigmatism, resolution and defocus as a function of tilt image
     alignment refined tilt angles"""

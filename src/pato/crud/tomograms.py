@@ -2,11 +2,22 @@ import re
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
-from lims_utils.tables import CTF, MotionCorrection, Movie, TiltImageAlignment, Tomogram
+from lims_utils.tables import (
+    CTF,
+    MotionCorrection,
+    Movie,
+    TiltImageAlignment,
+    Tomogram,
+)
 from sqlalchemy import Column, literal_column, select
 from sqlalchemy import func as f
 
-from ..models.response import CtfTiltAlignList, FullMovieWithTilt, GenericPlot
+from ..models.response import (
+    CtfTiltAlign,
+    DataPoint,
+    FullMovieWithTilt,
+    ItemList,
+)
 from ..utils.database import db, paginate
 from ..utils.generic import parse_json_file, validate_path
 
@@ -40,7 +51,7 @@ def get_shift_plot(tomogramId: int):
     if not data:
         raise HTTPException(status_code=404, detail="Invalid or empty data file")
 
-    return GenericPlot(items=data)
+    return ItemList[DataPoint](items=data)
 
 
 def get_motion_correction(
@@ -102,7 +113,7 @@ def get_ctf(tomogramId: int):
         .order_by(TiltImageAlignment.refinedTiltAngle)
     ).all()
 
-    return CtfTiltAlignList(items=data)
+    return ItemList[CtfTiltAlign](items=data)
 
 
 def get_slice_path(tomogramId: int, denoised: bool):
