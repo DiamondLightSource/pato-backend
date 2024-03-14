@@ -1,5 +1,6 @@
 from typing import Optional
 
+from lims_utils.auth import GenericUser
 from lims_utils.models import Paged
 from lims_utils.tables import (
     BLSession,
@@ -12,7 +13,6 @@ from lims_utils.tables import (
 from sqlalchemy import func as f
 from sqlalchemy import select
 
-from ..auth import User
 from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
@@ -26,7 +26,7 @@ def get_collection_groups(
     session: Optional[int],
     proposal: Optional[str],
     search: Optional[str],
-    user: User,
+    user: GenericUser,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
 
     query = (
@@ -83,7 +83,7 @@ def get_collections(
     groupId: Optional[int],
     search: Optional[str],
     sortBy: DataCollectionSortTypes,
-    user: User,
+    user: GenericUser,
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
     sort = (

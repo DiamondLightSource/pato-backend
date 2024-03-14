@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.4.1 (14/03/2024)
++++++++++
+
+**Fixed**
+
+- Session/proposal listings no longer show duplicate results
+
++++++++++
 v1.4.0 (05/03/2024)
 +++++++++
 

@@ -3,11 +3,11 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import HTTPException, status
+from lims_utils.auth import GenericUser
 from lims_utils.models import Paged
 from lims_utils.tables import BLSession, DataCollection, DataCollectionGroup, Proposal
 from sqlalchemy import Label, and_, extract, func, insert, or_, select
 
-from ..auth import User
 from ..models.parameters import DataCollectionCreationParameters
 from ..models.response import SessionAllowsReprocessing, SessionResponse
 from ..utils.auth import check_session
@@ -50,7 +50,7 @@ def _check_raw_files_exist(file_directory: str, glob_path: str):
 def get_sessions(
     limit: int,
     page: int,
-    user: User,
+    user: GenericUser,
     proposal: Optional[str],
     search: Optional[str],
     minEndDate: Optional[datetime],
@@ -79,14 +79,13 @@ def get_sessions(
     if proposal is not None:
         proposal_reference = parse_proposal(proposal)
         query = (
-            query.select_from(Proposal)
+            query.join(Proposal)
             .filter(
                 and_(
                     Proposal.proposalCode == proposal_reference.code,
                     Proposal.proposalNumber == proposal_reference.number,
                 )
             )
-            .join(BLSession)
             .order_by(BLSession.visit_number)
         )
     else:
