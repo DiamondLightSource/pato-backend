@@ -1,7 +1,8 @@
+from lims_utils.auth import GenericUser
 from lims_utils.tables import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
 from sqlalchemy import Select, or_
 
-from ..auth import User, is_admin
+from ..auth import is_admin
 from .config import Config
 
 
@@ -15,7 +16,7 @@ def get_allowed_beamlines(perms: list[int]) -> set[str]:
     return allowed_beamlines
 
 
-def check_session(query: Select, user: User):
+def check_session(query: Select, user: GenericUser):
     if is_admin(user.permissions):
         return query
 
@@ -25,14 +26,23 @@ def check_session(query: Select, user: User):
     if allowed_beamlines:
         or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
 
-    return query.join(
-        SessionHasPerson,
-        SessionHasPerson.sessionId == BLSession.sessionId,
-        isouter=(len(allowed_beamlines) > 0),
-    ).filter(or_(*or_expressions))
+    return (
+        query.distinct()
+        .join(
+            SessionHasPerson,
+            SessionHasPerson.sessionId == BLSession.sessionId,
+            isouter=(len(allowed_beamlines) > 0),
+        )
+        .filter(
+            or_(
+                SessionHasPerson.personId == user.id,
+                BLSession.beamLineName.in_(allowed_beamlines),
+            )
+        )
+    )
 
 
-def check_proposal(query: Select, user: User):
+def check_proposal(query: Select, user: GenericUser):
     if is_admin(user.permissions):
         return query
 
@@ -42,10 +52,14 @@ def check_proposal(query: Select, user: User):
     if allowed_beamlines:
         or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
 
-    return query.join(
-        ProposalHasPerson,
-        ProposalHasPerson.proposalId == Proposal.proposalId,
-        isouter=(len(allowed_beamlines) > 0),
-    ).filter(
-        or_(*or_expressions),
+    return (
+        query.distinct()
+        .join(
+            ProposalHasPerson,
+            ProposalHasPerson.proposalId == Proposal.proposalId,
+            isouter=(len(allowed_beamlines) > 0),
+        )
+        .filter(
+            or_(*or_expressions),
+        )
     )
