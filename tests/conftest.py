@@ -6,9 +6,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from pato.auth import User
 from pato.auth.micro import oauth2_scheme
 from pato.main import app
-from pato.utils.auth import User
 from pato.utils.database import db
 
 from .users import admin
