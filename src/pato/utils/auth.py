@@ -34,10 +34,7 @@ def check_session(query: Select, user: GenericUser):
             isouter=(len(allowed_beamlines) > 0),
         )
         .filter(
-            or_(
-                SessionHasPerson.personId == user.id,
-                BLSession.beamLineName.in_(allowed_beamlines),
-            )
+            or_(*or_expressions),
         )
     )
 
