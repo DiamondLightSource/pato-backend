@@ -1,3 +1,4 @@
+import os
 from typing import Literal, Optional
 
 from fastapi import HTTPException, status
@@ -152,6 +153,17 @@ def get_classification_image(classificationId: int) -> Optional[str]:
             particleClassificationId=classificationId
         )
     )
+
+
+@validate_path
+def get_angle_distribution(classificationId: int) -> Optional[str]:
+    path = db.session.scalar(
+        select(ParticleClassification.classImageFullPath).filter_by(
+            particleClassificationId=classificationId
+        )
+    )
+
+    return os.path.splitext(path)[0] + "_angdist.jpeg"
 
 
 @validate_path
