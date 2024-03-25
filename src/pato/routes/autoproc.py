@@ -88,6 +88,15 @@ def get_classification_image(classificationId: int, autoProcId: int = Depends(au
 
 
 @router.get(
+    "/{autoProcId}/classification/{classificationId}/angleDistribution",
+    response_class=FileResponse,
+)
+def get_angle_distribution(classificationId: int, autoProcId: int = Depends(auth)):
+    """Get Mollweide plot of angle distributions"""
+    return crud.get_angle_distribution(classificationId=classificationId)
+
+
+@router.get(
     "/{autoProcId}/particlePicker/{particlePickerId}/image",
     response_class=FileResponse,
 )
