@@ -16,7 +16,7 @@ def get_proposals(
     query = (
         select(
             *cols,
-            f.count(BLSession.sessionId).label("sessions"),
+            f.count(BLSession.sessionId.distinct()).label("sessions"),
         )
         .filter(
             or_(

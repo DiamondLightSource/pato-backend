@@ -110,4 +110,4 @@ class DataCollectionCreationParameters(BaseModel):
 
 # mypy doesn't support type aliases yet
 
-DataCollectionSortTypes = Literal["dataCollectionId", "globalAlignmentQuality"]
+DataCollectionSortTypes = Literal["dataCollectionId", "globalAlignmentQuality", ""]

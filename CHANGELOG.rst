@@ -3,12 +3,16 @@ Changelog
 ==========
 
 +++++++++
-v1.5.0 (20/03/2024)
+v1.5.0 (25/03/2024)
 +++++++++
 
 **Added**
 
 - Endpoint for getting angle distribution plots (:code:`/autoProc/{autoProcId}/classification/{classificationId}/angleDistribution`)
+
+**Fixed**
+
+- Count of children in listing endpoints no longer return excess items for certain staff users
 
 +++++++++
 v1.4.1 (14/03/2024)
