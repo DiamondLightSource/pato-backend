@@ -34,7 +34,7 @@ def get_collection_groups(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
             DataCollection.imageDirectory,
-            f.count(DataCollection.dataCollectionId).label("collections"),
+            f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
         .select_from(DataCollectionGroup)
         .join(ExperimentType, isouter=True)
@@ -73,7 +73,6 @@ def get_collection_groups(
                     db.session.execute(session_id_query).all()
                 )
             )
-
     return paginate(check_session(query, user), limit, page, slow_count=True)
 
 
@@ -96,7 +95,7 @@ def get_collections(
         select(
             f.row_number().over(order_by=sort).label("index"),
             *unravel(DataCollection),
-            f.count(Tomogram.tomogramId).label("tomograms"),
+            f.count(Tomogram.tomogramId.distinct()).label("tomograms"),
             Tomogram.globalAlignmentQuality,
         )
         .select_from(DataCollection)
