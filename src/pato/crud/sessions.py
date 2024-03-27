@@ -12,7 +12,7 @@ from ..models.parameters import DataCollectionCreationParameters
 from ..models.response import SessionAllowsReprocessing, SessionResponse
 from ..utils.auth import check_session
 from ..utils.config import Config
-from ..utils.database import db, fast_count, paginate, unravel
+from ..utils.database import db, paginate, unravel
 from ..utils.generic import ProposalReference, check_session_active, parse_proposal
 
 
@@ -67,7 +67,7 @@ def get_sessions(
 
     if countCollections:
         fields.append(
-            func.count(DataCollectionGroup.dataCollectionGroupId).label(
+            func.count(DataCollectionGroup.dataCollectionGroupId.distinct()).label(
                 "collectionGroups"
             )
         )
@@ -86,7 +86,7 @@ def get_sessions(
                     Proposal.proposalNumber == proposal_reference.number,
                 )
             )
-            .order_by(BLSession.visit_number)
+            .order_by(BLSession.visit_number.desc())
         )
     else:
         query = query.join(Proposal).order_by(BLSession.endDate.desc())
@@ -113,14 +113,14 @@ def get_sessions(
 
     query = check_session(query, user)
 
-    total = fast_count(query)
-
     if countCollections:
-        query = query.join(DataCollectionGroup, isouter=True).group_by(
-            BLSession.visit_number, BLSession.proposalId
-        )
+        query = query.join(
+            DataCollectionGroup,
+            DataCollectionGroup.sessionId == BLSession.sessionId,
+            isouter=True,
+        ).group_by(BLSession.visit_number, BLSession.proposalId)
 
-    return paginate(query, limit, page, precounted_total=total)
+    return paginate(query, limit, page)
 
 
 def get_session(proposalReference: ProposalReference):

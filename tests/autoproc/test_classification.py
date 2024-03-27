@@ -50,24 +50,27 @@ def test_sort_class(is_3d, mock_permissions, client):
     assert resp.json()["items"][0]["classDistribution"] == 0.3
 
 
-def test_get_image(mock_permissions, client):
-    """Get class image"""
+@pytest.mark.parametrize("image_type", ["image", "angleDistribution"])
+def test_get_image(image_type, mock_permissions, client):
+    """Get class/angle distribution image"""
     with patch("pato.routes.movies.FileResponse.__call__", new=mock_send):
-        resp = client.get("/autoProc/56986680/classification/1/image")
+        resp = client.get(f"/autoProc/56986680/classification/1/{image_type}")
     assert resp.status_code == 200
 
 
-def test_get_image_not_in_db(mock_permissions, client):
-    """Get class image not in database"""
+@pytest.mark.parametrize("image_type", ["image", "angleDistribution"])
+def test_get_image_not_in_db(image_type, mock_permissions, client):
+    """Get class/angle distribution  image not in database"""
     with patch("pato.routes.movies.FileResponse.__call__", new=mock_send):
-        resp = client.get("/autoProc/56986680/classification/999/image")
+        resp = client.get(f"/autoProc/56986680/classification/999/{image_type}")
     assert resp.status_code == 404
 
 
-def test_get_image_not_found(mock_permissions, exists_mock, client):
-    """Get class image not in filesystem"""
+@pytest.mark.parametrize("image_type", ["image", "angleDistribution"])
+def test_get_image_not_found(image_type, mock_permissions, exists_mock, client):
+    """Get class/angle distribution image not in filesystem"""
     exists_mock.return_value = False
-    resp = client.get("/autoProc/56986680/classification/5/image")
+    resp = client.get(f"/autoProc/56986680/classification/5/{image_type}")
     assert resp.status_code == 404
 
 
