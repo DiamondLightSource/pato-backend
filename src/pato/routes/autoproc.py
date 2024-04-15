@@ -8,6 +8,7 @@ from ..auth import Permissions
 from ..crud import autoproc as crud
 from ..crud import generic
 from ..models.response import (
+    BFactorFitOut,
     Classification,
     CtfBaseSpa,
     FullMovie,
@@ -151,3 +152,9 @@ def get_particle_count(
     return generic.get_particle_count(
         parent_type="autoProc", parent_id=autoProcId, minimum=minimum, dataBin=dataBin
     )
+
+
+@router.get("/{autoProcId}/bFactorFit", response_model=ItemList[BFactorFitOut])
+def get_b_factor_fit(autoProcId: int = Depends(auth)):
+    """Get B factor fit data"""
+    return ItemList(items=crud.get_b_factor_fit(autoProcId=autoProcId))
