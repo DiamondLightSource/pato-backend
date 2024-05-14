@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.6.0 (14/05/2024)
++++++++++
+
+**Added**
+
+- B Factor fit plot (:code:`/{autoProcId}/bFactorFit`)
+
++++++++++
 v1.5.0 (25/03/2024)
 +++++++++
 
