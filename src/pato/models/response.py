@@ -461,3 +461,8 @@ class IceThicknessWithAverage(OrmBaseModel):
 
 class ReprocessingResponse(BaseModel):
     processingJobId: int
+
+
+class BFactorFitOut(BaseModel):
+    numberOfParticles: float
+    resolution: float
