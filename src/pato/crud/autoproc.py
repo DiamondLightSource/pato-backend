@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from lims_utils.models import Paged
 from lims_utils.tables import (
     CTF,
+    BFactorFit,
     CryoemInitialModel,
     MotionCorrection,
     Movie,
@@ -17,7 +18,7 @@ from lims_utils.tables import (
 from lims_utils.tables import (
     t_ParticleClassification_has_CryoemInitialModel as ParticleClassificationHasCryoem,
 )
-from sqlalchemy import UnaryExpression, and_, or_, select
+from sqlalchemy import UnaryExpression, and_, func, or_, select
 
 from ..models.response import (
     Classification,
@@ -100,6 +101,23 @@ _2d_ordering: dict[str, UnaryExpression] = {
     "resolution": ParticleClassification.estimatedResolution.asc(),
     "particles": ParticleClassification.particlesPerClass.desc(),
 }
+
+
+def get_b_factor_fit(autoProcId: int):
+    query = (
+        (
+            select(
+                func.ln(BFactorFit.numberOfParticles).label("numberOfParticles"),
+                (1 / func.pow(BFactorFit.resolution, 2)).label("resolution"),
+            )
+            .select_from(ParticleClassificationGroup)
+            .filter(ParticleClassificationGroup.programId == autoProcId)
+        )
+        .join(ParticleClassification)
+        .join(BFactorFit)
+    )
+
+    return db.session.execute(query).all()
 
 
 def get_classification(
