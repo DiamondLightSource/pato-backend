@@ -19,7 +19,7 @@ from ..models.response import (
     ItemList,
 )
 from ..utils.database import db, paginate
-from ..utils.generic import parse_json_file, validate_path
+from ..utils.generic import MovieType, parse_json_file, validate_path
 
 
 @validate_path
@@ -32,12 +32,24 @@ def _get_generic_tomogram_file(tomogramId: int, column: Column) -> Optional[str]
 
 
 @validate_path
-def _prepend_denoise(base_path: str, image_type: Literal["thumbnail", "movie"]):
+def _prepend_denoise(
+    base_path: str, image_type: Literal["thumbnail", "movie"], movie_type: MovieType
+):
+    """Prepend denoised to file extension, to get path to denoised movie file"""
+    if movie_type is None:
+        return base_path
+
     split_file = re.split(f"(_{image_type})", base_path)
     if len(split_file) != 3:
         raise HTTPException(status_code=500, detail="Unexpected filename")
 
-    return split_file[0] + ".denoised" + "".join(split_file[1:3])
+    denoised_prefix = (
+        ".denoised" if movie_type == "denoised" else f".denoised_{movie_type}"
+    )
+
+    print(split_file[0] + denoised_prefix + "".join(split_file[1:3]))
+
+    return split_file[0] + denoised_prefix + "".join(split_file[1:3])
 
 
 @validate_path
@@ -116,14 +128,14 @@ def get_ctf(tomogramId: int):
     return ItemList[CtfTiltAlign](items=data)
 
 
-def get_slice_path(tomogramId: int, denoised: bool):
+def get_slice_path(tomogramId: int, movie_type: MovieType):
     base_path = _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
-    return _prepend_denoise(base_path, "thumbnail") if denoised else base_path
+    return _prepend_denoise(base_path, "thumbnail", movie_type)
 
 
-def get_movie_path(tomogramId: int, denoised: bool):
+def get_movie_path(tomogramId: int, movie_type: MovieType):
     base_path = _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
-    return _prepend_denoise(base_path, "movie") if denoised else base_path
+    return _prepend_denoise(base_path, "movie", movie_type)
 
 
 def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]):

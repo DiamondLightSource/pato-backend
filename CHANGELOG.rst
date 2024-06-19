@@ -3,6 +3,18 @@ Changelog
 ==========
 
 +++++++++
+v1.6.0 (25/03/2024)
++++++++++
+
+**Added**
+
+- Tomogram movie/thumbnail endpoints now support segmented movie/thumbnails
+
+**Changed**
+
+- Instead of setting :code:`denoised`, requests to tomogram movie/thumbnail endpoints must set :code:`movieType` to one of either "denoised" or "segmented"
+
++++++++++
 v1.5.0 (25/03/2024)
 +++++++++
 

@@ -12,6 +12,7 @@ from ..models.response import (
     FullMovieWithTilt,
     ItemList,
 )
+from ..utils.generic import MovieType
 
 auth = Permissions.tomogram
 
@@ -43,15 +44,15 @@ def get_motion_correction(
 
 
 @router.get("/{tomogramId}/centralSlice", response_class=FileResponse)
-def get_slice(tomogramId: int = Depends(auth), denoised=False):
+def get_slice(tomogramId: int = Depends(auth), movieType: MovieType = None):
     """Get tomogram central slice image"""
-    return crud.get_slice_path(tomogramId, denoised)
+    return crud.get_slice_path(tomogramId, movieType)
 
 
 @router.get("/{tomogramId}/movie", response_class=FileResponse)
-def get_movie(tomogramId: int = Depends(auth), denoised=False):
+def get_movie(tomogramId: int = Depends(auth), movieType: MovieType = None):
     """Get tomogram movie image"""
-    return crud.get_movie_path(tomogramId, denoised)
+    return crud.get_movie_path(tomogramId, movieType)
 
 
 @router.get("/{tomogramId}/projection", response_class=FileResponse)

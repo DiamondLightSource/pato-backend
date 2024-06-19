@@ -13,15 +13,23 @@ def test_get(mock_permissions, client):
 def test_get_denoised(mock_permissions, exists_mock, client):
     """Get denoised central slice for tomogram"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
-        resp = client.get("/tomograms/1/centralSlice?denoised=true")
+        resp = client.get("/tomograms/1/centralSlice?movieType=denoised")
         assert resp.status_code == 200
         exists_mock.assert_called_with("/dls/test.denoised_thumbnail.png")
+
+
+def test_get_segmented(mock_permissions, exists_mock, client):
+    """Get segmented central slice for tomogram"""
+    with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
+        resp = client.get("/tomograms/1/centralSlice?movieType=segmented")
+        assert resp.status_code == 200
+        exists_mock.assert_called_with("/dls/test.denoised_segmented_thumbnail.png")
 
 
 def test_get_denoised_invalid_name(mock_permissions, exists_mock, client):
     """Get denoised central slice for tomogram (with non-conforming filename)"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
-        resp = client.get("/tomograms/2/centralSlice?denoised=true")
+        resp = client.get("/tomograms/2/centralSlice?movieType=denoised")
         assert resp.status_code == 500
 
 
