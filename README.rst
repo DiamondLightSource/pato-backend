@@ -52,7 +52,7 @@ Running development server on your machine:
 
 1. Install the package with :code:`pip install .` or :code:`pip install -e .`
 2. Set the `SQL_DATABASE_URL` environment variable according to your database's location
-3. Run :code:`uvicorn` with `uvicorn pato.main:app --reload --port 8000`
+3. Run :code:`uvicorn` with `uvicorn pato.main:app --reload --port 8000 --host 0.0.0.0`
 
 Running Kubernetes deployment for frontend and API:
 
