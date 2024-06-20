@@ -47,8 +47,6 @@ def _prepend_denoise(
         ".denoised" if movie_type == "denoised" else f".denoised_{movie_type}"
     )
 
-    print(split_file[0] + denoised_prefix + "".join(split_file[1:3]))
-
     return split_file[0] + denoised_prefix + "".join(split_file[1:3])
 
 
