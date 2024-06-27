@@ -58,6 +58,10 @@ Running Kubernetes deployment for frontend and API:
 
 1. View `PATo Helm <https://gitlab.diamond.ac.uk/lims/pato-helm>`_.
 
+Optional dependencies:
+
+You might want to test out RabbitMQ integration. In order to do that, you need to point to a valid MQ instance. You can run one locally with :code:`podman run -d -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest -p 5672:5672 rabbitmq:3`
+
 ============
 Testing
 ============
