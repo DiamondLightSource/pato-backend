@@ -1,7 +1,7 @@
 import datetime
 import json
 from os.path import isfile
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import HTTPException
 from lims_utils.logging import app_logger
@@ -9,6 +9,9 @@ from pydantic import BaseModel
 
 from ..models.response import DataPoint
 from ..utils.config import Config
+
+# TODO: use 'type' when supported by Mypy
+MovieType = Literal["denoised", "segmented"] | None
 
 
 def parse_json_file(path):
