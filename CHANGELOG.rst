@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.8.0 (06/08/2024)
++++++++++
+
+**Added**
+
+- Particle count per defocus value endpoint (:code:`/dataCollections/{collectionId}/ctf`)
+- Particle count per resolution bin endpoint (:code:`/dataCollections/{collectionId}/particleCountPerResolution`)
+
++++++++++
 v1.7.0 (20/06/2024)
 +++++++++
 

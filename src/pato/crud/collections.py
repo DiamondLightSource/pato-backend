@@ -12,21 +12,28 @@ from lims_utils.tables import (
     DataCollectionGroup,
     MotionCorrection,
     Movie,
+    ParticlePicker,
     ProcessingJob,
     ProcessingJobParameter,
     Proposal,
     TiltImageAlignment,
     Tomogram,
 )
-from sqlalchemy import Column, and_, case, extract, func, select
+from sqlalchemy import Column, ColumnElement, Select, and_, case, extract, func, select
 
 from ..models.parameters import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
 )
-from ..models.response import FullMovie, ProcessingJobResponse, TomogramFullResponse
+from ..models.response import (
+    DataPoint,
+    FullMovie,
+    ItemList,
+    ProcessingJobResponse,
+    TomogramFullResponse,
+)
 from ..utils.database import db, paginate
-from ..utils.generic import check_session_active
+from ..utils.generic import check_session_active, parse_count
 from ..utils.pika import pika_publisher
 
 _job_status_description = case(
@@ -292,3 +299,69 @@ def get_processing_jobs(
     )
 
     return paginate(query, limit, page, slow_count=False)
+
+
+def _with_ctf_joins(query: Select, collectionId: int):
+    return (
+        query.select_from(ProcessingJob)
+        .filter(ProcessingJob.dataCollectionId == collectionId)
+        .join(AutoProcProgram)
+        .join(MotionCorrection)
+        .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
+        .join(
+            ParticlePicker,
+            ParticlePicker.firstMotionCorrectionId
+            == MotionCorrection.motionCorrectionId,
+        )
+    )
+
+
+def get_ctf(collectionId: int):
+    data = db.session.execute(
+        _with_ctf_joins(
+            select(
+                CTF.estimatedDefocus.label("x"),
+                ParticlePicker.numberOfParticles.label("y"),
+            ),
+            collectionId,
+        ).group_by(MotionCorrection.imageNumber)
+    ).all()
+
+    return ItemList[DataPoint](items=data)
+
+
+def _histogram_sum_bin(condition: ColumnElement):
+    return func.coalesce(
+        func.sum(
+            case(
+                (
+                    condition,
+                    ParticlePicker.numberOfParticles,
+                ),
+            )
+        ),
+        0,
+    )
+
+
+def get_particle_count_per_resolution(collectionId: int) -> ItemList[DataPoint]:
+    data = parse_count(
+        _with_ctf_joins(
+            select(
+                _histogram_sum_bin(CTF.estimatedResolution < 1).label("<1"),
+                *[
+                    _histogram_sum_bin(
+                        and_(
+                            CTF.estimatedResolution >= i,
+                            CTF.estimatedResolution < i + 1,
+                        )
+                    ).label(str(i))
+                    for i in range(1, 8)
+                ],
+                _histogram_sum_bin(CTF.estimatedResolution >= 9).label(">9"),
+            ),
+            collectionId,
+        )
+    )
+
+    return data

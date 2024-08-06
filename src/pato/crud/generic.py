@@ -1,6 +1,5 @@
 from typing import Literal
 
-from fastapi import HTTPException, status
 from lims_utils.tables import (
     CTF,
     AutoProcProgram,
@@ -11,11 +10,11 @@ from lims_utils.tables import (
     ProcessingJob,
     RelativeIceThickness,
 )
-from sqlalchemy import Column, and_, case, literal_column, select
+from sqlalchemy import Column, and_, case, select
 from sqlalchemy import func as f
 
 from ..models.response import DataPoint, ItemList
-from ..utils.database import db
+from ..utils.generic import parse_count
 
 
 def _generate_buckets(bin: float, minimum: float, column: Column):
@@ -33,22 +32,9 @@ def _generate_buckets(bin: float, minimum: float, column: Column):
                     )
                 )
             ).label(str(bin * i + minimum))
-            for i in range(0, 10)
+            for i in range(0, 8)
         ],
-        f.count(case((column >= bin * 10 + minimum, 1))).label(f">{bin*10+minimum}"),
-    )
-
-
-def _parse_count(query):
-    data = db.session.execute(query.order_by(literal_column("1"))).mappings().one()
-    if not any(value != 0 for value in data.values()):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No items found",
-        )
-
-    return ItemList[DataPoint](
-        items=[{"x": key, "y": value} for (key, value) in dict(data).items()]
+        f.count(case((column >= bin * 8 + minimum, 1))).label(f">{bin*8+minimum}"),
     )
 
 
@@ -73,7 +59,7 @@ def get_ice_histogram(
             .join(RelativeIceThickness)
         )
 
-    return _parse_count(query)
+    return parse_count(query)
 
 
 def get_motion(
@@ -94,7 +80,7 @@ def get_motion(
             .join(MotionCorrection)
         )
 
-    return _parse_count(query)
+    return parse_count(query)
 
 
 def get_resolution(
@@ -116,7 +102,7 @@ def get_resolution(
             .join(CTF)
         )
 
-    return _parse_count(query)
+    return parse_count(query)
 
 
 def get_particle_count(
@@ -137,4 +123,4 @@ def get_particle_count(
             .join(ParticlePicker)
         )
 
-    return _parse_count(query)
+    return parse_count(query)
