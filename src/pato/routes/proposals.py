@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, status
+from fastapi.responses import RedirectResponse
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions, User
@@ -11,6 +12,7 @@ from ..models.response import (
     SessionAllowsReprocessing,
     SessionResponse,
 )
+from ..utils.config import Config
 
 router = APIRouter(
     tags=["Proposals"],
@@ -56,3 +58,12 @@ def create_data_collection(
 def check_reprocessing_enabled(proposalReference=Depends(Permissions.session)):
     """Check if reprocessing is enabled for session"""
     return sessions_crud.check_reprocessing_enabled(proposalReference)
+
+@router.get(
+    "/{proposalReference}/sessions/{visitNumber}/sampleHandling",
+    response_class=RedirectResponse,
+)
+def redirect_to_sample_handling(proposalReference: str, visitNumber: int):
+    """Sample handling redirect"""
+    suffix = f"/proposals/{proposalReference}/sessions/{visitNumber}"
+    return Config.facility.sample_handling_url + suffix

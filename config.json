@@ -36,7 +36,8 @@
     "contact_email": "admin@facility.co.uk",
     "smtp_port": 8025,
     "smtp_server": "mail.service.com",
-    "active_session_cutoff": 5
+    "active_session_cutoff": 5,
+    "sample_handling_url": "https://ebic-sample-handling.diamond.ac.uk"
   },
   "enable_cors": false
 }
