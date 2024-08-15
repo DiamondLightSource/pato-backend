@@ -1,12 +1,14 @@
 import pathlib
+import shutil
 from datetime import datetime
 from typing import Optional
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, UploadFile, status
 from lims_utils.auth import GenericUser
+from lims_utils.logging import app_logger
 from lims_utils.models import Paged
 from lims_utils.tables import BLSession, DataCollection, DataCollectionGroup, Proposal
-from sqlalchemy import Label, and_, extract, func, insert, or_, select
+from sqlalchemy import Label, and_, func, insert, or_, select
 
 from ..models.parameters import DataCollectionCreationParameters
 from ..models.response import SessionAllowsReprocessing, SessionResponse
@@ -15,17 +17,19 @@ from ..utils.config import Config
 from ..utils.database import db, paginate, unravel
 from ..utils.generic import ProposalReference, check_session_active, parse_proposal
 
+HDF5_FILE_SIGNATURE = b"\x89\x48\x44\x46\x0d\x0a\x1a\x0a"
 
-def _validate_session_active(proposalReference: ProposalReference):
+
+def _validate_session_active(proposal_reference: ProposalReference):
     """Check if session is active and return session ID"""
     session = db.session.scalar(
         select(BLSession)
         .select_from(Proposal)
         .join(BLSession)
         .filter(
-            BLSession.visit_number == proposalReference.visit_number,
-            Proposal.proposalNumber == proposalReference.number,
-            Proposal.proposalCode == proposalReference.code,
+            BLSession.visit_number == proposal_reference.visit_number,
+            Proposal.proposalNumber == proposal_reference.number,
+            Proposal.proposalCode == proposal_reference.code,
         )
     )
 
@@ -35,7 +39,20 @@ def _validate_session_active(proposalReference: ProposalReference):
             detail="Reprocessing cannot be fired on an inactive session",
         )
 
-    return session.sessionId
+    assert session is not None
+
+    return session
+
+
+def _get_folder_and_visit(prop_ref: ProposalReference):
+    session = _validate_session_active(prop_ref)
+    year = session.startDate.year
+
+    # TODO: Make the path string pattern configurable?
+    return (
+        f"/dls/{session.beamLineName}/data/{year}/{prop_ref.code}{prop_ref.number}-{prop_ref.visit_number}",
+        session,
+    )
 
 
 def _check_raw_files_exist(file_directory: str, glob_path: str):
@@ -153,26 +170,8 @@ def get_session(proposalReference: ProposalReference):
 def create_data_collection(
     proposalReference: ProposalReference, params: DataCollectionCreationParameters
 ):
-    session_id = _validate_session_active(proposalReference)
-
-    session = db.session.execute(
-        select(
-            BLSession.beamLineName,
-            BLSession.endDate,
-            extract("year", BLSession.startDate).label("year"),
-            func.concat(
-                Proposal.proposalCode,
-                Proposal.proposalNumber,
-                "-",
-                BLSession.visit_number,
-            ).label("name"),
-        )
-        .filter(BLSession.sessionId == session_id)
-        .join(Proposal, Proposal.proposalId == BLSession.proposalId)
-    ).one()
-
-    # TODO: Make the path string pattern configurable?
-    file_directory = f"/dls/{session.beamLineName}/data/{session.year}/{session.name}/{params.fileDirectory}/"
+    session_folder, session = _get_folder_and_visit(proposalReference)
+    file_directory = f"{session_folder}/{params.fileDirectory}/"
     glob_path = f"GridSquare_*/Data/*{params.fileExtension}"
 
     _check_raw_files_exist(file_directory, glob_path)
@@ -182,7 +181,7 @@ def create_data_collection(
         .filter(
             DataCollection.imageDirectory == file_directory,
             DataCollection.fileTemplate == glob_path,
-            DataCollectionGroup.sessionId == session_id,
+            DataCollectionGroup.sessionId == session.sessionId,
         )
         .join(DataCollectionGroup)
         .limit(1)
@@ -199,7 +198,7 @@ def create_data_collection(
             DataCollectionGroup.dataCollectionGroupId
         ),
         {
-            "sessionId": session_id,
+            "sessionId": session.sessionId,
             "comments": "Created by PATo",
             "experimentType": "EM",
         },
@@ -237,3 +236,30 @@ def check_reprocessing_enabled(proposalReference: ProposalReference):
     return SessionAllowsReprocessing(
         allowReprocessing=((bool(Config.mq.user)) and check_session_active(end_date)),
     )
+
+
+def upload_processing_model(file: UploadFile, proposal_reference: ProposalReference):
+    file_path = (
+        f"{_get_folder_and_visit(proposal_reference)[0]}/processing/{file.filename}"
+    )
+    file_signature = file.file.read(8)
+    file.file.seek(0)
+
+    if file_signature != HDF5_FILE_SIGNATURE:
+        raise HTTPException(
+            detail="Invalid file type (must be HDF5 file)",
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        )
+
+    try:
+        with open(file_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+    except OSError as e:
+        file.file.close()
+        app_logger.error(f"Failed to upload {file.filename}: {e}")
+        raise HTTPException(
+            detail="Failed to upload file",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+    file.file.close()
