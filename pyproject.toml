@@ -111,7 +111,7 @@ setenv =
 [tool.ruff]
 src = ["src", "tests"]
 line-length = 120
-select = [
+lint.select = [
     "C4",   # flake8-comprehensions - https://beta.ruff.rs/docs/rules/#flake8-comprehensions-c4
     "E",    # pycodestyle errors - https://beta.ruff.rs/docs/rules/#error-e
     "F",    # pyflakes rules - https://beta.ruff.rs/docs/rules/#pyflakes-f
