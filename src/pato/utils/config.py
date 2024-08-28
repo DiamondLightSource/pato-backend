@@ -21,6 +21,7 @@ class Facility:
     smtp_server: str
     smtp_port: int = 587
     active_session_cutoff: int = 5
+    sample_handling_url: str = "https://ebic-sample-handling.diamond.ac.uk"
 
 
 @dataclass

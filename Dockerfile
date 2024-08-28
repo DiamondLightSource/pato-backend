@@ -3,7 +3,7 @@
 # The devcontainer should use the build target and run as root with podman
 # or docker with user namespaces.
 #
-FROM docker.io/library/python:3.12.1-slim-bullseye as build
+FROM docker.io/library/python:3.12.4-slim-bookworm as build
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get upgrade -y && \

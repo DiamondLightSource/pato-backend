@@ -3,12 +3,14 @@ import json
 from os.path import isfile
 from typing import Literal, Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from lims_utils.logging import app_logger
 from pydantic import BaseModel
+from sqlalchemy import literal_column
 
-from ..models.response import DataPoint
+from ..models.response import DataPoint, ItemList
 from ..utils.config import Config
+from .database import db
 
 # TODO: use 'type' when supported by Mypy
 MovieType = Literal["denoised", "segmented"] | None
@@ -107,4 +109,18 @@ def parse_proposal(proposalReference: str, visit_number: int | None = None):
         code=code,
         number=int(number),
         visit_number=visit_number,
+    )
+
+
+def parse_count(query):
+    """Get mappings from query, return keys/values in graph format"""
+    data = db.session.execute(query.order_by(literal_column("1"))).mappings().one()
+    if not any(value != 0 for value in data.values()):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No items found",
+        )
+
+    return ItemList[DataPoint](
+        items=[{"x": key, "y": value} for (key, value) in dict(data).items()]
     )

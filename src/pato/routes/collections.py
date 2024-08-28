@@ -9,7 +9,9 @@ from ..models.parameters import (
     TomogramReprocessingParameters,
 )
 from ..models.response import (
+    DataPoint,
     FullMovie,
+    ItemList,
     ProcessingJobResponse,
     ReprocessingResponse,
     TomogramFullResponse,
@@ -135,3 +137,19 @@ def get_particle_count(
         minimum=minimum,
         dataBin=dataBin,
     )
+
+
+@router.get(
+    "/{collectionId}/ctf",
+    description="Get defocus/particle count information",
+    response_model=ItemList[DataPoint],
+)
+def get_ctf(collectionId: int = Depends(auth)):
+    return crud.get_ctf(collectionId)
+
+
+@router.get(
+    "/{collectionId}/particleCountPerResolution", response_model=ItemList[DataPoint]
+)
+def get_particle_count_per_resolution(collectionId: int = Depends(auth)):
+    return crud.get_particle_count_per_resolution(collectionId)
