@@ -3,7 +3,7 @@ variables:
 
 image: python:3.12
 services:
-  - gcr.io/diamond-privreg/lims/ispyb-mock:v2.2.1
+  - gcr.io/diamond-privreg/lims/ispyb-mock:v2.3.0
 stages:
   - test
   - build
