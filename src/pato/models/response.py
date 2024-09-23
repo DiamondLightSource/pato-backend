@@ -437,6 +437,8 @@ class Classification(OrmBaseModel):
     overallFourierCompleteness: float
     classDistribution: Optional[float]
     selected: Optional[bool]
+    bFactorFitIntercept: Optional[float] = None
+    bFactorFitLinear: Optional[float] = None
 
 
 class RelativeIceThickness(OrmBaseModel):
