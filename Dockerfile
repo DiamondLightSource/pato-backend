@@ -3,7 +3,7 @@
 # The devcontainer should use the build target and run as root with podman
 # or docker with user namespaces.
 #
-FROM docker.io/library/python:3.12.4-slim-bookworm as build
+FROM docker.io/library/python:3.12.5-slim-bookworm as build
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get upgrade -y && \
@@ -12,6 +12,7 @@ RUN apt-get update && apt-get upgrade -y && \
     busybox \
     git \
     libmariadb-dev \
+    pkg-config \
     net-tools \
     && rm -rf /var/lib/apt/lists/* \
     && busybox --install
@@ -39,7 +40,7 @@ RUN pip install --upgrade pip && \
     # and replace with a comment to avoid a zero length asset upload later
     sed -i '/file:/s/^/# Requirements for /' lockfiles/requirements.txt
 
-FROM docker.io/library/python:3.12.1-slim-bullseye as runtime
+FROM docker.io/library/python:3.12.5-slim-bookworm as runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update && apt-get install -y libmariadb-dev

@@ -28,7 +28,6 @@ def get_collection_groups(
     search: Optional[str],
     user: GenericUser,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
-
     query = (
         select(
             *unravel(DataCollectionGroup),

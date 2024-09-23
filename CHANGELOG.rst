@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.8.1 (23/09/2024)
++++++++++
+
+**Changed**
+
+- Semgented/denoised tomogram images are now sourced from the `ProcessedTomogram` table
+
++++++++++
 v1.8.0 (28/08/2024)
 +++++++++
 
