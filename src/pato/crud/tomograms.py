@@ -6,6 +6,7 @@ from lims_utils.tables import (
     CTF,
     MotionCorrection,
     Movie,
+    ProcessedTomogram,
     TiltImageAlignment,
     Tomogram,
 )
@@ -31,7 +32,6 @@ def _get_generic_tomogram_file(tomogramId: int, column: Column) -> Optional[str]
     )
 
 
-@validate_path
 def _prepend_denoise(
     base_path: str, image_type: Literal["thumbnail", "movie"], movie_type: MovieType
 ):
@@ -48,6 +48,30 @@ def _prepend_denoise(
     )
 
     return split_file[0] + denoised_prefix + "".join(split_file[1:3])
+
+
+@validate_path
+def _get_movie(
+    tomogramId: int, movie_type: MovieType, image_type: Literal["thumbnail", "movie"]
+):
+    if movie_type:
+        # If movie_Type is defined, this means that this is not the standard noisy tomogram we're looking for
+        base_path = db.session.scalar(
+            select(ProcessedTomogram.filePath).filter(
+                ProcessedTomogram.tomogramId == tomogramId,
+                ProcessedTomogram.processingType == movie_type.capitalize(),
+            )
+        )
+
+        if base_path:
+            suffix = "_movie.png" if image_type == "movie" else "_thumbnail.jpeg"
+            return base_path.replace(".mrc", suffix)
+
+    column = (
+        Tomogram.tomogramMovie if image_type == "movie" else Tomogram.centralSliceImage
+    )
+    base_path = _get_generic_tomogram_file(tomogramId, column)
+    return _prepend_denoise(base_path, image_type, movie_type)
 
 
 @validate_path
@@ -127,13 +151,11 @@ def get_ctf(tomogramId: int):
 
 
 def get_slice_path(tomogramId: int, movie_type: MovieType):
-    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.centralSliceImage)
-    return _prepend_denoise(base_path, "thumbnail", movie_type)
+    return _get_movie(tomogramId, movie_type, "thumbnail")
 
 
 def get_movie_path(tomogramId: int, movie_type: MovieType):
-    base_path = _get_generic_tomogram_file(tomogramId, Tomogram.tomogramMovie)
-    return _prepend_denoise(base_path, "movie", movie_type)
+    return _get_movie(tomogramId, movie_type, "movie")
 
 
 def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]):
