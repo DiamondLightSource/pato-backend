@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from lims_utils.database import get_session
 from lims_utils.logging import log_exception_handler, register_loggers
 from sqlalchemy import create_engine
@@ -54,6 +55,7 @@ if Config.cors:
 
 register_loggers()
 
+app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
 @app.middleware("http")
 async def get_session_as_middleware(request, call_next):

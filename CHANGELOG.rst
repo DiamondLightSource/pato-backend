@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.9.0 (09/10/2024)
++++++++++
+
+**Added**
+
+- Include B-factor columns in particle classification data
+- GZip support
+
++++++++++
 v1.8.1 (23/09/2024)
 +++++++++
 
