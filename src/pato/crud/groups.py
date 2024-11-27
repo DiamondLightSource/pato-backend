@@ -1,12 +1,15 @@
 from typing import Optional
 
+from fastapi import HTTPException, status
 from lims_utils.auth import GenericUser
 from lims_utils.models import Paged
 from lims_utils.tables import (
+    Atlas,
     BLSession,
     DataCollection,
     DataCollectionGroup,
     ExperimentType,
+    GridSquare,
     Proposal,
     Tomogram,
 )
@@ -16,7 +19,7 @@ from sqlalchemy import select
 from ..models.parameters import DataCollectionSortTypes
 from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
 from ..utils.auth import check_session
-from ..utils.database import db, paginate, unravel
+from ..utils.database import db, unravel
 from ..utils.generic import parse_proposal
 
 
@@ -72,7 +75,7 @@ def get_collection_groups(
                     db.session.execute(session_id_query).all()
                 )
             )
-    return paginate(check_session(query, user), limit, page, slow_count=True)
+    return db.paginate(check_session(query, user), limit, page, slow_count=True)
 
 
 def get_collections(
@@ -121,4 +124,46 @@ def get_collections(
     if search is not None and search != "":
         query = query.filter(sub_result.c.comments.contains(search))
 
-    return paginate(query, limit, page, slow_count=True)
+    return db.paginate(query, limit, page, slow_count=True)
+
+
+def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = True):
+    query = (
+        select(GridSquare)
+        .select_from(Atlas)
+        .filter(Atlas.dataCollectionGroupId == dcg_id)
+        .join(GridSquare)
+    )
+
+    if hide_uncollected:
+        query = query.filter(GridSquare.gridSquareImage.is_not(None))
+
+    return db.paginate(query, limit, page, slow_count=True, scalar=False)
+
+
+def get_atlas(dcg_id: int):
+    atlas = db.session.scalar(
+        select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id)
+    )
+
+    if atlas is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data collection group has no atlas",
+        )
+
+    return atlas
+
+
+def get_atlas_image(dcg_id: int):
+    atlas_image = db.session.scalar(
+        select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id)
+    )
+
+    if atlas_image is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data collection group has no atlas",
+        )
+
+    return atlas_image

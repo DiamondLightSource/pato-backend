@@ -5,7 +5,11 @@ from lims_utils.tables import BLSession
 
 
 def active_mock(_):
-    return BLSession(startDate=datetime(year=2022, month=1, day=1), sessionId=27464088, beamLineName="m12")
+    return BLSession(
+        startDate=datetime(year=2022, month=1, day=1),
+        sessionId=27464088,
+        beamLineName="m12",
+    )
 
 
 def raw_check_mock(_, _1):

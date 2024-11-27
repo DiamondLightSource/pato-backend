@@ -25,3 +25,15 @@ class GenericPermissions:
     @staticmethod
     def session(proposalReference: str, visitNumber: int):
         return parse_proposal(proposalReference, visitNumber)
+
+    @staticmethod
+    def data_collection_group(groupId: int) -> int:
+        return groupId
+
+    @staticmethod
+    def grid_square(gridSquareId: int) -> int:
+        return gridSquareId
+
+    @staticmethod
+    def foil_hole(foilHoleId: int) -> int:
+        return foilHoleId
