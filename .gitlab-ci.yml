@@ -3,7 +3,7 @@ variables:
 
 image: python:3.12
 services:
-  - gcr.io/diamond-privreg/lims/ispyb-mock:v2.3.1
+  - gcr.io/diamond-privreg/lims/ispyb-mock:v2.4.0
 stages:
   - test
   - build
@@ -57,7 +57,7 @@ check-for-vulns:
   tags:
     - argus
   image:
-    name: aquasec/trivy:0.42.1
+    name: aquasec/trivy:0.57.1
     entrypoint: [""]
   only:
     - tags
