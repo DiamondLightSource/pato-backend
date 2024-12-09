@@ -468,3 +468,26 @@ class ReprocessingResponse(BaseModel):
 class BFactorFitOut(BaseModel):
     numberOfParticles: float
     resolution: float
+
+
+class GridSquare(BaseModel):
+    gridSquareId: int
+    x: int = Field(validation_alias="pixelLocationX")
+    y: int = Field(validation_alias="pixelLocationY")
+    height: int
+    width: int
+    angle: float
+
+
+class Atlas(BaseModel):
+    atlasId: int
+    pixelSize: float
+    cassetteSlot: int
+    dataCollectionGroupId: int
+
+
+class FoilHole(BaseModel):
+    diameter: int
+    foilHoleId: int
+    x: int = Field(validation_alias="pixelLocationX")
+    y: int = Field(validation_alias="pixelLocationY")

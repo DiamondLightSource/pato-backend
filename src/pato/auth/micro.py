@@ -1,9 +1,18 @@
 import requests
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials
 from lims_utils.auth import CookieOrHTTPBearer, GenericUser
+from lims_utils.tables import (
+    Atlas,
+    BLSession,
+    DataCollectionGroup,
+    FoilHole,
+    GridSquare,
+)
+from sqlalchemy import select
 
 from ..utils.config import Config
+from ..utils.database import db
 from ..utils.generic import parse_proposal
 from .template import GenericPermissions
 
@@ -33,16 +42,10 @@ class User(GenericUser):
         super().__init__(**user)
 
 
-def _check_perms(data_id: str | int, endpoint: str, token: str):
+def _check_perms(data_id: str | int, endpoint: str, token: str, options: str = ""):
     response = requests.get(
         "".join(
-            [
-                Config.auth.endpoint,
-                "permission/",
-                endpoint,
-                "/",
-                str(data_id),
-            ]
+            [Config.auth.endpoint, "permission/", endpoint, "/", str(data_id), options]
         ),
         headers={"Authorization": f"Bearer {token}"},
     )
@@ -96,3 +99,71 @@ class Permissions(GenericPermissions):
         token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
     ):
         return _check_perms(processingJobId, "processingJob", token.credentials)
+
+    @staticmethod
+    def data_collection_group(
+        groupId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        session_id = db.session.scalar(
+            select(BLSession.sessionId)
+            .select_from(DataCollectionGroup)
+            .filter(DataCollectionGroup.dataCollectionGroupId == groupId)
+            .join(BLSession)
+        )
+
+        if session_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Data collection group not found",
+            )
+
+        _check_perms(session_id, "session", token.credentials, "?useId=true")
+
+        return groupId
+
+    @staticmethod
+    def grid_square(
+        gridSquareId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        session_id = db.session.scalar(
+            select(BLSession.sessionId)
+            .select_from(GridSquare)
+            .join(Atlas)
+            .join(DataCollectionGroup)
+            .join(BLSession)
+            .filter(GridSquare.gridSquareId == gridSquareId)
+        )
+
+        if session_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Grid square not found",
+            )
+
+        _check_perms(session_id, "session", token.credentials, "?useId=true")
+
+        return gridSquareId
+
+    @staticmethod
+    def foil_holes(
+        foilHoleId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
+    ):
+        session_id = db.session.scalar(
+            select(BLSession.sessionId)
+            .select_from(FoilHole)
+            .join(GridSquare)
+            .join(Atlas)
+            .join(DataCollectionGroup)
+            .join(BLSession)
+            .filter(FoilHole.foilHoleId == foilHoleId)
+        )
+
+        if session_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Foil hole not found",
+            )
+
+        _check_perms(session_id, "session", token.credentials, "?useId=true")
+
+        return foilHoleId

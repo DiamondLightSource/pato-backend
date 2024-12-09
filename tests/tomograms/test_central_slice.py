@@ -12,7 +12,10 @@ def test_get(mock_permissions, client):
         assert resp.status_code == 200
 
 
-@pytest.mark.parametrize("movie_type, expected", [("segmented", "denoised_segmented"), ("denoised", "denoised")])
+@pytest.mark.parametrize(
+    "movie_type, expected",
+    [("segmented", "denoised_segmented"), ("denoised", "denoised")],
+)
 def test_get_movie_type(mock_permissions, exists_mock, client, movie_type, expected):
     """Get central slice for tomogram by processing type"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
@@ -40,8 +43,14 @@ def test_inexistent_file(mock_permissions, client):
     resp = client.get("/tomograms/221/centralSlice")
     assert resp.status_code == 404
 
-@pytest.mark.parametrize("movie_type, expected", [("segmented", "denoised_segmented"), ("denoised", "denoised")])
-def test_get_movie_type_processed(mock_permissions, exists_mock, client, movie_type, expected):
+
+@pytest.mark.parametrize(
+    "movie_type, expected",
+    [("segmented", "denoised_segmented"), ("denoised", "denoised")],
+)
+def test_get_movie_type_processed(
+    mock_permissions, exists_mock, client, movie_type, expected
+):
     """Get central slice for tomogram by processing type from ProcessedTomogram table"""
     with patch("pato.routes.tomograms.FileResponse.__call__", new=mock_send):
         resp = client.get(f"/tomograms/3/centralSlice?movieType={movie_type}")
