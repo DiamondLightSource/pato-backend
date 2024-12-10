@@ -47,7 +47,7 @@ class MockResponse:
         return self.data
 
 
-def new_perms(item_id, _, _0):
+def new_perms(item_id, _, _0, _1=""):
     return item_id
 
 

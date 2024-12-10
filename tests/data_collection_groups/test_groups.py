@@ -24,7 +24,7 @@ def test_get_non_em(mock_user, client):
     """Try to get all collection groups belonging to a non-EM visit (request for EM
     admin)"""
     resp = client.get("/dataGroups?proposal=cm14451&session=1")
-    assert resp.status_code == 404
+    assert len(resp.json()["items"]) == 0
 
 
 @pytest.mark.parametrize("mock_user", [user], indirect=True)
@@ -39,7 +39,7 @@ def test_get_user(mock_user, client):
 def test_get_forbidden(mock_user, client):
     """Try to get data collection groups for a visit that does not belong to user"""
     resp = client.get("/dataGroups?proposal=cm31111&session=5")
-    assert resp.status_code == 404
+    assert len(resp.json()["items"]) == 0
 
 
 @pytest.mark.parametrize("mock_user", [admin], indirect=True)

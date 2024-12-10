@@ -15,6 +15,8 @@ from .routes import (
     autoproc,
     collections,
     feedback,
+    foil_holes,
+    grid_squares,
     groups,
     movies,
     procjob,
@@ -57,6 +59,7 @@ register_loggers()
 
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
+
 @app.middleware("http")
 async def get_session_as_middleware(request, call_next):
     with get_session(session_factory):
@@ -75,3 +78,5 @@ app.include_router(proposals.router)
 app.include_router(autoproc.router)
 app.include_router(feedback.router)
 app.include_router(procjob.router)
+app.include_router(grid_squares.router)
+app.include_router(foil_holes.router)
