@@ -3,6 +3,19 @@ Changelog
 ==========
 
 +++++++++
+v1.10.0 (10/12/2024)
++++++++++
+
+**Added**
+
+- Add GET /foil-holes/{foilHoleId}/movies endpoint
+- Add GET /grid-squares/{gridSquareId}/foil-holes endpoint
+- Add GET /grid-squares/{gridSquareId}/image endpoint
+- Add GET /dataGroups/{groupId}/atlas/image endpoint
+- Add GET /dataGroups/{groupId}/atlas endpoint
+- Add GET /dataGroups/{groupId}/grid-squares endpoint
+
++++++++++
 v1.9.0 (09/10/2024)
 +++++++++
 
