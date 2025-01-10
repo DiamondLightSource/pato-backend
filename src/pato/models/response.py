@@ -273,6 +273,8 @@ class Movie(OrmBaseModel):
         ...,
         title="number of frames per movie",
     )
+    foilHoleId: Optional[int] = None
+    gridSquareId: Optional[int] = None
 
 
 class MotionCorrection(OrmBaseModel):
