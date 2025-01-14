@@ -61,12 +61,13 @@ def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullM
 
 
 def get_ctf(autoProcId: int):
+    # COALESCE strips out the column name
     data = db.session.execute(
         select(
-            CTF.estimatedResolution,
-            CTF.estimatedDefocus,
-            CTF.astigmatism,
-            ParticlePicker.numberOfParticles,
+            func.coalesce(CTF.estimatedResolution, 0).label("estimatedResolution"),
+            func.coalesce(CTF.estimatedDefocus, 0).label("estimatedDefocus"),
+            func.coalesce(CTF.astigmatism, 0).label("astigmatism"),
+            func.coalesce(ParticlePicker.numberOfParticles, 0).label("numberOfParticles"),
             MotionCorrection.imageNumber,
         )
         .filter(MotionCorrection.autoProcProgramId == autoProcId)
