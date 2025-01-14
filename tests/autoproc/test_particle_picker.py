@@ -27,8 +27,7 @@ def test_get_image(mock_permissions, client):
 
 def test_get_image_not_in_db(mock_permissions, client):
     """Get particle picking summary image not in database"""
-    with patch("pato.routes.autoproc.FileResponse.__call__", new=mock_send):
-        resp = client.get("/autoProc/56986680/particlePicker/5/image")
+    resp = client.get("/autoProc/56986680/particlePicker/99/image")
     assert resp.status_code == 404
 
 
