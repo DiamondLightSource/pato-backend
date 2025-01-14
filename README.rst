@@ -66,7 +66,7 @@ You might want to test out RabbitMQ integration. In order to do that, you need t
 Testing
 ============
 
-- Build the database Docker image in `database` with :code:`podman build . -t diamond-ispyb`
+- Build the mock ISPyB database (can be found at :code:`https://gitlab.diamond.ac.uk/expeye/mock-database`), or replace the image name in the next steps with the latest version of :code:`gcr.io/diamond-privreg/lims/ispyb-mock`
 - Run with :code:`podman run -p 3306:3306 --detach --name diamond-ispyb localhost/diamond-ispyb`
     - You may change the port or where the container itself runs, just remember to update `.test.env`
 - Run :code:`pytest tests`
