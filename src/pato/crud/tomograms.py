@@ -10,7 +10,7 @@ from lims_utils.tables import (
     TiltImageAlignment,
     Tomogram,
 )
-from sqlalchemy import Column, literal_column, select
+from sqlalchemy import Column, func, literal_column, select
 from sqlalchemy import func as f
 
 from ..models.response import (
@@ -136,9 +136,9 @@ def get_motion_correction(
 def get_ctf(tomogramId: int):
     data = db.session.execute(
         select(
-            CTF.estimatedResolution,
-            CTF.estimatedDefocus,
-            CTF.astigmatism,
+            func.coalesce(CTF.estimatedResolution, 0).label("estimatedResolution"),
+            func.coalesce(CTF.estimatedDefocus, 0).label("estimatedDefocus"),
+            func.coalesce(CTF.astigmatism, 0).label("astigmatism"),
             TiltImageAlignment.refinedTiltAngle,
         )
         .filter(TiltImageAlignment.tomogramId == tomogramId)
