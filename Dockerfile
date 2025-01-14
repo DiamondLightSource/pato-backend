@@ -40,7 +40,7 @@ RUN pip install --upgrade pip && \
     # and replace with a comment to avoid a zero length asset upload later
     sed -i '/file:/s/^/# Requirements for /' lockfiles/requirements.txt
 
-FROM docker.io/library/python:3.12.7-slim-bookworm as runtime
+FROM docker.io/library/python:3.13.1-slim-bookworm as runtime
 
 # Add apt-get system dependecies for runtime here if needed
 RUN apt-get update && apt-get install -y libmariadb-dev
