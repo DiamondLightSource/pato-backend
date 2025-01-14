@@ -1,4 +1,4 @@
-FROM mariadb:10.9.4-jammy
+FROM mariadb:10.11.10-jammy
 
 WORKDIR /docker-entrypoint-initdb.d
 RUN apt-get update -y && \
