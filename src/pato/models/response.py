@@ -482,7 +482,7 @@ class GridSquare(BaseModel):
 class Atlas(BaseModel):
     atlasId: int
     pixelSize: float
-    cassetteSlot: int
+    cassetteSlot: Optional[int] = None
     dataCollectionGroupId: int
 
 
