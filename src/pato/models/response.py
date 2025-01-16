@@ -273,6 +273,8 @@ class Movie(OrmBaseModel):
         ...,
         title="number of frames per movie",
     )
+    foilHoleId: Optional[int] = None
+    gridSquareId: Optional[int] = None
 
 
 class MotionCorrection(OrmBaseModel):
@@ -482,7 +484,7 @@ class GridSquare(BaseModel):
 class Atlas(BaseModel):
     atlasId: int
     pixelSize: float
-    cassetteSlot: int
+    cassetteSlot: Optional[int] = None
     dataCollectionGroupId: int
 
 

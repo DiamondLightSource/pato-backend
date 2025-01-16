@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.11.0 (16/01/2025)
++++++++++
+
+**Added**
+
+- Added movie information endpoint (`/movie/{movieId}`)
+
++++++++++
 v1.10.1 (14/01/2025)
 +++++++++
 

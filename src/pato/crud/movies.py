@@ -1,11 +1,12 @@
 from typing import Optional
 
-from lims_utils.tables import CTF, MotionCorrection, RelativeIceThickness
+from lims_utils.tables import CTF, FoilHole, MotionCorrection, Movie, RelativeIceThickness
 from sqlalchemy import func as f
 from sqlalchemy import select
 
 from ..models.response import DataPoint, IceThicknessWithAverage, ItemList
-from ..utils.database import db
+from ..models.response import Movie as MovieData
+from ..utils.database import db, unravel
 from ..utils.generic import parse_json_file, validate_path
 
 
@@ -74,3 +75,10 @@ def get_relative_ice_thickness(
         return IceThicknessWithAverage(avg=averages, current=movie_data)
 
     return IceThicknessWithAverage(avg=None, current=movie_data)
+
+def get_movie_info(movieId: int) -> MovieData:
+    return db.session.execute(
+        select(*unravel(Movie), FoilHole.gridSquareId)
+        .join(FoilHole, FoilHole.foilHoleId==Movie.foilHoleId)
+        .filter(Movie.movieId == movieId)
+    ).one_or_none()
