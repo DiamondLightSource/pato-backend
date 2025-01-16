@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 from ..models.response import DataPoint, IceThicknessWithAverage, ItemList
 from ..models.response import Movie as MovieData
-from ..utils.database import db
+from ..utils.database import db, unravel
 from ..utils.generic import parse_json_file, validate_path
 
 
@@ -77,13 +77,8 @@ def get_relative_ice_thickness(
     return IceThicknessWithAverage(avg=None, current=movie_data)
 
 def get_movie_info(movieId: int) -> MovieData:
-    result = db.session.execute(
-        select(Movie, FoilHole.gridSquareId)
+    return db.session.execute(
+        select(*unravel(Movie), FoilHole.gridSquareId)
         .join(FoilHole, FoilHole.foilHoleId==Movie.foilHoleId)
         .filter(Movie.movieId == movieId)
     ).one_or_none()
-
-    movie, gridSquare = result
-    movie.gridSquareId = gridSquare
-
-    return movie
