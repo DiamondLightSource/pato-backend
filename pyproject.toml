@@ -24,7 +24,7 @@ dependencies = [
     "mysql-connector-python~=8.2.0",
     "pydantic~=2.9.2",
     "types-requests",
-    "lims-utils~=0.2.6"
+    "lims-utils~=0.3.0"
 ]
 dynamic = ["version"]
 license.file = "LICENSE"

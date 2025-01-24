@@ -258,19 +258,19 @@ class CTF(OrmBaseModel):
 
 class Movie(OrmBaseModel):
     movieId: int
-    movieNumber: Optional[int]
-    movieFullPath: Optional[str] = Field(..., max_length=255)
+    movieNumber: Optional[int] = None
+    movieFullPath: Optional[str] = Field(None, max_length=255)
     createdTimeStamp: datetime
-    positionX: Optional[float]
-    positionY: Optional[float]
-    nominalDefocus: Optional[float] = Field(..., title="Nominal defocus")
+    positionX: Optional[float] = None
+    positionY: Optional[float] = None
+    nominalDefocus: Optional[float] = Field(None, title="Nominal defocus")
     angle: Optional[float] = None
     fluence: Optional[float] = Field(
-        ...,
+        None,
         title="accumulated electron fluence from start to end of acquisition of movie",
     )
     numberOfFrames: Optional[int] = Field(
-        ...,
+        None,
         title="number of frames per movie",
     )
     foilHoleId: Optional[int] = None
