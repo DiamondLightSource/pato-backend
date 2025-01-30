@@ -40,6 +40,7 @@ session_factory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    register_loggers()
     pika_publisher.connect()
     yield
 
@@ -54,8 +55,6 @@ if Config.cors:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-register_loggers()
 
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
