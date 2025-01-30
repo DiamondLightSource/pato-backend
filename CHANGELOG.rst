@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.11.1 (30/01/2025)
++++++++++
+
+**Fixed**
+
+- Movies with missing columns no longer throw internal server errors
+- Data collections sorted on empty alignment quality columns now have predictable ordering
+
++++++++++
 v1.11.0 (16/01/2025)
 +++++++++
 
