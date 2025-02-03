@@ -479,6 +479,7 @@ class GridSquare(BaseModel):
     height: int
     width: int
     angle: float
+    image: Optional[str] = Field(validation_alias="gridSquareImage", default=None)
 
 
 class Atlas(BaseModel):
