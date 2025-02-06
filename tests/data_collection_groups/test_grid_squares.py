@@ -1,11 +1,11 @@
 def test_get(mock_permissions, client):
-    """Get grid squares in data collection group"""
+    """Get all grid squares in data collection group (including uncollected)"""
     resp = client.get("/dataGroups/5440742/grid-squares")
     assert resp.status_code == 200
-    assert len(resp.json()["items"]) == 1
+    assert len(resp.json()["items"]) == 2
 
 def test_get_empty(mock_permissions, client):
-    """Get all grid squares (including uncollected)"""
-    resp = client.get("/dataGroups/5440742/grid-squares", params="hideUncollected=false")
+    """Get only collected grid squares"""
+    resp = client.get("/dataGroups/5440742/grid-squares", params="hideUncollected=true")
     assert resp.status_code == 200
-    assert len(resp.json()["items"]) == 2
+    assert len(resp.json()["items"]) == 1
