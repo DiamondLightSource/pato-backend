@@ -88,9 +88,9 @@ def get_collections(
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
     sort = (
-        Tomogram.globalAlignmentQuality.desc()
+        (Tomogram.globalAlignmentQuality.desc(),DataCollection.dataCollectionId)
         if sortBy == "globalAlignmentQuality"
-        else DataCollection.dataCollectionId
+        else (DataCollection.dataCollectionId,)
     )
 
     base_sub_query = (
@@ -105,6 +105,7 @@ def get_collections(
         .join(BLSession, BLSession.sessionId == DataCollectionGroup.sessionId)
         .join(Tomogram, isouter=(not onlyTomograms))
         .group_by(DataCollection.dataCollectionId)
+        .order_by(*sort)
     )
 
     sub_with_row = check_session(
@@ -127,7 +128,7 @@ def get_collections(
     return db.paginate(query, limit, page, slow_count=True)
 
 
-def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = True):
+def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = False):
     query = (
         select(GridSquare)
         .select_from(Atlas)
