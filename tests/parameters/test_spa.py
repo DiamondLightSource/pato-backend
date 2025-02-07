@@ -1,6 +1,6 @@
 import pytest
 
-from pato.models.reprocessing import SPAReprocessingParameters
+from pato.models.parameters import SPAReprocessingParameters
 
 _base = {
     "pixelSize": 0.05,
