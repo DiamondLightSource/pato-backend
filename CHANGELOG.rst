@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.11.2 (07/02/2025)
++++++++++
+
+**Changed**
+
+- Include image in grid square model
+
++++++++++
 v1.11.1 (30/01/2025)
 +++++++++
 
