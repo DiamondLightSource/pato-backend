@@ -128,7 +128,7 @@ def get_collections(
     return db.paginate(query, limit, page, slow_count=True)
 
 
-def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = True):
+def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = False):
     query = (
         select(GridSquare)
         .select_from(Atlas)
