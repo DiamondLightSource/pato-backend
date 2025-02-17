@@ -1,12 +1,14 @@
 from typing import Optional
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from fastapi.responses import FileResponse
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions, User
+from ..crud import alerts as alerts_crud
 from ..crud import groups as crud
-from ..models.parameters import DataCollectionSortTypes
+from ..models.alerts import NotificationSignup
+from ..models.collections import DataCollectionSortTypes
 from ..models.response import (
     Atlas,
     DataCollectionGroupSummaryResponse,
@@ -80,3 +82,13 @@ def get_atlas_image(
 ):
     """Get atlas image"""
     return crud.get_atlas_image(dcg_id=groupId)
+
+
+@router.post("/{groupId}/alerts")
+def sign_up_for_alerts(
+    user=Depends(User),
+    groupId: int = Depends(Permissions.data_collection_group),
+    parameters: NotificationSignup = Body(),
+):
+    """Request alerts for a given email address"""
+    alerts_crud.sign_up_for_alerts(user=user, group_id=groupId, parameters=parameters)

@@ -16,8 +16,11 @@ from lims_utils.tables import (
 from sqlalchemy import func as f
 from sqlalchemy import select
 
-from ..models.parameters import DataCollectionSortTypes
-from ..models.response import DataCollectionGroupSummaryResponse, DataCollectionSummary
+from ..models.collections import DataCollectionSortTypes
+from ..models.response import (
+    DataCollectionGroupSummaryResponse,
+    DataCollectionSummary,
+)
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
 from ..utils.generic import parse_proposal

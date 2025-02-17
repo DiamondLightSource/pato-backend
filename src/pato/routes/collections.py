@@ -4,7 +4,7 @@ from lims_utils.models import Paged, pagination
 from ..auth import Permissions
 from ..crud import collections as crud
 from ..crud import generic
-from ..models.parameters import (
+from ..models.reprocessing import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
 )
