@@ -10,7 +10,7 @@ from lims_utils.models import Paged
 from lims_utils.tables import BLSession, DataCollection, DataCollectionGroup, Proposal
 from sqlalchemy import Label, and_, func, insert, or_, select
 
-from ..models.parameters import DataCollectionCreationParameters
+from ..models.collections import DataCollectionCreationParameters
 from ..models.response import SessionAllowsReprocessing, SessionResponse
 from ..utils.auth import check_session
 from ..utils.config import Config

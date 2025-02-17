@@ -1,5 +1,6 @@
 import datetime
 import json
+import re
 from os.path import isfile
 from typing import Literal, Optional
 
@@ -124,3 +125,19 @@ def parse_count(query):
     return ItemList[DataPoint](
         items=[{"x": key, "y": value} for (key, value) in dict(data).items()]
     )
+
+
+def pascal_case_to_title(string: str) -> str:
+    return " ".join(re.split("(?<=.)(?=[A-Z])", string)).title()
+
+
+def get_alerts_frontend_url(proposal_reference: str, visit_number: int):
+    """Build URL pointing to alerts management page in PATo's frontend
+
+    Args:
+        proposal_reference: Proposal Reference
+        visit_number: Visit number
+
+    Returns:
+        Built URL"""
+    return f"{Config.facility.frontend_url}/proposals/{proposal_reference}/sessions/{visit_number}/alerts"

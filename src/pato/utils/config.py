@@ -22,6 +22,7 @@ class Facility:
     smtp_port: int = 587
     active_session_cutoff: int = 5
     sample_handling_url: str = "https://ebic-sample-handling.diamond.ac.uk"
+    frontend_url: str = "http://localhost/"
 
 
 @dataclass
@@ -46,6 +47,7 @@ class MQ:
     user: str = "guest"
     password: str = "guest"
     vhost: str = "zocalo"
+    consumer_queue: str = "pato_notifications"
 
 
 class Config:

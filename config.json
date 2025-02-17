@@ -33,11 +33,12 @@
   },
   "ispyb": { "pool": 3, "overflow": 6 },
   "facility": {
-    "contact_email": "admin@facility.co.uk",
-    "smtp_port": 8025,
-    "smtp_server": "mail.service.com",
+    "contact_email": "pato@diamond.ac.uk",
+    "smtp_port": 26,
+    "smtp_server": "ob-mgw.stfc.ac.uk ",
     "active_session_cutoff": 5,
-    "sample_handling_url": "https://ebic-sample-handling.diamond.ac.uk"
+    "sample_handling_url": "https://ebic-sample-handling.diamond.ac.uk",
+    "frontend_url": "http://localhost:8080"
   },
   "enable_cors": false
 }

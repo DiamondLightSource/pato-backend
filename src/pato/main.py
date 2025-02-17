@@ -1,5 +1,5 @@
-import os
 from contextlib import asynccontextmanager
+from threading import Thread
 
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
@@ -7,8 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from lims_utils.database import get_session
 from lims_utils.logging import log_exception_handler, register_loggers
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from . import __version__
 from .routes import (
@@ -25,23 +23,15 @@ from .routes import (
     tomograms,
 )
 from .utils.config import Config
-from .utils.pika import pika_publisher
-
-engine = create_engine(
-    url=os.environ.get("SQL_DATABASE_URL", "mysql://admin:admin@localhost:8000/ispyb"),
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    pool_size=Config.ispyb.pool,
-    max_overflow=Config.ispyb.overflow,
-)
-
-session_factory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from .utils.database import session_factory
+from .utils.pika import start_email_consumer
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     register_loggers()
-    pika_publisher.connect()
+    consumer_thread = Thread(target=start_email_consumer)
+    consumer_thread.start()
     yield
 
 
@@ -66,7 +56,6 @@ async def get_session_as_middleware(request, call_next):
 
 
 app.add_exception_handler(HTTPException, log_exception_handler)
-
 
 app.include_router(sessions.router)
 app.include_router(tomograms.router)

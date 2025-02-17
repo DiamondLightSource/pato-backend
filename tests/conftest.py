@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from fastapi.security import HTTPAuthorizationCredentials
@@ -32,9 +32,7 @@ async def mock_send(_, _1, _2, s):
 
 @pytest.fixture(scope="function", autouse=True)
 def mock_config():
-    with patch(
-        "pato.utils.config._read_config", return_value={"auth": "this"}
-    ) as _fixture:
+    with patch("pato.utils.config._read_config", return_value={"auth": "this"}) as _fixture:
         yield _fixture
 
 
@@ -82,22 +80,9 @@ def mock_user(request):
     app.dependency_overrides[User] = old_overrides
 
 
-class NewPika:
-    def __init__(self):
-        self.publish = MagicMock()
-
-
-@pytest.fixture(scope="session", autouse=True)
-def mock_pika():
-    with patch("pato.crud.collections.pika_publisher", new=NewPika()) as _fixture:
-        yield _fixture
-
-
 @pytest.fixture(scope="function")
 def mock_permissions(request):
-    app.dependency_overrides[oauth2_scheme] = lambda: HTTPAuthorizationCredentials(
-        credentials="a", scheme="Bearer"
-    )
+    app.dependency_overrides[oauth2_scheme] = lambda: HTTPAuthorizationCredentials(credentials="a", scheme="Bearer")
     with patch("pato.auth.micro._check_perms", new=new_perms) as _fixture:
         yield _fixture
 
@@ -105,4 +90,10 @@ def mock_permissions(request):
 @pytest.fixture(scope="function", autouse=True)
 def exists_mock():
     with patch("pato.utils.generic.isfile", return_value=True) as _fixture:
+        yield _fixture
+
+@pytest.fixture(scope="session", autouse=False)
+def mock_pika():
+    with patch("pato.crud.collections.PikaPublisher", autospec=True) as _fixture:
+        _fixture.return_value.__enter__.return_value = _fixture
         yield _fixture

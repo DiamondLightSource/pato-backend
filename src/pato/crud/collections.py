@@ -19,9 +19,18 @@ from lims_utils.tables import (
     TiltImageAlignment,
     Tomogram,
 )
-from sqlalchemy import Column, ColumnElement, Select, and_, case, extract, func, select
+from sqlalchemy import (
+    Column,
+    ColumnElement,
+    Select,
+    and_,
+    case,
+    extract,
+    func,
+    select,
+)
 
-from ..models.parameters import (
+from ..models.reprocessing import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
 )
@@ -34,7 +43,7 @@ from ..models.response import (
 )
 from ..utils.database import db, paginate
 from ..utils.generic import check_session_active, parse_count
-from ..utils.pika import pika_publisher
+from ..utils.pika import PikaPublisher
 
 _job_status_description = case(
     (AutoProcProgram.processingJobId == None, "Submitted"),  # noqa: E711
@@ -222,7 +231,8 @@ def initiate_reprocessing_tomogram(
         },
     }
 
-    pika_publisher.publish(json.dumps(message))
+    with PikaPublisher() as pika_publisher:
+        pika_publisher.publish(json.dumps(message))
 
     return {"processingJobId": new_job.processingJobId}
 
@@ -275,7 +285,9 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     db.session.commit()
 
     message = {"parameters": {"ispyb_process": new_job.processingJobId}}
-    pika_publisher.publish(json.dumps(message))
+
+    with PikaPublisher() as pika_publisher:
+        pika_publisher.publish(json.dumps(message))
 
     return {"processingJobId": new_job.processingJobId}
 

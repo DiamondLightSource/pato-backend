@@ -474,11 +474,11 @@ class BFactorFitOut(BaseModel):
 
 class GridSquare(BaseModel):
     gridSquareId: int
-    x: int = Field(validation_alias="pixelLocationX")
-    y: int = Field(validation_alias="pixelLocationY")
-    height: int
-    width: int
-    angle: float
+    x: int | None = Field(default=None, validation_alias="pixelLocationX")
+    y: int | None = Field(default=None, validation_alias="pixelLocationY")
+    height: int | None = None
+    width: int | None = None
+    angle: float | None = None
     image: Optional[str] = Field(validation_alias="gridSquareImage", default=None)
 
 
@@ -490,7 +490,7 @@ class Atlas(BaseModel):
 
 
 class FoilHole(BaseModel):
-    diameter: int
+    diameter: int | None = None
     foilHoleId: int
-    x: int = Field(validation_alias="pixelLocationX")
-    y: int = Field(validation_alias="pixelLocationY")
+    x: int | None = Field(default=None, validation_alias="pixelLocationX")
+    y: int | None = Field(default=None, validation_alias="pixelLocationY")

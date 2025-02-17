@@ -101,13 +101,3 @@ class SPAReprocessingParameters(BaseModel):
                 raise ValueError("maximumDiameter must be greater than minimumDiameter")
 
         return self
-
-
-class DataCollectionCreationParameters(BaseModel):
-    fileDirectory: str
-    fileExtension: str
-
-
-# mypy doesn't support type aliases yet
-
-DataCollectionSortTypes = Literal["dataCollectionId", "globalAlignmentQuality", ""]

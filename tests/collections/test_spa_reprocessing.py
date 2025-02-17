@@ -43,7 +43,7 @@ def _get_parameters(proc_job_id: int):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post(mock_permissions, client):
+def test_post(mock_pika, mock_permissions, client):
     """Start reprocessing job for data collection"""
     resp = client.post(
         "/dataCollections/6017405/reprocessing/spa",
@@ -67,7 +67,7 @@ def test_inactive_session(mock_permissions, client):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post_stop_after_ctf_estimation(mock_permissions, client):
+def test_post_stop_after_ctf_estimation(mock_pika, mock_permissions, client):
     """Start reprocessing job for data collection, stopping after CTF estimation"""
     resp = client.post(
         "/dataCollections/6017405/reprocessing/spa",
@@ -80,7 +80,7 @@ def test_post_stop_after_ctf_estimation(mock_permissions, client):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post_perform_calculation(mock_permissions, client):
+def test_post_perform_calculation(mock_pika, mock_permissions, client):
     """Start reprocessing job for data collection, calculating values for user"""
     resp = client.post(
         "/dataCollections/6017405/reprocessing/spa",
@@ -104,7 +104,7 @@ def test_post_perform_calculation(mock_permissions, client):
     ],
 )
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_generated_paths(key, expected_value, mock_permissions, client):
+def test_generated_paths(mock_pika, key, expected_value, mock_permissions, client):
     """Build file paths dynamically and insert them into the appropriate columns"""
     resp = client.post(
         "/dataCollections/6017405/reprocessing/spa",
