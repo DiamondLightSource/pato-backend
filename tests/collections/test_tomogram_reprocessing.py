@@ -12,7 +12,7 @@ def active_mock(collectionId: int):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post_user(mock_permissions, client):
+def test_post_user(mock_pika, mock_permissions, client):
     """Start reprocessing job for data collection"""
     resp = client.post(
         "/dataCollections/6017406/reprocessing/tomograms",
@@ -49,7 +49,7 @@ def test_inactive_session(mock_permissions, client):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post_custom(mock_permissions, client):
+def test_post_custom(mock_pika, mock_permissions, client):
     """Starts reprocessing job with custom parameters"""
     resp = client.post(
         "/dataCollections/6017406/reprocessing/tomograms",
@@ -73,7 +73,7 @@ def test_post_custom(mock_permissions, client):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_post_message(mock_permissions, mock_pika, client):
+def test_post_message(mock_pika, mock_permissions, client):
     """Starts reprocessing job with custom parameters"""
     resp = client.post(
         "/dataCollections/6017406/reprocessing/tomograms",

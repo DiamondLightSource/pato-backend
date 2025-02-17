@@ -5,7 +5,7 @@ from lims_utils.models import Paged, pagination
 from ..auth import Permissions, User
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
-from ..models.parameters import DataCollectionCreationParameters
+from ..models.collections import DataCollectionCreationParameters
 from ..models.response import (
     BaseDataCollectionOut,
     ProposalResponse,

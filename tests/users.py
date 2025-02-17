@@ -7,6 +7,7 @@ admin = GenericUser(
     title="Dr.",
     givenName="McAdmin",
     permissions=["super_admin"],
+    email="admin@diamond.ac.uk",
 )
 
 em_admin = GenericUser(
@@ -16,6 +17,7 @@ em_admin = GenericUser(
     title="Dr.",
     givenName="Admin",
     permissions=["em_admin"],
+    email="em-admin@diamond.ac.uk",
 )
 
 user = GenericUser(
@@ -25,6 +27,7 @@ user = GenericUser(
     title="Dr.",
     givenName="User",
     permissions=[],
+    email="user@diamond.ac.uk",
 )
 
 mx_admin = GenericUser(
@@ -34,6 +37,7 @@ mx_admin = GenericUser(
     title="Dr.",
     givenName="Admin",
     permissions=["mx_admin"],
+    email="mx-admin@diamond.ac.uk",
 )
 
 
