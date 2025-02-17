@@ -3,6 +3,19 @@ Changelog
 ==========
 
 +++++++++
+v1.12.0 (17/02/2025)
++++++++++
+
+**Added**
+
+- Endpoint for registering email alerts (`dataGroups/{groupId}/alerts`)
+- Send out emails when appropriate message queue messages are received
+
+**Changed**
+
+- Grid square and foil hole models now accept null values for location fields
+
++++++++++
 v1.11.2 (07/02/2025)
 +++++++++
 
