@@ -27,7 +27,7 @@ def test_post(mock_pika, mock_user, mock_permissions, client):
         ctx.sendmail.assert_called_with(Config.facility.contact_email, "test@diamond.ac.uk", ANY)
 
     mock_pika.publish.assert_called_with(
-        json.dumps({"astigmatismMin": 10, "dcg": 988855, "register": "pato"}), "murphy_feedback_i03"
+        json.dumps({"astigmatismMin": 10, "dcg": 988855, "register": "pato"}), "murfey_feedback_i03"
     )
 
 
