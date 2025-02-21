@@ -1,16 +1,24 @@
-from lims_utils.tables import FoilHole, GridSquare
-from sqlalchemy import select
+from lims_utils.tables import FoilHole, GridSquare, Movie
+from sqlalchemy import func, select
 
 from ..utils.database import db
 
 
 def get_foil_holes(grid_square_id: int, page: int, limit: int):
-    query = select(
+
+    query = select(select(
         FoilHole.pixelLocationX,
         FoilHole.pixelLocationY,
         FoilHole.diameter,
         FoilHole.foilHoleId,
-    ).filter(FoilHole.gridSquareId == grid_square_id)
+        func.count(Movie.movieId).label("movieCount"),
+    ).filter(
+        FoilHole.gridSquareId == grid_square_id,
+    ).join(
+        Movie, Movie.foilHoleId == FoilHole.foilHoleId, isouter=True
+    ).group_by(
+        FoilHole.foilHoleId,
+    ).subquery())
 
     return db.paginate(query=query, limit=limit, page=page, slow_count=False)
 
