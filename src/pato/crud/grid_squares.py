@@ -6,7 +6,7 @@ from ..utils.database import db
 
 def get_foil_holes(grid_square_id: int, page: int, limit: int):
 
-    query = select(select(
+    query = select(
         FoilHole.pixelLocationX,
         FoilHole.pixelLocationY,
         FoilHole.diameter,
@@ -18,9 +18,9 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
         Movie, Movie.foilHoleId == FoilHole.foilHoleId, isouter=True
     ).group_by(
         FoilHole.foilHoleId,
-    ).subquery())
+    )
 
-    return db.paginate(query=query, limit=limit, page=page, slow_count=False)
+    return db.paginate(query=query, limit=limit, page=page, slow_count=True)
 
 
 def get_grid_square_image(grid_square_id: int):
