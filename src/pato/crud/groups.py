@@ -140,7 +140,10 @@ def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool 
     )
 
     if hide_uncollected:
-        query = query.filter(GridSquare.gridSquareImage.is_not(None))
+        query = query.filter(
+            GridSquare.gridSquareImage.is_not(None),
+            GridSquare.gridSquareImage != "",
+            )
 
     return db.paginate(query, limit, page, slow_count=True, scalar=False)
 

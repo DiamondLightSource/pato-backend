@@ -494,3 +494,4 @@ class FoilHole(BaseModel):
     foilHoleId: int
     x: int | None = Field(default=None, validation_alias="pixelLocationX")
     y: int | None = Field(default=None, validation_alias="pixelLocationY")
+    movieCount: Optional[int] = 0

@@ -46,7 +46,7 @@ def sign_up_for_alerts(
     with PikaPublisher() as pika_publisher:
         pika_publisher.publish(
             json.dumps({**alert_params, "dcg": group_id, "register": "pato"}),
-            f"murphy_feedback_{session.beamLineName}",
+            f"murfey_feedback_{session.beamLineName}",
         )
 
     proposal_reference = f"{session.proposalCode}{session.proposalNumber}"

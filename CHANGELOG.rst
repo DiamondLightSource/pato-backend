@@ -3,6 +3,19 @@ Changelog
 ==========
 
 +++++++++
+v1.13.0 (25/02/2025)
++++++++++
+
+**Added**
+
+- Include movie count in returned foil holes @gmg29649
+
+**Changed**
+
+- `hideUncollected` renamed to `hideSquares` in `/dataGroups/{dcgId}/grid-squares` @gmg29649
+- Grid squares with empty image paths are not returned if `hideSquares` is true @gmg29649
+
++++++++++
 v1.12.0 (17/02/2025)
 +++++++++
 
@@ -21,7 +34,7 @@ v1.11.2 (07/02/2025)
 
 **Changed**
 
-- Include image in grid square model
+- Include image in grid square model 
 
 +++++++++
 v1.11.1 (30/01/2025)
@@ -38,7 +51,7 @@ v1.11.0 (16/01/2025)
 
 **Added**
 
-- Added movie information endpoint (`/movie/{movieId}`)
+- Added movie information endpoint (`/movie/{movieId}`) @gmg29649
 
 +++++++++
 v1.10.1 (14/01/2025)

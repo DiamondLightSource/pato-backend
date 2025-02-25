@@ -3,3 +3,4 @@ def test_get(mock_permissions, client):
     resp = client.get("/grid-squares/1/foil-holes")
     assert resp.status_code == 200
     assert len(resp.json()["items"]) == 1
+    assert resp.json()["items"][0]["movieCount"] == 1

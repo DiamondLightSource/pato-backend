@@ -59,12 +59,12 @@ def get_collections(
 @router.get("/{groupId}/grid-squares", response_model=Paged[GridSquare])
 def get_grid_squares(
     groupId: int = Depends(Permissions.data_collection_group),
-    hideUncollected: bool = False,
+    hideSquares: bool = False,
     page: dict[str, int] = Depends(pagination),
 ):
     """Get child grid squares"""
     return crud.get_grid_squares(
-        dcg_id=groupId, hide_uncollected=hideUncollected, **page
+        dcg_id=groupId, hide_uncollected=hideSquares, **page
     )
 
 

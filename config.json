@@ -35,7 +35,7 @@
   "facility": {
     "contact_email": "pato@diamond.ac.uk",
     "smtp_port": 26,
-    "smtp_server": "ob-mgw.stfc.ac.uk ",
+    "smtp_server": "smtp.ac.uk",
     "active_session_cutoff": 5,
     "sample_handling_url": "https://ebic-sample-handling.diamond.ac.uk",
     "frontend_url": "http://localhost:8080"
