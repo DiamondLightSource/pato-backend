@@ -65,7 +65,11 @@ def _get_movie(
 
         if base_path:
             suffix = "_movie.png" if image_type == "movie" else "_thumbnail.jpeg"
-            return base_path.replace(".mrc", suffix)
+            extension = ".cbox" if movie_type == "picked" else ".mrc"
+            return base_path.replace(extension, suffix)
+
+        if movie_type == "picked":
+            raise HTTPException(status_code=404, detail="No picked tomogram found")
 
     column = (
         Tomogram.tomogramMovie if image_type == "movie" else Tomogram.centralSliceImage

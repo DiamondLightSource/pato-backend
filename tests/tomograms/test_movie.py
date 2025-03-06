@@ -48,7 +48,7 @@ def test_inexistent_db(mock_permissions, client):
 
 @pytest.mark.parametrize(
     "movie_type, expected",
-    [("segmented", "denoised_segmented"), ("denoised", "denoised")],
+    [("segmented", "denoised_segmented"), ("denoised", "denoised"), ("picked", "picked")],
 )
 def test_get_movie_type_processed(
     mock_permissions, exists_mock, client, movie_type, expected
