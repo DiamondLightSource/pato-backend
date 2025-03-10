@@ -21,6 +21,14 @@ router = APIRouter(
     prefix="/dataGroups",
 )
 
+@router.get("/{groupId}", response_model=DataCollectionGroupSummaryResponse)
+def get_collection_group(
+    groupId: int = Depends(Permissions.data_collection_group)
+):
+    """Get data collection group"""
+    return crud.get_collection_group(
+        group_id=groupId
+    )
 
 @router.get("", response_model=Paged[DataCollectionGroupSummaryResponse])
 def get_collection_groups(

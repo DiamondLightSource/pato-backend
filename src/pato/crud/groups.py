@@ -26,6 +26,21 @@ from ..utils.database import db, unravel
 from ..utils.generic import parse_proposal
 
 
+def get_collection_group(group_id: int):
+    return db.session.execute(
+        select(
+            *unravel(DataCollectionGroup),
+            ExperimentType.name.label("experimentTypeName"),
+            DataCollection.imageDirectory,
+            f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
+        )
+        .join(DataCollection)
+        .join(ExperimentType, isouter=True)
+        .group_by(DataCollectionGroup.dataCollectionGroupId)
+        .filter(DataCollectionGroup.dataCollectionGroupId == group_id)
+    ).one()
+
+
 def get_collection_groups(
     limit: int,
     page: int,
@@ -91,7 +106,7 @@ def get_collections(
     onlyTomograms: bool,
 ) -> Paged[DataCollectionSummary]:
     sort = (
-        (Tomogram.globalAlignmentQuality.desc(),DataCollection.dataCollectionId)
+        (Tomogram.globalAlignmentQuality.desc(), DataCollection.dataCollectionId)
         if sortBy == "globalAlignmentQuality"
         else (DataCollection.dataCollectionId,)
     )
@@ -131,7 +146,9 @@ def get_collections(
     return db.paginate(query, limit, page, slow_count=True)
 
 
-def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool = False):
+def get_grid_squares(
+    dcg_id: int, limit: int, page: int, hide_uncollected: bool = False
+):
     query = (
         select(GridSquare)
         .select_from(Atlas)
@@ -143,7 +160,7 @@ def get_grid_squares(dcg_id: int, limit: int, page: int, hide_uncollected: bool 
         query = query.filter(
             GridSquare.gridSquareImage.is_not(None),
             GridSquare.gridSquareImage != "",
-            )
+        )
 
     return db.paginate(query, limit, page, slow_count=True, scalar=False)
 
