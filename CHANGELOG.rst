@@ -10,6 +10,10 @@ v1.15.0 (10/03/2025)
 
 - Single data collection group endpoint
 
+**Fixed**
+
+- Fixed message queue connection parameters
+
 +++++++++
 v1.14.0 (06/03/2025)
 +++++++++
