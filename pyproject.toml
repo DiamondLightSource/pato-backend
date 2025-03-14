@@ -23,8 +23,9 @@ dependencies = [
     "mysqlclient~=2.2.4",
     "mysql-connector-python~=8.2.0",
     "pydantic[email]~=2.9.2",
+    "fpdf2~=2.8.2",
     "types-requests",
-    "lims-utils~=0.4.0"
+    "lims-utils~=0.4.1"
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
@@ -99,7 +100,7 @@ allowlist_externals =
     # sphinx-build
     # sphinx-autobuild
 commands =
-    pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml {posargs}
+    pytest: pytest tests --cov=pato --cov-report term --cov-report xml:cov.xml {posargs} -s
     mypy: mypy src tests {posargs}
     pre-commit: pre-commit run --all-files {posargs}
 setenv = 

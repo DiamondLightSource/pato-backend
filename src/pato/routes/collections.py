@@ -2,6 +2,7 @@ from fastapi import APIRouter, Body, Depends, status
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions
+from ..crud import collection_report as report_crud
 from ..crud import collections as crud
 from ..crud import generic
 from ..models.reprocessing import (
@@ -153,3 +154,12 @@ def get_ctf(collectionId: int = Depends(auth)):
 )
 def get_particle_count_per_resolution(collectionId: int = Depends(auth)):
     return crud.get_particle_count_per_resolution(collectionId)
+
+
+@router.get(
+    "/{collectionId}/report",
+    responses={200: {"content": {"application/pdf": {}}}},
+)
+def get_session_report(collectionId: int = Depends(auth)):
+    """Generate session report"""
+    return report_crud.generate_report(collection_id=collectionId)
