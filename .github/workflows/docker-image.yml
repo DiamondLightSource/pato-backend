@@ -1,14 +1,17 @@
 name: Create and publish a Docker image
 
 on:
-  push:
-    branches: ['release']
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  testing:
+    name: Integration Tests and Linting
+    uses: ./.github/workflows/integration.yml
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
