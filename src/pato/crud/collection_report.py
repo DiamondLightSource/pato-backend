@@ -400,10 +400,10 @@ def generate_report(collection_id: int):
                 or class_pc.estimatedResolution > best_class.estimatedResolution
             ):
                 best_class = class_pc
-                best_class_index = i + 1
+                best_class_index = i
             class_3d_table.append(
                 (
-                    str(i + 2),
+                    str(i + 1),
                     str(class_pc.particlesPerClass),
                     str(class_pc.estimatedResolution),
                     str(class_pc.overallFourierCompleteness),
