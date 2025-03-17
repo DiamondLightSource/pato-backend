@@ -243,10 +243,12 @@ def generate_report(collection_id: int):
 
     particle_diameter = round(
         db.session.execute(
-            select(ParticlePicker.particleDiameter).filter(
+            select(ParticlePicker.particleDiameter)
+            .filter(
                 ParticlePicker.programId == preprocess_program.autoProcProgramId,
                 ParticlePicker.particleDiameter > 0,
-            ).limit(1)
+            )
+            .limit(1)
         ).scalar_one(),
         1,
     )
@@ -341,7 +343,7 @@ def generate_report(collection_id: int):
         pdf.paragraph(
             text=PARTICLE_CLASSIFICATION_TEXT.safe_substitute(
                 batch_count=batch_count,
-                binned_pixel_size=class2d_groups[0].binnedPixelSize or "N/A",
+                binned_pixel_size=f"{class2d_groups[0].binnedPixelSize or 'N/A'} Å",
                 particles_per_batch=50000,
                 nyquist_freq=8.5,
             ),
@@ -380,7 +382,12 @@ def generate_report(collection_id: int):
         )
 
         class_3d_table = [
-            ("Class number", "Number of particles", "Resolution", "Fourier completeness"),
+            (
+                "Class number",
+                "Number of particles",
+                "Resolution",
+                "Fourier completeness",
+            ),
         ]
 
         best_class: ParticleClassification = classes_3d[0].ParticleClassification
