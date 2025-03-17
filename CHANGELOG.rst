@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.16.0 (17/03/2025)
++++++++++
+
+**Added**
+
+- Endpoint for generating SPA collection reports
+
++++++++++
 v1.15.0 (10/03/2025)
 +++++++++
 
