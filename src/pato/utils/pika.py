@@ -48,7 +48,12 @@ class PikaConsumer:
         key: str,
         callback: Callable[[Channel, Any, pika.BasicProperties, bytes], None],
     ):
-        result = self.channel.queue_declare(Config.mq.consumer_queue, exclusive=True)
+        result = self.channel.queue_declare(
+            Config.mq.consumer_queue,
+            exclusive=False,
+            durable=True,
+            arguments={"x-queue-type": "quorum"},
+        )
         queue = result.method.queue
         self.channel.queue_bind(
             exchange=Config.mq.consumer_queue, queue=queue, routing_key=key
