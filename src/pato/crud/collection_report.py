@@ -217,7 +217,7 @@ def generate_report(collection_id: int):
                 MotionCorrection.autoProcProgramId
                 == preprocess_program.autoProcProgramId
             )
-        ).scalar_one(),
+        ).first()[0],
         1,
     )
 
@@ -228,7 +228,7 @@ def generate_report(collection_id: int):
                 .within_group(CTF.estimatedResolution)
                 .over(partition_by=CTF.autoProcProgramId)
             ).filter(CTF.autoProcProgramId == preprocess_program.autoProcProgramId)
-        ).scalar_one(),
+        ).first()[0],
         1,
     )
 
@@ -369,70 +369,71 @@ def generate_report(collection_id: int):
         )
     ).all()
 
-    pdf.paragraph(
-        text=CLASSIFICATION_3D_TEXT.safe_substitute(
-            particle_count=classes_3d[
-                0
-            ].ParticleClassificationGroup.numberOfParticlesPerBatch,
-            symmetry=classes_3d[0].ParticleClassificationGroup.symmetry,
-        )
-    )
-
-    class_3d_table = [
-        ("Class number", "Number of particles", "Resolution", "Fourier completeness"),
-    ]
-
-    best_class: ParticleClassification = classes_3d[0].ParticleClassification
-    best_class_index = 0
-
-    # Skip the first one, since it's already selected as the best class by default
-    for i, class_3d in enumerate(classes_3d[1:]):
-        class_pc: ParticleClassification = class_3d.ParticleClassification
-        if (
-            best_class is None
-            or class_pc.estimatedResolution > best_class.estimatedResolution
-        ):
-            best_class = class_pc
-            best_class_index = i + 1
-        class_3d_table.append(
-            (
-                str(i + 2),
-                str(class_pc.particlesPerClass),
-                str(class_pc.estimatedResolution),
-                str(class_pc.overallFourierCompleteness),
+    if len(classes_3d) > 0:
+        pdf.paragraph(
+            text=CLASSIFICATION_3D_TEXT.safe_substitute(
+                particle_count=classes_3d[
+                    0
+                ].ParticleClassificationGroup.numberOfParticlesPerBatch,
+                symmetry=classes_3d[0].ParticleClassificationGroup.symmetry,
             )
         )
 
-    pdf.caption("Table 2: 3D classification results")
-    pdf.add_table(class_3d_table)
+        class_3d_table = [
+            ("Class number", "Number of particles", "Resolution", "Fourier completeness"),
+        ]
 
-    # Completeness refers to how "varied" and representative of the actual sample the collected data is.
-    # Low completeness indicates that our particles are oriented mostly one way, and other orientations
-    # are underrepresented in the dataset.
-    pdf.set_y(252)
-    pdf.paragraph(
-        text=ANG_DIST_TEXT.safe_substitute(
-            class_no=best_class_index + 1,
-            sample_detail=(
-                "multiple orientations visible"
-                if best_class.overallFourierCompleteness > 0.9
-                else "a strong preferred orientation"
-            ),
+        best_class: ParticleClassification = classes_3d[0].ParticleClassification
+        best_class_index = 0
+
+        # Skip the first one, since it's already selected as the best class by default
+        for i, class_3d in enumerate(classes_3d[1:]):
+            class_pc: ParticleClassification = class_3d.ParticleClassification
+            if (
+                best_class is None
+                or class_pc.estimatedResolution > best_class.estimatedResolution
+            ):
+                best_class = class_pc
+                best_class_index = i + 1
+            class_3d_table.append(
+                (
+                    str(i + 2),
+                    str(class_pc.particlesPerClass),
+                    str(class_pc.estimatedResolution),
+                    str(class_pc.overallFourierCompleteness),
+                )
+            )
+
+        pdf.caption("Table 2: 3D classification results")
+        pdf.add_table(class_3d_table)
+
+        # Completeness refers to how "varied" and representative of the actual sample the collected data is.
+        # Low completeness indicates that our particles are oriented mostly one way, and other orientations
+        # are underrepresented in the dataset.
+        pdf.set_y(252)
+        pdf.paragraph(
+            text=ANG_DIST_TEXT.safe_substitute(
+                class_no=best_class_index + 1,
+                sample_detail=(
+                    "multiple orientations visible"
+                    if best_class.overallFourierCompleteness > 0.9
+                    else "a strong preferred orientation"
+                ),
+            )
         )
-    )
 
-    # Page 3
-    pdf.add_page()
-    # Angular distribution plot
-    ang_dist_image = (
-        f"{Path(best_class.classImageFullPath).parent}/"
-        + f"{Path(best_class.classImageFullPath).stem}_angdist.jpeg"
-    )
-    pdf.image(ang_dist_image, x=65, y=25, w=80)
-    pdf.set_y(75)
-    pdf.caption(
-        "Figure 4: The distribution of particle angles for the 3D class with the highest resolution",
-    )
+        # Page 3
+        pdf.add_page()
+        # Angular distribution plot
+        ang_dist_image = (
+            f"{Path(best_class.classImageFullPath).parent}/"
+            + f"{Path(best_class.classImageFullPath).stem}_angdist.jpeg"
+        )
+        pdf.image(ang_dist_image, x=65, y=25, w=80)
+        pdf.set_y(75)
+        pdf.caption(
+            "Figure 4: The distribution of particle angles for the 3D class with the highest resolution",
+        )
 
     classes_refinement = db.session.execute(
         select(ParticleClassification, ParticleClassificationGroup).filter(
