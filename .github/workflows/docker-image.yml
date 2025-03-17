@@ -10,9 +10,11 @@ env:
 
 jobs:
   testing:
-    name: Integration Tests and Linting
+    name: Integration tests and linting
     uses: ./.github/workflows/integration.yml
   build-and-push-image:
+    name: Build and push image
+    needs: testing
     runs-on: ubuntu-latest
     permissions:
       contents: read
