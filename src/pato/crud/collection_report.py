@@ -184,7 +184,7 @@ def generate_report(collection_id: int):
         ("File format", file_type),
         ("Voltage", f"{data.DataCollection.voltage} keV"),
         ("Magnification", "105000.0"),
-        ("Pixel size", f"{data.DataCollection.pixelSizeOnImage} Å"),
+        ("Pixel size", f"{data.DataCollection.pixelSizeOnImage * 10} Å"),
         (
             "Image size",
             f"{data.DataCollection.imageSizeX} x {data.DataCollection.imageSizeY}",
@@ -393,8 +393,7 @@ def generate_report(collection_id: int):
         best_class: ParticleClassification = classes_3d[0].ParticleClassification
         best_class_index = 0
 
-        # Skip the first one, since it's already selected as the best class by default
-        for i, class_3d in enumerate(classes_3d[1:]):
+        for i, class_3d in enumerate(classes_3d):
             class_pc: ParticleClassification = class_3d.ParticleClassification
             if (
                 best_class is None
