@@ -40,37 +40,37 @@ class DataPoint(OrmBaseModel):
 class ProposalResponse(OrmBaseModel):
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
     personId: int
-    title: Optional[str] = Field(..., max_length=255)
-    proposalCode: Optional[str] = Field(..., max_length=45)
-    proposalNumber: Optional[str] = Field(..., max_length=45)
+    title: Optional[str] = Field(None, max_length=255)
+    proposalCode: Optional[str] = Field(None, max_length=45)
+    proposalNumber: Optional[str] = Field(None, max_length=45)
     bltimeStamp: datetime
-    proposalType: Optional[str] = Field(..., max_length=2)
+    proposalType: Optional[str] = Field(None, max_length=2)
     state: StateEnum
     sessions: int
 
 
 class SessionResponse(OrmBaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
-    beamLineSetupId: Optional[int]
+    beamLineSetupId: Optional[int] = None
     proposalId: int = Field(..., lt=1e9, description="Proposal ID")
-    beamCalendarId: Optional[int]
-    startDate: Optional[datetime]
-    endDate: Optional[datetime]
-    beamLineName: Optional[str] = Field(..., max_length=45)
-    scheduled: Optional[int] = Field(..., lt=10)
-    nbShifts: Optional[int] = Field(..., lt=1e9)
-    comments: Optional[str] = Field(..., max_length=2000)
-    beamLineOperator: Optional[str]
+    beamCalendarId: Optional[int] = None
+    startDate: Optional[datetime] = None
+    endDate: Optional[datetime] = None
+    beamLineName: Optional[str] = Field(None, max_length=45)
+    scheduled: Optional[int] = Field(None, lt=10)
+    nbShifts: Optional[int] = Field(None, lt=1e9)
+    comments: Optional[str] = Field(None, max_length=2000)
+    beamLineOperator: Optional[str] = None
     bltimeStamp: datetime
     parentProposal: str
-    visit_number: Optional[int] = Field(..., lt=1e9)
+    visit_number: Optional[int] = Field(None, lt=1e9)
     usedFlag: Optional[int] = Field(
-        ...,
+        None,
         lt=2,
         description="Indicates if session has Datacollections or XFE or EnergyScans attached",  # noqa: E501
     )
     lastUpdate: Optional[datetime] = Field(
-        ...,
+        None,
         description="Last update timestamp: by default the end of the session, the last collect",  # noqa: E501
     )
     archived: int = Field(
@@ -87,116 +87,116 @@ class BaseDataCollectionOut(OrmBaseModel):
     dataCollectionGroupId: int
     index: Optional[int] = None
     startTime: Optional[datetime] = Field(
-        ..., description="Start time of the dataCollection"
+        None, description="Start time of the dataCollection"
     )
     endTime: Optional[datetime] = Field(
-        ..., description="End time of the dataCollection"
+        None, description="End time of the dataCollection"
     )
-    experimenttype: Optional[str] = Field(..., max_length=24)
-    fileTemplate: Optional[str] = Field(..., max_length=255)
-    imageSuffix: Optional[str] = Field(..., max_length=24)
+    experimenttype: Optional[str] = Field(None, max_length=24)
+    fileTemplate: Optional[str] = Field(None, max_length=255)
+    imageSuffix: Optional[str] = Field(None, max_length=24)
     imageDirectory: Optional[str] = Field(
-        ...,
+        None,
         max_length=255,
         description="The directory where files reside - should end with a slash",
     )
-    imagePrefix: Optional[str] = Field(..., max_length=45)
+    imagePrefix: Optional[str] = Field(None, max_length=45)
 
 
 class DataCollectionSummary(BaseDataCollectionOut):
-    comments: Optional[str]
+    comments: Optional[str] = None
     pixelSizeOnImage: Optional[float] = Field(
-        ...,
+        None,
         description="Pixel size on image, calculated from magnification",
     )
     voltage: Optional[float] = None
     imageSizeX: Optional[int] = Field(
-        ...,
+        None,
         description="Image size in x, in case crop has been used.",
     )
     imageSizeY: Optional[int] = Field(
-        ..., description="Image size in y, in case crop has been used."
+        None, description="Image size in y, in case crop has been used."
     )
-    runStatus: Optional[str] = Field(..., max_length=255)
-    axisStart: Optional[float]
-    axisEnd: Optional[float]
-    axisRange: Optional[float]
-    overlap: Optional[float]
-    numberOfImages: Optional[int]
-    startImageNumber: Optional[int]
-    numberOfPasses: Optional[int]
-    exposureTime: Optional[float]
+    runStatus: Optional[str] = Field(None, max_length=255)
+    axisStart: Optional[float] = None
+    axisEnd: Optional[float] = None
+    axisRange: Optional[float] = None
+    overlap: Optional[float] = None
+    numberOfImages: Optional[int] = None
+    startImageNumber: Optional[int] = None
+    numberOfPasses: Optional[int] = None
+    exposureTime: Optional[float] = None
     imageContainerSubPath: Optional[str] = Field(
-        ...,
+        None,
         max_length=255,
         description="""Internal path of a HDF5 file pointing to the data
         for this data collection""",
     )
-    wavelength: Optional[float]
-    resolution: Optional[float]
-    detectorDistance: Optional[float]
-    xBeam: Optional[float]
-    yBeam: Optional[float]
-    printableForReport: Optional[int]
-    slitGapVertical: Optional[float]
-    slitGapHorizontal: Optional[float]
-    transmission: Optional[float]
-    synchrotronMode: Optional[str] = Field(..., max_length=20)
-    xtalSnapshotFullPath1: Optional[str] = Field(..., max_length=255)
-    xtalSnapshotFullPath2: Optional[str] = Field(..., max_length=255)
-    xtalSnapshotFullPath3: Optional[str] = Field(..., max_length=255)
-    xtalSnapshotFullPath4: Optional[str] = Field(..., max_length=255)
-    rotationAxis: Optional[RotationAxisEnum]
-    phiStart: Optional[float]
-    kappaStart: Optional[float]
-    omegaStart: Optional[float]
-    chiStart: Optional[float]
-    resolutionAtCorner: Optional[float]
-    detector2Theta: Optional[float]
-    undulatorGap1: Optional[float]
-    undulatorGap2: Optional[float]
-    undulatorGap3: Optional[float]
-    beamSizeAtSampleX: Optional[float]
-    beamSizeAtSampleY: Optional[float]
-    centeringMethod: Optional[str] = Field(..., max_length=255)
-    averageTemperature: Optional[float]
-    actualCenteringPosition: Optional[str] = Field(..., max_length=255)
-    beamShape: Optional[str] = Field(..., max_length=24)
-    detectorId: Optional[int]
-    screeningOrigId: Optional[int]
-    startPositionId: Optional[int]
-    endPositionId: Optional[int]
-    flux: Optional[float]
-    strategySubWedgeOrigId: Optional[int]
-    blSubSampleId: Optional[int]
-    flux_end: Optional[float]
-    bestWilsonPlotPath: Optional[str] = Field(..., max_length=255)
-    processedDataFile: Optional[str] = Field(..., max_length=255)
-    datFullPath: Optional[str] = Field(..., max_length=255)
-    magnification: Optional[float]
-    totalAbsorbedDose: Optional[float]
-    binning: Optional[int]
-    particleDiameter: Optional[float]
-    boxSize_CTF: Optional[float]
-    minResolution: Optional[float]
-    minDefocus: Optional[float]
-    maxDefocus: Optional[float]
-    defocusStepSize: Optional[float]
-    amountAstigmatism: Optional[float]
-    extractSize: Optional[float]
-    bgRadius: Optional[float]
-    objAperture: Optional[float]
-    c1aperture: Optional[float]
-    c2aperture: Optional[float]
-    c3aperture: Optional[float]
-    c1lens: Optional[float]
-    c2lens: Optional[float]
-    c3lens: Optional[float]
-    totalExposedDose: Optional[float]
-    nominalMagnification: Optional[float]
-    nominalDefocus: Optional[float]
-    phasePlate: Optional[str]
-    dataCollectionPlanId: Optional[int]
+    wavelength: Optional[float] = None
+    resolution: Optional[float] = None
+    detectorDistance: Optional[float] = None
+    xBeam: Optional[float] = None
+    yBeam: Optional[float] = None
+    printableForReport: Optional[int] = None
+    slitGapVertical: Optional[float] = None
+    slitGapHorizontal: Optional[float] = None
+    transmission: Optional[float] = None
+    synchrotronMode: Optional[str] = Field(None, max_length=20)
+    xtalSnapshotFullPath1: Optional[str] = Field(None, max_length=255)
+    xtalSnapshotFullPath2: Optional[str] = Field(None, max_length=255)
+    xtalSnapshotFullPath3: Optional[str] = Field(None, max_length=255)
+    xtalSnapshotFullPath4: Optional[str] = Field(None, max_length=255)
+    rotationAxis: Optional[RotationAxisEnum] = None
+    phiStart: Optional[float] = None
+    kappaStart: Optional[float] = None
+    omegaStart: Optional[float] = None
+    chiStart: Optional[float] = None
+    resolutionAtCorner: Optional[float] = None
+    detector2Theta: Optional[float] = None
+    undulatorGap1: Optional[float] = None
+    undulatorGap2: Optional[float] = None
+    undulatorGap3: Optional[float] = None
+    beamSizeAtSampleX: Optional[float] = None
+    beamSizeAtSampleY: Optional[float] = None
+    centeringMethod: Optional[str] = Field(None, max_length=255)
+    averageTemperature: Optional[float] = None
+    actualCenteringPosition: Optional[str] = Field(None, max_length=255)
+    beamShape: Optional[str] = Field(None, max_length=24)
+    detectorId: Optional[int] = None
+    screeningOrigId: Optional[int] = None
+    startPositionId: Optional[int] = None
+    endPositionId: Optional[int] = None
+    flux: Optional[float] = None
+    strategySubWedgeOrigId: Optional[int] = None
+    blSubSampleId: Optional[int] = None
+    flux_end: Optional[float] = None
+    bestWilsonPlotPath: Optional[str] = Field(None, max_length=255)
+    processedDataFile: Optional[str] = Field(None, max_length=255)
+    datFullPath: Optional[str] = Field(None, max_length=255)
+    magnification: Optional[float] = None
+    totalAbsorbedDose: Optional[float] = None
+    binning: Optional[int] = None
+    particleDiameter: Optional[float] = None
+    boxSize_CTF: Optional[float] = None
+    minResolution: Optional[float] = None
+    minDefocus: Optional[float] = None
+    maxDefocus: Optional[float] = None
+    defocusStepSize: Optional[float] = None
+    amountAstigmatism: Optional[float] = None
+    extractSize: Optional[float] = None
+    bgRadius: Optional[float] = None
+    objAperture: Optional[float] = None
+    c1aperture: Optional[float] = None
+    c2aperture: Optional[float] = None
+    c3aperture: Optional[float] = None
+    c1lens: Optional[float] = None
+    c2lens: Optional[float] = None
+    c3lens: Optional[float] = None
+    totalExposedDose: Optional[float] = None
+    nominalMagnification: Optional[float] = None
+    nominalDefocus: Optional[float] = None
+    phasePlate: Optional[str] = None
+    dataCollectionPlanId: Optional[int] = None
     tomograms: int
     globalAlignmentQuality: Optional[float] = None
 
@@ -215,11 +215,12 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
         ..., lt=1e9, description="Data Collection Group ID"
     )
     sessionId: int = Field(..., lt=1e9, description="Session ID")
-    experimentType: Optional[str]
+    experimentType: Optional[str] = None
+    atlasId: Optional[int] = None
     experimentTypeId: Optional[int] = 37
     experimentTypeName: Optional[str] = "Single Particle"
-    imageDirectory: Optional[str]
-    comments: Optional[str]
+    imageDirectory: Optional[str] = None
+    comments: Optional[str] = None
     collections: int
 
     @field_validator("experimentTypeName")
@@ -237,9 +238,9 @@ class SessionAllowsReprocessing(OrmBaseModel):
 
 class CTF(OrmBaseModel):
     ctfId: int
-    boxSizeX: Optional[float] = Field(..., title="Box size in x")
-    boxSizeY: Optional[float] = Field(..., title="Box size in y")
-    minResolution: Optional[float] = Field(..., title="Minimum resolution for CTF")
+    boxSizeX: Optional[float] = Field(None, title="Box size in x")
+    boxSizeY: Optional[float] = Field(None, title="Box size in y")
+    minResolution: Optional[float] = Field(None, title="Minimum resolution for CTF")
     maxResolution: Optional[float] = None
     minDefocus: Optional[float] = None
     maxDefocus: Optional[float] = None
@@ -249,11 +250,11 @@ class CTF(OrmBaseModel):
     estimatedResolution: Optional[float] = None
     estimatedDefocus: Optional[float] = None
     amplitudeContrast: Optional[float] = None
-    ccValue: Optional[float] = Field(..., title="Correlation value")
+    ccValue: Optional[float] = Field(None, title="Correlation value")
     fftTheoreticalFullPath: Optional[str] = Field(
-        ..., max_length=255, title="Full path to the jpg image of the simulated FFT"
+        None, max_length=255, title="Full path to the jpg image of the simulated FFT"
     )
-    comments: Optional[str] = Field(..., max_length=255)
+    comments: Optional[str] = Field(None, max_length=255)
 
 
 class Movie(OrmBaseModel):
@@ -279,54 +280,54 @@ class Movie(OrmBaseModel):
 
 class MotionCorrection(OrmBaseModel):
     motionCorrectionId: int
-    dataCollectionId: Optional[int]
-    autoProcProgramId: Optional[int]
+    dataCollectionId: Optional[int] = None
+    autoProcProgramId: Optional[int] = None
     imageNumber: Optional[int] = Field(
-        ..., title="Movie number, sequential in time 1-n"
+        None, title="Movie number, sequential in time 1-n"
     )
-    firstFrame: Optional[int] = Field(..., title="First frame of movie used")
-    lastFrame: Optional[int] = Field(..., title="Last frame of movie used")
-    dosePerFrame: Optional[float] = Field(..., title="Dose per frame")
-    doseWeight: Optional[float] = Field(..., title="Dose weight")
-    totalMotion: Optional[float] = Field(..., title="Total motion")
+    firstFrame: Optional[int] = Field(None, title="First frame of movie used")
+    lastFrame: Optional[int] = Field(None, title="Last frame of movie used")
+    dosePerFrame: Optional[float] = Field(None, title="Dose per frame")
+    doseWeight: Optional[float] = Field(None, title="Dose weight")
+    totalMotion: Optional[float] = Field(None, title="Total motion")
     averageMotionPerFrame: Optional[float] = Field(
-        ..., title="Average motion per frame"
+        None, title="Average motion per frame"
     )
     driftPlotFullPath: Optional[str] = Field(
-        ..., max_length=255, title="Path to drift plot"
+        None, max_length=255, title="Path to drift plot"
     )
     micrographFullPath: Optional[str] = Field(
-        ..., max_length=255, title="Path to micrograph"
+        None, max_length=255, title="Path to micrograph"
     )
     micrographSnapshotFullPath: Optional[str] = Field(
-        ..., max_length=255, title="Path to micrograph"
+        None, max_length=255, title="Path to micrograph"
     )
-    patchesUsedX: Optional[int] = Field(..., title="Patches used in x")
-    patchesUsedY: Optional[int] = Field(..., title="Patches used in y")
+    patchesUsedX: Optional[int] = Field(None, title="Patches used in x")
+    patchesUsedY: Optional[int] = Field(None, title="Patches used in y")
     fftFullPath: Optional[str] = Field(
-        ...,
+        None,
         max_length=255,
         title="Path to raw micrograph FFT",
     )
     fftCorrectedFullPath: Optional[str] = Field(
-        ...,
+        None,
         max_length=255,
         title="Path to drift corrected micrograph FFT",
     )
-    comments: Optional[str] = Field(..., max_length=255)
+    comments: Optional[str] = Field(None, max_length=255)
 
 
 class TiltImageAlignmentOut(OrmBaseModel):
     movieId: int
-    defocusU: Optional[float]
-    defocusV: Optional[float]
-    psdFile: Optional[str] = Field(..., max_length=255)
-    resolution: Optional[float]
-    fitQuality: Optional[float]
-    refinedMagnification: Optional[float]
-    refinedTiltAngle: Optional[float]
-    refinedTiltAxis: Optional[float]
-    residualError: Optional[float]
+    defocusU: Optional[float] = None
+    defocusV: Optional[float] = None
+    psdFile: Optional[str] = Field(None, max_length=255)
+    resolution: Optional[float] = None
+    fitQuality: Optional[float] = None
+    refinedMagnification: Optional[float] = None
+    refinedTiltAngle: Optional[float] = None
+    refinedTiltAxis: Optional[float] = None
+    residualError: Optional[float] = None
 
 
 class FullMovie(OrmBaseModel):
@@ -341,13 +342,13 @@ class FullMovieWithTilt(Paged[FullMovie]):
 
 
 class CtfBase(OrmBaseModel):
-    estimatedResolution: Optional[float]
-    estimatedDefocus: Optional[float]
-    astigmatism: Optional[float]
+    estimatedResolution: Optional[float] = None
+    estimatedDefocus: Optional[float] = None
+    astigmatism: Optional[float] = None
 
 
 class CtfTiltAlign(CtfBase):
-    refinedTiltAngle: Optional[float]
+    refinedTiltAngle: Optional[float] = None
 
 
 class CtfImageNumber(CtfBase):
@@ -355,7 +356,7 @@ class CtfImageNumber(CtfBase):
 
 
 class CtfBaseSpa(CtfImageNumber):
-    numberOfParticles: Optional[int]
+    numberOfParticles: Optional[int] = None
 
 
 class ItemList(BaseModel, Generic[T]):
@@ -365,59 +366,59 @@ class ItemList(BaseModel, Generic[T]):
 class ProcessingJob(OrmBaseModel):
     processingJobId: int
     dataCollectionId: int
-    displayName: Optional[str] = Field(..., max_length=80)
-    comments: Optional[str] = Field(..., max_length=255)
-    recordTimestamp: Optional[datetime]
-    recipe: Optional[str] = Field(..., max_length=50)
-    automatic: Optional[int]
+    displayName: Optional[str] = Field(None, max_length=80)
+    comments: Optional[str] = Field(None, max_length=255)
+    recordTimestamp: Optional[datetime] = None
+    recipe: Optional[str] = Field(None, max_length=50)
+    automatic: Optional[int] = None
 
 
-class AutoProcProgram(OrmBaseModel):
+class AutoProcProgramResponse(OrmBaseModel):
     autoProcProgramId: int
     processingCommandLine: Optional[str] = Field(max_length=255)
     processingPrograms: Optional[str] = Field(max_length=255)
-    processingStatus: Optional[int]
+    processingStatus: Optional[int] = None
     processingMessage: Optional[str] = Field(max_length=255)
-    processingStartTime: Optional[datetime]
-    processingEndTime: Optional[datetime]
+    processingStartTime: Optional[datetime] = None
+    processingEndTime: Optional[datetime] = None
     processingEnvironment: Optional[str] = Field(max_length=255)
-    recordTimeStamp: Optional[datetime]
+    recordTimeStamp: Optional[datetime] = None
 
 
 class ProcessingJobResponse(OrmBaseModel):
-    AutoProcProgram: Optional[AutoProcProgram]
+    AutoProcProgram: Optional[AutoProcProgramResponse] = None
     ProcessingJob: ProcessingJob
     status: str
 
 
 class TomogramResponse(OrmBaseModel):
     tomogramId: int
-    volumeFile: Optional[str] = Field(..., max_length=255)
-    stackFile: Optional[str] = Field(..., max_length=255)
-    sizeX: Optional[int]
-    sizeY: Optional[int]
-    sizeZ: Optional[int]
-    pixelSpacing: Optional[float]
-    residualErrorMean: Optional[float]
-    residualErrorSD: Optional[float]
-    xAxisCorrection: Optional[float]
-    tiltAngleOffset: Optional[float]
-    zShift: Optional[float]
+    volumeFile: Optional[str] = Field(None, max_length=255)
+    stackFile: Optional[str] = Field(None, max_length=255)
+    sizeX: Optional[int] = None
+    sizeY: Optional[int] = None
+    sizeZ: Optional[int] = None
+    pixelSpacing: Optional[float] = None
+    residualErrorMean: Optional[float] = None
+    residualErrorSD: Optional[float] = None
+    xAxisCorrection: Optional[float] = None
+    tiltAngleOffset: Optional[float] = None
+    zShift: Optional[float] = None
     refinedTiltAxis: Optional[float] = None
 
 
 class TomogramFullResponse(ProcessingJobResponse):
-    Tomogram: Optional[TomogramResponse]
+    Tomogram: Optional[TomogramResponse] = None
 
 
 class ParticlePicker(OrmBaseModel):
-    particleDiameter: Optional[float]
-    numberOfParticles: Optional[int]
-    particlePickerId: Optional[int]
+    particleDiameter: Optional[float] = None
+    numberOfParticles: Optional[int] = None
+    particlePickerId: Optional[int] = None
     summaryFullImagePath: Optional[str] = None
     imageNumber: int
     movieId: int
-    createdTimeStamp: Optional[datetime]
+    createdTimeStamp: Optional[datetime] = None
 
 
 class Classification(OrmBaseModel):
@@ -431,14 +432,14 @@ class Classification(OrmBaseModel):
     symmetry: str
     particleClassificationId: int
     classNumber: int
-    classImageFullPath: Optional[str]
-    particlesPerClass: Optional[int]
+    classImageFullPath: Optional[str] = None
+    particlesPerClass: Optional[int] = None
     rotationAccuracy: float
     translationAccuracy: float
     estimatedResolution: float
     overallFourierCompleteness: float
-    classDistribution: Optional[float]
-    selected: Optional[bool]
+    classDistribution: Optional[float] = None
+    selected: Optional[bool] = None
     bFactorFitIntercept: Optional[float] = None
     bFactorFitLinear: Optional[float] = None
 
@@ -474,11 +475,11 @@ class BFactorFitOut(BaseModel):
 
 class GridSquare(BaseModel):
     gridSquareId: int
-    x: int | None = Field(default=None, validation_alias="pixelLocationX")
-    y: int | None = Field(default=None, validation_alias="pixelLocationY")
-    height: int | None = None
-    width: int | None = None
-    angle: float | None = None
+    x: int = Field(validation_alias="pixelLocationX")
+    y: int = Field(validation_alias="pixelLocationY")
+    height: int
+    width: int
+    angle: float
     image: Optional[str] = Field(validation_alias="gridSquareImage", default=None)
 
 
@@ -490,8 +491,8 @@ class Atlas(BaseModel):
 
 
 class FoilHole(BaseModel):
-    diameter: int | None = None
+    diameter: int
     foilHoleId: int
-    x: int | None = Field(default=None, validation_alias="pixelLocationX")
-    y: int | None = Field(default=None, validation_alias="pixelLocationY")
+    x: int = Field(validation_alias="pixelLocationX")
+    y: int = Field(validation_alias="pixelLocationY")
     movieCount: Optional[int] = 0
