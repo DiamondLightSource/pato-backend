@@ -14,3 +14,9 @@ def test_get_no_atlas(mock_permissions, client):
     """Should return 404 if data collection group has no atlas"""
     resp = client.get("/dataGroups/996311/atlas/image")
     assert resp.status_code == 404
+
+def test_file_not_found(mock_permissions, exists_mock, client):
+    """Try to get image file that does not exist"""
+    exists_mock.return_value = False
+    resp = client.get("/dataGroups/996311/atlas/image")
+    assert resp.status_code == 404

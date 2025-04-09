@@ -15,6 +15,7 @@ from lims_utils.tables import (
 )
 from sqlalchemy import func as f
 from sqlalchemy import select
+from sqlalchemy.sql.functions import coalesce
 
 from ..models.collections import DataCollectionSortTypes
 from ..models.response import (
@@ -23,7 +24,7 @@ from ..models.response import (
 )
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
-from ..utils.generic import parse_proposal
+from ..utils.generic import parse_proposal, validate_path
 
 
 def get_collection_group(group_id: int):
@@ -53,10 +54,12 @@ def get_collection_groups(
         select(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
+            Atlas.atlasId,
             DataCollection.imageDirectory,
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
         .select_from(DataCollectionGroup)
+        .join(Atlas, isouter=True)
         .join(ExperimentType, isouter=True)
         .join(BLSession)
         .join(DataCollection)
@@ -150,7 +153,15 @@ def get_grid_squares(
     dcg_id: int, limit: int, page: int, hide_uncollected: bool = False
 ):
     query = (
-        select(GridSquare)
+        select(
+            coalesce(GridSquare.pixelLocationX, 0).label("pixelLocationX"),
+            coalesce(GridSquare.pixelLocationY, 0).label("pixelLocationY"),
+            coalesce(GridSquare.height, 0).label("height"),
+            coalesce(GridSquare.width, 0).label("width"),
+            coalesce(GridSquare.angle, 0).label("angle"),
+            GridSquare.gridSquareId,
+            GridSquare.gridSquareImage
+        )
         .select_from(Atlas)
         .filter(Atlas.dataCollectionGroupId == dcg_id)
         .join(GridSquare)
@@ -162,7 +173,7 @@ def get_grid_squares(
             GridSquare.gridSquareImage != "",
         )
 
-    return db.paginate(query, limit, page, slow_count=True, scalar=False)
+    return db.paginate(query, limit, page, slow_count=True)
 
 
 def get_atlas(dcg_id: int):
@@ -179,6 +190,7 @@ def get_atlas(dcg_id: int):
     return atlas
 
 
+@validate_path
 def get_atlas_image(dcg_id: int):
     atlas_image = db.session.scalar(
         select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id)
