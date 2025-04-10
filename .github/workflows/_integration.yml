@@ -2,11 +2,6 @@ name: Integration Tests
 
 on:
   workflow_call:
-  push:
-    branches:
-      - "*"
-    tags-ignore:
-      - "*"
 
 jobs:
   test:
@@ -37,3 +32,10 @@ jobs:
           CONFIG_PATH: /home/runner/work/pato-backend/pato-backend/config.json
         run: |
           tox -e pytest
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          name: ${{ inputs.python-version }}/${{ inputs.runs-on }}
+          files: cov.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

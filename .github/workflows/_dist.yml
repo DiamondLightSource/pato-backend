@@ -1,17 +1,13 @@
 name: Create and publish a Docker image
 
 on:
-  push:
-    tags:
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  testing:
-    name: Integration tests and linting
-    uses: ./.github/workflows/integration.yml
   build-and-push-image:
     name: Build and push image
     needs: testing
