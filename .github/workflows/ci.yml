@@ -19,6 +19,8 @@ jobs:
     needs: check
     if: needs.check.outputs.branch-pr == ''
     uses: ./.github/workflows/_integration.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     if: github.ref_type == 'tag'
@@ -26,3 +28,5 @@ jobs:
     uses: ./.github/workflows/_dist.yml
     permissions:
       contents: write
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.GITHUB_TOKEN }}
