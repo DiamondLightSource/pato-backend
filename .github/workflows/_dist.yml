@@ -10,7 +10,6 @@ env:
 jobs:
   build-and-push-image:
     name: Build and push image
-    needs: testing
     runs-on: ubuntu-latest
     permissions:
       contents: read
