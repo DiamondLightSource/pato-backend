@@ -22,7 +22,7 @@ jobs:
 
   release:
     if: github.ref_type == 'tag'
-    needs: docs
+    needs: test
     uses: ./.github/workflows/_dist.yml
     permissions:
       contents: write
