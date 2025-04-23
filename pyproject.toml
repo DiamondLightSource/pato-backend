@@ -25,7 +25,7 @@ dependencies = [
     "pydantic[email]~=2.9.2",
     "fpdf2~=2.8.2",
     "types-requests",
-    "lims-utils~=0.4.1"
+    "lims-utils~=0.4.3"
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
