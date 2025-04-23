@@ -5,3 +5,7 @@ def test_get_movie_info(mock_permissions, client):
     assert resp.json()["foilHoleId"] == 1
     assert resp.json()["gridSquareId"] == 1
 
+def test_inexistent(mock_permissions, client):
+    """Should raise exception if movie not in database"""
+    resp = client.get("/movies/9999")
+    assert resp.status_code == 404
