@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       integration-db:
-        image: ghcr.io/diamondlightsource/pato-backend-db:${{ github.ref_type == 'tag' && 'master' || github.ref_name }}
+        image: ghcr.io/diamondlightsource/pato-backend-db:${{ github.ref_type == 'tag' && 'master' || (github.head_ref || github.ref_name) }}
         ports:
           - 3306:3306
     strategy:
