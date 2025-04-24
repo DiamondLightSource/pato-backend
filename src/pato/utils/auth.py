@@ -39,13 +39,14 @@ def _get_staff_perms(user: GenericUser):
 
         return BLSession.beamLineName.in_(allowed_beamlines)
 
-def check_session(query: Select, user: GenericUser):
+def check_session(query: Select, user: GenericUser, join_proposal: bool = False):
     """Include filters in provided query to ensure that only sessions the user has permission to view
     are returned.
 
     Args:
         query: Original query
         user: User to check against
+        join_proposal: Join proposal when building query
 
     Returns
         Modified query"""
@@ -56,6 +57,8 @@ def check_session(query: Select, user: GenericUser):
 
     staff_perms = _get_staff_perms(user)
     if staff_perms is not None:
+        if Config.facility.users_only_on_industrial and join_proposal:
+            query = query.join(Proposal, BLSession.proposalId == Proposal.proposalId)
         or_expressions.append(staff_perms)
 
     return (
