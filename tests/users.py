@@ -30,6 +30,16 @@ user = GenericUser(
     email="user@diamond.ac.uk",
 )
 
+industrial_user = GenericUser(
+    fedid="industrial",
+    id=46435,
+    familyName="Industrial",
+    title="Dr.",
+    givenName="User",
+    permissions=[],
+    email="industrial-user@diamond.ac.uk",
+)
+
 mx_admin = GenericUser(
     fedid="mx_admin",
     id=16000,

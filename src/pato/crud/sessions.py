@@ -14,7 +14,7 @@ from ..models.collections import DataCollectionCreationParameters
 from ..models.response import SessionAllowsReprocessing, SessionResponse
 from ..utils.auth import check_session
 from ..utils.config import Config
-from ..utils.database import db, paginate, unravel
+from ..utils.database import db, unravel
 from ..utils.generic import ProposalReference, check_session_active, parse_proposal
 
 HDF5_FILE_SIGNATURE = b"\x89\x48\x44\x46\x0d\x0a\x1a\x0a"
@@ -137,7 +137,7 @@ def get_sessions(
             isouter=True,
         ).group_by(BLSession.visit_number, BLSession.proposalId)
 
-    return paginate(query, limit, page)
+    return db.paginate(query, limit, page)
 
 
 def get_session(proposalReference: ProposalReference):

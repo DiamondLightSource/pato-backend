@@ -41,7 +41,7 @@ from ..models.response import (
     ProcessingJobResponse,
     TomogramFullResponse,
 )
-from ..utils.database import db, paginate
+from ..utils.database import db
 from ..utils.generic import check_session_active, parse_count
 from ..utils.pika import PikaPublisher
 
@@ -102,7 +102,7 @@ def get_tomograms(
         .order_by(ProcessingJob.processingJobId.desc())
     )
 
-    return paginate(query, limit, page, slow_count=False)
+    return db.paginate(query, limit, page, slow_count=False)
 
 
 def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[FullMovie]:
@@ -115,7 +115,7 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
         .group_by(Movie.movieId)
     )
 
-    return paginate(query, limit, page, slow_count=True)
+    return db.paginate(query, limit, page, slow_count=True)
 
 
 def initiate_reprocessing_tomogram(
@@ -310,7 +310,7 @@ def get_processing_jobs(
         )
     )
 
-    return paginate(query, limit, page, slow_count=False)
+    return db.paginate(query, limit, page, slow_count=False)
 
 
 def _with_ctf_joins(query: Select, collectionId: int):
