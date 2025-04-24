@@ -2,8 +2,6 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
-from ..utils.generic import filter_model
-
 _omit_when_stopping = [
     "autopick_do_cryolo",
     "do_class2d",
@@ -62,6 +60,13 @@ class SPAReprocessingParameters(BaseModel):
     motioncor_gainreference: str = Field(default="gain.mrc", alias="gainReferenceFile")
     extract_downscale: Optional[bool] = Field(default=True, alias="extractDownscale")
 
+    def filter_model(self, filter: list[str]):
+        for key in SPAReprocessingParameters.model_fields.keys():
+            if key in filter:
+                setattr(self, key, None)
+
+        return self
+
     @model_validator(mode="before")
     def empty_string_to_none(cls, values):
         for key, value in values.items():
@@ -73,12 +78,12 @@ class SPAReprocessingParameters(BaseModel):
     @model_validator(mode="after")
     def check_dynamically_required_fields(self):
         if self.stop_after_ctf_estimation:
-            filter_model(self, _omit_when_stopping)
+            self.filter_model(_omit_when_stopping)
             if not self.do_class3d:
-                filter_model(self, ["useFscCriterion"])
+                self.filter_model(["useFscCriterion"])
         else:
             if self.performCalculation:
-                filter_model(self, _omit_when_autocalculating)
+                self.filter_model(_omit_when_autocalculating)
 
             required = [
                 "autopick_LoG_diam_min",
