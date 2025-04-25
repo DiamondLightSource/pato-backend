@@ -197,8 +197,8 @@ class DataCollectionSummary(BaseDataCollectionOut):
     nominalDefocus: Optional[float] = None
     phasePlate: Optional[str] = None
     dataCollectionPlanId: Optional[int] = None
-    tomograms: int
     globalAlignmentQuality: Optional[float] = None
+    tomograms: int
 
     @field_validator("phasePlate", mode="before")
     def to_bool_str(cls, v):
