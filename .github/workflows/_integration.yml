@@ -1,0 +1,41 @@
+name: Integration Tests
+
+on:
+  workflow_call:
+    secrets:
+      CODECOV_TOKEN:
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      integration-db:
+        image: ghcr.io/diamondlightsource/pato-backend-db:master
+        ports:
+          - 3306:3306
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+      - name: Test with pytest
+        env:
+          CONFIG_PATH: /home/runner/work/pato-backend/pato-backend/config.json
+        run: |
+          tox -e pytest
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          name: ${{ inputs.python-version }}/${{ inputs.runs-on }}
+          files: cov.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

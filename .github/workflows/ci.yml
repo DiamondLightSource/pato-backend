@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    uses: ./.github/workflows/_check.yml
+
+  lint:
+    needs: check
+    if: needs.check.outputs.branch-pr == ''
+    uses: ./.github/workflows/_tox.yml
+    with:
+      tox: pre-commit
+
+  test:
+    needs: check
+    if: needs.check.outputs.branch-pr == ''
+    uses: ./.github/workflows/_integration.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: test
+    uses: ./.github/workflows/_dist.yml
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
