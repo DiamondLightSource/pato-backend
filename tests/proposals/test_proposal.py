@@ -62,12 +62,12 @@ def test_search_title(mock_user, client):
         pytest.param(industrial_user, 1, id="industrial_user"),
         pytest.param(user, 1, id="user"),
         pytest.param(em_admin, 1, id="em"),
-        pytest.param(admin, 5, id="admin"),
+        pytest.param(admin, 6, id="admin"),
     ],
     indirect=["mock_user"],
 )
 def test_industrial_users_only(mock_user, expected_count, client):
-    """Only return non-industrial proposals to staff if users_only_on_industrial is set"""
+    """Only return non-industrial proposals to non-admin staff if users_only_on_industrial is set"""
     Config.facility.users_only_on_industrial = True
     resp = client.get("/proposals")
     Config.facility.users_only_on_industrial = False

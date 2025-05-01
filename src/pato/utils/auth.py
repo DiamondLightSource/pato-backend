@@ -24,17 +24,13 @@ def _get_staff_perms(user: GenericUser):
     Returns:
         Additional SQL conditions based on user permissions, or None if user has no extra permissions"""
     allowed_beamlines = get_allowed_beamlines(user.permissions)
-    user_is_admin = is_admin(user.permissions)
 
-    if allowed_beamlines or user_is_admin:
+    if allowed_beamlines:
         if Config.facility.users_only_on_industrial:
             # We only want to restrict industrial visits to listed users
             return and_(
                 Proposal.proposalCode.not_in(["ic", "il", "in", "sw"]),
-                or_(
-                    BLSession.beamLineName.in_(allowed_beamlines),
-                    user_is_admin,
-                ),
+                BLSession.beamLineName.in_(allowed_beamlines),
             )
 
         return BLSession.beamLineName.in_(allowed_beamlines)
@@ -50,7 +46,7 @@ def check_session(query: Select, user: GenericUser, join_proposal: bool = False)
 
     Returns
         Modified query"""
-    if not Config.facility.users_only_on_industrial and is_admin(user.permissions):
+    if is_admin(user.permissions):
         return query
 
     or_expressions = [SessionHasPerson.personId == user.id]
@@ -84,7 +80,7 @@ def check_proposal(query: Select, user: GenericUser):
 
     Returns
         Modified query"""
-    if not Config.facility.users_only_on_industrial and is_admin(user.permissions):
+    if is_admin(user.permissions):
         return query
 
     or_expressions = [ProposalHasPerson.personId == user.id]

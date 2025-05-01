@@ -102,12 +102,12 @@ def test_date_start(mock_user, client):
         pytest.param(user, 0, id="user"),
         pytest.param(em_admin, 0, id="em"),
         pytest.param(industrial_user, 1, id="industrial-user"),
-        pytest.param(admin, 0, id="admin"),
+        pytest.param(admin, 1, id="admin"),
     ],
     indirect=["mock_user"],
 )
 def test_industrial_users_only(mock_user, expected_count, client):
-    """Only return non-industrial sessions to staff if users_only_on_industrial is set """
+    """Only return non-industrial sessions to non-admin staff if users_only_on_industrial is set """
     Config.facility.users_only_on_industrial = True
     resp = client.get(
         "/sessions?proposal=in1"
