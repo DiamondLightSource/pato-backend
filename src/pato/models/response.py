@@ -434,10 +434,10 @@ class Classification(OrmBaseModel):
     classNumber: int
     classImageFullPath: Optional[str] = None
     particlesPerClass: Optional[int] = None
-    rotationAccuracy: float
-    translationAccuracy: float
-    estimatedResolution: float
-    overallFourierCompleteness: float
+    rotationAccuracy: Optional[float] = None
+    translationAccuracy: Optional[float] = None
+    estimatedResolution: Optional[float] = None
+    overallFourierCompleteness: Optional[float] = None
     classDistribution: Optional[float] = None
     selected: Optional[bool] = None
     bFactorFitIntercept: Optional[float] = None

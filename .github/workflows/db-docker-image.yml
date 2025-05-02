@@ -10,7 +10,6 @@ on:
   push:
     paths:
       - "database/**"
-    branches: ["master"]
 
 env:
   REGISTRY: ghcr.io

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from fastapi import HTTPException, status
 from lims_utils.tables import CTF, FoilHole, MotionCorrection, Movie, RelativeIceThickness
 from sqlalchemy import func as f
 from sqlalchemy import select
@@ -77,8 +78,16 @@ def get_relative_ice_thickness(
     return IceThicknessWithAverage(avg=None, current=movie_data)
 
 def get_movie_info(movieId: int) -> MovieData:
-    return db.session.execute(
+    movie = db.session.execute(
         select(*unravel(Movie), FoilHole.gridSquareId)
         .join(FoilHole, FoilHole.foilHoleId==Movie.foilHoleId)
         .filter(Movie.movieId == movieId)
     ).one_or_none()
+
+    if movie is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No items found",
+        )
+
+    return movie
