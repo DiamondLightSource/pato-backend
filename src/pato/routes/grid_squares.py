@@ -5,6 +5,7 @@ from lims_utils.models import Paged, pagination
 from ..auth import Permissions
 from ..crud import grid_squares as crud
 from ..models.response import FoilHole
+from ..utils.generic import FoilHoleMetric
 
 router = APIRouter(
     tags=["Grid Squares"],
@@ -15,10 +16,11 @@ router = APIRouter(
 @router.get("/{gridSquareId}/foil-holes", response_model=Paged[FoilHole])
 def get_foil_holes(
     gridSquareId: int = Depends(Permissions.grid_square),
+    targetMetric: FoilHoleMetric = "resolution",
     page: dict[str, int] = Depends(pagination),
 ):
     """Get foil holes in a grid square"""
-    return crud.get_foil_holes(grid_square_id=gridSquareId, **page)
+    return crud.get_foil_holes(grid_square_id=gridSquareId, target=targetMetric, **page)
 
 
 @router.get("/{gridSquareId}/image", response_class=FileResponse)

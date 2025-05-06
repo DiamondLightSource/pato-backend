@@ -7,8 +7,8 @@ from ..users import admin, em_admin, user
     ["mock_user", "expected_count"],
     [
         pytest.param(user, 1, id="user"),
-        pytest.param(em_admin, 2, id="em"),
-        pytest.param(admin, 2, id="admin"),
+        pytest.param(em_admin, 3, id="em"),
+        pytest.param(admin, 3, id="admin"),
     ],
     indirect=["mock_user"],
 )
@@ -34,7 +34,7 @@ def test_get_collection_groups(mock_user, client):
     sessions = resp.json()
 
     assert resp.status_code == 200
-    assert sessions["total"] == 2
+    assert sessions["total"] == 3
     assert sessions["items"][0]["collectionGroups"] == 1
 
 

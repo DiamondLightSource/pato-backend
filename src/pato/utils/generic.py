@@ -2,11 +2,11 @@ import datetime
 import json
 import re
 from os.path import isfile
-from typing import Literal, Optional
+from typing import Annotated, Literal, Optional
 
 from fastapi import HTTPException, status
 from lims_utils.logging import app_logger
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import literal_column
 
 from ..models.response import DataPoint, ItemList
@@ -15,6 +15,15 @@ from .database import db
 
 # TODO: use 'type' when supported by Mypy
 MovieType = Literal["denoised", "segmented", "picked"] | None
+FoilHoleMetric = Annotated[
+    Literal["defocus", "astigmatism", "particleCount", "resolution"],
+    Field(
+        description=(
+            "Metric to return for all foil holes. Useful for heatmaps, or mapping resolution across foil "
+            "holes, for example."
+        )
+    ),
+]
 
 
 def parse_json_file(path):
@@ -96,9 +105,9 @@ class ProposalReference(BaseModel):
 
 
 def parse_proposal(proposalReference: str, visit_number: int | None = None):
-    assert (
-        len(proposalReference) > 2
-    ), "Proposal reference must be at least 3 characters long"
+    assert len(proposalReference) > 2, (
+        "Proposal reference must be at least 3 characters long"
+    )
 
     code = proposalReference[0:2]
     number = proposalReference[2:]

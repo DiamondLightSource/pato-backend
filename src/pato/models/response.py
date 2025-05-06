@@ -496,3 +496,4 @@ class FoilHole(BaseModel):
     x: int = Field(validation_alias="pixelLocationX")
     y: int = Field(validation_alias="pixelLocationY")
     movieCount: Optional[int] = 0
+    val: Optional[float] = 0

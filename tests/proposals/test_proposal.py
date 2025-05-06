@@ -8,8 +8,8 @@ from ..users import admin, em_admin, mx_admin, user
     [
         pytest.param(mx_admin, 2, id="mx"),
         pytest.param(user, 1, id="user"),
-        pytest.param(em_admin, 1, id="em"),
-        pytest.param(admin, 5, id="admin"),
+        pytest.param(em_admin, 2, id="em"),
+        pytest.param(admin, 6, id="admin"),
     ],
     indirect=["mock_user"],
 )
