@@ -2,11 +2,11 @@ import datetime
 import json
 import re
 from os.path import isfile
-from typing import Annotated, Literal, Optional
+from typing import Literal, Optional
 
 from fastapi import HTTPException, status
 from lims_utils.logging import app_logger
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from sqlalchemy import literal_column
 
 from ..models.response import DataPoint, ItemList
@@ -15,15 +15,6 @@ from .database import db
 
 # TODO: use 'type' when supported by Mypy
 MovieType = Literal["denoised", "segmented", "picked"] | None
-FoilHoleMetric = Annotated[
-    Literal["defocus", "astigmatism", "particleCount", "resolution"],
-    Field(
-        description=(
-            "Metric to return for all foil holes. Useful for heatmaps, or mapping resolution across foil "
-            "holes, for example."
-        )
-    ),
-]
 
 
 def parse_json_file(path):
