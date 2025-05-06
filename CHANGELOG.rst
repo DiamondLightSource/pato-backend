@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.17.0 (25/04/2025)
++++++++++
+
+**Added**
+
+- Endpoint for returning first central slice of data collection `/dataCollections/{collectionId}/centralSlice`
+
++++++++++
 v1.16.1 (09/04/2025)
 +++++++++
 
