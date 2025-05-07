@@ -42,7 +42,7 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             == MotionCorrection.motionCorrectionId,
             isouter=True,
         ).group_by(
-            FoilHole.foilHoleId, Movie.movieId
+            FoilHole.foilHoleId
         )
     )
 
