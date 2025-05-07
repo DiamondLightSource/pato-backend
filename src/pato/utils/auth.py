@@ -1,6 +1,6 @@
 from lims_utils.auth import GenericUser
 from lims_utils.tables import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
-from sqlalchemy import Select, or_
+from sqlalchemy import Select, and_, or_
 
 from ..auth import is_admin
 from .config import Config
@@ -15,23 +15,54 @@ def get_allowed_beamlines(perms: list[int]) -> set[str]:
 
     return allowed_beamlines
 
+def _get_staff_perms(user: GenericUser):
+    """Get the appropriate set of beamline-related permissions based on an user's user groups
 
-def check_session(query: Select, user: GenericUser):
+    Args:
+        user: User to check permissions for
+
+    Returns:
+        Additional SQL conditions based on user permissions, or None if user has no extra permissions"""
+    allowed_beamlines = get_allowed_beamlines(user.permissions)
+
+    if allowed_beamlines:
+        if Config.facility.users_only_on_industrial:
+            # We only want to restrict industrial visits to listed users
+            return and_(
+                Proposal.proposalCode.not_in(["ic", "il", "in", "sw"]),
+                BLSession.beamLineName.in_(allowed_beamlines),
+            )
+
+        return BLSession.beamLineName.in_(allowed_beamlines)
+
+def check_session(query: Select, user: GenericUser, join_proposal: bool = False):
+    """Include filters in provided query to ensure that only sessions the user has permission to view
+    are returned.
+
+    Args:
+        query: Original query
+        user: User to check against
+        join_proposal: Join proposal when building query
+
+    Returns
+        Modified query"""
     if is_admin(user.permissions):
         return query
 
-    allowed_beamlines = get_allowed_beamlines(user.permissions)
     or_expressions = [SessionHasPerson.personId == user.id]
 
-    if allowed_beamlines:
-        or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
+    staff_perms = _get_staff_perms(user)
+    if staff_perms is not None:
+        if Config.facility.users_only_on_industrial and join_proposal:
+            query = query.join(Proposal, BLSession.proposalId == Proposal.proposalId)
+        or_expressions.append(staff_perms)
 
     return (
         query.distinct()
         .join(
             SessionHasPerson,
             SessionHasPerson.sessionId == BLSession.sessionId,
-            isouter=(len(allowed_beamlines) > 0),
+            isouter=(staff_perms is not None),
         )
         .filter(
             or_(*or_expressions),
@@ -40,21 +71,30 @@ def check_session(query: Select, user: GenericUser):
 
 
 def check_proposal(query: Select, user: GenericUser):
+    """Include filters in provided query to ensure that only proposals the user has permission to view
+    are returned.
+
+    Args:
+        query: Original query
+        user: User to check against
+
+    Returns
+        Modified query"""
     if is_admin(user.permissions):
         return query
 
-    allowed_beamlines = get_allowed_beamlines(user.permissions)
     or_expressions = [ProposalHasPerson.personId == user.id]
 
-    if allowed_beamlines:
-        or_expressions.append(BLSession.beamLineName.in_(allowed_beamlines))
+    staff_perms = _get_staff_perms(user)
+    if staff_perms is not None:
+        or_expressions.append(staff_perms)
 
     return (
         query.distinct()
         .join(
             ProposalHasPerson,
             ProposalHasPerson.proposalId == Proposal.proposalId,
-            isouter=(len(allowed_beamlines) > 0),
+            isouter=(staff_perms is not None),
         )
         .filter(
             or_(*or_expressions),

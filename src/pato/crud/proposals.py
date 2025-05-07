@@ -6,7 +6,7 @@ from sqlalchemy import or_, select
 
 from ..models.response import ProposalResponse
 from ..utils.auth import check_proposal
-from ..utils.database import paginate
+from ..utils.database import db
 
 
 def get_proposals(
@@ -31,4 +31,4 @@ def get_proposals(
         .order_by(BLSession.startDate.desc())
     )
 
-    return paginate(check_proposal(query, user), limit, page)
+    return db.paginate(check_proposal(query, user), limit, page)

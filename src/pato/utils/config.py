@@ -23,6 +23,7 @@ class Facility:
     active_session_cutoff: int = 5
     sample_handling_url: str = "https://ebic-sample-handling.diamond.ac.uk"
     frontend_url: str = "http://localhost/"
+    users_only_on_industrial: bool = False
 
 
 @dataclass

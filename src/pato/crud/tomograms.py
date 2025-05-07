@@ -19,7 +19,7 @@ from ..models.response import (
     FullMovieWithTilt,
     ItemList,
 )
-from ..utils.database import db, paginate
+from ..utils.database import db
 from ..utils.generic import MovieType, parse_json_file, validate_path
 
 
@@ -123,7 +123,7 @@ def get_motion_correction(
         .order_by(TiltImageAlignment.refinedTiltAngle)
     )
 
-    motion = dict(paginate(query, limit, page))
+    motion = dict(db.paginate(query, limit, page))
 
     raw_total = db.session.execute(
         select(

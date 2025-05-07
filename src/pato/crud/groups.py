@@ -41,7 +41,7 @@ def get_collection_group(group_id: int):
         .filter(DataCollectionGroup.dataCollectionGroupId == group_id)
     ).one()
 
-
+# TODO: make session and proposal required
 def get_collection_groups(
     limit: int,
     page: int,
@@ -96,9 +96,9 @@ def get_collection_groups(
                     db.session.execute(session_id_query).all()
                 )
             )
-    return db.paginate(check_session(query, user), limit, page, slow_count=True)
+    return db.paginate(check_session(query, user, join_proposal=(not proposal)), limit, page, slow_count=True)
 
-
+# TODO: make group ID required
 def get_collections(
     limit: int,
     page: int,
@@ -132,6 +132,7 @@ def get_collections(
     sub_with_row = check_session(
         base_sub_query,
         user,
+        join_proposal=True
     )
 
     if groupId is not None:

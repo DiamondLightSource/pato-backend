@@ -1,12 +1,15 @@
 import pytest
 
-from ..users import admin, em_admin, mx_admin, user
+from pato.utils.config import Config
+
+from ..users import admin, em_admin, industrial_user, mx_admin, user
 
 
 @pytest.mark.parametrize(
     ["mock_user", "expected_count"],
     [
         pytest.param(mx_admin, 2, id="mx"),
+        pytest.param(industrial_user, 1, id="industrial_user"),
         pytest.param(user, 1, id="user"),
         pytest.param(em_admin, 2, id="em"),
         pytest.param(admin, 6, id="admin"),
@@ -50,3 +53,24 @@ def test_search_title(mock_user, client):
     resp = client.get("/proposals?search=Test%20Proposal")
     assert resp.status_code == 200
     assert resp.json()["total"] == 2
+
+
+@pytest.mark.parametrize(
+    ["mock_user", "expected_count"],
+    [
+        pytest.param(mx_admin, 2, id="mx"),
+        pytest.param(industrial_user, 1, id="industrial_user"),
+        pytest.param(user, 1, id="user"),
+        pytest.param(em_admin, 1, id="em"),
+        pytest.param(admin, 6, id="admin"),
+    ],
+    indirect=["mock_user"],
+)
+def test_industrial_users_only(mock_user, expected_count, client):
+    """Only return non-industrial proposals to non-admin staff if users_only_on_industrial is set"""
+    Config.facility.users_only_on_industrial = True
+    resp = client.get("/proposals")
+    Config.facility.users_only_on_industrial = False
+
+    assert resp.status_code == 200
+    assert resp.json()["total"] == expected_count
