@@ -55,14 +55,6 @@ def create_email(
         "html",
     )
 
-    print(
-        EMAIL_HEADER
-        + msg_body
-        + EMAIL_FOOTER.safe_substitute(
-            pato_link=get_alerts_frontend_url(proposal_reference, visit_number)
-        )
-    )
-
     with open(COMPANY_LOGO_LIGHT, "rb") as image_file:
         img = MIMEImage(image_file.read())
 
