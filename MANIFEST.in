@@ -1,3 +1,4 @@
 include src/pato/assets/DejaVuSerif.ttf
 include src/pato/assets/DejaVuSerifB.ttf
 include src/pato/assets/logo.jpg
+include src/pato/assets/logo-light.png
