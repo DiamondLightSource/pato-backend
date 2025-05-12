@@ -41,9 +41,13 @@ def create_email(
     Returns:
         Multipart message object
     """
+    # Normally, a single multipart email would work, but Microsoft Outlook won't display images properly unless
+    # they are encased in a 'related' multipart wrapper
+    msg_root = MIMEMultipart("related")
+    msg_root["Subject"] = subject
+    msg_root["From"] = Config.facility.contact_email
+
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = Config.facility.contact_email
 
     msg_p1 = MIMEText(msg_body, "plain")
     msg_p2 = MIMEText(
@@ -55,15 +59,19 @@ def create_email(
         "html",
     )
 
-    with open(COMPANY_LOGO_LIGHT, "rb") as image_file:
-        img = MIMEImage(image_file.read())
-
-    img.add_header("Content-ID", "<logo-light.png>")
-    msg.attach(img)
     msg.attach(msg_p1)
     msg.attach(msg_p2)
 
-    return msg
+    with open(COMPANY_LOGO_LIGHT, "rb") as image_file:
+        img = MIMEImage(image_file.read(), "png")
+
+    img.add_header("Content-ID", "<logo-light.png>")
+    # Microsoft Outlook treats the first part as an email and the other ones as attachments.
+    # This means the order here matters
+    msg_root.attach(msg)
+    msg_root.attach(img)
+
+    return msg_root
 
 
 def email_consumer(_, _1, _2, body: bytes):
