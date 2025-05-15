@@ -67,14 +67,6 @@ def validate_path(func):
     return wrap
 
 
-def filter_model(original: BaseModel, filter: list[str]):
-    for key in original.model_fields.keys():
-        if key in filter:
-            setattr(original, key, None)
-
-    return original
-
-
 def time_ago(delta: datetime.timedelta):
     today = datetime.date.today()
     return today - delta
@@ -96,9 +88,9 @@ class ProposalReference(BaseModel):
 
 
 def parse_proposal(proposalReference: str, visit_number: int | None = None):
-    assert (
-        len(proposalReference) > 2
-    ), "Proposal reference must be at least 3 characters long"
+    assert len(proposalReference) > 2, (
+        "Proposal reference must be at least 3 characters long"
+    )
 
     code = proposalReference[0:2]
     number = proposalReference[2:]

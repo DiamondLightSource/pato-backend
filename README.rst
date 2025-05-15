@@ -35,6 +35,7 @@ As for the JSON configuration file, details are as follows:
     - port: Mesasge queue port 
     - queue: Queue name
     - vhost: Message queue virtual host
+    - consumer_queue: Queue to consume messages from (for notifications)
 - ispyb
     - pool: Connection pool size
     - overflow: Connection pool overflow max size
@@ -43,6 +44,7 @@ As for the JSON configuration file, details are as follows:
     - smtp_server: SMTP server host
     - smtp_port: SMTP port to be used for emailing reports
     - active_session_cutoff: Time, in weeks, to be used as a threshold for determining if a session is active or not, following the end of the first processing pipeline. For example, a session would be considered inactive if there were no new actions for the past 5 weeks, by default.
+    - users_only_on_industrial: Hide industrial session details from staff, only display it to users/staff directly listed as part of that visit
 
 ==========
 Deployment

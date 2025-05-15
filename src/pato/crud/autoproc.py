@@ -27,7 +27,7 @@ from ..models.response import (
     ItemList,
     TomogramResponse,
 )
-from ..utils.database import db, paginate, unravel
+from ..utils.database import db, unravel
 from ..utils.generic import validate_path
 
 
@@ -57,7 +57,7 @@ def get_motion_correction(limit: int, page: int, autoProcId: int) -> Paged[FullM
         .order_by(MotionCorrection.imageNumber)
     )
 
-    return paginate(query, limit, page)
+    return db.paginate(query, limit, page)
 
 
 def get_ctf(autoProcId: int):
@@ -94,7 +94,7 @@ def get_particle_picker(autoProcId: int, filterNull: bool, limit: int, page: int
         .order_by(MotionCorrection.imageNumber)
     )
 
-    return paginate(query, limit, page)
+    return db.paginate(query, limit, page)
 
 
 _2d_ordering: dict[str, UnaryExpression] = {
@@ -162,7 +162,7 @@ def get_classification(
     if excludeUnselected:
         query = query.filter(ParticleClassification.selected != 0)
 
-    return paginate(query, limit, page)
+    return db.paginate(query, limit, page)
 
 
 @validate_path

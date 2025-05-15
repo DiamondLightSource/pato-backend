@@ -42,11 +42,12 @@ class User(GenericUser):
         super().__init__(**user)
 
 
-def _check_perms(data_id: str | int, endpoint: str, token: str, options: str = ""):
+def _check_perms(data_id: str | int, endpoint: str, token: str, options: dict[str, str | int | bool] = {}):
     response = requests.get(
         "".join(
-            [Config.auth.endpoint, "permission/", endpoint, "/", str(data_id), options]
+            [Config.auth.endpoint, "permission/", endpoint, "/", str(data_id)]
         ),
+        params={**options, "usersOnly": Config.facility.users_only_on_industrial},
         headers={"Authorization": f"Bearer {token}"},
     )
 
@@ -117,7 +118,7 @@ class Permissions(GenericPermissions):
                 detail="Data collection group not found",
             )
 
-        _check_perms(session_id, "session", token.credentials, "?useId=true")
+        _check_perms(session_id, "session", token.credentials, {"useId": True})
 
         return groupId
 
@@ -140,7 +141,7 @@ class Permissions(GenericPermissions):
                 detail="Grid square not found",
             )
 
-        _check_perms(session_id, "session", token.credentials, "?useId=true")
+        _check_perms(session_id, "session", token.credentials, {"useId": True})
 
         return gridSquareId
 
@@ -164,6 +165,6 @@ class Permissions(GenericPermissions):
                 detail="Foil hole not found",
             )
 
-        _check_perms(session_id, "session", token.credentials, "?useId=true")
+        _check_perms(session_id, "session", token.credentials, {"useId": True})
 
         return foilHoleId

@@ -18,7 +18,10 @@ def test_get_middle(mock_permissions, client):
 def test_no_tilt_alignment(mock_permissions, client):
     """Get motion correction without tilt alignment data"""
     resp = client.get("/tomograms/3/motion")
-    assert resp.status_code == 404
+    sessions = resp.json()
+
+    assert resp.status_code == 200
+    assert sessions["total"] == 0
 
 
 def test_nth_motion(mock_permissions, client):
