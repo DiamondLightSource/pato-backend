@@ -30,6 +30,7 @@ from sqlalchemy import (
     select,
 )
 
+from ..crud.tomograms import get_slice_path
 from ..models.reprocessing import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
@@ -42,7 +43,7 @@ from ..models.response import (
     TomogramFullResponse,
 )
 from ..utils.database import db
-from ..utils.generic import check_session_active, parse_count
+from ..utils.generic import MovieType, check_session_active, parse_count
 from ..utils.pika import PikaPublisher
 
 _job_status_description = case(
@@ -377,3 +378,19 @@ def get_particle_count_per_resolution(collectionId: int) -> ItemList[DataPoint]:
     )
 
     return data
+
+
+def get_central_slice(collection_id: int, movie_type: MovieType = None) -> str:
+    tomogram_id = db.session.scalar(
+        select(Tomogram.tomogramId)
+        .filter(Tomogram.dataCollectionId == collection_id)
+        .limit(1)
+    )
+
+    if tomogram_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data collection has no tomograms",
+        )
+
+    return get_slice_path(tomogram_id, movie_type)

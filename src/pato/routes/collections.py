@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, status
+from fastapi.responses import FileResponse
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions
@@ -17,6 +18,7 @@ from ..models.response import (
     ReprocessingResponse,
     TomogramFullResponse,
 )
+from ..utils.generic import MovieType
 
 auth = Permissions.collection
 
@@ -163,3 +165,11 @@ def get_particle_count_per_resolution(collectionId: int = Depends(auth)):
 def get_session_report(collectionId: int = Depends(auth)):
     """Generate session report"""
     return report_crud.generate_report(collection_id=collectionId)
+
+
+@router.get("/{collectionId}/centralSlice", response_class=FileResponse)
+def get_tomogram_central_slice(
+    collectionId: int = Depends(auth), movieType: MovieType = None
+):
+    """Get central slice for first tomogram of data collection"""
+    return crud.get_central_slice(collection_id=collectionId, movie_type=movieType)

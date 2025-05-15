@@ -88,9 +88,9 @@ class ProposalReference(BaseModel):
 
 
 def parse_proposal(proposalReference: str, visit_number: int | None = None):
-    assert (
-        len(proposalReference) > 2
-    ), "Proposal reference must be at least 3 characters long"
+    assert len(proposalReference) > 2, (
+        "Proposal reference must be at least 3 characters long"
+    )
 
     code = proposalReference[0:2]
     number = proposalReference[2:]

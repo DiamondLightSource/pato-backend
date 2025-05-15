@@ -3,6 +3,22 @@ Changelog
 ==========
 
 +++++++++
+v1.17.1 (02/05/2025)
++++++++++
+
+**Changed**
+
+- Make classification values optional in model
+
++++++++++
+v1.17.0 (25/04/2025)
++++++++++
+
+**Added**
+
+- Endpoint for returning first central slice of data collection `/dataCollections/{collectionId}/centralSlice`
+
++++++++++
 v1.16.1 (09/04/2025)
 +++++++++
 
