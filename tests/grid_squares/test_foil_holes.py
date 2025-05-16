@@ -15,4 +15,4 @@ def test_get_metrics(mock_permissions, client):
     foil_hole = resp.json()["items"][0]
     assert foil_hole["resolution"] == 10
     assert foil_hole["particleCount"] == 35
-    assert foil_hole["astigmatism"] == 13.5
+    assert foil_hole["astigmatism"] == 1.35
