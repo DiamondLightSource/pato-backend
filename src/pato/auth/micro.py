@@ -47,7 +47,7 @@ def _check_perms(data_id: str | int, endpoint: str, token: str, options: dict[st
         "".join(
             [Config.auth.endpoint, "permission/", endpoint, "/", str(data_id)]
         ),
-        params={**options, "usersOnly": True},
+        params={**options, "usersOnly": Config.facility.users_only_on_industrial},
         headers={"Authorization": f"Bearer {token}"},
     )
 

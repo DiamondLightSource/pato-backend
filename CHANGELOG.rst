@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.17.2 (09/05/2025)
++++++++++
+
+**Fixed**
+
+- Display Diamond logo correctly in emails
+
++++++++++
 v1.17.1 (02/05/2025)
 +++++++++
 

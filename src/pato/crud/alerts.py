@@ -1,10 +1,13 @@
 import json
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from smtplib import SMTP
 
 from lims_utils.auth import GenericUser
-from lims_utils.tables import BLSession, DataCollectionGroup, Person, Proposal
+from lims_utils.tables import (
+    BLSession,
+    DataCollectionGroup,
+    Person,
+    Proposal,
+)
 from sqlalchemy import select, update
 
 from ..models.alerts import (
@@ -15,6 +18,7 @@ from ..models.alerts import (
 )
 from ..utils.config import Config
 from ..utils.database import db, unravel
+from ..utils.email import create_email
 from ..utils.generic import get_alerts_frontend_url, pascal_case_to_title
 from ..utils.pika import PikaPublisher
 
@@ -54,10 +58,6 @@ def sign_up_for_alerts(
 
     alert_rows = ""
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Pipeline alerts activated for {session_reference} - {group_id}"
-    msg["From"] = Config.facility.contact_email
-
     for value in ALERT_FIELDS:
         if (
             alert_params.get(value + "Min") is not None
@@ -76,15 +76,17 @@ def sign_up_for_alerts(
         pato_link=get_alerts_frontend_url(proposal_reference, session.visit_number),
     )
 
-    # TODO: make pure, plain no-HTML message body
-    msg_p1 = MIMEText(message_body, "plain")
-    msg_p2 = MIMEText(message_body, "html")
-
-    msg.attach(msg_p1)
-    msg.attach(msg_p2)
+    msg = create_email(
+        message_body,
+        f"Pipeline alerts activated for {session_reference} - {group_id}",
+        proposal_reference,
+        session.visit_number,
+    )
 
     with SMTP(Config.facility.smtp_server, Config.facility.smtp_port) as smtp:
         r_msg = msg
         r_msg["To"] = parameters.email
 
-        smtp.sendmail(Config.facility.contact_email, parameters.email, r_msg.as_string())
+        smtp.sendmail(
+            Config.facility.contact_email, parameters.email, r_msg.as_string()
+        )
