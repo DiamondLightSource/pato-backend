@@ -3,6 +3,15 @@ Changelog
 ==========
 
 +++++++++
+v1.18.0 (16/05/2025)
++++++++++
+
+**Added**
+
+- `/grid-squares/{gridSquareId}/foil-holes` now returns CTF/particle count values
+- Industrials can now be hidden from staff with `users_only_on_industrial`
+
++++++++++
 v1.17.2 (09/05/2025)
 +++++++++
 
