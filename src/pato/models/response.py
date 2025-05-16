@@ -498,5 +498,4 @@ class FoilHole(BaseModel):
     movieCount: Optional[int] = 0
     particleCount: Optional[float] = None
     resolution: Optional[float] = None
-    defocus: Optional[float] = None
     astigmatism: Optional[float] = None

@@ -20,8 +20,9 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             coalesce(FoilHole.pixelLocationY, 0).label("pixelLocationY"),
             coalesce(FoilHole.diameter, 0).label("diameter"),
             FoilHole.foilHoleId,
-            func.avg(CTF.astigmatism).label("astigmatism"),
-            func.avg(CTF.estimatedDefocus).label("defocus"),
+            # Astigmatism can be negative if short/long axis get mixed up when calculating
+            # astigmatism from defocus
+            func.abs(func.avg(CTF.astigmatism)).label("astigmatism"),
             func.avg(CTF.estimatedResolution).label("resolution"),
             func.avg(ParticlePicker.numberOfParticles).label("particleCount"),
             func.count(distinct(Movie.movieId)).label("movieCount"),
@@ -43,7 +44,7 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             == MotionCorrection.motionCorrectionId,
             isouter=True,
         ).group_by(
-            FoilHole.foilHoleId, Movie.movieId
+            FoilHole.foilHoleId
         )
     )
 

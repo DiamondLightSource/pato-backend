@@ -16,4 +16,3 @@ def test_get_metrics(mock_permissions, client):
     assert foil_hole["resolution"] == 10
     assert foil_hole["particleCount"] == 35
     assert foil_hole["astigmatism"] == 13.5
-    assert foil_hole["defocus"] == 13

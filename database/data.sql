@@ -1,5 +1,5 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19  Distrib 10.11.10-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.11.11-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: ispyb
 -- ------------------------------------------------------
@@ -22,7 +22,7 @@
 
 DROP TABLE IF EXISTS `AdminActivity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AdminActivity` (
   `adminActivityId` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL DEFAULT '',
@@ -50,7 +50,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AdminVar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AdminVar` (
   `varId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
@@ -78,7 +78,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Aperture`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Aperture` (
   `apertureId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sizeX` float DEFAULT NULL,
@@ -101,7 +101,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Atlas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Atlas` (
   `atlasId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionGroupId` int(11) NOT NULL,
@@ -131,7 +131,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProc` (
   `autoProcId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'Related program item',
@@ -176,7 +176,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcIntegration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcIntegration` (
   `autoProcIntegrationId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `dataCollectionId` int(11) unsigned NOT NULL COMMENT 'DataCollection item',
@@ -237,7 +237,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcProgram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcProgram` (
   `autoProcProgramId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `processingCommandLine` varchar(255) DEFAULT NULL COMMENT 'Command line for running the automatic processing',
@@ -297,7 +297,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcProgramAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcProgramAttachment` (
   `autoProcProgramAttachmentId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcProgramId` int(10) unsigned NOT NULL COMMENT 'Related autoProcProgram item',
@@ -362,7 +362,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcProgramMessage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcProgramMessage` (
   `autoProcProgramMessageId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `autoProcProgramId` int(10) unsigned DEFAULT NULL,
@@ -391,7 +391,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcScaling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcScaling` (
   `autoProcScalingId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcId` int(10) unsigned DEFAULT NULL COMMENT 'Related autoProc item (used by foreign key)',
@@ -430,7 +430,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcScalingStatistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcScalingStatistics` (
   `autoProcScalingStatisticsId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcScalingId` int(10) unsigned DEFAULT NULL COMMENT 'Related autoProcScaling item (used by foreign key)',
@@ -512,7 +512,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcScaling_has_Int`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcScaling_has_Int` (
   `autoProcScaling_has_IntId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcScalingId` int(10) unsigned DEFAULT NULL COMMENT 'AutoProcScaling item',
@@ -555,7 +555,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `AutoProcStatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `AutoProcStatus` (
   `autoProcStatusId` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcIntegrationId` int(10) unsigned NOT NULL,
@@ -584,7 +584,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_automationError`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_automationError` (
   `automationErrorId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `errorType` varchar(40) NOT NULL,
@@ -608,7 +608,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_automationFault`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_automationFault` (
   `automationFaultId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `automationErrorId` int(10) unsigned DEFAULT NULL,
@@ -640,7 +640,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_component` (
   `componentId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `systemId` int(10) unsigned DEFAULT NULL,
@@ -667,7 +667,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_component_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_component_beamline` (
   `component_beamlineId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `componentId` int(10) unsigned DEFAULT NULL,
@@ -693,7 +693,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_fault`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_fault` (
   `faultId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` int(10) unsigned NOT NULL,
@@ -740,7 +740,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_subcomponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_subcomponent` (
   `subcomponentId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `componentId` int(10) unsigned DEFAULT NULL,
@@ -767,7 +767,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_subcomponent_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_subcomponent_beamline` (
   `subcomponent_beamlineId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `subcomponentId` int(10) unsigned DEFAULT NULL,
@@ -793,7 +793,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_system`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_system` (
   `systemId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -817,7 +817,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BF_system_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BF_system_beamline` (
   `system_beamlineId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `systemId` int(10) unsigned DEFAULT NULL,
@@ -843,7 +843,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BFactorFit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BFactorFit` (
   `bFactorFitId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `particleClassificationId` int(11) unsigned NOT NULL,
@@ -873,7 +873,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSample` (
   `blSampleId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `diffractionPlanId` int(10) unsigned DEFAULT NULL,
@@ -972,7 +972,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleGroup` (
   `blSampleGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT 'Human-readable name',
@@ -1002,7 +1002,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleGroup_has_BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleGroup_has_BLSample` (
   `blSampleGroupId` int(11) unsigned NOT NULL,
   `blSampleId` int(11) unsigned NOT NULL,
@@ -1039,7 +1039,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImage` (
   `blSampleImageId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleId` int(11) unsigned NOT NULL,
@@ -1082,7 +1082,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImageAnalysis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImageAnalysis` (
   `blSampleImageAnalysisId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleImageId` int(11) unsigned DEFAULT NULL,
@@ -1118,7 +1118,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImageAutoScoreClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImageAutoScoreClass` (
   `blSampleImageAutoScoreClassId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleImageAutoScoreSchemaId` tinyint(3) unsigned DEFAULT NULL,
@@ -1153,7 +1153,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImageAutoScoreSchema`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImageAutoScoreSchema` (
   `blSampleImageAutoScoreSchemaId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `schemaName` varchar(25) NOT NULL COMMENT 'Name of the schema e.g. Hampton, MARCO',
@@ -1180,7 +1180,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImageMeasurement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImageMeasurement` (
   `blSampleImageMeasurementId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleImageId` int(11) unsigned NOT NULL,
@@ -1213,7 +1213,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImageScore`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImageScore` (
   `blSampleImageScoreId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -1249,7 +1249,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImage_has_AutoScoreClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
   `blSampleImageId` int(11) unsigned NOT NULL,
   `blSampleImageAutoScoreClassId` tinyint(3) unsigned NOT NULL,
@@ -1276,7 +1276,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleImage_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleImage_has_Positioner` (
   `blSampleImageHasPositionerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleImageId` int(10) unsigned NOT NULL,
@@ -1305,7 +1305,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleType` (
   `blSampleTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -1338,7 +1338,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSampleType_has_Component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSampleType_has_Component` (
   `blSampleTypeId` int(10) unsigned NOT NULL,
   `componentId` int(10) unsigned NOT NULL,
@@ -1365,7 +1365,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSample_has_DataCollectionPlan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSample_has_DataCollectionPlan` (
   `blSampleId` int(11) unsigned NOT NULL,
   `dataCollectionPlanId` int(11) unsigned NOT NULL,
@@ -1395,7 +1395,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSample_has_EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSample_has_EnergyScan` (
   `blSampleId` int(10) unsigned NOT NULL DEFAULT 0,
   `energyScanId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -1423,7 +1423,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSample_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSample_has_Positioner` (
   `blSampleHasPositioner` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `blSampleId` int(10) unsigned NOT NULL,
@@ -1451,7 +1451,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSession`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSession` (
   `sessionId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `beamLineSetupId` int(10) unsigned DEFAULT NULL,
@@ -1512,7 +1512,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSession_has_SCPosition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSession_has_SCPosition` (
   `blsessionhasscpositionid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blsessionid` int(11) unsigned NOT NULL,
@@ -1539,7 +1539,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSubSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSubSample` (
   `blSubSampleId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `blSampleId` int(10) unsigned NOT NULL COMMENT 'sample',
@@ -1589,7 +1589,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BLSubSample_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BLSubSample_has_Positioner` (
   `blSubSampleHasPositioner` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `blSubSampleId` int(10) unsigned NOT NULL,
@@ -1617,7 +1617,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamApertures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamApertures` (
   `beamAperturesid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `beamlineStatsId` int(11) unsigned DEFAULT NULL,
@@ -1646,7 +1646,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamCalendar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamCalendar` (
   `beamCalendarId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `run` varchar(7) NOT NULL,
@@ -1674,7 +1674,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamCentres`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamCentres` (
   `beamCentresid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `beamlineStatsId` int(11) unsigned DEFAULT NULL,
@@ -1702,7 +1702,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamLineSetup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamLineSetup` (
   `beamLineSetupId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `detectorId` int(11) DEFAULT NULL,
@@ -1775,7 +1775,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamlineAction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamlineAction` (
   `beamlineActionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` int(11) unsigned DEFAULT NULL,
@@ -1807,7 +1807,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `BeamlineStats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BeamlineStats` (
   `beamlineStatsId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `beamline` varchar(10) DEFAULT NULL,
@@ -1839,7 +1839,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CTF`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CTF` (
   `ctfId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `motionCorrectionId` int(11) unsigned DEFAULT NULL,
@@ -1864,7 +1864,7 @@ CREATE TABLE `CTF` (
   KEY `CTF_ibfk2` (`autoProcProgramId`),
   CONSTRAINT `CTF_ibfk1` FOREIGN KEY (`motionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`),
   CONSTRAINT `CTF_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1899,7 +1899,9 @@ INSERT INTO `CTF` VALUES
 (23,23,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,NULL,9,11,NULL,NULL,'/mnt/test.png',NULL),
 (24,24,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,NULL,11,14,NULL,NULL,'/mnt/test.png',NULL),
 (25,25,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,21,NULL,13,17,NULL,NULL,'/mnt/test.png',NULL),
-(26,NULL,56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,NULL,NULL,NULL,NULL,NULL);
+(26,NULL,56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,NULL,NULL,NULL,NULL,NULL),
+(27,30,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,NULL,9,12,NULL,NULL,'/mnt/test.png',NULL),
+(28,30,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,NULL,11,14,NULL,NULL,'/mnt/test.png',NULL);
 /*!40000 ALTER TABLE `CTF` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1909,7 +1911,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CalendarHash`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CalendarHash` (
   `calendarHashId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ckey` varchar(50) DEFAULT NULL,
@@ -1934,7 +1936,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Component` (
   `componentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `componentTypeId` int(11) unsigned NOT NULL,
@@ -1964,7 +1966,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ComponentLattice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComponentLattice` (
   `componentLatticeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `componentId` int(10) unsigned DEFAULT NULL,
@@ -1998,7 +2000,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ComponentSubType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComponentSubType` (
   `componentSubTypeId` int(11) unsigned NOT NULL,
   `name` varchar(31) NOT NULL,
@@ -2033,7 +2035,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ComponentType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComponentType` (
   `componentTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
@@ -2061,7 +2063,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Component_has_SubType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Component_has_SubType` (
   `componentId` int(10) unsigned NOT NULL,
   `componentSubTypeId` int(11) unsigned NOT NULL,
@@ -2087,7 +2089,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ConcentrationType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ConcentrationType` (
   `concentrationTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
@@ -2121,7 +2123,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Container`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Container` (
   `containerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `dewarId` int(10) unsigned DEFAULT NULL,
@@ -2222,7 +2224,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerHistory` (
   `containerHistoryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerId` int(10) unsigned DEFAULT NULL,
@@ -2257,7 +2259,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerInspection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerInspection` (
   `containerInspectionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerId` int(11) unsigned NOT NULL,
@@ -2300,7 +2302,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerQueue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerQueue` (
   `containerQueueId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerId` int(10) unsigned NOT NULL,
@@ -2334,7 +2336,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerQueueSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerQueueSample` (
   `containerQueueSampleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerQueueId` int(11) unsigned DEFAULT NULL,
@@ -2373,7 +2375,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerRegistry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerRegistry` (
   `containerRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `barcode` varchar(20) DEFAULT NULL,
@@ -2403,7 +2405,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerRegistry_has_Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerRegistry_has_Proposal` (
   `containerRegistryHasProposalId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
@@ -2439,7 +2441,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerReport` (
   `containerReportId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
@@ -2470,7 +2472,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ContainerType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerType` (
   `containerTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -2540,7 +2542,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CourierTermsAccepted`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CourierTermsAccepted` (
   `courierTermsAcceptedId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL,
@@ -2573,7 +2575,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CryoemInitialModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CryoemInitialModel` (
   `cryoemInitialModelId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `resolution` float DEFAULT NULL COMMENT 'Unit: Angstroms',
@@ -2599,7 +2601,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Crystal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Crystal` (
   `crystalId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `diffractionPlanId` int(10) unsigned DEFAULT NULL,
@@ -2666,7 +2668,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `CrystalComposition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CrystalComposition` (
   `crystalCompositionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `componentId` int(11) unsigned NOT NULL,
@@ -2700,7 +2702,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Crystal_has_UUID`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Crystal_has_UUID` (
   `crystal_has_UUID_Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `crystalId` int(10) unsigned NOT NULL,
@@ -2728,7 +2730,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataAcquisition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataAcquisition` (
   `dataAcquisitionId` int(10) NOT NULL AUTO_INCREMENT,
   `sampleCellId` int(10) NOT NULL,
@@ -2755,7 +2757,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataCollection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataCollection` (
   `dataCollectionId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `BLSAMPLEID` int(11) unsigned DEFAULT NULL,
@@ -2882,7 +2884,7 @@ CREATE TABLE `DataCollection` (
   CONSTRAINT `DataCollection_ibfk_6` FOREIGN KEY (`startPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_7` FOREIGN KEY (`endPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_8` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6017862 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6017880 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2915,7 +2917,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataCollectionComment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataCollectionComment` (
   `dataCollectionCommentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned NOT NULL,
@@ -2946,7 +2948,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataCollectionFileAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataCollectionFileAttachment` (
   `dataCollectionFileAttachmentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned NOT NULL,
@@ -2974,7 +2976,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataCollectionGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataCollectionGroup` (
   `dataCollectionGroupId` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `sessionId` int(10) unsigned NOT NULL COMMENT 'references Session table',
@@ -2999,7 +3001,7 @@ CREATE TABLE `DataCollectionGroup` (
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5441119 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
+) ENGINE=InnoDB AUTO_INCREMENT=5441137 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3029,7 +3031,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DataCollectionPlan_has_Detector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DataCollectionPlan_has_Detector` (
   `dataCollectionPlanHasDetectorId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionPlanId` int(11) unsigned NOT NULL,
@@ -3062,7 +3064,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Detector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Detector` (
   `detectorId` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `detectorType` varchar(255) DEFAULT NULL,
@@ -3113,7 +3115,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Dewar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Dewar` (
   `dewarId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `shippingId` int(10) unsigned DEFAULT NULL,
@@ -3176,7 +3178,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarLocation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarLocation` (
   `eventId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `dewarNumber` varchar(128) NOT NULL COMMENT 'Dewar number',
@@ -3204,7 +3206,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarLocationList`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarLocationList` (
   `locationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `locationName` varchar(128) NOT NULL DEFAULT '' COMMENT 'Location',
@@ -3227,7 +3229,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarRegistry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarRegistry` (
   `dewarRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `facilityCode` varchar(20) NOT NULL,
@@ -3264,7 +3266,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarRegistry_has_Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarRegistry_has_Proposal` (
   `dewarRegistryHasProposalId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dewarRegistryId` int(11) unsigned DEFAULT NULL,
@@ -3302,7 +3304,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarReport` (
   `dewarReportId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `facilityCode` varchar(20) NOT NULL,
@@ -3330,7 +3332,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DewarTransportHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DewarTransportHistory` (
   `DewarTransportHistoryId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `dewarId` int(10) unsigned DEFAULT NULL,
@@ -3358,7 +3360,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `DiffractionPlan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DiffractionPlan` (
   `diffractionPlanId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
@@ -3454,7 +3456,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `EnergyScan` (
   `energyScanId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` int(10) unsigned NOT NULL,
@@ -3543,7 +3545,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Event` (
   `eventId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `eventChainId` int(11) unsigned NOT NULL,
@@ -3579,7 +3581,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `EventChain`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `EventChain` (
   `eventChainId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned NOT NULL,
@@ -3605,7 +3607,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `EventType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `EventType` (
   `eventTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
@@ -3634,7 +3636,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ExperimentKindDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ExperimentKindDetails` (
   `experimentKindId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `diffractionPlanId` int(10) unsigned NOT NULL,
@@ -3663,7 +3665,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ExperimentType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ExperimentType` (
   `experimentTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -3726,7 +3728,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `FoilHole`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `FoilHole` (
   `foilHoleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `gridSquareId` int(11) unsigned NOT NULL,
@@ -3762,7 +3764,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `GeometryClassname`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `GeometryClassname` (
   `geometryClassnameId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `geometryClassname` varchar(45) DEFAULT NULL,
@@ -3786,7 +3788,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `GridImageMap`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `GridImageMap` (
   `gridImageMapId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
@@ -3815,7 +3817,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `GridInfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `GridInfo` (
   `gridInfoId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `xOffset` double DEFAULT NULL,
@@ -3865,7 +3867,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `GridSquare`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `GridSquare` (
   `gridSquareId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `atlasId` int(11) unsigned NOT NULL,
@@ -3904,7 +3906,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Image` (
   `imageId` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned NOT NULL DEFAULT 0,
@@ -3957,7 +3959,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ImageQualityIndicators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ImageQualityIndicators` (
   `dataCollectionId` int(11) unsigned NOT NULL,
   `imageNumber` mediumint(8) unsigned NOT NULL,
@@ -4005,7 +4007,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Imager`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Imager` (
   `imagerId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -4034,7 +4036,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `InspectionType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InspectionType` (
   `inspectionTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -4060,7 +4062,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `IspybCrystalClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `IspybCrystalClass` (
   `crystalClassId` int(11) NOT NULL AUTO_INCREMENT,
   `crystalClass_code` varchar(20) NOT NULL,
@@ -4084,7 +4086,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `IspybReference`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `IspybReference` (
   `referenceId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `referenceName` varchar(255) DEFAULT NULL COMMENT 'reference name',
@@ -4110,7 +4112,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `LDAPSearchBase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `LDAPSearchBase` (
   `ldapSearchBaseId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ldapSearchParametersId` int(11) unsigned NOT NULL COMMENT 'The other LDAP search parameters to be used with this search base',
@@ -4140,7 +4142,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `LDAPSearchParameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `LDAPSearchParameters` (
   `ldapSearchParametersId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `accountType` enum('group_member','staff_account','functional_account') NOT NULL COMMENT 'The entity type returned by the search',
@@ -4171,7 +4173,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `LabContact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `LabContact` (
   `labContactId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `personId` int(10) unsigned NOT NULL,
@@ -4209,7 +4211,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Laboratory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Laboratory` (
   `laboratoryId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `laboratoryUUID` varchar(45) DEFAULT NULL,
@@ -4241,7 +4243,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MXMRRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MXMRRun` (
   `mxMRRunId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `autoProcScalingId` int(11) unsigned NOT NULL,
@@ -4279,7 +4281,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MXMRRunBlob`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MXMRRunBlob` (
   `mxMRRunBlobId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mxMRRunId` int(11) unsigned NOT NULL,
@@ -4319,7 +4321,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ModelBuilding`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ModelBuilding` (
   `modelBuildingId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
@@ -4353,7 +4355,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MotionCorrection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MotionCorrection` (
   `motionCorrectionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
@@ -4381,7 +4383,7 @@ CREATE TABLE `MotionCorrection` (
   CONSTRAINT `MotionCorrection_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`),
   CONSTRAINT `MotionCorrection_ibfk3` FOREIGN KEY (`movieId`) REFERENCES `Movie` (`movieId`),
   CONSTRAINT `_MotionCorrection_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4416,7 +4418,8 @@ INSERT INTO `MotionCorrection` VALUES
 (23,6017412,56986680,3,NULL,NULL,NULL,NULL,160,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,23),
 (24,6017412,56986680,4,NULL,NULL,NULL,NULL,170,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,24),
 (25,6017412,56986680,5,NULL,NULL,NULL,NULL,60,NULL,'/mnt/test_xy_shift.json',NULL,'/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,25),
-(26,6017413,56986803,1,NULL,NULL,NULL,NULL,60,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/broken.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,26);
+(26,6017413,56986803,1,NULL,NULL,NULL,NULL,60,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/broken.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,26),
+(30,6017408,56986677,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/broken.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,27);
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4426,7 +4429,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MotionCorrectionDrift`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MotionCorrectionDrift` (
   `motionCorrectionDriftId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `motionCorrectionId` int(11) unsigned DEFAULT NULL,
@@ -4458,7 +4461,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `MotorPosition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MotorPosition` (
   `motorPositionId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phiX` double DEFAULT NULL,
@@ -4492,7 +4495,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Movie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Movie` (
   `movieId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
@@ -4558,7 +4561,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PDB`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PDB` (
   `pdbId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
@@ -4586,7 +4589,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PDBEntry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PDBEntry` (
   `pdbEntryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `autoProcProgramId` int(11) unsigned NOT NULL,
@@ -4629,7 +4632,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PDBEntry_has_AutoProcProgram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PDBEntry_has_AutoProcProgram` (
   `pdbEntryHasAutoProcId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `pdbEntryId` int(11) unsigned NOT NULL,
@@ -4658,7 +4661,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ParticleClassification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ParticleClassification` (
   `particleClassificationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `classNumber` int(10) unsigned DEFAULT NULL COMMENT 'Identified of the class. A unique ID given by Relion',
@@ -4709,7 +4712,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ParticleClassificationGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ParticleClassificationGroup` (
   `particleClassificationGroupId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `particlePickerId` int(10) unsigned DEFAULT NULL,
@@ -4749,7 +4752,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ParticleClassification_has_CryoemInitialModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ParticleClassification_has_CryoemInitialModel` (
   `particleClassificationId` int(10) unsigned NOT NULL,
   `cryoemInitialModelId` int(10) unsigned NOT NULL,
@@ -4781,7 +4784,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ParticlePicker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ParticlePicker` (
   `particlePickerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `programId` int(10) unsigned DEFAULT NULL,
@@ -4795,7 +4798,7 @@ CREATE TABLE `ParticlePicker` (
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4810,7 +4813,9 @@ INSERT INTO `ParticlePicker` VALUES
 (3,56986680,21,NULL,1,40,'/mnt/test.jpg'),
 (4,56986803,3,NULL,1,60,'/mnt/test.jpg'),
 (5,56986803,4,NULL,2,40,'/mnt/test.jpg'),
-(6,56986673,6,NULL,1,40,'');
+(6,56986673,6,NULL,1,40,''),
+(7,56986677,30,NULL,1,30,NULL),
+(8,56986677,30,NULL,1,40,NULL);
 /*!40000 ALTER TABLE `ParticlePicker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4820,7 +4825,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Permission` (
   `permissionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(15) NOT NULL,
@@ -4875,7 +4880,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Person` (
   `personId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `laboratoryId` int(10) unsigned DEFAULT NULL,
@@ -4928,7 +4933,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Phasing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Phasing` (
   `phasingId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
@@ -4965,7 +4970,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PhasingAnalysis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PhasingAnalysis` (
   `phasingAnalysisId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
@@ -4988,7 +4993,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PhasingProgramAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PhasingProgramAttachment` (
   `phasingProgramAttachmentId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingProgramRunId` int(11) unsigned NOT NULL COMMENT 'Related program item',
@@ -5017,7 +5022,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PhasingProgramRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PhasingProgramRun` (
   `phasingProgramRunId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingCommandLine` varchar(255) DEFAULT NULL COMMENT 'Command line for phasing',
@@ -5047,7 +5052,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PhasingStatistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PhasingStatistics` (
   `phasingStatisticsId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingHasScalingId1` int(11) unsigned NOT NULL COMMENT 'the dataset in question',
@@ -5086,7 +5091,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PhasingStep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PhasingStep` (
   `phasingStepId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `previousPhasingStepId` int(10) unsigned DEFAULT NULL,
@@ -5127,7 +5132,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Phasing_has_Scaling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Phasing_has_Scaling` (
   `phasingHasScalingId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
@@ -5157,7 +5162,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Position` (
   `positionId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `relativePositionId` int(11) unsigned DEFAULT NULL COMMENT 'relative position, null otherwise',
@@ -5193,7 +5198,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Positioner` (
   `positionerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `positioner` varchar(50) NOT NULL,
@@ -5217,7 +5222,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PreparePhasingData`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PreparePhasingData` (
   `preparePhasingDataId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
@@ -5251,7 +5256,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessedTomogram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessedTomogram` (
   `processedTomogramId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `tomogramId` int(11) unsigned NOT NULL COMMENT 'references Tomogram table',
@@ -5282,7 +5287,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessingJob`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessingJob` (
   `processingJobId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
@@ -5294,7 +5299,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3972 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=4134 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5346,7 +5351,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessingJobImageSweep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessingJobImageSweep` (
   `processingJobImageSweepId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `processingJobId` int(11) unsigned DEFAULT NULL,
@@ -5379,7 +5384,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessingJobParameter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessingJobParameter` (
   `processingJobParameterId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `processingJobId` int(11) unsigned DEFAULT NULL,
@@ -5389,7 +5394,7 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=27155 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28955 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5410,7 +5415,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessingPipeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessingPipeline` (
   `processingPipelineId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `processingPipelineCategoryId` int(11) unsigned DEFAULT NULL,
@@ -5453,7 +5458,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProcessingPipelineCategory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProcessingPipelineCategory` (
   `processingPipelineCategoryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -5480,7 +5485,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project` (
   `projectId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `personId` int(11) unsigned DEFAULT NULL,
@@ -5508,7 +5513,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_BLSample` (
   `projectId` int(11) unsigned NOT NULL,
   `blSampleId` int(11) unsigned NOT NULL,
@@ -5534,7 +5539,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_DCGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_DCGroup` (
   `projectId` int(11) unsigned NOT NULL,
   `dataCollectionGroupId` int(11) NOT NULL,
@@ -5560,7 +5565,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_EnergyScan` (
   `projectId` int(11) unsigned NOT NULL,
   `energyScanId` int(11) unsigned NOT NULL,
@@ -5586,7 +5591,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_Person` (
   `projectId` int(11) unsigned NOT NULL,
   `personId` int(11) unsigned NOT NULL,
@@ -5612,7 +5617,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_Protein`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_Protein` (
   `projectId` int(11) unsigned NOT NULL,
   `proteinId` int(11) unsigned NOT NULL,
@@ -5638,7 +5643,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_Session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_Session` (
   `projectId` int(11) unsigned NOT NULL,
   `sessionId` int(11) unsigned NOT NULL,
@@ -5664,7 +5669,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_Shipping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_Shipping` (
   `projectId` int(11) unsigned NOT NULL,
   `shippingId` int(11) unsigned NOT NULL,
@@ -5690,7 +5695,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_User`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_User` (
   `projecthasuserid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `projectid` int(11) unsigned NOT NULL,
@@ -5716,7 +5721,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Project_has_XFEFSpectrum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Project_has_XFEFSpectrum` (
   `projectId` int(11) unsigned NOT NULL,
   `xfeFluorescenceSpectrumId` int(11) unsigned NOT NULL,
@@ -5742,7 +5747,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Proposal` (
   `proposalId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `personId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -5783,7 +5788,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ProposalHasPerson`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ProposalHasPerson` (
   `proposalHasPersonId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL,
@@ -5817,7 +5822,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Protein`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Protein` (
   `proteinId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -5884,7 +5889,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Protein_has_PDB`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Protein_has_PDB` (
   `proteinhaspdbid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `proteinid` int(11) unsigned NOT NULL,
@@ -5914,7 +5919,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `PurificationColumn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PurificationColumn` (
   `purificationColumnId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -5947,7 +5952,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `RelativeIceThickness`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `RelativeIceThickness` (
   `relativeIceThicknessId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `motionCorrectionId` int(11) unsigned DEFAULT NULL,
@@ -5985,7 +5990,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `RobotAction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `RobotAction` (
   `robotActionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blsessionId` int(11) unsigned NOT NULL,
@@ -6026,7 +6031,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SSXDataCollection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SSXDataCollection` (
   `dataCollectionId` int(11) unsigned NOT NULL COMMENT 'Primary key is same as dataCollection (1 to 1).',
   `repetitionRate` float DEFAULT NULL,
@@ -6059,7 +6064,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SW_onceToken`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SW_onceToken` (
   `onceTokenId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `token` varchar(128) DEFAULT NULL,
@@ -6091,7 +6096,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SampleComposition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SampleComposition` (
   `sampleCompositionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `componentId` int(11) unsigned NOT NULL,
@@ -6125,7 +6130,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScanParametersModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScanParametersModel` (
   `scanParametersModelId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `scanParametersServiceId` int(10) unsigned DEFAULT NULL,
@@ -6167,7 +6172,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScanParametersService`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScanParametersService` (
   `scanParametersServiceId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -6194,7 +6199,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Schedule` (
   `scheduleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -6222,7 +6227,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScheduleComponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScheduleComponent` (
   `scheduleComponentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `scheduleId` int(11) unsigned NOT NULL,
@@ -6288,7 +6293,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SchemaStatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SchemaStatus` (
   `schemaStatusId` int(11) NOT NULL AUTO_INCREMENT,
   `scriptName` varchar(100) NOT NULL,
@@ -6524,7 +6529,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Screen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Screen` (
   `screenId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -6551,7 +6556,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreenComponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreenComponent` (
   `screenComponentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `screenComponentGroupId` int(11) unsigned NOT NULL,
@@ -6581,7 +6586,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreenComponentGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreenComponentGroup` (
   `screenComponentGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `screenId` int(11) unsigned NOT NULL,
@@ -6607,7 +6612,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Screening`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Screening` (
   `screeningId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
@@ -6667,7 +6672,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningInput`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningInput` (
   `screeningInputId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `screeningId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -6716,7 +6721,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningOutput`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningOutput` (
   `screeningOutputId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `screeningId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -6788,7 +6793,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningOutputLattice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningOutputLattice` (
   `screeningOutputLatticeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `screeningOutputId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -6855,7 +6860,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningRank`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningRank` (
   `screeningRankId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `screeningRankSetId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -6885,7 +6890,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningRankSet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningRankSet` (
   `screeningRankSetId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `rankEngine` varchar(255) DEFAULT NULL,
@@ -6910,7 +6915,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningStrategy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningStrategy` (
   `screeningStrategyId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `screeningOutputId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -6968,7 +6973,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningStrategySubWedge`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningStrategySubWedge` (
   `screeningStrategySubWedgeId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `screeningStrategyWedgeId` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to parent table',
@@ -7028,7 +7033,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ScreeningStrategyWedge`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ScreeningStrategyWedge` (
   `screeningStrategyWedgeId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `screeningStrategyId` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to parent table',
@@ -7086,7 +7091,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SessionType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SessionType` (
   `sessionTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` int(10) unsigned NOT NULL,
@@ -7112,7 +7117,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Session_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Session_has_Person` (
   `sessionId` int(10) unsigned NOT NULL DEFAULT 0,
   `personId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -7148,7 +7153,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Shipping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Shipping` (
   `shippingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL DEFAULT 0,
@@ -7226,7 +7231,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ShippingHasSession`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ShippingHasSession` (
   `shippingId` int(10) unsigned NOT NULL,
   `sessionId` int(10) unsigned NOT NULL,
@@ -7258,7 +7263,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Sleeve`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Sleeve` (
   `sleeveId` tinyint(3) unsigned NOT NULL COMMENT 'The unique sleeve id 1...255 which also identifies its home location in the freezer',
   `location` tinyint(3) unsigned DEFAULT NULL COMMENT 'NULL == freezer, 1...255 for local storage locations',
@@ -7283,7 +7288,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SpaceGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SpaceGroup` (
   `spaceGroupId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `spaceGroupNumber` int(10) unsigned DEFAULT NULL COMMENT 'ccp4 number pr IUCR',
@@ -7547,7 +7552,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `SubstructureDetermination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SubstructureDetermination` (
   `substructureDeterminationId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
@@ -7582,7 +7587,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `TiltImageAlignment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TiltImageAlignment` (
   `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
   `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
@@ -7630,7 +7635,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Tomogram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Tomogram` (
   `tomogramId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
@@ -7689,7 +7694,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `UserGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `UserGroup` (
   `userGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
@@ -7738,7 +7743,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `UserGroup_has_LDAPSearchParameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `UserGroup_has_LDAPSearchParameters` (
   `userGroupId` int(11) unsigned NOT NULL,
   `ldapSearchParametersId` int(11) unsigned NOT NULL,
@@ -7768,7 +7773,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `UserGroup_has_Permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `UserGroup_has_Permission` (
   `userGroupId` int(11) unsigned NOT NULL,
   `permissionId` int(11) unsigned NOT NULL,
@@ -7853,7 +7858,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `UserGroup_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `UserGroup_has_Person` (
   `userGroupId` int(11) unsigned NOT NULL,
   `personId` int(10) unsigned NOT NULL,
@@ -7885,7 +7890,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XFEFluorescenceComposite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XFEFluorescenceComposite` (
   `xfeFluorescenceCompositeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `r` int(10) unsigned NOT NULL COMMENT 'Red layer',
@@ -7920,7 +7925,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XFEFluorescenceSpectrum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XFEFluorescenceSpectrum` (
   `xfeFluorescenceSpectrumId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sessionId` int(10) unsigned NOT NULL,
@@ -8032,7 +8037,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XRFFluorescenceMapping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XRFFluorescenceMapping` (
   `xrfFluorescenceMappingId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `xrfFluorescenceMappingROIId` int(11) unsigned NOT NULL,
@@ -8070,7 +8075,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XRFFluorescenceMappingROI`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XRFFluorescenceMappingROI` (
   `xrfFluorescenceMappingROIId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `startEnergy` float NOT NULL,
@@ -8103,7 +8108,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XrayCentring`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XrayCentring` (
   `xrayCentringId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionGroupId` int(11) NOT NULL COMMENT 'references DataCollectionGroup table',
@@ -8130,7 +8135,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `XrayCentringResult`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `XrayCentringResult` (
   `xrayCentringResultId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `gridInfoId` int(11) unsigned NOT NULL,
@@ -8159,7 +8164,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `v_run`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `v_run` (
   `runId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `run` varchar(7) NOT NULL DEFAULT '',
@@ -8258,7 +8263,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `zc_ZocaloBuffer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `zc_ZocaloBuffer` (
   `AutoProcProgramID` int(10) unsigned NOT NULL COMMENT 'Reference to an existing AutoProcProgram',
   `UUID` int(10) unsigned NOT NULL COMMENT 'AutoProcProgram-specific unique identifier',
@@ -8290,4 +8295,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-28 16:11:54
+-- Dump completed on 2025-05-07  9:21:32
