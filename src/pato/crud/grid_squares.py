@@ -21,8 +21,9 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             coalesce(FoilHole.diameter, 0).label("diameter"),
             FoilHole.foilHoleId,
             # Astigmatism can be negative if short/long axis get mixed up when calculating
-            # astigmatism from defocus
-            func.abs(func.avg(CTF.astigmatism)).label("astigmatism"),
+            # astigmatism from defocus. It is also inserted in the database in angstroms,
+            # when we want to return it in nm.
+            (func.abs(func.avg(CTF.astigmatism))/10).label("astigmatism"),
             func.avg(CTF.estimatedResolution).label("resolution"),
             func.avg(ParticlePicker.numberOfParticles).label("particleCount"),
             func.count(distinct(Movie.movieId)).label("movieCount"),
