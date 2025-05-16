@@ -69,8 +69,8 @@ Testing
     - You may change the port or where the container itself runs, just remember to update `.test.env`
 - Run :code:`tox -e pytest`
 
-.. |code_ci| image:: https://gitlab.diamond.ac.uk/lims/pato-backend/badges/master/pipeline.svg
-    :target: https://gitlab.diamond.ac.uk/lims/pato-backend/-/pipelines
+.. |code_ci| image:: https://github.com/DiamondLightSource/pato-backend/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/DiamondLightSource/pato-backend/actions/workflows/ci.yml
     :alt: Code CI
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
