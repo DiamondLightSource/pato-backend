@@ -18,7 +18,12 @@ jobs:
     steps:
       - id: clean
         name: "Clean branch name"
-        run: echo "branch=${BRANCH_NAME//\//-}" >> "$GITHUB_OUTPUT"
+        run: |
+          if git diff --name-only master feature/lims-1730/add-email-in-session | grep database/* &> /dev/null; then
+            echo "branch=master" >> "$GITHUB_OUTPUT"
+          else
+            echo "branch=${BRANCH_NAME//\//-}" >> "$GITHUB_OUTPUT"
+          fi
   test:
     runs-on: ubuntu-latest
     needs: get-db-image
