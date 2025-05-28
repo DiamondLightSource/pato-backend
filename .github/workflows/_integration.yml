@@ -18,6 +18,7 @@ jobs:
     steps:
       - id: clean
         name: "Clean branch name"
+        uses: actions/checkout@v4
         run: |
           git fetch && git pull origin master
           if git diff --name-only master ${BRANCH_NAME} | grep database/* &> /dev/null; then
