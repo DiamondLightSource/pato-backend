@@ -22,7 +22,7 @@ jobs:
         name: "Clean branch name"
         run: |
           git fetch
-          git diff --name-only master HEAD | grep database/
+          git diff --name-only origin/master HEAD | grep database/
           if [ PIPESTATUS[0] ]; then
             echo "branch=master" >> "$GITHUB_OUTPUT"
           else
