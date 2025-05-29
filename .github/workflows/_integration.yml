@@ -22,7 +22,7 @@ jobs:
         name: "Clean branch name"
         run: |
           git fetch
-          if git diff --name-only master ${BRANCH_NAME} | grep database/* &> /dev/null; then
+          if git diff --name-only origin/master origin/${BRANCH_NAME} | grep database/* &> /dev/null; then
             echo "branch=master" >> "$GITHUB_OUTPUT"
           else
             echo "branch=${BRANCH_NAME//\//-}" >> "$GITHUB_OUTPUT"
