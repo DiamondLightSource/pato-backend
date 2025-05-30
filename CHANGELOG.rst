@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.18.1 (30/05/2025)
++++++++++
+
+**Fixed**
+
+- Remove redundant proposal join on sessions endpoint
+
++++++++++
 v1.18.0 (16/05/2025)
 +++++++++
 
