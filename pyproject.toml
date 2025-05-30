@@ -22,10 +22,10 @@ dependencies = [
     "requests~=2.32.3",
     "mysqlclient~=2.2.7",
     "mysql-connector-python~=8.2.0",
-    "pydantic[email]~=2.11.3",
+    "pydantic[email]~=2.11.5",
     "fpdf2~=2.8.3",
     "types-requests",
-    "lims-utils~=0.4.4"
+    "lims-utils~=0.4.6"
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
