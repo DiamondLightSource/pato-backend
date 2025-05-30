@@ -128,7 +128,7 @@ def get_sessions(
             )
         )
 
-    query = check_session(query, user, join_proposal=(proposal is None))
+    query = check_session(query, user, join_proposal=False)
 
     if countCollections:
         query = query.join(
