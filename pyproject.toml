@@ -38,7 +38,7 @@ dev = [
     "mypy",
     "pipdeptree",
     "pre-commit",
-    "pytest",
+    "pytest~=8.3.5",
     "pytest-cov",
     "ruff",
     "tox-direct",
