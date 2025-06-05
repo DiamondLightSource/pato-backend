@@ -442,6 +442,8 @@ class Classification(OrmBaseModel):
     selected: Optional[bool] = None
     bFactorFitIntercept: Optional[float] = None
     bFactorFitLinear: Optional[float] = None
+    angularEfficiency: Optional[float] = None
+    suggestedTilt: Optional[float] = None
 
 
 class RelativeIceThickness(OrmBaseModel):
