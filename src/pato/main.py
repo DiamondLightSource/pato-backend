@@ -17,6 +17,7 @@ from .routes import (
     grid_squares,
     groups,
     movies,
+    persons,
     procjob,
     proposals,
     sessions,
@@ -68,3 +69,4 @@ app.include_router(feedback.router)
 app.include_router(procjob.router)
 app.include_router(grid_squares.router)
 app.include_router(foil_holes.router)
+app.include_router(persons.router)
