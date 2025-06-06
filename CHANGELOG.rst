@@ -3,6 +3,18 @@ Changelog
 ==========
 
 +++++++++
+v1.19.0 (06/06/2025)
++++++++++
+
+**Added**
+
+- Added `/me` endpoint to update user information
+
+**Changed**
+
+- Return angular efficiency and suggested tilt for particle classifications
+
++++++++++
 v1.18.1 (30/05/2025)
 +++++++++
 
