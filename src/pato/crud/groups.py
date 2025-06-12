@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import HTTPException, status
 from lims_utils.auth import GenericUser
-from lims_utils.models import Paged
+from lims_utils.models import Paged, ProposalReference
 from lims_utils.tables import (
     Atlas,
     BLSession,
@@ -24,7 +24,7 @@ from ..models.response import (
 )
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
-from ..utils.generic import parse_proposal, validate_path
+from ..utils.generic import validate_path
 
 
 def get_collection_group(group_id: int):
@@ -41,14 +41,12 @@ def get_collection_group(group_id: int):
         .filter(DataCollectionGroup.dataCollectionGroupId == group_id)
     ).one()
 
-# TODO: make session and proposal required
+
 def get_collection_groups(
     limit: int,
     page: int,
-    session: Optional[int],
-    proposal: Optional[str],
-    search: Optional[str],
-    user: GenericUser,
+    proposal_reference: ProposalReference,
+    search: Optional[str]
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         select(
@@ -62,41 +60,21 @@ def get_collection_groups(
         .join(Atlas, isouter=True)
         .join(ExperimentType, isouter=True)
         .join(BLSession)
+        .join(Proposal)
         .join(DataCollection)
+        .filter(
+            Proposal.proposalCode == proposal_reference.code,
+            Proposal.proposalNumber == proposal_reference.number,
+            BLSession.visit_number == proposal_reference.visit_number,
+        )
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
 
     if search is not None and search != "":
         query = query.filter(DataCollectionGroup.comments.contains(search))
 
-    if proposal:
-        proposal_reference = parse_proposal(proposal)
-        session_id_query = (
-            select(BLSession.sessionId)
-            .select_from(Proposal)
-            .where(
-                Proposal.proposalCode == proposal_reference.code,
-                Proposal.proposalNumber == proposal_reference.number,
-            )
-            .join(BLSession)
-        )
+    return db.paginate(query, limit, page, slow_count=True)
 
-        if session is not None:
-            session_id_query = session_id_query.filter(
-                BLSession.visit_number == session
-            )
-
-            query = query.filter(
-                DataCollectionGroup.sessionId == db.session.scalar(session_id_query)
-            )
-
-        else:
-            query = query.filter(
-                DataCollectionGroup.sessionId.in_(
-                    db.session.execute(session_id_query).all()
-                )
-            )
-    return db.paginate(check_session(query, user, join_proposal=(not proposal)), limit, page, slow_count=True)
 
 # TODO: make group ID required
 def get_collections(
@@ -129,11 +107,7 @@ def get_collections(
         .order_by(*sort)
     )
 
-    sub_with_row = check_session(
-        base_sub_query,
-        user,
-        join_proposal=True
-    )
+    sub_with_row = check_session(base_sub_query, user, join_proposal=True)
 
     if groupId is not None:
         sub_with_row = sub_with_row.filter(
@@ -161,7 +135,7 @@ def get_grid_squares(
             coalesce(GridSquare.width, 0).label("width"),
             coalesce(GridSquare.angle, 0).label("angle"),
             GridSquare.gridSquareId,
-            GridSquare.gridSquareImage
+            GridSquare.gridSquareImage,
         )
         .select_from(Atlas)
         .filter(Atlas.dataCollectionGroupId == dcg_id)
