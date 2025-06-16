@@ -1,6 +1,13 @@
 ==========
 Changelog
 ==========
++++++++++
+v1.20.0 (16/06/2025)
++++++++++
+
+**Changed**
+
+- Groups endpoint now requires session/proposal to be set
 
 +++++++++
 v1.19.0 (06/06/2025)
