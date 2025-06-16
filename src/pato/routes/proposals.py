@@ -3,11 +3,13 @@ from fastapi.responses import RedirectResponse
 from lims_utils.models import Paged, pagination
 
 from ..auth import Permissions, User
+from ..crud import groups as groups_crud
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
 from ..models.collections import DataCollectionCreationParameters
 from ..models.response import (
     BaseDataCollectionOut,
+    DataCollectionGroupSummaryResponse,
     ProposalResponse,
     SessionAllowsReprocessing,
     SessionResponse,
@@ -18,6 +20,20 @@ router = APIRouter(
     tags=["Proposals"],
     prefix="/proposals",
 )
+
+@router.get(
+    "/{proposalReference}/sessions/{visitNumber}/dataGroups",
+    response_model=Paged[DataCollectionGroupSummaryResponse],
+)
+def get_data_collection_groups(
+    proposalReference=Depends(Permissions.session),
+    page: dict[str, int] = Depends(pagination),
+    search: str | None = None,
+):
+    """List collection groups belonging to a session"""
+    return groups_crud.get_collection_groups(
+        proposal_reference=proposalReference, search=search, **page
+    )
 
 
 @router.get("", response_model=Paged[ProposalResponse])
