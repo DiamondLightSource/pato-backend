@@ -1,7 +1,6 @@
 def test_get(mock_permissions, client):
     """Get all data collection groups in a visit"""
     resp = client.get("/proposals/cm31111/sessions/6/dataGroups")
-    print(resp.json())
     assert resp.status_code == 200
     assert resp.json()["total"] == 4
 
