@@ -35,7 +35,7 @@ class PikaConsumer:
             Config.mq.consumer_queue,
             exclusive=False,
             durable=True,
-            arguments={"x-queue-type": "quorum"},
+            arguments=Config.mq.arguments,
         )
         queue = result.method.queue
         self.channel.queue_bind(

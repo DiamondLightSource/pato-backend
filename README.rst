@@ -36,6 +36,7 @@ As for the JSON configuration file, details are as follows:
     - queue: Queue name
     - vhost: Message queue virtual host
     - consumer_queue: Queue to consume messages from (for notifications)
+    - arguments: Connection arguments
 - ispyb
     - pool: Connection pool size
     - overflow: Connection pool overflow max size

@@ -45,6 +45,7 @@ class MQ:
     host: str
     port: int
     queue: str
+    arguments: dict[str, str | int]
     user: str = "guest"
     password: str = "guest"
     vhost: str = "zocalo"
