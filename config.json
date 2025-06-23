@@ -30,7 +30,10 @@
     "port": 5672,
     "queue": "processing_recipe",
     "vhost": "/",
-    "consumer_queue": "pato_notification"
+    "consumer_queue": "pato_notification",
+    "arguments": {
+      "x-dead-letter-exchange": ""
+    }
   },
   "ispyb": { "pool": 3, "overflow": 6 },
   "facility": {
