@@ -8,27 +8,19 @@ from ..auth import Permissions, User
 from ..crud import alerts as alerts_crud
 from ..crud import groups as crud
 from ..models.alerts import NotificationSignup
-from ..models.collections import DataCollectionSortTypes
-from ..models.response import (
-    Atlas,
-    DataCollectionGroupSummaryResponse,
-    DataCollectionSummary,
-    GridSquare,
-)
+from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
+from ..models.response import Atlas, DataCollectionGroupSummaryResponse, GridSquare
 
 router = APIRouter(
     tags=["Data Collection Groups"],
     prefix="/dataGroups",
 )
 
+
 @router.get("/{groupId}", response_model=DataCollectionGroupSummaryResponse)
-def get_collection_group(
-    groupId: int = Depends(Permissions.data_collection_group)
-):
+def get_collection_group(groupId: int = Depends(Permissions.data_collection_group)):
     """Get data collection group"""
-    return crud.get_collection_group(
-        group_id=groupId
-    )
+    return crud.get_collection_group(group_id=groupId)
 
 
 @router.get("/{groupId}/dataCollections", response_model=Paged[DataCollectionSummary])
@@ -58,9 +50,7 @@ def get_grid_squares(
     page: dict[str, int] = Depends(pagination),
 ):
     """Get child grid squares"""
-    return crud.get_grid_squares(
-        dcg_id=groupId, hide_uncollected=hideSquares, **page
-    )
+    return crud.get_grid_squares(dcg_id=groupId, hide_uncollected=hideSquares, **page)
 
 
 @router.get("/{groupId}/atlas", response_model=Atlas)

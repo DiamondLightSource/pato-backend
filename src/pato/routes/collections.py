@@ -6,6 +6,7 @@ from ..auth import Permissions
 from ..crud import collection_report as report_crud
 from ..crud import collections as crud
 from ..crud import generic
+from ..models.collections import DataCollectionFileAttachmentOut
 from ..models.reprocessing import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
@@ -173,3 +174,17 @@ def get_tomogram_central_slice(
 ):
     """Get central slice for first tomogram of data collection"""
     return crud.get_central_slice(collection_id=collectionId, movie_type=movieType)
+
+@router.get("/{collectionId}/attachments", response_model=Paged[DataCollectionFileAttachmentOut])
+def get_file_attachments(
+    collectionId: int = Depends(auth), fileType: str | None = None, page: dict[str, int] = Depends(pagination)
+):
+    """Get data collection file attachments"""
+    return crud.get_data_collection_attachments(collection_id=collectionId, file_type=fileType, **page)
+
+@router.get("/{collectionId}/attachments/{attachmentId}", response_class=FileResponse)
+def get_file_attachment(
+    attachmentId: int, collectionId: int = Depends(auth)
+):
+    """Get data collection file attachment"""
+    return crud.get_data_collection_attachment(collection_id=collectionId, attachment_id=attachmentId)
