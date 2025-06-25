@@ -17,11 +17,8 @@ from sqlalchemy import func as f
 from sqlalchemy import select
 from sqlalchemy.sql.functions import coalesce
 
-from ..models.collections import DataCollectionSortTypes
-from ..models.response import (
-    DataCollectionGroupSummaryResponse,
-    DataCollectionSummary,
-)
+from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
+from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
 from ..utils.generic import validate_path
