@@ -2,6 +2,15 @@
 Changelog
 ==========
 +++++++++
+v1.20.1 (30/06/2025)
++++++++++
+
+**Added**
+
+- Allow user to set custom message queue arguments
+
+
++++++++++
 v1.20.0 (16/06/2025)
 +++++++++
 
