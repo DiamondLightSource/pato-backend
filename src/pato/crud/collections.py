@@ -9,6 +9,7 @@ from lims_utils.tables import (
     AutoProcProgram,
     BLSession,
     DataCollection,
+    DataCollectionFileAttachment,
     DataCollectionGroup,
     MotionCorrection,
     Movie,
@@ -43,7 +44,7 @@ from ..models.response import (
     TomogramFullResponse,
 )
 from ..utils.database import db
-from ..utils.generic import MovieType, check_session_active, parse_count
+from ..utils.generic import MovieType, check_session_active, parse_count, validate_path
 from ..utils.pika import PikaPublisher
 
 _job_status_description = case(
@@ -84,6 +85,38 @@ def _validate_session_active(collectionId: int):
             status_code=status.HTTP_423_LOCKED,
             detail="Reprocessing cannot be fired on an inactive session",
         )
+
+
+def get_data_collection_attachments(
+    limit: int, page: int, collection_id: int, file_type: str | None = None
+):
+    query = select(DataCollectionFileAttachment).filter(
+        DataCollectionFileAttachment.dataCollectionId == collection_id
+    )
+
+    if file_type is not None:
+        query = query.filter(DataCollectionFileAttachment.fileType == file_type)
+
+    return db.paginate(query, limit, page, slow_count=False, scalar=False)
+
+
+@validate_path
+def get_data_collection_attachment(collection_id: int, attachment_id: int):
+    attachment_path = db.session.scalar(
+        select(DataCollectionFileAttachment.fileFullPath).filter(
+            DataCollectionFileAttachment.dataCollectionFileAttachmentId
+            == attachment_id,
+            DataCollectionFileAttachment.dataCollectionId == collection_id,
+        )
+    )
+
+    if attachment_path is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No attachment found",
+        )
+
+    return attachment_path
 
 
 def get_tomograms(
@@ -380,6 +413,7 @@ def get_particle_count_per_resolution(collectionId: int) -> ItemList[DataPoint]:
     return data
 
 
+@validate_path
 def get_central_slice(collection_id: int, movie_type: MovieType = None) -> str:
     tomogram_id = db.session.scalar(
         select(Tomogram.tomogramId)

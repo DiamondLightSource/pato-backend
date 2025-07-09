@@ -6,9 +6,8 @@ from ..auth import Permissions, User
 from ..crud import groups as groups_crud
 from ..crud import proposals as crud
 from ..crud import sessions as sessions_crud
-from ..models.collections import DataCollectionCreationParameters
+from ..models.collections import BaseDataCollectionOut, DataCollectionCreationParameters
 from ..models.response import (
-    BaseDataCollectionOut,
     DataCollectionGroupSummaryResponse,
     ProposalResponse,
     SessionAllowsReprocessing,
