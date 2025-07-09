@@ -1536,6 +1536,7 @@ CREATE TABLE `BLSession` (
   `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
   `riskRating` enum('Low','Medium','High','Not Permitted') DEFAULT NULL COMMENT 'ERA in user admin system',
   `purgedProcessedData` tinyint(1) DEFAULT 0 COMMENT 'Flag to indicate whether the processed folder in the associated visit directory has been purged',
+  `icatId` int(11) unsigned DEFAULT NULL COMMENT 'The internal ICAT ID for this BLSession',
   PRIMARY KEY (`sessionId`),
   UNIQUE KEY `proposalId` (`proposalId`,`visit_number`),
   KEY `Session_FKIndex2` (`beamLineSetupId`),
@@ -1556,17 +1557,17 @@ CREATE TABLE `BLSession` (
 LOCK TABLES `BLSession` WRITE;
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
 INSERT INTO `BLSession` VALUES
-(9999,1,999999,1,'2016-03-11 09:00:00','2016-03-11 17:00:00','i02',NULL,NULL,'jhgjh',NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(339525,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00','3fefbfbd-5f64-5d',0,NULL,0),
-(339528,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(339531,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(27464088,NULL,60858,NULL,'2022-10-21 09:00:00','2023-10-31 09:00:00','m12',0,NULL,NULL,NULL,'2021-12-14 14:51:19',5,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(27464089,NULL,60858,NULL,'2022-10-21 09:00:00','2022-10-31 09:00:00','m12',0,NULL,NULL,NULL,'2021-12-14 14:51:19',6,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(27464090,NULL,1000028,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-12-09 16:57:15',NULL,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0),
-(27464172,NULL,1000327,NULL,NULL,NULL,'m12',NULL,NULL,NULL,NULL,'2025-04-24 10:11:06',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0);
+(9999,1,999999,1,'2016-03-11 09:00:00','2016-03-11 17:00:00','i02',NULL,NULL,'jhgjh',NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339525,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00','3fefbfbd-5f64-5d',0,NULL,0,NULL),
+(339528,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339531,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(27464088,NULL,60858,NULL,'2022-10-21 09:00:00','2023-10-31 09:00:00','m12',0,NULL,NULL,NULL,'2021-12-14 14:51:19',5,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(27464089,NULL,60858,NULL,'2022-10-21 09:00:00','2022-10-31 09:00:00','m12',0,NULL,NULL,NULL,'2021-12-14 14:51:19',6,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(27464090,NULL,1000028,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-12-09 16:57:15',NULL,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(27464172,NULL,1000327,NULL,NULL,NULL,'m12',NULL,NULL,NULL,NULL,'2025-04-24 10:11:06',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2552,7 +2553,7 @@ CREATE TABLE `ContainerType` (
   `dropOffsetY` float DEFAULT NULL,
   `wellDrop` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`containerTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of containers';
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of containers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2596,7 +2597,8 @@ INSERT INTO `ContainerType` VALUES
 (32,'Box','xpdf',1,25,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (33,'Puck-22','xpdf',1,22,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (34,'I22_Grid_81','saxs',1,81,9,1,1,1,1,0,0,-1),
-(35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1);
+(35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1),
+(38,'Cryo-EM Puck','mx',1,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3305,6 +3307,7 @@ CREATE TABLE `DewarRegistry` (
   `purchaseDate` datetime DEFAULT NULL,
   `bltimestamp` datetime NOT NULL DEFAULT current_timestamp(),
   `manufacturerSerialNumber` varchar(15) DEFAULT NULL COMMENT 'Dewar serial number as given by manufacturer. Used to be typically 5 or 6 digits, more likely to be 11 alphanumeric chars in future',
+  `type` enum('Dewar','Toolbox','Thermal Shipper') NOT NULL DEFAULT 'Dewar',
   PRIMARY KEY (`dewarRegistryId`),
   UNIQUE KEY `facilityCode` (`facilityCode`),
   KEY `DewarRegistry_ibfk_1` (`proposalId`),
@@ -3321,9 +3324,9 @@ CREATE TABLE `DewarRegistry` (
 LOCK TABLES `DewarRegistry` WRITE;
 /*!40000 ALTER TABLE `DewarRegistry` DISABLE KEYS */;
 INSERT INTO `DewarRegistry` VALUES
-(1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21',NULL),
-(2,'DLS-EM-0001',37027,NULL,NULL,'2023-09-14 09:19:21',NULL),
-(217,'DLS-EM-0002',141666,NULL,NULL,'2023-09-14 09:19:21',NULL);
+(1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
+(2,'DLS-EM-0001',37027,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
+(217,'DLS-EM-0002',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar');
 /*!40000 ALTER TABLE `DewarRegistry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7798,6 +7801,8 @@ CREATE TABLE `Tomogram` (
   `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   `globalAlignmentQuality` float DEFAULT NULL COMMENT 'Quality of fit metric for the alignment of the tilt series corresponding to this tomogram',
   `gridSquareId` int(11) unsigned DEFAULT NULL COMMENT 'FK, references medium mag map in GridSquare',
+  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
+  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
@@ -7815,14 +7820,14 @@ CREATE TABLE `Tomogram` (
 LOCK TABLES `Tomogram` WRITE;
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
 INSERT INTO `Tomogram` VALUES
-(1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack_reprocess1.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test_thumbnail.png','test_movie.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.1,NULL),
-(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL),
-(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.2,NULL);
+(1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack_reprocess1.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test_thumbnail.png','test_movie.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.1,NULL,NULL,NULL),
+(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.2,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -8436,4 +8441,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-09 10:39:20
+-- Dump completed on 2025-07-09 10:50:48
