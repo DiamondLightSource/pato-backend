@@ -1,6 +1,15 @@
 ==========
 Changelog
 ==========
+
++++++++++
+v1.21.0 (09/07/2025)
++++++++++
+
+**Added**
+
+- Add data collection attachment endpoints
+
 +++++++++
 v1.20.1 (30/06/2025)
 +++++++++
