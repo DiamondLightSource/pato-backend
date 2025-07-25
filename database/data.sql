@@ -2347,7 +2347,7 @@ CREATE TABLE `ContainerInspection` (
   CONSTRAINT `ContainerInspection_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk3` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk4` FOREIGN KEY (`scheduleComponentid`) REFERENCES `ScheduleComponent` (`scheduleComponentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2357,7 +2357,8 @@ CREATE TABLE `ContainerInspection` (
 LOCK TABLES `ContainerInspection` WRITE;
 /*!40000 ALTER TABLE `ContainerInspection` DISABLE KEYS */;
 INSERT INTO `ContainerInspection` VALUES
-(4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00');
+(4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00'),
+(5,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00');
 /*!40000 ALTER TABLE `ContainerInspection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2950,7 +2951,7 @@ CREATE TABLE `DataCollection` (
   CONSTRAINT `DataCollection_ibfk_6` FOREIGN KEY (`startPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_7` FOREIGN KEY (`endPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_8` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6018040 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6018043 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3070,7 +3071,7 @@ CREATE TABLE `DataCollectionGroup` (
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5441293 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
+) ENGINE=InnoDB AUTO_INCREMENT=5441296 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5429,7 +5430,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3990 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB AUTO_INCREMENT=4017 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5524,7 +5525,7 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=27355 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27655 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7825,8 +7826,8 @@ INSERT INTO `Tomogram` VALUES
 (3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
 (4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
 (5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
+(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL),
+(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL),
 (8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.2,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -8441,4 +8442,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-09 10:50:48
+-- Dump completed on 2025-07-25 11:49:47

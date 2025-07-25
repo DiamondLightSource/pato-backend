@@ -43,17 +43,13 @@ def _prepend_denoise(
     if len(split_file) != 3:
         raise HTTPException(status_code=500, detail="Unexpected filename")
 
-    denoised_prefix = (
-        ".denoised" if movie_type == "denoised" else f".denoised_{movie_type}"
-    )
+    denoised_prefix = ".denoised" if movie_type == "denoised" else f".denoised_{movie_type}"
 
     return split_file[0] + denoised_prefix + "".join(split_file[1:3])
 
 
 @validate_path
-def _get_movie(
-    tomogramId: int, movie_type: MovieType, image_type: Literal["thumbnail", "movie"]
-):
+def _get_movie(tomogramId: int, movie_type: MovieType, image_type: Literal["thumbnail", "movie"]):
     if movie_type:
         # If movie_Type is defined, this means that this is not the standard noisy tomogram we're looking for
         base_path = db.session.scalar(
@@ -71,9 +67,7 @@ def _get_movie(
         if movie_type == "picked":
             raise HTTPException(status_code=404, detail="No picked tomogram found")
 
-    column = (
-        Tomogram.tomogramMovie if image_type == "movie" else Tomogram.centralSliceImage
-    )
+    column = Tomogram.tomogramMovie if image_type == "movie" else Tomogram.centralSliceImage
     base_path = _get_generic_tomogram_file(tomogramId, column)
     return _prepend_denoise(base_path, image_type, movie_type)
 

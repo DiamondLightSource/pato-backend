@@ -92,6 +92,7 @@ def exists_mock():
     with patch("pato.utils.generic.isfile", return_value=True) as _fixture:
         yield _fixture
 
+
 @pytest.fixture(scope="session", autouse=False)
 def mock_pika():
     with patch("pato.crud.collections.PikaPublisher", autospec=True) as _fixture:
