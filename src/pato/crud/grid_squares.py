@@ -5,6 +5,7 @@ from lims_utils.tables import (
     MotionCorrection,
     Movie,
     ParticlePicker,
+    Tomogram,
 )
 from sqlalchemy import distinct, func, select
 from sqlalchemy.sql.functions import coalesce
@@ -23,7 +24,7 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             # Astigmatism can be negative if short/long axis get mixed up when calculating
             # astigmatism from defocus. It is also inserted in the database in angstroms,
             # when we want to return it in nm.
-            (func.abs(func.avg(CTF.astigmatism))/10).label("astigmatism"),
+            (func.abs(func.avg(CTF.astigmatism)) / 10).label("astigmatism"),
             func.avg(CTF.estimatedResolution).label("resolution"),
             func.avg(ParticlePicker.numberOfParticles).label("particleCount"),
             func.count(distinct(Movie.movieId)).label("movieCount"),
@@ -39,14 +40,13 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
             CTF,
             CTF.motionCorrectionId == MotionCorrection.motionCorrectionId,
             isouter=True,
-        ).join(
-            ParticlePicker,
-            ParticlePicker.firstMotionCorrectionId
-            == MotionCorrection.motionCorrectionId,
-            isouter=True,
-        ).group_by(
-            FoilHole.foilHoleId
         )
+        .join(
+            ParticlePicker,
+            ParticlePicker.firstMotionCorrectionId == MotionCorrection.motionCorrectionId,
+            isouter=True,
+        )
+        .group_by(FoilHole.foilHoleId)
     )
 
     return db.paginate(query=query, limit=limit, page=page, slow_count=True)
@@ -55,7 +55,11 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
 @validate_path
 def get_grid_square_image(grid_square_id: int):
     return db.session.scalar(
-        select(GridSquare.gridSquareImage).filter(
-            GridSquare.gridSquareId == grid_square_id
-        )
+        select(GridSquare.gridSquareImage).filter(GridSquare.gridSquareId == grid_square_id)
     )
+
+
+def get_tomograms(grid_square_id: int, limit: int, page: int):
+    query = select(Tomogram).filter(Tomogram.gridSquareId == grid_square_id)
+
+    return db.paginate(query, limit, page, slow_count=False, scalar=False)

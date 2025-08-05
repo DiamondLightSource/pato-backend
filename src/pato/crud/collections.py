@@ -43,7 +43,7 @@ from ..models.response import (
     ProcessingJobResponse,
     TomogramFullResponse,
 )
-from ..utils.database import db
+from ..utils.database import db, unravel
 from ..utils.generic import MovieType, check_session_active, parse_count, validate_path
 from ..utils.pika import PikaPublisher
 
@@ -64,9 +64,7 @@ _job_status_description = case(
 
 def _generate_proc_job_params(proc_job_id: int | Column[int], params: dict):
     return [
-        ProcessingJobParameter(
-            processingJobId=proc_job_id, parameterKey=key, parameterValue=value
-        )
+        ProcessingJobParameter(processingJobId=proc_job_id, parameterKey=key, parameterValue=value)
         for (key, value) in params.items()
     ]
 
@@ -104,8 +102,7 @@ def get_data_collection_attachments(
 def get_data_collection_attachment(collection_id: int, attachment_id: int):
     attachment_path = db.session.scalar(
         select(DataCollectionFileAttachment.fileFullPath).filter(
-            DataCollectionFileAttachment.dataCollectionFileAttachmentId
-            == attachment_id,
+            DataCollectionFileAttachment.dataCollectionFileAttachmentId == attachment_id,
             DataCollectionFileAttachment.dataCollectionId == collection_id,
         )
     )
@@ -119,9 +116,7 @@ def get_data_collection_attachment(collection_id: int, attachment_id: int):
     return attachment_path
 
 
-def get_tomograms(
-    limit: int, page: int, collectionId: int
-) -> Paged[TomogramFullResponse]:
+def get_tomograms(limit: int, page: int, collectionId: int) -> Paged[TomogramFullResponse]:
     query = (
         select(
             Tomogram,
@@ -152,9 +147,7 @@ def get_motion_correction(limit: int, page: int, collectionId: int) -> Paged[Ful
     return db.paginate(query, limit, page, slow_count=True)
 
 
-def initiate_reprocessing_tomogram(
-    params: TomogramReprocessingParameters, collectionId: int
-):
+def initiate_reprocessing_tomogram(params: TomogramReprocessingParameters, collectionId: int):
     _validate_session_active(collectionId)
 
     motion_correction_records = db.session.execute(
@@ -170,9 +163,7 @@ def initiate_reprocessing_tomogram(
     for record in motion_correction_records:
         # Users can modify the file name, and we cannot control where exactly the tilt
         # angle ends up, so we have to manually extract them from each file
-        tilt_angle_regex = re.match(
-            r".*_([-]?[0-9]+\.[0-9]+)_.*", record.micrographFullPath
-        )
+        tilt_angle_regex = re.match(r".*_([-]?[0-9]+\.[0-9]+)_.*", record.micrographFullPath)
 
         if tilt_angle_regex is None:
             raise HTTPException(
@@ -313,9 +304,7 @@ def initiate_reprocessing_spa(params: SPAReprocessingParameters, collectionId: i
     db.session.add(new_job)
     db.session.flush()
 
-    db.session.bulk_save_objects(
-        _generate_proc_job_params(new_job.processingJobId, full_params)
-    )
+    db.session.bulk_save_objects(_generate_proc_job_params(new_job.processingJobId, full_params))
     db.session.commit()
 
     message = {"parameters": {"ispyb_process": new_job.processingJobId}}
@@ -356,8 +345,7 @@ def _with_ctf_joins(query: Select, collectionId: int):
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
         .join(
             ParticlePicker,
-            ParticlePicker.firstMotionCorrectionId
-            == MotionCorrection.motionCorrectionId,
+            ParticlePicker.firstMotionCorrectionId == MotionCorrection.motionCorrectionId,
         )
     )
 
@@ -416,9 +404,7 @@ def get_particle_count_per_resolution(collectionId: int) -> ItemList[DataPoint]:
 @validate_path
 def get_central_slice(collection_id: int, movie_type: MovieType = None) -> str:
     tomogram_id = db.session.scalar(
-        select(Tomogram.tomogramId)
-        .filter(Tomogram.dataCollectionId == collection_id)
-        .limit(1)
+        select(Tomogram.tomogramId).filter(Tomogram.dataCollectionId == collection_id).limit(1)
     )
 
     if tomogram_id is None:
@@ -428,3 +414,29 @@ def get_central_slice(collection_id: int, movie_type: MovieType = None) -> str:
         )
 
     return get_slice_path(tomogram_id, movie_type)
+
+
+def get_data_collection(collection_id: int):
+    # Since we need the index to be able to paginate the tomogram page properly, we need to obtain the ordinality
+    # of the data collection in the set. This is quicker than finding the index in the front end, as 1/6th of data
+    # collection groups have over 100 data collections.
+    base_sub_query = (
+        select(
+            func.row_number().over(order_by=DataCollection.dataCollectionId).label("index"),
+            *unravel(DataCollection),
+        )
+        .select_from(DataCollectionGroup)
+        .join(DataCollection)
+        .filter(
+            DataCollectionGroup.dataCollectionGroupId
+            == select(DataCollection.dataCollectionGroupId)
+            .filter(DataCollection.dataCollectionId == collection_id)
+            .scalar_subquery()
+        )
+        .group_by(DataCollection.dataCollectionId)
+        .order_by(DataCollection.dataCollectionId)
+    ).subquery()
+
+    query = select(base_sub_query).filter(base_sub_query.c.dataCollectionId == collection_id)
+
+    return db.session.execute(query).one()

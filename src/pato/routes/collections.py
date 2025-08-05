@@ -6,7 +6,7 @@ from ..auth import Permissions
 from ..crud import collection_report as report_crud
 from ..crud import collections as crud
 from ..crud import generic
-from ..models.collections import DataCollectionFileAttachmentOut
+from ..models.collections import BaseDataCollectionOut, DataCollectionFileAttachmentOut
 from ..models.reprocessing import (
     SPAReprocessingParameters,
     TomogramReprocessingParameters,
@@ -28,6 +28,12 @@ router = APIRouter(
     prefix="/dataCollections",
 )
 
+@router.get("/{collectionId}", response_model=BaseDataCollectionOut)
+def get_data_collection(
+    collectionId: int = Depends(auth)
+):
+    """Get data collection"""
+    return crud.get_data_collection(collection_id=collectionId)
 
 @router.get("/{collectionId}/tomograms", response_model=Paged[TomogramFullResponse])
 def get_tomograms(

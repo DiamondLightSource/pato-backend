@@ -75,10 +75,9 @@ class SessionResponse(OrmBaseModel):
     collectionGroups: Optional[int] = None
     dataCollectionGroupId: Optional[int] = None
 
+
 class DataCollectionGroupSummaryResponse(OrmBaseModel):
-    dataCollectionGroupId: int = Field(
-        ..., lt=1e9, description="Data Collection Group ID"
-    )
+    dataCollectionGroupId: int = Field(..., lt=1e9, description="Data Collection Group ID")
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     experimentType: Optional[str] = None
     atlasId: Optional[int] = None
@@ -147,23 +146,15 @@ class MotionCorrection(OrmBaseModel):
     motionCorrectionId: int
     dataCollectionId: Optional[int] = None
     autoProcProgramId: Optional[int] = None
-    imageNumber: Optional[int] = Field(
-        None, title="Movie number, sequential in time 1-n"
-    )
+    imageNumber: Optional[int] = Field(None, title="Movie number, sequential in time 1-n")
     firstFrame: Optional[int] = Field(None, title="First frame of movie used")
     lastFrame: Optional[int] = Field(None, title="Last frame of movie used")
     dosePerFrame: Optional[float] = Field(None, title="Dose per frame")
     doseWeight: Optional[float] = Field(None, title="Dose weight")
     totalMotion: Optional[float] = Field(None, title="Total motion")
-    averageMotionPerFrame: Optional[float] = Field(
-        None, title="Average motion per frame"
-    )
-    driftPlotFullPath: Optional[str] = Field(
-        None, max_length=255, title="Path to drift plot"
-    )
-    micrographFullPath: Optional[str] = Field(
-        None, max_length=255, title="Path to micrograph"
-    )
+    averageMotionPerFrame: Optional[float] = Field(None, title="Average motion per frame")
+    driftPlotFullPath: Optional[str] = Field(None, max_length=255, title="Path to drift plot")
+    micrographFullPath: Optional[str] = Field(None, max_length=255, title="Path to micrograph")
     micrographSnapshotFullPath: Optional[str] = Field(
         None, max_length=255, title="Path to micrograph"
     )
@@ -257,12 +248,15 @@ class ProcessingJobResponse(OrmBaseModel):
 
 
 class TomogramResponse(OrmBaseModel):
+    dataCollectionId: int
     tomogramId: int
     volumeFile: Optional[str] = Field(None, max_length=255)
     stackFile: Optional[str] = Field(None, max_length=255)
     sizeX: Optional[int] = None
     sizeY: Optional[int] = None
     sizeZ: Optional[int] = None
+    pixelLocationX: Optional[int] = None
+    pixelLocationY: Optional[int] = None
     pixelSpacing: Optional[float] = None
     residualErrorMean: Optional[float] = None
     residualErrorSD: Optional[float] = None
