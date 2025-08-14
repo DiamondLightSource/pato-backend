@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.22.1 (14/08/2025)
++++++++++
+
+**Changed**
+
+- Return atlas ID in collection group endpoint
+
++++++++++
 v1.22.0 (13/08/2025)
 +++++++++
 
