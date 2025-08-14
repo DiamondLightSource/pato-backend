@@ -29,10 +29,12 @@ def get_collection_group(group_id: int):
         select(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
+            Atlas.atlasId,
             DataCollection.imageDirectory,
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
         .join(DataCollection)
+        .join(Atlas, isouter=True)
         .join(ExperimentType, isouter=True)
         .group_by(DataCollectionGroup.dataCollectionGroupId)
         .filter(DataCollectionGroup.dataCollectionGroupId == group_id)
