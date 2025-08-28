@@ -47,10 +47,16 @@ def get_collections(
 def get_grid_squares(
     groupId: int = Depends(Permissions.data_collection_group),
     hideSquares: bool = False,
+    hideEmptySearchMaps: bool = False,
     page: dict[str, int] = Depends(pagination),
 ):
     """Get child grid squares"""
-    return crud.get_grid_squares(dcg_id=groupId, hide_uncollected=hideSquares, **page)
+    return crud.get_grid_squares(
+        dcg_id=groupId,
+        hide_uncollected=hideSquares,
+        hide_empty_search_maps=hideEmptySearchMaps,
+        **page,
+    )
 
 
 @router.get("/{groupId}/atlas", response_model=Atlas)
