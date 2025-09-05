@@ -33,7 +33,7 @@ def get_collection_group(group_id: int):
             DataCollection.imageDirectory,
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
-        .join(DataCollection)
+        .join(DataCollection, isouter=True)
         .join(Atlas, isouter=True)
         .join(ExperimentType, isouter=True)
         .group_by(DataCollectionGroup.dataCollectionGroupId)
@@ -42,10 +42,7 @@ def get_collection_group(group_id: int):
 
 
 def get_collection_groups(
-    limit: int,
-    page: int,
-    proposal_reference: ProposalReference,
-    search: Optional[str]
+    limit: int, page: int, proposal_reference: ProposalReference, search: Optional[str]
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         select(
@@ -124,7 +121,11 @@ def get_collections(
 
 
 def get_grid_squares(
-    dcg_id: int, limit: int, page: int, hide_uncollected: bool = False
+    dcg_id: int,
+    limit: int,
+    page: int,
+    hide_uncollected: bool = False,
+    hide_empty_search_maps: bool = False,
 ):
     query = (
         select(
@@ -147,13 +148,14 @@ def get_grid_squares(
             GridSquare.gridSquareImage != "",
         )
 
+    if hide_empty_search_maps:
+        query = query.join(Tomogram).group_by(GridSquare)
+
     return db.paginate(query, limit, page, slow_count=True)
 
 
 def get_atlas(dcg_id: int):
-    atlas = db.session.scalar(
-        select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id)
-    )
+    atlas = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
 
     if atlas is None:
         raise HTTPException(
