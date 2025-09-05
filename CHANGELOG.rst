@@ -1,6 +1,13 @@
 ==========
 Changelog
 ==========
++++++++++
+v1.23.0 (05/09/2025)
++++++++++
+
+**Added**
+
+- Allow user to hide emtpy search maps in grid squares endpoint
 
 +++++++++
 v1.22.1 (14/08/2025)
