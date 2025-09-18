@@ -41,6 +41,7 @@ def test_invalid_file_signature(_, mock_permissions, client):
 
 @patch("pato.crud.sessions._validate_session_active", new=active_mock)
 @patch("builtins.open", side_effect=OSError("Write Error"))
+@patch("pato.crud.sessions.os.path.isdir", new=lambda _: True)
 def test_write_error(_, mock_permissions, client):
     """Should return 500 if there was an error writing the file"""
     resp = client.post(
