@@ -20,6 +20,7 @@ router = APIRouter(
     prefix="/proposals",
 )
 
+
 @router.get(
     "/{proposalReference}/sessions/{visitNumber}/dataGroups",
     response_model=Paged[DataCollectionGroupSummaryResponse],
@@ -91,5 +92,15 @@ def upload_processing_model(
 ):
     """Upload custom processing model"""
     return sessions_crud.upload_processing_model(
+        file=file, proposal_reference=proposalReference
+    )
+
+
+@router.post("/{proposalReference}/sessions/{visitNumber}/initialModel")
+def upload_initial_model(
+    file: UploadFile, proposalReference=Depends(Permissions.session)
+):
+    """Upload custom initial model"""
+    return sessions_crud.upload_initial_model(
         file=file, proposal_reference=proposalReference
     )

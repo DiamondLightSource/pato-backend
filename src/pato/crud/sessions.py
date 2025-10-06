@@ -1,3 +1,4 @@
+import os
 import pathlib
 import shutil
 from datetime import datetime
@@ -18,6 +19,7 @@ from ..utils.database import db, unravel
 from ..utils.generic import ProposalReference, check_session_active, parse_proposal
 
 HDF5_FILE_SIGNATURE = b"\x89\x48\x44\x46\x0d\x0a\x1a\x0a"
+MRC_FILE_SIGNATURE = b"\x4d\x41\x50"
 
 
 def _validate_session_active(proposal_reference: ProposalReference):
@@ -253,6 +255,46 @@ def upload_processing_model(file: UploadFile, proposal_reference: ProposalRefere
 
     try:
         with open(file_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+    except OSError as e:
+        file.file.close()
+        app_logger.error(f"Failed to upload {file.filename}: {e}")
+        raise HTTPException(
+            detail="Failed to upload file",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+    file.file.close()
+
+
+def upload_initial_model(file: UploadFile, proposal_reference: ProposalReference):
+    file.file.seek(208)
+    file_header = file.file.read(3)
+    file.file.seek(0)
+
+    if file_header != MRC_FILE_SIGNATURE:
+        raise HTTPException(
+            detail="Invalid file type (must be MRC file)",
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        )
+
+    file_path = f"{_get_folder_and_visit(proposal_reference)[0]}/processing"
+
+    if not os.path.isdir(file_path):
+        app_logger.error(
+            f"Failed to upload {file.filename}: visit directory '{file_path}' does not exist"
+        )
+        raise HTTPException(
+            detail="Failed to upload file",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+    file_path = os.path.join(file_path, "initial_model")
+    # Create initial_model folder if it does not yet exist
+    os.makedirs(file_path, exist_ok=True)
+
+    try:
+        with open(os.path.join(file_path, file.filename or "model.mrc"), "wb") as f:
             shutil.copyfileobj(file.file, f)
     except OSError as e:
         file.file.close()
