@@ -1,15 +1,13 @@
 from typing import Literal
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
-from lims_utils.models import pagination
 
 from ..auth import Permissions
 from ..crud import tomograms as crud
 from ..models.response import (
     CtfTiltAlign,
     DataPoint,
-    FullMovieWithTilt,
     ItemList,
 )
 from ..utils.generic import MovieType
@@ -26,21 +24,6 @@ router = APIRouter(
 def get_shift_plot(tomogramId: int = Depends(auth)):
     """Get X-Y shift plot data"""
     return crud.get_shift_plot(tomogramId)
-
-
-@router.get("/{tomogramId}/motion", response_model=FullMovieWithTilt)
-def get_motion_correction(
-    tomogramId: int = Depends(auth),
-    page: dict[str, int] = Depends(pagination),
-    getMiddle=Query(
-        False,
-        description="Get index closest to the middle. Limit is set to 1, page is ignored",
-    ),
-):
-    """Get motion correction data for the given tomogram"""
-    return crud.get_motion_correction(
-        tomogramId=tomogramId, getMiddle=getMiddle, **page
-    )
 
 
 @router.get("/{tomogramId}/centralSlice", response_class=FileResponse)

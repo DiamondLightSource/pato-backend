@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends, status
+from fastapi import APIRouter, Body, Depends, Query, status
 from fastapi.responses import FileResponse
 from lims_utils.models import Paged, pagination
 
@@ -6,6 +6,7 @@ from ..auth import Permissions
 from ..crud import collection_report as report_crud
 from ..crud import collections as crud
 from ..crud import generic
+from ..crud import tomograms as tomograms_crud
 from ..models.collections import BaseDataCollectionOut, DataCollectionFileAttachmentOut
 from ..models.reprocessing import (
     SPAReprocessingParameters,
@@ -14,6 +15,7 @@ from ..models.reprocessing import (
 from ..models.response import (
     DataPoint,
     FullMovie,
+    FullMovieWithTilt,
     ItemList,
     ProcessingJobResponse,
     ReprocessingResponse,
@@ -87,6 +89,19 @@ def get_motion_correction(
 ):
     """Get motion correction and tilt alignment data"""
     return crud.get_motion_correction(collectionId=collectionId, **page)
+
+
+@router.get("/{collectionId}/tomogram-motion", response_model=FullMovieWithTilt)
+def get_motion_correction_for_tomogram(
+    collectionId: int = Depends(auth),
+    page: dict[str, int] = Depends(pagination),
+    getMiddle=Query(
+        False,
+        description="Get index closest to the middle. Limit is set to 1, page is ignored",
+    ),
+):
+    """Get motion correction and tilt alignment data for tomogram"""
+    return tomograms_crud.get_motion_correction(data_collection_id=collectionId, getMiddle=getMiddle, **page)
 
 
 @router.get(
