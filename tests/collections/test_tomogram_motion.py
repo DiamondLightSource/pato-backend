@@ -9,7 +9,7 @@ def test_get(mock_permissions, client):
 
 
 def test_get_middle(mock_permissions, client):
-    """Get motion correction without tilt alignment data"""
+    """Get central slice"""
     resp = client.get("/dataCollections/6017406/tomogram-motion?getMiddle=true")
     assert resp.status_code == 200
     assert resp.json()["items"][0]["TiltImageAlignment"]["refinedTiltAngle"] == 16
