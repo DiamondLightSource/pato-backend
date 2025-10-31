@@ -67,12 +67,12 @@ class NotificationSignup(BaseModel):
     email: EmailStr
 
     @model_validator(mode="after")
-    def check_max_greater_than_min(cls, data):
+    def check_max_greater_than_min(self):
         for field in ALERT_FIELDS:
-            max_value = getattr(data, field + "Max")
-            min_value = getattr(data, field + "Min")
+            max_value = getattr(self, field + "Max")
+            min_value = getattr(self, field + "Min")
             assert (
                 min_value is None or max_value is None or max_value > min_value
             ), f"{field}Max must be greater than {field}Min"
 
-        return data
+        return self

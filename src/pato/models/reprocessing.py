@@ -68,6 +68,7 @@ class SPAReprocessingParameters(BaseModel):
         return self
 
     @model_validator(mode="before")
+    @classmethod
     def empty_string_to_none(cls, values):
         for key, value in values.items():
             if value == "":
