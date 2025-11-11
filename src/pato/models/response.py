@@ -194,7 +194,7 @@ class FullMovie(OrmBaseModel):
 
 
 class FullMovieWithTilt(Paged[FullMovie]):
-    rawTotal: int
+    alignedTotal: int
 
 
 class CtfBase(OrmBaseModel):
