@@ -1,6 +1,19 @@
 ==========
 Changelog
 ==========
+
++++++++++
+v1.25.0 (13/11/2025)
++++++++++
+
+**Added**
+
+- `dataCollections/{id}/tomogram-motion` endpoint
+
+**Removed**
+
+- Removed `tomograms/{id}/motion` endpoint
+
 +++++++++
 v1.24.0 (06/10/2025)
 +++++++++
