@@ -1,7 +1,7 @@
 import re
 from typing import Literal, Optional
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from lims_utils.tables import (
     CTF,
     MotionCorrection,
@@ -10,7 +10,7 @@ from lims_utils.tables import (
     TiltImageAlignment,
     Tomogram,
 )
-from sqlalchemy import Column, func, literal_column, select
+from sqlalchemy import Column, func, select
 from sqlalchemy import func as f
 
 from ..models.response import (
@@ -87,48 +87,46 @@ def get_shift_plot(tomogramId: int):
 
 
 def get_motion_correction(
-    limit: int, page: int, tomogramId: int, getMiddle: bool
+    limit: int, page: int, data_collection_id: int, getMiddle: bool
 ) -> FullMovieWithTilt:
-    if getMiddle:
-        total = db.session.scalar(
-            select(f.count(literal_column("1")))
-            .filter(TiltImageAlignment.tomogramId == tomogramId)
-            .order_by(TiltImageAlignment.refinedTiltAngle)
-        )
-
-        if not total:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="No items found",
-            )
-
-        limit = 1
-        page = (total // 2) - 1
-
     query = (
         select(MotionCorrection, TiltImageAlignment, CTF, Movie)
-        .filter(TiltImageAlignment.tomogramId == tomogramId)
+        .select_from(Movie)
+        .filter(Movie.dataCollectionId == data_collection_id)
         .join(
             MotionCorrection,
-            MotionCorrection.movieId == TiltImageAlignment.movieId,
+            MotionCorrection.movieId == Movie.movieId,
         )
-        .join(Movie, Movie.movieId == TiltImageAlignment.movieId)
         .join(CTF, CTF.motionCorrectionId == MotionCorrection.motionCorrectionId)
-        .order_by(TiltImageAlignment.refinedTiltAngle)
+        .outerjoin(TiltImageAlignment, TiltImageAlignment.movieId == Movie.movieId)
+        .group_by(Movie.movieId)
+        # Display movies without alignments last
+        .order_by(
+            TiltImageAlignment.refinedTiltAngle.is_(None), TiltImageAlignment.refinedTiltAngle, Movie.movieId.desc()
+        )
     )
-
-    motion = dict(db.paginate(query, limit, page))
 
     raw_total = db.session.execute(
         select(
             f.count(Movie.movieId).label("total"),
-        )
-        .select_from(Tomogram)
-        .filter(Tomogram.tomogramId == tomogramId)
-        .join(Movie, Movie.dataCollectionId == Tomogram.dataCollectionId)
+        ).filter(Movie.dataCollectionId == data_collection_id)
     ).scalar_one()
 
-    return FullMovieWithTilt(**motion, rawTotal=raw_total)
+    aligned_total = db.session.scalar(
+        select(f.count(Movie.movieId))
+        .select_from(Movie)
+        .filter(Movie.dataCollectionId == data_collection_id)
+        .join(TiltImageAlignment, TiltImageAlignment.movieId == Movie.movieId)
+    )
+
+    if getMiddle:
+        # Get central slice, ignore dark images
+        page = aligned_total // 2 - 1
+        limit = 1
+
+    motion = dict(db.paginate(query, limit, page, precounted_total=raw_total))
+
+    return FullMovieWithTilt(**motion, alignedTotal=aligned_total)
 
 
 def get_ctf(tomogramId: int):
@@ -157,6 +155,4 @@ def get_movie_path(tomogramId: int, movie_type: MovieType):
 
 
 def get_projection_path(tomogramId: int, axis: Literal["xy", "xz"]):
-    return _get_generic_tomogram_file(
-        tomogramId, Tomogram.projXZ if axis == "xz" else Tomogram.projXY
-    )
+    return _get_generic_tomogram_file(tomogramId, Tomogram.projXZ if axis == "xz" else Tomogram.projXY)
