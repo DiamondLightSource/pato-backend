@@ -14,7 +14,7 @@ from ..utils.config import Config
 from .database import db
 
 # TODO: use 'type' when supported by Mypy
-MovieType = Literal["denoised", "segmented", "picked"] | None
+MovieType = Literal["denoised", "segmented", "picked", "alignment", "stack"] | None
 
 
 def parse_json_file(path):
