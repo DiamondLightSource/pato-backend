@@ -11,7 +11,7 @@ from sqlalchemy import distinct, func, select
 from sqlalchemy.sql.functions import coalesce
 
 from ..utils.database import db
-from ..utils.generic import validate_path
+from ..utils.generic import ColourChannel, replace_clem_blob, validate_path
 
 
 def get_foil_holes(grid_square_id: int, page: int, limit: int):
@@ -43,7 +43,8 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
         )
         .join(
             ParticlePicker,
-            ParticlePicker.firstMotionCorrectionId == MotionCorrection.motionCorrectionId,
+            ParticlePicker.firstMotionCorrectionId
+            == MotionCorrection.motionCorrectionId,
             isouter=True,
         )
         .group_by(FoilHole.foilHoleId)
@@ -53,11 +54,14 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
 
 
 @validate_path
-def get_grid_square_image(grid_square_id: int):
-    return db.session.scalar(
-        select(GridSquare.gridSquareImage).filter(GridSquare.gridSquareId == grid_square_id)
+def get_grid_square_image(grid_square_id: int, colour: ColourChannel = "grey"):
+    image = db.session.scalar(
+        select(GridSquare.gridSquareImage).filter(
+            GridSquare.gridSquareId == grid_square_id
+        )
     )
 
+    return replace_clem_blob(image, colour=colour)
 
 def get_tomograms(grid_square_id: int, limit: int, page: int):
     query = select(Tomogram).filter(Tomogram.gridSquareId == grid_square_id)
