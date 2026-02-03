@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import re
 from os.path import isfile
 from typing import Literal, Optional
@@ -13,9 +14,8 @@ from ..models.response import DataPoint, ItemList
 from ..utils.config import Config
 from .database import db
 
-# TODO: use 'type' when supported by Mypy
-MovieType = Literal["denoised", "segmented", "picked", "alignment", "stack"] | None
-
+type MovieType = Literal["denoised", "segmented", "picked", "alignment", "stack"] | None
+type ColourChannel = Literal["grey", "red", "green", "blue", "magenta", "cyan", "yellow"]
 
 def parse_json_file(path):
     try:
@@ -133,3 +133,26 @@ def get_alerts_frontend_url(proposal_reference: str, visit_number: int):
     Returns:
         Built URL"""
     return f"{Config.facility.frontend_url}/proposals/{proposal_reference}/sessions/{visit_number}/alerts"
+
+def replace_clem_blob(path: str, colour: ColourChannel | None = None) -> str:
+    """Replace CLEM blob pattern in path with colour channel images
+
+    Args:
+        path: Path containing CLEM blob pattern
+        colour: Colour channel to replace pattern with
+
+    Returns:
+        Path with CLEM blob pattern replaced by colour channel image (or base path if no pattern found)"""
+    fs_colour = "gray" if colour == "grey" else colour
+
+    # If the path contains an asterisk (for replacement), this is a CLEM experiment
+    if (split_path := os.path.split(path)) and len(split_path) == 2 and split_path[1] == "*.png":
+        if colour is None:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="No colour provided",
+            )
+
+        return os.path.join(split_path[0], f"{fs_colour}.png")
+
+    return path

@@ -10,6 +10,7 @@ from ..crud import groups as crud
 from ..models.alerts import NotificationSignup
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import Atlas, DataCollectionGroupSummaryResponse, GridSquare
+from ..utils.generic import ColourChannel
 
 router = APIRouter(
     tags=["Data Collection Groups"],
@@ -70,9 +71,10 @@ def get_atlas(
 @router.get("/{groupId}/atlas/image", response_class=FileResponse)
 def get_atlas_image(
     groupId: int = Depends(Permissions.data_collection_group),
+    colour: ColourChannel = "green",
 ):
     """Get atlas image"""
-    return crud.get_atlas_image(dcg_id=groupId)
+    return crud.get_atlas_image(dcg_id=groupId, colour=colour)
 
 
 @router.post("/{groupId}/alerts")

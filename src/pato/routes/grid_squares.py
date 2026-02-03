@@ -5,6 +5,7 @@ from lims_utils.models import Paged, pagination
 from ..auth import Permissions
 from ..crud import grid_squares as crud
 from ..models.response import FoilHole, TomogramResponse
+from ..utils.generic import ColourChannel
 
 router = APIRouter(
     tags=["Grid Squares"],
@@ -30,6 +31,7 @@ def get_tomograms(
     return crud.get_tomograms(grid_square_id=gridSquareId, **page)
 
 @router.get("/{gridSquareId}/image", response_class=FileResponse)
-def get_grid_square_image(gridSquareId: int = Depends(Permissions.grid_square)):
+def get_grid_square_image(gridSquareId: int = Depends(Permissions.grid_square), colour: ColourChannel = "grey"):
     """Get image of grid square"""
-    return crud.get_grid_square_image(grid_square_id=gridSquareId)
+    return crud.get_grid_square_image(grid_square_id=gridSquareId, colour=colour)
+

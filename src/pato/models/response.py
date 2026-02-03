@@ -342,6 +342,14 @@ class GridSquare(BaseModel):
     width: int
     angle: float
     image: Optional[str] = Field(validation_alias="gridSquareImage", default=None)
+    hasRed: bool = False
+    hasGreen: bool = False
+    hasBlue: bool = False
+    hasCyan: bool = False
+    hasMagenta: bool = False
+    hasYellow: bool = False
+    hasGrey: bool = False
+    mode: str | None = None
 
 
 class Atlas(BaseModel):
@@ -349,6 +357,14 @@ class Atlas(BaseModel):
     pixelSize: float
     cassetteSlot: Optional[int] = None
     dataCollectionGroupId: int
+    hasRed: bool = False
+    hasGreen: bool = False
+    hasBlue: bool = False
+    hasCyan: bool = False
+    hasMagenta: bool = False
+    hasYellow: bool = False
+    hasGrey: bool = False
+    mode: str | None = None
 
 
 class FoilHole(BaseModel):

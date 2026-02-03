@@ -21,7 +21,7 @@ from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
-from ..utils.generic import validate_path
+from ..utils.generic import ColourChannel, replace_clem_blob, validate_path
 
 
 def get_collection_group(group_id: int):
@@ -57,7 +57,7 @@ def get_collection_groups(
         .join(ExperimentType, isouter=True)
         .join(BLSession)
         .join(Proposal)
-        .join(DataCollection)
+        .join(DataCollection, isouter=True)
         .filter(
             Proposal.proposalCode == proposal_reference.code,
             Proposal.proposalNumber == proposal_reference.number,
@@ -134,6 +134,13 @@ def get_grid_squares(
             coalesce(GridSquare.height, 0).label("height"),
             coalesce(GridSquare.width, 0).label("width"),
             coalesce(GridSquare.angle, 0).label("angle"),
+            GridSquare.hasRed,
+            GridSquare.hasGreen,
+            GridSquare.hasBlue,
+            GridSquare.hasGrey,
+            GridSquare.hasMagenta,
+            GridSquare.hasCyan,
+            GridSquare.hasYellow,
             GridSquare.gridSquareId,
             GridSquare.gridSquareImage,
         )
@@ -167,10 +174,12 @@ def get_atlas(dcg_id: int):
 
 
 @validate_path
-def get_atlas_image(dcg_id: int):
+def get_atlas_image(dcg_id: int, colour: ColourChannel = "grey"):
     atlas_image = db.session.scalar(
         select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id)
     )
+
+    atlas_image = replace_clem_blob(atlas_image, colour=colour)
 
     if atlas_image is None:
         raise HTTPException(
