@@ -17,6 +17,10 @@ def test_get_colour(mock_permissions, exists_mock, client):
     assert resp.status_code == 200
     exists_mock.assert_called_with("/dls/blue.png")
 
+def test_get_colour_not_provided(mock_permissions, client):
+    """Should raise error if colour is not provided and path is a glob pattern"""
+    resp = client.get("/grid-squares/3/image?colour=null")
+    assert resp.status_code == 422
 
 def test_get_colour_grey(mock_permissions, exists_mock, client):
     """Get image of colour channel for grid square (with american spelling)"""

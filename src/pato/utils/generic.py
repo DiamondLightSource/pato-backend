@@ -145,7 +145,14 @@ def replace_clem_blob(path: str, colour: ColourChannel | None = None) -> str:
         Path with CLEM blob pattern replaced by colour channel image (or base path if no pattern found)"""
     fs_colour = "gray" if colour == "grey" else colour
 
+    # If the path contains an asterisk (for replacement), this is a CLEM experiment
     if (split_path := os.path.split(path)) and len(split_path) == 2 and split_path[1] == "*.png":
+        if colour is None:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="No colour provided",
+            )
+
         return os.path.join(split_path[0], f"{fs_colour}.png")
 
     return path
