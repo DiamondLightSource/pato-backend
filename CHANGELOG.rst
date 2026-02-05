@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.26.0 (05/02/2025)
++++++++++
+
+**Added**
+
+- Ability to retrieve different colour channels for grid squares and atlases
+
++++++++++
 v1.25.0 (13/11/2025)
 +++++++++
 
