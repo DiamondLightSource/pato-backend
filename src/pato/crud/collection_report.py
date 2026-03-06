@@ -183,7 +183,7 @@ def generate_report(collection_id: int):
         ("Parameter", "Value"),
         ("File format", file_type),
         ("Voltage", f"{data.DataCollection.voltage} keV"),
-        ("Magnification", "105000.0"),
+        ("Magnification", str(data.DataCollection.magnification)),
         ("Pixel size", f"{data.DataCollection.pixelSizeOnImage * 10} Å"),
         (
             "Image size",
