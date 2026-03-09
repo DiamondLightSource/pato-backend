@@ -5,6 +5,7 @@ from lims_utils.auth import GenericUser
 from lims_utils.models import Paged, ProposalReference
 from lims_utils.tables import (
     Atlas,
+    BLSample,
     BLSession,
     DataCollection,
     DataCollectionGroup,
@@ -50,6 +51,7 @@ def get_collection_groups(
             ExperimentType.name.label("experimentTypeName"),
             Atlas.atlasId,
             DataCollection.imageDirectory,
+            BLSample.subLocation.label("cassettePosition"),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
         .select_from(DataCollectionGroup)
@@ -57,6 +59,7 @@ def get_collection_groups(
         .join(ExperimentType, isouter=True)
         .join(BLSession)
         .join(Proposal)
+        .join(BLSample, BLSample.blSampleId == DataCollectionGroup.blSampleId, isouter=True)
         .join(DataCollection, isouter=True)
         .filter(
             Proposal.proposalCode == proposal_reference.code,
