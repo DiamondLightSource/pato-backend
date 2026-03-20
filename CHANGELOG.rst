@@ -3,7 +3,19 @@ Changelog
 ==========
 
 +++++++++
-v1.26.0 (05/02/2025)
+v1.26.1 (20/03/2026)
++++++++++
+
+**Changed**
+
+- Return cassette position for data collection group
+
+**Fixed**
+
+- Use magnification value from database
+
++++++++++
+v1.26.0 (05/02/2026)
 +++++++++
 
 **Added**
