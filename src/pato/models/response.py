@@ -85,6 +85,7 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     experimentTypeName: Optional[str] = "Single Particle"
     imageDirectory: Optional[str] = None
     comments: Optional[str] = None
+    cassettePosition: Optional[int] = None
     collections: int
 
     @field_validator("experimentTypeName")
