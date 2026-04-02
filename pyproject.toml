@@ -24,7 +24,7 @@ dependencies = [
     "pydantic[email]~=2.12.5",
     "fpdf2~=2.8.3",
     "types-requests",
-    "lims_utils~=0.4.11",
+    "lims_utils~=0.4.12",
 ]
 
 dynamic = ["version"]
