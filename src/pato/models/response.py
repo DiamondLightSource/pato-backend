@@ -283,7 +283,7 @@ class ParticlePicker(OrmBaseModel):
 
 class Classification(OrmBaseModel):
     particleClassificationGroupId: int
-    particlePickerId: int
+    particlePickerId: int | None = None
     programId: int
     type: str
     batchNumber: int
