@@ -1,5 +1,5 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19  Distrib 10.11.11-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.11.16-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: ispyb
 -- ------------------------------------------------------
@@ -68,7 +68,7 @@ CREATE TABLE `AdminVar` (
 LOCK TABLES `AdminVar` WRITE;
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
 INSERT INTO `AdminVar` VALUES
-(4,'schemaVersion','4.11.0');
+(4,'schemaVersion','4.12.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,9 +259,12 @@ CREATE TABLE `AutoProcProgram` (
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `processingJobId` int(11) unsigned DEFAULT NULL,
   `processingPipelineId` int(11) unsigned DEFAULT NULL,
+  `parentAutoProcProgramId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
-  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
+  KEY `AutoProcProgram_fk_parentAutoProcProgramId` (`parentAutoProcProgramId`),
+  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
+  CONSTRAINT `AutoProcProgram_fk_parentAutoProcProgramId` FOREIGN KEY (`parentAutoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56986807 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,31 +275,31 @@ CREATE TABLE `AutoProcProgram` (
 LOCK TABLES `AutoProcProgram` WRITE;
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
 INSERT INTO `AutoProcProgram` VALUES
-(56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL),
-(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL),
-(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL),
-(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL),
-(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL),
-(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL),
-(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL),
-(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL),
-(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL),
-(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL),
-(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL),
-(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL),
-(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL),
-(56986676,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,6,NULL),
-(56986677,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,7,NULL),
-(56986678,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,8,NULL),
-(56986679,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL),
-(56986680,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10,NULL),
-(56986800,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL),
-(56986801,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL),
-(56986802,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL),
-(56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,54,NULL),
-(56986804,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,51,NULL),
-(56986805,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,52,NULL),
-(56986806,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,53,NULL);
+(56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL),
+(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL),
+(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL,NULL),
+(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL,NULL),
+(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL,NULL),
+(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL,NULL),
+(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL,NULL),
+(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL,NULL),
+(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL,NULL),
+(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL,NULL),
+(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL,NULL),
+(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL),
+(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL),
+(56986676,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,6,NULL,NULL),
+(56986677,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,7,NULL,NULL),
+(56986678,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,8,NULL,NULL),
+(56986679,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL),
+(56986680,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10,NULL,NULL),
+(56986800,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL),
+(56986801,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL),
+(56986802,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL),
+(56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,54,NULL,NULL),
+(56986804,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,51,NULL,NULL),
+(56986805,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,52,NULL,NULL),
+(56986806,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,53,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3758,7 +3761,7 @@ CREATE TABLE `ExperimentType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3806,7 +3809,8 @@ INSERT INTO `ExperimentType` VALUES
 (36,'Tomography','em',1),
 (37,'Single Particle','em',1),
 (45,'CLEM','em',1),
-(46,'FIB','em',1);
+(46,'FIB','em',1),
+(47,'Soft X-Ray Tomography','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4726,7 +4730,7 @@ CREATE TABLE `Movie` (
   `nominalDefocus` float unsigned DEFAULT NULL COMMENT 'Nominal defocus, Units: A',
   `angle` float DEFAULT NULL COMMENT 'unit: degrees relative to perpendicular to beam',
   `fluence` float DEFAULT NULL COMMENT 'accumulated electron fluence from start to end of acquisition of this movie (commonly, but incorrectly, referred to as ‘dose’)',
-  `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
+  `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
   `foilHoleId` int(11) unsigned DEFAULT NULL,
   `templateLabel` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`movieId`),
@@ -5481,6 +5485,7 @@ CREATE TABLE `ProcessedTomogram` (
   `tomogramId` int(11) unsigned NOT NULL COMMENT 'references Tomogram table',
   `filePath` varchar(255) DEFAULT NULL COMMENT 'location on disk for the tomogram file',
   `processingType` varchar(255) DEFAULT NULL COMMENT 'nature of the processed tomogram',
+  `feature` enum('Membrane','Microtubule','Ribosome','Tric','Actin','Cytoplasm','Cytoplasmic granule','Lipid droplet','Mitochondrial granule','Mitochondrion','Npc','Nuclear envelope','Nucleus','Prohibitin','Proteasome','Vault','Vimentin','Void') DEFAULT NULL COMMENT 'Tomogram feature',
   PRIMARY KEY (`processedTomogramId`),
   KEY `tomogramId` (`tomogramId`),
   CONSTRAINT `ProcessedTomogram_ibfk_1` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -5494,9 +5499,9 @@ CREATE TABLE `ProcessedTomogram` (
 LOCK TABLES `ProcessedTomogram` WRITE;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
 INSERT INTO `ProcessedTomogram` VALUES
-(1,3,'/dls/test.denoised.mrc','Denoised'),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented'),
-(3,3,'/dls/test.picked.cbox','Picked');
+(1,3,'/dls/test.denoised.mrc','Denoised',NULL),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
+(3,3,'/dls/test.picked.cbox','Picked',NULL);
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6524,7 +6529,7 @@ CREATE TABLE `SchemaStatus` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`schemaStatusId`),
   UNIQUE KEY `scriptName` (`scriptName`)
-) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6762,7 +6767,11 @@ INSERT INTO `SchemaStatus` VALUES
 (271,'2025_07_25_Container_parentContainerLocation.sql','DONE','2025-11-21 11:59:44'),
 (272,'2026_01_12_CTF_iceRingDensity.sql','DONE','2026-01-29 16:30:00'),
 (273,'2026_01_05_GridSquare_Atlas_channels.sql ','DONE','2026-01-29 16:30:17'),
-(274,'2026_01_13_AdminVar_bump_version.sql','DONE','2026-01-29 16:30:26');
+(274,'2026_01_13_AdminVar_bump_version.sql','DONE','2026-01-29 16:30:26'),
+(275,'2026_01_27_AutoProcProgram_parentAutoProcProgramId.sql','DONE','2026-04-02 09:25:22'),
+(276,'2026_02_09_ProcessedTomogram_feature.sql','DONE','2026-04-02 09:25:43'),
+(277,'2026_02_10_AdminVar_bump_version.sql','DONE','2026-04-02 09:28:05'),
+(278,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-02 09:28:19');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7833,8 +7842,8 @@ DROP TABLE IF EXISTS `TiltImageAlignment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TiltImageAlignment` (
-  `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
-  `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
+  `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
+  `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
   `defocusU` float DEFAULT NULL COMMENT 'unit: Angstroms',
   `defocusV` float DEFAULT NULL COMMENT 'unit: Angstroms',
   `psdFile` varchar(255) DEFAULT NULL,
@@ -7882,10 +7891,10 @@ DROP TABLE IF EXISTS `Tomogram`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Tomogram` (
   `tomogramId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
+  `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
   `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'FK, gives processing times/status and software information',
-  `volumeFile` varchar(255) DEFAULT NULL COMMENT '.mrc file representing the reconstructed tomogram volume',
-  `stackFile` varchar(255) DEFAULT NULL COMMENT '.mrc file containing the motion corrected images ordered by angle used as input for the reconstruction',
+  `volumeFile` varchar(255) DEFAULT NULL COMMENT '.mrc file representing the reconstructed tomogram volume',
+  `stackFile` varchar(255) DEFAULT NULL COMMENT '.mrc file containing the motion corrected images ordered by angle used as input for the reconstruction',
   `sizeX` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
   `sizeY` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
   `sizeZ` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
@@ -8544,4 +8553,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-29 16:40:13
+-- Dump completed on 2026-04-02 10:28:45
