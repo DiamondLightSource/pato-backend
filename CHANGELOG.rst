@@ -9,6 +9,7 @@ v1.26.3 (13/04/2026)
 **Changed**
 
 - Make particle picker ID nullable
+- Fall back to cassette position in Atlas table
 
 +++++++++
 v1.26.2 (26/03/2026)
