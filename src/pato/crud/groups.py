@@ -51,7 +51,7 @@ def get_collection_groups(
             ExperimentType.name.label("experimentTypeName"),
             Atlas.atlasId,
             DataCollection.imageDirectory,
-            BLSample.subLocation.label("cassettePosition"),
+            f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label("cassettePosition"),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
         )
         .select_from(DataCollectionGroup)
