@@ -19,5 +19,5 @@ def test_file_not_found(mock_permissions, exists_mock, client):
 
 def test_inexistent_db(mock_permissions, client):
     """Try to get feature not in database"""
-    resp = client.get("/tomograms/3/features/ribosome")
+    resp = client.get("/tomograms/3/features/tric")
     assert resp.status_code == 404
