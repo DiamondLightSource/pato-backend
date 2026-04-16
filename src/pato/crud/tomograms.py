@@ -1,5 +1,5 @@
 import re
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 from fastapi import HTTPException
 from lims_utils.tables import (
@@ -13,12 +13,7 @@ from lims_utils.tables import (
 from sqlalchemy import Column, func, select
 from sqlalchemy import func as f
 
-from ..models.response import (
-    CtfTiltAlign,
-    DataPoint,
-    FullMovieWithTilt,
-    ItemList,
-)
+from ..models.response import CtfTiltAlign, DataPoint, FeatureType, FullMovieWithTilt, ItemList
 from ..utils.database import db
 from ..utils.generic import MovieType, parse_json_file, validate_path
 
@@ -71,6 +66,32 @@ def _get_movie(tomogramId: int, movie_type: MovieType, image_type: Literal["thum
     base_path = _get_generic_tomogram_file(tomogramId, column)
     return _prepend_denoise(base_path, image_type, movie_type)
 
+@validate_path
+def get_feature(tomogramId: int, feature: FeatureType):
+    path = db.session.scalar(
+        select(ProcessedTomogram.filePath).filter(
+            ProcessedTomogram.tomogramId == tomogramId,
+            ProcessedTomogram.feature == feature.capitalize(),
+        )
+    )
+
+    if not path:
+        raise HTTPException(status_code=404, detail=f"No {feature} feature found for this tomogram")
+
+    return path
+
+def get_features(tomogramId: int):
+    features: List[str] = db.session.scalars(
+        select(f.lower(ProcessedTomogram.feature)).filter(
+            ProcessedTomogram.tomogramId == tomogramId,
+            ProcessedTomogram.feature.is_not(None)
+        )
+    )
+
+    if not features:
+        return []
+
+    return features
 
 @validate_path
 def _get_shift_plot_path(tomogramId: int):
