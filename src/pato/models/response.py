@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Literal, Optional, TypeVar
 
 from lims_utils.models import Paged
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -16,6 +16,8 @@ class StateEnum(str, Enum):
 
 class OrmBaseModel(BaseModel):
     model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
+
+type FeatureType = Literal["ribosome", "microtubule", "membrane", "tric"]
 
 
 class DataPoint(OrmBaseModel):
@@ -377,3 +379,6 @@ class FoilHole(BaseModel):
     particleCount: Optional[float] = None
     resolution: Optional[float] = None
     astigmatism: Optional[float] = None
+
+class FeatureList(BaseModel):
+    features: list[FeatureType]

@@ -4730,7 +4730,7 @@ CREATE TABLE `Movie` (
   `nominalDefocus` float unsigned DEFAULT NULL COMMENT 'Nominal defocus, Units: A',
   `angle` float DEFAULT NULL COMMENT 'unit: degrees relative to perpendicular to beam',
   `fluence` float DEFAULT NULL COMMENT 'accumulated electron fluence from start to end of acquisition of this movie (commonly, but incorrectly, referred to as ‘dose’)',
-  `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
+  `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
   `foilHoleId` int(11) unsigned DEFAULT NULL,
   `templateLabel` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`movieId`),
@@ -5499,9 +5499,9 @@ CREATE TABLE `ProcessedTomogram` (
 LOCK TABLES `ProcessedTomogram` WRITE;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
 INSERT INTO `ProcessedTomogram` VALUES
-(1,3,'/dls/test.denoised.mrc','Denoised',NULL),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
-(3,3,'/dls/test.picked.cbox','Picked',NULL);
+(1,3,'/dls/test.denoised.mrc','Denoised','Ribosome'),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented','Microtubule'),
+(3,3,'/dls/test.picked.cbox','Picked','Membrane');
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7842,8 +7842,8 @@ DROP TABLE IF EXISTS `TiltImageAlignment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TiltImageAlignment` (
-  `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
-  `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
+  `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
+  `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
   `defocusU` float DEFAULT NULL COMMENT 'unit: Angstroms',
   `defocusV` float DEFAULT NULL COMMENT 'unit: Angstroms',
   `psdFile` varchar(255) DEFAULT NULL,
@@ -7891,10 +7891,10 @@ DROP TABLE IF EXISTS `Tomogram`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Tomogram` (
   `tomogramId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
+  `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
   `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'FK, gives processing times/status and software information',
-  `volumeFile` varchar(255) DEFAULT NULL COMMENT '.mrc file representing the reconstructed tomogram volume',
-  `stackFile` varchar(255) DEFAULT NULL COMMENT '.mrc file containing the motion corrected images ordered by angle used as input for the reconstruction',
+  `volumeFile` varchar(255) DEFAULT NULL COMMENT '.mrc file representing the reconstructed tomogram volume',
+  `stackFile` varchar(255) DEFAULT NULL COMMENT '.mrc file containing the motion corrected images ordered by angle used as input for the reconstruction',
   `sizeX` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
   `sizeY` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
   `sizeZ` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
@@ -8553,4 +8553,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-02 10:28:45
+-- Dump completed on 2026-04-15 16:45:45
