@@ -92,7 +92,7 @@ def get_sessions(
         )
 
     query = select(*unravel(BLSession), *fields).filter(
-        BLSession.beamLineName.like("m%"),
+        or_(BLSession.beamLineName.like("m%"), BLSession.beamLineName.like("b24%"))
     )
 
     if proposal is not None:
