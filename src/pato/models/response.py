@@ -267,6 +267,7 @@ class TomogramResponse(OrmBaseModel):
     tiltAngleOffset: Optional[float] = None
     zShift: Optional[float] = None
     refinedTiltAxis: Optional[float] = None
+    globalAlignmentQuality: Optional[float] = None
 
 
 class TomogramFullResponse(ProcessingJobResponse):
