@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from threading import Thread
 
@@ -38,8 +39,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(version=__version__, lifespan=lifespan)
 
+api = FastAPI()
+
 if Config.cors:
-    app.add_middleware(
+    api.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
@@ -47,26 +50,28 @@ if Config.cors:
         allow_headers=["*"],
     )
 
-app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
+api.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
 
-@app.middleware("http")
+@api.middleware("http")
 async def get_session_as_middleware(request, call_next):
     with get_session(session_factory):
         return await call_next(request)
 
 
-app.add_exception_handler(HTTPException, log_exception_handler)
+api.add_exception_handler(HTTPException, log_exception_handler)
 
-app.include_router(sessions.router)
-app.include_router(tomograms.router)
-app.include_router(movies.router)
-app.include_router(collections.router)
-app.include_router(groups.router)
-app.include_router(proposals.router)
-app.include_router(autoproc.router)
-app.include_router(feedback.router)
-app.include_router(procjob.router)
-app.include_router(grid_squares.router)
-app.include_router(foil_holes.router)
-app.include_router(persons.router)
+api.include_router(sessions.router)
+api.include_router(tomograms.router)
+api.include_router(movies.router)
+api.include_router(collections.router)
+api.include_router(groups.router)
+api.include_router(proposals.router)
+api.include_router(autoproc.router)
+api.include_router(feedback.router)
+api.include_router(procjob.router)
+api.include_router(grid_squares.router)
+api.include_router(foil_holes.router)
+api.include_router(persons.router)
+
+app.mount(os.getenv("MOUNT_POINT", "/api"), api)

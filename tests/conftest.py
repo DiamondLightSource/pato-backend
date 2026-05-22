@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 from pato.auth import User
 from pato.auth.micro import oauth2_scheme
-from pato.main import app
+from pato.main import api
 from pato.utils.database import db
 
 from .users import admin
@@ -22,8 +22,8 @@ engine = create_engine(
 )
 
 Session = sessionmaker()
-app.user_middleware.clear()
-app.middleware_stack = app.build_middleware_stack()
+api.user_middleware.clear()
+api.middleware_stack = api.build_middleware_stack()
 
 
 async def mock_send(_, _1, _2, s):
@@ -51,7 +51,7 @@ def new_perms(item_id, _, _0, _1=""):
 
 @pytest.fixture(scope="function")
 def client():
-    client = TestClient(app)
+    client = TestClient(api)
     conn = engine.connect()
     transaction = conn.begin()
     session = Session(bind=conn, join_transaction_mode="create_savepoint")
@@ -71,18 +71,18 @@ def empty_method():
 @pytest.fixture(scope="function", params=[admin])
 def mock_user(request):
     try:
-        old_overrides = app.dependency_overrides[User]
+        old_overrides = api.dependency_overrides[User]
     except KeyError:
         old_overrides = empty_method
 
-    app.dependency_overrides[User] = lambda: request.param
+    api.dependency_overrides[User] = lambda: request.param
     yield
-    app.dependency_overrides[User] = old_overrides
+    api.dependency_overrides[User] = old_overrides
 
 
 @pytest.fixture(scope="function")
 def mock_permissions(request):
-    app.dependency_overrides[oauth2_scheme] = lambda: HTTPAuthorizationCredentials(credentials="a", scheme="Bearer")
+    api.dependency_overrides[oauth2_scheme] = lambda: HTTPAuthorizationCredentials(credentials="a", scheme="Bearer")
     with patch("pato.auth.micro._check_perms", new=new_perms) as _fixture:
         yield _fixture
 
