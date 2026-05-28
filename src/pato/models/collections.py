@@ -135,15 +135,15 @@ class DataCollectionSummary(BaseDataCollectionOut):
         return v if v is None else v * 10
 
     @model_validator(mode="after")
-    def to_nanometers(cls, values):
-        values.pixelSizeNanometers = values.pixelSizeOnImage / 10
-        return values
+    def to_nanometers(self):
+        self.pixelSizeNanometers = self.pixelSizeOnImage / 10
+        return self
 
     @model_validator(mode="after")
-    def axis_step(cls, values):
-        if values.axisEnd and values.axisStart and values.numberOfImages:
-            values.axisStep = (values.axisEnd - values.axisStart) / values.numberOfImages
-        return values
+    def axis_step(self):
+        if self.axisEnd and self.axisStart and self.numberOfImages:
+            self.axisStep = (self.axisEnd - self.axisStart) / self.numberOfImages
+        return self
 
 
 # mypy doesn't support type aliases yet
