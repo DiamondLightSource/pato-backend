@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .response import OrmBaseModel
 
@@ -51,6 +51,10 @@ class DataCollectionSummary(BaseDataCollectionOut):
         None,
         description="Pixel size on image, calculated from magnification",
     )
+    pixelSizeNanometers: Optional[float] = Field(
+        None,
+        description="Pixel size on image, converted to nm",
+    )
     voltage: Optional[float] = None
     imageSizeX: Optional[int] = Field(
         None,
@@ -63,6 +67,7 @@ class DataCollectionSummary(BaseDataCollectionOut):
     axisStart: Optional[float] = None
     axisEnd: Optional[float] = None
     axisRange: Optional[float] = None
+    axisStep: Optional[float] = None
     overlap: Optional[float] = None
     numberOfImages: Optional[int] = None
     startImageNumber: Optional[int] = None
@@ -128,6 +133,17 @@ class DataCollectionSummary(BaseDataCollectionOut):
     @field_validator("pixelSizeOnImage")
     def to_angstrom(cls, v):
         return v if v is None else v * 10
+
+    @model_validator(mode="after")
+    def to_nanometers(cls, values):
+        values.pixelSizeNanometers = values.pixelSizeOnImage / 10
+        return values
+
+    @model_validator(mode="after")
+    def axis_step(cls, values):
+        if values.axisEnd and values.axisStart and values.numberOfImages:
+            values.axisStep = (values.axisEnd - values.axisStart) / values.numberOfImages
+        return values
 
 
 # mypy doesn't support type aliases yet
