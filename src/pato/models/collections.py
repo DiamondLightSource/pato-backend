@@ -143,7 +143,7 @@ class DataCollectionSummary(BaseDataCollectionOut):
     @model_validator(mode="after")
     def axis_step(self):
         if self.axisEnd and self.axisStart and self.numberOfImages:
-            self.axisStep = (self.axisEnd - self.axisStart) / self.numberOfImages
+            self.axisStep = round((self.axisEnd - self.axisStart) / self.numberOfImages, 2)
         return self
 
 
