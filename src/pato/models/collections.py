@@ -136,7 +136,8 @@ class DataCollectionSummary(BaseDataCollectionOut):
 
     @model_validator(mode="after")
     def to_nanometers(self):
-        self.pixelSizeNanometers = self.pixelSizeOnImage / 10
+        if self.pixelSizeOnImage:
+            self.pixelSizeNanometers = self.pixelSizeOnImage / 10
         return self
 
     @model_validator(mode="after")
