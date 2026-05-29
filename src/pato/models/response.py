@@ -94,6 +94,8 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     def replace_none(cls, v):
         return v or "Single Particle"
 
+class DataCollectionGroupWithSessionResponse(DataCollectionGroupSummaryResponse):
+    visitNumber: int
 
 class ProcessingJobParameters(OrmBaseModel):
     items: dict[str, str]

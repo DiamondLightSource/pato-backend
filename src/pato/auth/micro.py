@@ -71,6 +71,15 @@ class Permissions(GenericPermissions):
         return parse_proposal(proposalReference, visitNumber)
 
     @staticmethod
+    def proposal(
+        proposalReference: str,
+        token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+    ):
+        _check_perms(f"{proposalReference}", "proposal", token.credentials)
+
+        return parse_proposal(proposalReference)
+
+    @staticmethod
     def collection(
         collectionId: int, token: HTTPAuthorizationCredentials = Depends(oauth2_scheme)
     ):

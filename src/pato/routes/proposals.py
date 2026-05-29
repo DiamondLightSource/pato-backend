@@ -9,6 +9,7 @@ from ..crud import sessions as sessions_crud
 from ..models.collections import BaseDataCollectionOut, DataCollectionCreationParameters
 from ..models.response import (
     DataCollectionGroupSummaryResponse,
+    DataCollectionGroupWithSessionResponse,
     ProposalResponse,
     SessionAllowsReprocessing,
     SessionResponse,
@@ -28,11 +29,27 @@ router = APIRouter(
 def get_data_collection_groups(
     proposalReference=Depends(Permissions.session),
     page: dict[str, int] = Depends(pagination),
+    atlasOnly: bool = False,
     search: str | None = None,
 ):
     """List collection groups belonging to a session"""
     return groups_crud.get_collection_groups(
-        proposal_reference=proposalReference, search=search, **page
+        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, **page
+    )
+
+@router.get(
+    "/{proposalReference}/data-collection-groups",
+    response_model=Paged[DataCollectionGroupWithSessionResponse],
+)
+def get_data_collection_groups_in_proposal(
+    proposalReference=Depends(Permissions.proposal),
+    atlasOnly: bool = False,
+    page: dict[str, int] = Depends(pagination),
+    search: str | None = None,
+):
+    """List collection groups belonging to a session"""
+    return groups_crud.get_collection_groups(
+        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, **page
     )
 
 

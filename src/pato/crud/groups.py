@@ -43,7 +43,7 @@ def get_collection_group(group_id: int):
 
 
 def get_collection_groups(
-    limit: int, page: int, proposal_reference: ProposalReference, search: Optional[str]
+    limit: int, page: int, atlas_only: bool, proposal_reference: ProposalReference, search: Optional[str]
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         select(
@@ -53,6 +53,7 @@ def get_collection_groups(
             DataCollection.imageDirectory,
             f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label("cassettePosition"),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
+            BLSession.visit_number.label("visitNumber"),
         )
         .select_from(DataCollectionGroup)
         .join(Atlas, isouter=True)
@@ -64,10 +65,15 @@ def get_collection_groups(
         .filter(
             Proposal.proposalCode == proposal_reference.code,
             Proposal.proposalNumber == proposal_reference.number,
-            BLSession.visit_number == proposal_reference.visit_number,
         )
         .group_by(DataCollectionGroup.dataCollectionGroupId)
     )
+
+    if atlas_only:
+        query = query.filter(Atlas.atlasId.is_not(None))
+
+    if proposal_reference.visit_number is not None:
+        query = query.filter(BLSession.visit_number == proposal_reference.visit_number)
 
     if search is not None and search != "":
         query = query.filter(DataCollectionGroup.comments.contains(search))
