@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 from .response import OrmBaseModel
 
@@ -51,10 +51,6 @@ class DataCollectionSummary(BaseDataCollectionOut):
         None,
         description="Pixel size on image, calculated from magnification",
     )
-    pixelSizeNanometers: Optional[float] = Field(
-        None,
-        description="Pixel size on image, converted to nm",
-    )
     voltage: Optional[float] = None
     imageSizeX: Optional[int] = Field(
         None,
@@ -67,7 +63,6 @@ class DataCollectionSummary(BaseDataCollectionOut):
     axisStart: Optional[float] = None
     axisEnd: Optional[float] = None
     axisRange: Optional[float] = None
-    axisStep: Optional[float] = None
     overlap: Optional[float] = None
     numberOfImages: Optional[int] = None
     startImageNumber: Optional[int] = None
@@ -134,17 +129,17 @@ class DataCollectionSummary(BaseDataCollectionOut):
     def to_angstrom(cls, v):
         return v if v is None else v * 10
 
-    @model_validator(mode="after")
-    def to_nanometers(self):
-        if self.pixelSizeOnImage:
-            self.pixelSizeNanometers = self.pixelSizeOnImage / 10
-        return self
+    @computed_field
+    def pixelSizeNanometers(self) -> float | None:
+        """Pixel size on image, converted to nm"""
+        return self.pixelSizeOnImage / 10 if self.pixelSizeOnImage else None
 
-    @model_validator(mode="after")
-    def axis_step(self):
+    @computed_field
+    def axisStep(self) -> float | None:
+        """Angle step for tilt series"""
         if self.axisEnd and self.axisStart and self.numberOfImages:
-            self.axisStep = round((self.axisEnd - self.axisStart) / self.numberOfImages, 2)
-        return self
+            return round((self.axisEnd - self.axisStart) / self.numberOfImages, 2)
+        return None
 
 
 # mypy doesn't support type aliases yet
