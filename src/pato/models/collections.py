@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 from .response import OrmBaseModel
 
@@ -128,6 +128,18 @@ class DataCollectionSummary(BaseDataCollectionOut):
     @field_validator("pixelSizeOnImage")
     def to_angstrom(cls, v):
         return v if v is None else v * 10
+
+    @computed_field
+    def pixelSizeNanometers(self) -> float | None:
+        """Pixel size on image, converted to nm"""
+        return self.pixelSizeOnImage / 10 if self.pixelSizeOnImage else None
+
+    @computed_field
+    def axisStep(self) -> float | None:
+        """Angle step for tilt series"""
+        if self.axisEnd and self.axisStart and self.numberOfImages:
+            return round((self.axisEnd - self.axisStart) / self.numberOfImages, 2)
+        return None
 
 
 # mypy doesn't support type aliases yet
