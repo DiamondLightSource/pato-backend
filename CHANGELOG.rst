@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.28.0 (01/06/2026)
++++++++++
+
+**Added**
+
+- Send alignment quality of tomograms plus tilt angle step to frontend
+
++++++++++
 v1.27.1 (15/05/2026)
 +++++++++
 
