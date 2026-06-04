@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, status
 from fastapi.responses import FileResponse
 from lims_utils.models import Paged, pagination
 
@@ -8,6 +8,7 @@ from ..auth import Permissions, User
 from ..crud import alerts as alerts_crud
 from ..crud import groups as crud
 from ..models.alerts import NotificationSignup
+from ..models.atlas import AtlasCorrelationIn
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import Atlas, DataCollectionGroupSummaryResponse, GridSquare
 from ..utils.generic import ColourChannel
@@ -75,6 +76,14 @@ def get_atlas_image(
 ):
     """Get atlas image"""
     return crud.get_atlas_image(dcg_id=groupId, colour=colour)
+
+@router.post("/{groupId}/atlas/correlation", status_code=status.HTTP_202_ACCEPTED)
+def submit_atlas_correlation(
+    groupId: int = Depends(Permissions.data_collection_group),
+    parameters: AtlasCorrelationIn = Body(),
+):
+    """Correlate reference and moving atlases"""
+    return crud.correlate_atlas(dcg_id=groupId, parameters=parameters)
 
 
 @router.post("/{groupId}/alerts")

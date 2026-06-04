@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 from fastapi import HTTPException, status
@@ -18,11 +19,13 @@ from sqlalchemy import func as f
 from sqlalchemy import select
 from sqlalchemy.sql.functions import coalesce
 
+from ..models.atlas import AtlasCorrelationIn
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
 from ..utils.database import db, unravel
 from ..utils.generic import ColourChannel, replace_clem_blob, validate_path
+from ..utils.pika import PikaPublisher
 
 
 def get_collection_group(group_id: int):
@@ -43,7 +46,11 @@ def get_collection_group(group_id: int):
 
 
 def get_collection_groups(
-    limit: int, page: int, atlas_only: bool, proposal_reference: ProposalReference, search: Optional[str]
+    limit: int,
+    page: int,
+    atlas_only: bool,
+    proposal_reference: ProposalReference,
+    search: Optional[str],
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         select(
@@ -51,7 +58,9 @@ def get_collection_groups(
             ExperimentType.name.label("experimentTypeName"),
             Atlas.atlasId,
             DataCollection.imageDirectory,
-            f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label("cassettePosition"),
+            f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label(
+                "cassettePosition"
+            ),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
             BLSession.visit_number.label("visitNumber"),
         )
@@ -60,7 +69,11 @@ def get_collection_groups(
         .join(ExperimentType, isouter=True)
         .join(BLSession)
         .join(Proposal)
-        .join(BLSample, BLSample.blSampleId == DataCollectionGroup.blSampleId, isouter=True)
+        .join(
+            BLSample,
+            BLSample.blSampleId == DataCollectionGroup.blSampleId,
+            isouter=True,
+        )
         .join(DataCollection, isouter=True)
         .filter(
             Proposal.proposalCode == proposal_reference.code,
@@ -171,7 +184,9 @@ def get_grid_squares(
 
 
 def get_atlas(dcg_id: int):
-    atlas = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
+    atlas = db.session.scalar(
+        select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id)
+    )
 
     if atlas is None:
         raise HTTPException(
@@ -197,3 +212,31 @@ def get_atlas_image(dcg_id: int, colour: ColourChannel = "grey"):
         )
 
     return atlas_image
+
+
+def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
+    ref = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
+    mov = db.session.scalar(
+        select(Atlas).filter(Atlas.dataCollectionGroupId == parameters.pair)
+    )
+
+    if ref is None or mov is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Data collection group has no atlas",
+        )
+
+    with PikaPublisher() as pika_publisher:
+        pika_publisher.publish(
+            json.dumps(
+                {
+                    "image_ref": ref.atlasImage,
+                    "image_mov": mov.atlasImage,
+                    "pixel_size_ref": ref.pixelSize,
+                    "pixel_size_mov": mov.pixelSize,
+                }
+            ),
+            queue="correlative.align_images",
+        )
+
+    return True
