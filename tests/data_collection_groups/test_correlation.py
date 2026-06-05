@@ -17,3 +17,9 @@ def test_submit(mock_pika_atlas, mock_permissions, client):
         ),
         queue="correlative.align_images",
     )
+
+def test_submit_invalid(mock_permissions, client):
+    """Should return 404 if group has no atlas"""
+    resp = client.post("/dataGroups/5440742/atlas/correlation", json={"pair": 1040407})
+
+    assert resp.status_code == 404
