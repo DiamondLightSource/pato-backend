@@ -164,7 +164,7 @@ def test_tomogram_invalid_micrograph(mock_permissions, client):
 
 
 @patch("pato.crud.collections._validate_session_active", new=active_mock)
-def test_tomogram_with_suffix(mock_permissions, client):
+def test_tomogram_with_suffix(mock_pika, mock_permissions, client):
     """Process tomogram with cardinal suffix on stack file name"""
     resp = client.post(
         "/dataCollections/6017406/reprocessing/tomograms",
