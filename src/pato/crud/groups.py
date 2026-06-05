@@ -23,6 +23,7 @@ from ..models.atlas import AtlasCorrelationIn
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
+from ..utils.config import Config
 from ..utils.database import db, unravel
 from ..utils.generic import ColourChannel, replace_clem_blob, validate_path
 from ..utils.pika import PikaPublisher
@@ -57,6 +58,7 @@ def get_collection_groups(
             *unravel(DataCollectionGroup),
             ExperimentType.name.label("experimentTypeName"),
             Atlas.atlasId,
+            Atlas.atlasImage.label("atlasPath"),
             DataCollection.imageDirectory,
             f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label(
                 "cassettePosition"
@@ -80,6 +82,7 @@ def get_collection_groups(
             Proposal.proposalNumber == proposal_reference.number,
         )
         .group_by(DataCollectionGroup.dataCollectionGroupId)
+        .order_by(DataCollectionGroup.dataCollectionGroupId.desc())
     )
 
     if atlas_only:
@@ -236,7 +239,7 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
                     "pixel_size_mov": mov.pixelSize,
                 }
             ),
-            queue="correlative.align_images",
+            queue=Config.mq.correlative_alignment_queue,
         )
 
     return True

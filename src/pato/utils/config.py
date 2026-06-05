@@ -50,6 +50,7 @@ class MQ:
     password: str = "guest"
     vhost: str = "zocalo"
     consumer_queue: str = "pato_notifications"
+    correlative_alignment_queue: str = "correlative.align_images"
 
 
 class Config:
