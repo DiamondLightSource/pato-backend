@@ -233,6 +233,8 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
         pika_publisher.publish(
             json.dumps(
                 {
+                    "id_ref": ref.atlasId,
+                    "id_mov": mov.atlasId,
                     "image_ref": ref.atlasImage,
                     "image_mov": mov.atlasImage,
                     "pixel_size_ref": ref.pixelSize,
