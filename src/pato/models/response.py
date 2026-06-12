@@ -83,6 +83,7 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     sessionId: int = Field(..., lt=1e9, description="Session ID")
     experimentType: Optional[str] = None
     atlasId: Optional[int] = None
+    atlasPath: Optional[str] = None
     experimentTypeId: Optional[int] = 37
     experimentTypeName: Optional[str] = "Single Particle"
     imageDirectory: Optional[str] = None
@@ -94,6 +95,8 @@ class DataCollectionGroupSummaryResponse(OrmBaseModel):
     def replace_none(cls, v):
         return v or "Single Particle"
 
+class DataCollectionGroupWithSessionResponse(DataCollectionGroupSummaryResponse):
+    visitNumber: int
 
 class ProcessingJobParameters(OrmBaseModel):
     items: dict[str, str]

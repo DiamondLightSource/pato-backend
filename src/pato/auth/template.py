@@ -23,6 +23,10 @@ class GenericPermissions:
         return processingJobId
 
     @staticmethod
+    def proposal(proposalReference: str):
+        return parse_proposal(proposalReference)
+
+    @staticmethod
     def session(proposalReference: str, visitNumber: int):
         return parse_proposal(proposalReference, visitNumber)
 

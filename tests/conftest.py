@@ -93,8 +93,14 @@ def exists_mock():
         yield _fixture
 
 
-@pytest.fixture(scope="session", autouse=False)
+@pytest.fixture(scope="function", autouse=False)
 def mock_pika():
     with patch("pato.crud.collections.PikaPublisher", autospec=True) as _fixture:
+        _fixture.return_value.__enter__.return_value = _fixture
+        yield _fixture
+
+@pytest.fixture(scope="function", autouse=False)
+def mock_pika_atlas():
+    with patch("pato.crud.groups.PikaPublisher", autospec=True) as _fixture:
         _fixture.return_value.__enter__.return_value = _fixture
         yield _fixture
