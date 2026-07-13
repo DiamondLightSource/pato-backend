@@ -424,9 +424,12 @@ def get_data_collection(collection_id: int):
         select(
             func.row_number().over(order_by=DataCollection.dataCollectionId).label("index"),
             *unravel(DataCollection),
+            MotionCorrection.lastFrame,
+            MotionCorrection.dosePerFrame
         )
         .select_from(DataCollectionGroup)
         .join(DataCollection)
+        .join(MotionCorrection, isouter=True)
         .filter(
             DataCollectionGroup.dataCollectionGroupId
             == select(DataCollection.dataCollectionGroupId)
@@ -437,6 +440,6 @@ def get_data_collection(collection_id: int):
         .order_by(DataCollection.dataCollectionId)
     ).subquery()
 
-    query = select(base_sub_query).filter(base_sub_query.c.dataCollectionId == collection_id)
+    query = select(base_sub_query).filter(base_sub_query.c.dataCollectionId == collection_id).limit(1)
 
     return db.session.execute(query).one()

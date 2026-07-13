@@ -12,6 +12,7 @@ from lims_utils.tables import (
     DataCollectionGroup,
     ExperimentType,
     GridSquare,
+    MotionCorrection,
     Proposal,
     Tomogram,
 )
@@ -119,8 +120,11 @@ def get_collections(
             *unravel(DataCollection),
             f.count(Tomogram.tomogramId.distinct()).label("tomograms"),
             Tomogram.globalAlignmentQuality,
+            MotionCorrection.lastFrame,
+            MotionCorrection.dosePerFrame,
         )
         .select_from(DataCollection)
+        .join(MotionCorrection, isouter=True)
         .join(DataCollectionGroup)
         .join(BLSession, BLSession.sessionId == DataCollectionGroup.sessionId)
         .join(Tomogram, isouter=(not onlyTomograms))

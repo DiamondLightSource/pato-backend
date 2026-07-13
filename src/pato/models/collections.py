@@ -119,6 +119,8 @@ class DataCollectionSummary(BaseDataCollectionOut):
     dataCollectionPlanId: Optional[int] = None
     globalAlignmentQuality: Optional[float] = None
     tomograms: int
+    lastFrame: Optional[int] = None # Comes from motion correction
+    dosePerFrame: Optional[float] = None # Comes from motion correction
 
     @field_validator("phasePlate", mode="before")
     def to_bool_str(cls, v):
@@ -133,6 +135,13 @@ class DataCollectionSummary(BaseDataCollectionOut):
     def pixelSizeNanometers(self) -> float | None:
         """Pixel size on image, converted to nm"""
         return self.pixelSizeOnImage / 10 if self.pixelSizeOnImage else None
+
+    @computed_field
+    def actualTotalExposedDose(self) -> float | None:
+        """Total exposed dose, calculated from dose per frame and number of frames"""
+        if self.dosePerFrame is not None and self.lastFrame is not None:
+            return self.dosePerFrame * self.lastFrame
+        return None
 
     @computed_field
     def axisStep(self) -> float | None:
