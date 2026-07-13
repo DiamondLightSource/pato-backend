@@ -256,6 +256,7 @@ class ProcessingJobResponse(OrmBaseModel):
 class TomogramResponse(OrmBaseModel):
     dataCollectionId: int
     tomogramId: int
+    gridSquareId: Optional[int] = None
     volumeFile: Optional[str] = Field(None, max_length=255)
     stackFile: Optional[str] = Field(None, max_length=255)
     sizeX: Optional[int] = None
