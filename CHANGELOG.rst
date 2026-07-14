@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.29.2 (13/07/2026)
++++++++++
+
+**Changed**
+
+- Return grid square ID for tomograms
+
++++++++++
 v1.29.1 (03/07/2026)
 +++++++++
 
