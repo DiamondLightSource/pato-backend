@@ -128,7 +128,7 @@ def get_tomograms(limit: int, page: int, collectionId: int) -> Paged[TomogramFul
         .outerjoin(AutoProcProgram)
         .outerjoin(Tomogram)
         .filter(ProcessingJob.dataCollectionId == collectionId)
-        .order_by(ProcessingJob.processingJobId.desc())
+        .order_by(ProcessingJob.processingJobId.desc(), Tomogram.tomogramId.desc())
     )
 
     return db.paginate(query, limit, page, slow_count=False)
