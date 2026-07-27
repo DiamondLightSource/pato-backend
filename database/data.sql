@@ -5645,9 +5645,9 @@ CREATE TABLE `ProcessedTomogram` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
-INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised',NULL),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
-(3,3,'/dls/test.picked.cbox','Picked',NULL);
+INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised','Ribosome'),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented','Membrane'),
+(3,3,'/dls/test.picked.cbox','Picked','Microtubule');
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
