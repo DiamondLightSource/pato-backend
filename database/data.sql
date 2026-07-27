@@ -1,5 +1,5 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19  Distrib 10.11.16-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19-11.8.6-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: ispyb
 -- ------------------------------------------------------
@@ -14,7 +14,7 @@
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
 
 --
 -- Table structure for table `AdminActivity`
@@ -39,10 +39,11 @@ CREATE TABLE `AdminActivity` (
 -- Dumping data for table `AdminActivity`
 --
 
-LOCK TABLES `AdminActivity` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AdminActivity` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AdminActivity` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AdminVar`
@@ -65,12 +66,12 @@ CREATE TABLE `AdminVar` (
 -- Dumping data for table `AdminVar`
 --
 
-LOCK TABLES `AdminVar` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` VALUES
-(4,'schemaVersion','4.12.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.2.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Aperture`
@@ -83,17 +84,18 @@ CREATE TABLE `Aperture` (
   `apertureId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sizeX` float DEFAULT NULL,
   PRIMARY KEY (`apertureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Aperture`
 --
 
-LOCK TABLES `Aperture` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Aperture` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Aperture` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Atlas`
@@ -126,13 +128,13 @@ CREATE TABLE `Atlas` (
 -- Dumping data for table `Atlas`
 --
 
-LOCK TABLES `Atlas` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Atlas` DISABLE KEYS */;
-INSERT INTO `Atlas` VALUES
-(1,5440742,'/dls/atlas.png',1,1,0,0,0,0,0,0,0,NULL),
+INSERT INTO `Atlas` (`atlasId`, `dataCollectionGroupId`, `atlasImage`, `pixelSize`, `cassetteSlot`, `hasRed`, `hasBlue`, `hasGreen`, `hasYellow`, `hasCyan`, `hasMagenta`, `hasGrey`, `mode`) VALUES (1,5440742,'/dls/atlas.png',1,1,0,0,0,0,0,0,0,NULL),
 (2,1040398,'/dls/*.png',1,1,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `Atlas` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProc`
@@ -162,10 +164,9 @@ CREATE TABLE `AutoProc` (
 -- Dumping data for table `AutoProc`
 --
 
-LOCK TABLES `AutoProc` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProc` DISABLE KEYS */;
-INSERT INTO `AutoProc` VALUES
-(596406,56425592,'P 6 2 2',92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22'),
+INSERT INTO `AutoProc` (`autoProcId`, `autoProcProgramId`, `spaceGroup`, `refinedCell_a`, `refinedCell_b`, `refinedCell_c`, `refinedCell_alpha`, `refinedCell_beta`, `refinedCell_gamma`, `recordTimeStamp`) VALUES (596406,56425592,'P 6 2 2',92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22'),
 (596411,56425944,'P 63 2 2',92.53,92.53,129.75,90,90,120,'2016-01-14 13:09:51'),
 (596418,56425952,'P 61 2 2',92.6461,92.6461,129.879,90,90,120,'2016-01-14 13:24:22'),
 (596419,56425963,'P 63 2 2',92.511,92.511,129.722,90,90,120,'2016-01-14 13:34:34'),
@@ -177,7 +178,8 @@ INSERT INTO `AutoProc` VALUES
 (603735,56985592,'I 2 3',78.15,78.15,78.15,90,90,90,'2016-01-22 11:54:01'),
 (603744,56986673,'I 2 3',78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProc` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcIntegration`
@@ -221,10 +223,9 @@ CREATE TABLE `AutoProcIntegration` (
 -- Dumping data for table `AutoProcIntegration`
 --
 
-LOCK TABLES `AutoProcIntegration` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcIntegration` DISABLE KEYS */;
-INSERT INTO `AutoProcIntegration` VALUES
-(592508,993677,56425592,NULL,NULL,NULL,209.131,215.722,NULL,NULL,NULL,NULL,NULL,NULL,92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22',0),
+INSERT INTO `AutoProcIntegration` (`autoProcIntegrationId`, `dataCollectionId`, `autoProcProgramId`, `startImageNumber`, `endImageNumber`, `refinedDetectorDistance`, `refinedXBeam`, `refinedYBeam`, `rotationAxisX`, `rotationAxisY`, `rotationAxisZ`, `beamVectorX`, `beamVectorY`, `beamVectorZ`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`, `recordTimeStamp`, `anomalous`) VALUES (592508,993677,56425592,NULL,NULL,NULL,209.131,215.722,NULL,NULL,NULL,NULL,NULL,NULL,92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22',0),
 (592513,993677,56425944,1,3600,193.939,209.052,215.618,NULL,NULL,NULL,NULL,NULL,NULL,92.532,92.532,129.747,90,90,120,'2016-01-14 13:09:51',0),
 (592520,993677,56425952,1,3600,194.077,209.062,215.62,NULL,NULL,NULL,NULL,NULL,NULL,92.6461,92.6461,129.879,90,90,120,'2016-01-14 13:24:22',0),
 (592521,993677,56425963,1,3600,193.893,209.135,215.719,NULL,NULL,NULL,NULL,NULL,NULL,92.5114,92.5114,129.722,90,90,120,'2016-01-14 13:34:35',0),
@@ -238,7 +239,8 @@ INSERT INTO `AutoProcIntegration` VALUES
 (600366,1002287,56985592,1,7200,176.239,209.177,215.651,NULL,NULL,NULL,NULL,NULL,NULL,78.153,78.153,78.153,90,90,90,'2016-01-22 11:54:01',0),
 (600376,1002287,56986673,1,7200,176.219,209.178,215.653,NULL,NULL,NULL,NULL,NULL,NULL,78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59',0);
 /*!40000 ALTER TABLE `AutoProcIntegration` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcProgram`
@@ -260,48 +262,49 @@ CREATE TABLE `AutoProcProgram` (
   `processingJobId` int(11) unsigned DEFAULT NULL,
   `processingPipelineId` int(11) unsigned DEFAULT NULL,
   `parentAutoProcProgramId` int(10) unsigned DEFAULT NULL,
+  `jobUuid` binary(16) DEFAULT NULL COMMENT 'External UUID for the job as described by the Zocalo service',
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
   KEY `AutoProcProgram_fk_parentAutoProcProgramId` (`parentAutoProcProgramId`),
   CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
   CONSTRAINT `AutoProcProgram_fk_parentAutoProcProgramId` FOREIGN KEY (`parentAutoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB AUTO_INCREMENT=56986807 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56986833 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `AutoProcProgram`
 --
 
-LOCK TABLES `AutoProcProgram` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
-INSERT INTO `AutoProcProgram` VALUES
-(56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL),
-(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL),
-(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL,NULL),
-(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL,NULL),
-(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL,NULL),
-(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL,NULL),
-(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL,NULL),
-(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL,NULL),
-(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL,NULL),
-(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL,NULL),
-(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL,NULL),
-(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL),
-(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL),
-(56986676,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,6,NULL,NULL),
-(56986677,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,7,NULL,NULL),
-(56986678,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,8,NULL,NULL),
-(56986679,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL),
-(56986680,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10,NULL,NULL),
-(56986800,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL),
-(56986801,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL),
-(56986802,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL),
-(56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,54,NULL,NULL),
-(56986804,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,51,NULL,NULL),
-(56986805,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,52,NULL,NULL),
-(56986806,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,53,NULL,NULL);
+INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`, `parentAutoProcProgramId`, `jobUuid`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL,NULL),
+(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL,NULL),
+(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL,NULL,NULL),
+(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL,NULL,NULL),
+(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL,NULL,NULL),
+(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL,NULL,NULL),
+(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL,NULL,NULL),
+(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL,NULL,NULL),
+(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL,NULL,NULL),
+(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL,NULL,NULL),
+(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL,NULL,NULL),
+(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL,NULL),
+(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(56986676,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,6,NULL,NULL,NULL),
+(56986677,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,7,NULL,NULL,NULL),
+(56986678,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,8,NULL,NULL,NULL),
+(56986679,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL,NULL),
+(56986680,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL),
+(56986800,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,9,NULL,NULL,NULL),
+(56986801,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL,NULL),
+(56986802,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1265,NULL,NULL,NULL),
+(56986803,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,54,NULL,NULL,NULL),
+(56986804,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,51,NULL,NULL,NULL),
+(56986805,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,52,NULL,NULL,NULL),
+(56986806,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,53,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcProgramAttachment`
@@ -322,17 +325,16 @@ CREATE TABLE `AutoProcProgramAttachment` (
   PRIMARY KEY (`autoProcProgramAttachmentId`),
   KEY `AutoProcProgramAttachmentIdx1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramAttachmentFk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1037428 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1037454 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `AutoProcProgramAttachment`
 --
 
-LOCK TABLES `AutoProcProgramAttachment` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` DISABLE KEYS */;
-INSERT INTO `AutoProcProgramAttachment` VALUES
-(1023947,56425592,'Log','fast_dp.log','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/fast_dp','2016-01-14 12:46:22',NULL,0),
+INSERT INTO `AutoProcProgramAttachment` (`autoProcProgramAttachmentId`, `autoProcProgramId`, `fileType`, `fileName`, `filePath`, `recordTimeStamp`, `importanceRank`, `deleted`) VALUES (1023947,56425592,'Log','fast_dp.log','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/fast_dp','2016-01-14 12:46:22',NULL,0),
 (1023955,56425944,'Result','cm14451v1_xtlysjan41_free.mtz','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/xia2/3dii-run/DataFiles','2016-01-14 13:09:51',NULL,0),
 (1023956,56425944,'Log','xia2.html','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/xia2/3dii-run','2016-01-14 13:09:51',NULL,0),
 (1023969,56425952,'Result','cm14451v1_xtlysjan41_free.mtz','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/xia2/dials-run/DataFiles','2016-01-14 13:24:22',NULL,0),
@@ -366,7 +368,8 @@ INSERT INTO `AutoProcProgramAttachment` VALUES
 (1037196,56986679,'Result','test.png','/mnt/test.png',NULL,NULL,0),
 (1037197,56986679,'Graph','test_xy_shift.json','/mnt/test_xy_shift.json',NULL,NULL,0);
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcProgramMessage`
@@ -392,10 +395,11 @@ CREATE TABLE `AutoProcProgramMessage` (
 -- Dumping data for table `AutoProcProgramMessage`
 --
 
-LOCK TABLES `AutoProcProgramMessage` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgramMessage` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AutoProcProgramMessage` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcScaling`
@@ -419,10 +423,9 @@ CREATE TABLE `AutoProcScaling` (
 -- Dumping data for table `AutoProcScaling`
 --
 
-LOCK TABLES `AutoProcScaling` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScaling` DISABLE KEYS */;
-INSERT INTO `AutoProcScaling` VALUES
-(596133,596406,'2016-01-14 12:46:22'),
+INSERT INTO `AutoProcScaling` (`autoProcScalingId`, `autoProcId`, `recordTimeStamp`) VALUES (596133,596406,'2016-01-14 12:46:22'),
 (596138,596411,'2016-01-14 13:09:51'),
 (596145,596418,'2016-01-14 13:24:22'),
 (596146,596419,'2016-01-14 13:34:35'),
@@ -434,7 +437,8 @@ INSERT INTO `AutoProcScaling` VALUES
 (603461,603735,'2016-01-22 11:54:01'),
 (603470,603744,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProcScaling` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcScalingStatistics`
@@ -479,10 +483,9 @@ CREATE TABLE `AutoProcScalingStatistics` (
 -- Dumping data for table `AutoProcScalingStatistics`
 --
 
-LOCK TABLES `AutoProcScalingStatistics` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScalingStatistics` DISABLE KEYS */;
-INSERT INTO `AutoProcScalingStatistics` VALUES
-(1770617,596133,'outerShell',NULL,1.65,1.61,0.766,NULL,0.789,NULL,NULL,NULL,105090,3089,5.5,97.8,34,96.8,17.8,'2016-01-14 12:46:22',0,91.7,15.8,NULL),
+INSERT INTO `AutoProcScalingStatistics` (`autoProcScalingStatisticsId`, `autoProcScalingId`, `scalingStatisticsType`, `comments`, `resolutionLimitLow`, `resolutionLimitHigh`, `rMerge`, `rMeasWithinIPlusIMinus`, `rMeasAllIPlusIMinus`, `rPimWithinIPlusIMinus`, `rPimAllIPlusIMinus`, `fractionalPartialBias`, `nTotalObservations`, `nTotalUniqueObservations`, `meanIOverSigI`, `completeness`, `multiplicity`, `anomalousCompleteness`, `anomalousMultiplicity`, `recordTimeStamp`, `anomalous`, `ccHalf`, `ccAnomalous`, `resIOverSigI2`) VALUES (1770617,596133,'outerShell',NULL,1.65,1.61,0.766,NULL,0.789,NULL,NULL,NULL,105090,3089,5.5,97.8,34,96.8,17.8,'2016-01-14 12:46:22',0,91.7,15.8,NULL),
 (1770618,596133,'innerShell',NULL,29.5,7.18,0.061,NULL,0.063,NULL,NULL,NULL,17093,593,61.7,98.6,28.8,100,19.5,'2016-01-14 12:46:22',0,99.9,73.4,NULL),
 (1770619,596133,'overall',NULL,29.5,1.61,0.106,NULL,0.109,NULL,NULL,NULL,1588225,43478,30.2,99.8,36.5,99.8,19.4,'2016-01-14 12:46:22',0,99.9,60.5,NULL),
 (1770632,596138,'outerShell',NULL,1.49,1.45,1.326,NULL,1.419,0.506,0.365,NULL,61482,4245,2,99.8,14.5,99.5,7.4,'2016-01-14 13:09:51',0,0.584,-0.059,NULL),
@@ -516,7 +519,8 @@ INSERT INTO `AutoProcScalingStatistics` VALUES
 (1792629,603470,'innerShell',NULL,39.07,5.95,0.051,NULL,0.053,0.008,0.006,NULL,16799,235,117.7,99.7,71.5,100,41.9,'2016-01-22 12:01:59',0,1,0.654,NULL),
 (1792630,603470,'overall',NULL,39.07,1.33,0.08,NULL,0.082,0.013,0.009,NULL,1305126,18395,30.9,100,71,100,36.1,'2016-01-22 12:01:59',0,1,0.482,NULL);
 /*!40000 ALTER TABLE `AutoProcScalingStatistics` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcScaling_has_Int`
@@ -542,10 +546,9 @@ CREATE TABLE `AutoProcScaling_has_Int` (
 -- Dumping data for table `AutoProcScaling_has_Int`
 --
 
-LOCK TABLES `AutoProcScaling_has_Int` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScaling_has_Int` DISABLE KEYS */;
-INSERT INTO `AutoProcScaling_has_Int` VALUES
-(592507,596133,592508,'2016-01-14 12:46:22'),
+INSERT INTO `AutoProcScaling_has_Int` (`autoProcScaling_has_IntId`, `autoProcScalingId`, `autoProcIntegrationId`, `recordTimeStamp`) VALUES (592507,596133,592508,'2016-01-14 12:46:22'),
 (592512,596138,592513,'2016-01-14 13:09:51'),
 (592519,596145,592520,'2016-01-14 13:24:22'),
 (592520,596146,592521,'2016-01-14 13:34:35'),
@@ -559,7 +562,8 @@ INSERT INTO `AutoProcScaling_has_Int` VALUES
 (600365,603461,600366,'2016-01-22 11:54:01'),
 (600375,603470,600376,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProcScaling_has_Int` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `AutoProcStatus`
@@ -585,10 +589,11 @@ CREATE TABLE `AutoProcStatus` (
 -- Dumping data for table `AutoProcStatus`
 --
 
-LOCK TABLES `AutoProcStatus` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcStatus` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AutoProcStatus` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_automationError`
@@ -609,10 +614,11 @@ CREATE TABLE `BF_automationError` (
 -- Dumping data for table `BF_automationError`
 --
 
-LOCK TABLES `BF_automationError` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_automationError` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_automationError` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_automationFault`
@@ -641,10 +647,11 @@ CREATE TABLE `BF_automationFault` (
 -- Dumping data for table `BF_automationFault`
 --
 
-LOCK TABLES `BF_automationFault` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_automationFault` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_automationFault` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_component`
@@ -668,10 +675,11 @@ CREATE TABLE `BF_component` (
 -- Dumping data for table `BF_component`
 --
 
-LOCK TABLES `BF_component` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_component` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_component_beamline`
@@ -694,10 +702,11 @@ CREATE TABLE `BF_component_beamline` (
 -- Dumping data for table `BF_component_beamline`
 --
 
-LOCK TABLES `BF_component_beamline` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_component_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_component_beamline` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_fault`
@@ -741,10 +750,11 @@ CREATE TABLE `BF_fault` (
 -- Dumping data for table `BF_fault`
 --
 
-LOCK TABLES `BF_fault` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_fault` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_fault` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_subcomponent`
@@ -768,10 +778,11 @@ CREATE TABLE `BF_subcomponent` (
 -- Dumping data for table `BF_subcomponent`
 --
 
-LOCK TABLES `BF_subcomponent` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_subcomponent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_subcomponent` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_subcomponent_beamline`
@@ -794,10 +805,11 @@ CREATE TABLE `BF_subcomponent_beamline` (
 -- Dumping data for table `BF_subcomponent_beamline`
 --
 
-LOCK TABLES `BF_subcomponent_beamline` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_system`
@@ -818,10 +830,11 @@ CREATE TABLE `BF_system` (
 -- Dumping data for table `BF_system`
 --
 
-LOCK TABLES `BF_system` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_system` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BF_system_beamline`
@@ -844,10 +857,11 @@ CREATE TABLE `BF_system_beamline` (
 -- Dumping data for table `BF_system_beamline`
 --
 
-LOCK TABLES `BF_system_beamline` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_system_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system_beamline` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BFactorFit`
@@ -872,12 +886,12 @@ CREATE TABLE `BFactorFit` (
 -- Dumping data for table `BFactorFit`
 --
 
-LOCK TABLES `BFactorFit` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BFactorFit` DISABLE KEYS */;
-INSERT INTO `BFactorFit` VALUES
-(1,1,1,1,1);
+INSERT INTO `BFactorFit` (`bFactorFitId`, `particleClassificationId`, `resolution`, `numberOfParticles`, `particleBatchSize`) VALUES (1,1,1,1,1);
 /*!40000 ALTER TABLE `BFactorFit` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSample`
@@ -940,17 +954,16 @@ CREATE TABLE `BLSample` (
   CONSTRAINT `BLSample_ibfk_1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_2` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_3` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=405619 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=406982 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BLSample`
 --
 
-LOCK TABLES `BLSample` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample` DISABLE KEYS */;
-INSERT INTO `BLSample` VALUES
-(11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `containerId`, `name`, `code`, `location`, `holderLength`, `loopLength`, `loopType`, `wireWidth`, `comments`, `completionStage`, `structureStage`, `publicationStage`, `publicationComments`, `blSampleStatus`, `isInSampleChanger`, `lastKnownCenteringPosition`, `POSITIONID`, `recordTimeStamp`, `SMILES`, `blSubSampleId`, `lastImageURL`, `screenComponentGroupId`, `volume`, `dimension1`, `dimension2`, `dimension3`, `shape`, `packingFraction`, `preparationTemeprature`, `preparationHumidity`, `blottingTime`, `blottingForce`, `blottingDrainTime`, `support`, `subLocation`, `staffComments`, `source`) VALUES (11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11553,NULL,3921,1326,'Sample-002','SAM-011553','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:21:43',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11556,NULL,3924,1326,'Sample-003','SAM-011556','3',NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:27:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11559,NULL,3927,1329,'Sample-004','SAM-011559','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:27:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
@@ -974,9 +987,12 @@ INSERT INTO `BLSample` VALUES
 (398828,NULL,NULL,34888,'hello','hello','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-10-14 18:33:06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (398831,NULL,NULL,34894,'Sample 01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-04 15:05:52',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (398832,NULL,NULL,34897,'Sample 01',NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-05 13:59:59',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(398833,NULL,NULL,34899,'Sample 01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-08 13:33:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
+(398833,NULL,NULL,34899,'Sample 01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-08 13:33:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(406241,205823,NULL,41764,'TestDPSample1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(406242,205824,NULL,41764,'TestDPSample2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
 /*!40000 ALTER TABLE `BLSample` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleGroup`
@@ -995,22 +1011,22 @@ CREATE TABLE `BLSampleGroup` (
   KEY `BLSampleGroup_fk_ownerId` (`ownerId`),
   CONSTRAINT `BLSampleGroup_fk_ownerId` FOREIGN KEY (`ownerId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE,
   CONSTRAINT `BLSampleGroup_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=340 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=465 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BLSampleGroup`
 --
 
-LOCK TABLES `BLSampleGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup` VALUES
-(5,NULL,37027,NULL),
+INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`, `proposalId`, `ownerId`) VALUES (5,NULL,37027,NULL),
 (6,'foo',37027,NULL),
 (7,'bar',37027,NULL),
 (10,'existingname',141666,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleGroup_has_BLSample`
@@ -1038,16 +1054,16 @@ CREATE TABLE `BLSampleGroup_has_BLSample` (
 -- Dumping data for table `BLSampleGroup_has_BLSample`
 --
 
-LOCK TABLES `BLSampleGroup_has_BLSample` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup_has_BLSample` VALUES
-(5,398824,1,'background',NULL),
+INSERT INTO `BLSampleGroup_has_BLSample` (`blSampleGroupId`, `blSampleId`, `groupOrder`, `type`, `blSampleTypeId`) VALUES (5,398824,1,'background',NULL),
 (5,398827,2,'sample',NULL),
 (6,398810,NULL,NULL,NULL),
 (7,374695,NULL,NULL,NULL),
 (7,398810,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImage`
@@ -1077,20 +1093,20 @@ CREATE TABLE `BLSampleImage` (
   CONSTRAINT `BLSampleImage_fk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `BLSampleImage_fk2` FOREIGN KEY (`containerInspectionId`) REFERENCES `ContainerInspection` (`containerInspectionId`),
   CONSTRAINT `BLSampleImage_fk3` FOREIGN KEY (`blSampleImageScoreId`) REFERENCES `BLSampleImageScore` (`blSampleImageScoreId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=604 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BLSampleImage`
 --
 
-LOCK TABLES `BLSampleImage` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage` DISABLE KEYS */;
-INSERT INTO `BLSampleImage` VALUES
-(2,398819,NULL,NULL,'/dls/i03/data/2016/cm1234-5/something.jpg',NULL,NULL,'2016-10-05 11:23:33',NULL,NULL,0,0),
+INSERT INTO `BLSampleImage` (`blSampleImageId`, `blSampleId`, `micronsPerPixelX`, `micronsPerPixelY`, `imageFullPath`, `blSampleImageScoreId`, `comments`, `blTimeStamp`, `containerInspectionId`, `modifiedTimeStamp`, `offsetX`, `offsetY`) VALUES (2,398819,NULL,NULL,'/dls/i03/data/2016/cm1234-5/something.jpg',NULL,NULL,'2016-10-05 11:23:33',NULL,NULL,0,0),
 (5,398816,1.1,1.2,'/dls/i03/data/2016/cm1234-5/something-else.jpg',NULL,NULL,'2016-10-10 14:31:06',4,NULL,0,0);
 /*!40000 ALTER TABLE `BLSampleImage` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImageAnalysis`
@@ -1121,12 +1137,12 @@ CREATE TABLE `BLSampleImageAnalysis` (
 -- Dumping data for table `BLSampleImageAnalysis`
 --
 
-LOCK TABLES `BLSampleImageAnalysis` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAnalysis` DISABLE KEYS */;
-INSERT INTO `BLSampleImageAnalysis` VALUES
-(4,5,'/dls/i02-2/data/2016/cm14559-5/.ispyb/something.jpg',NULL,10,11,0.94,0.5,'OK','2016-12-09 12:32:24','2016-12-09 12:32:25');
+INSERT INTO `BLSampleImageAnalysis` (`blSampleImageAnalysisId`, `blSampleImageId`, `oavSnapshotBefore`, `oavSnapshotAfter`, `deltaX`, `deltaY`, `goodnessOfFit`, `scaleFactor`, `resultCode`, `matchStartTimeStamp`, `matchEndTimeStamp`) VALUES (4,5,'/dls/i02-2/data/2016/cm14559-5/.ispyb/something.jpg',NULL,10,11,0.94,0.5,'OK','2016-12-09 12:32:24','2016-12-09 12:32:25');
 /*!40000 ALTER TABLE `BLSampleImageAnalysis` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImageAutoScoreClass`
@@ -1149,10 +1165,9 @@ CREATE TABLE `BLSampleImageAutoScoreClass` (
 -- Dumping data for table `BLSampleImageAutoScoreClass`
 --
 
-LOCK TABLES `BLSampleImageAutoScoreClass` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreClass` DISABLE KEYS */;
-INSERT INTO `BLSampleImageAutoScoreClass` VALUES
-(1,1,'clear'),
+INSERT INTO `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`, `blSampleImageAutoScoreSchemaId`, `scoreClass`) VALUES (1,1,'clear'),
 (2,1,'crystal'),
 (3,1,'precipitant'),
 (4,1,'other'),
@@ -1161,7 +1176,8 @@ INSERT INTO `BLSampleImageAutoScoreClass` VALUES
 (7,2,'precipitant'),
 (8,2,'other');
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreClass` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImageAutoScoreSchema`
@@ -1182,13 +1198,13 @@ CREATE TABLE `BLSampleImageAutoScoreSchema` (
 -- Dumping data for table `BLSampleImageAutoScoreSchema`
 --
 
-LOCK TABLES `BLSampleImageAutoScoreSchema` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreSchema` DISABLE KEYS */;
-INSERT INTO `BLSampleImageAutoScoreSchema` VALUES
-(1,'MARCO',1),
+INSERT INTO `BLSampleImageAutoScoreSchema` (`blSampleImageAutoScoreSchemaId`, `schemaName`, `enabled`) VALUES (1,'MARCO',1),
 (2,'CHIMP',1);
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreSchema` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImageMeasurement`
@@ -1218,10 +1234,11 @@ CREATE TABLE `BLSampleImageMeasurement` (
 -- Dumping data for table `BLSampleImageMeasurement`
 --
 
-LOCK TABLES `BLSampleImageMeasurement` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageMeasurement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImageMeasurement` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImageScore`
@@ -1243,10 +1260,9 @@ CREATE TABLE `BLSampleImageScore` (
 -- Dumping data for table `BLSampleImageScore`
 --
 
-LOCK TABLES `BLSampleImageScore` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageScore` DISABLE KEYS */;
-INSERT INTO `BLSampleImageScore` VALUES
-(1,'Clear',0,'#cccccc'),
+INSERT INTO `BLSampleImageScore` (`blSampleImageScoreId`, `name`, `score`, `colour`) VALUES (1,'Clear',0,'#cccccc'),
 (2,'Contaminated',1,'#fffd96'),
 (3,'Light Precipitate',2,'#fdfd96'),
 (4,'Phase Separation',4,'#fdfd96'),
@@ -1257,7 +1273,8 @@ INSERT INTO `BLSampleImageScore` VALUES
 (9,'3D Crystals',9,'#77dd77'),
 (10,'Heavy Precipitate',3,'#ff6961');
 /*!40000 ALTER TABLE `BLSampleImageScore` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImage_has_AutoScoreClass`
@@ -1281,10 +1298,11 @@ CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
 -- Dumping data for table `BLSampleImage_has_AutoScoreClass`
 --
 
-LOCK TABLES `BLSampleImage_has_AutoScoreClass` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleImage_has_Positioner`
@@ -1310,10 +1328,11 @@ CREATE TABLE `BLSampleImage_has_Positioner` (
 -- Dumping data for table `BLSampleImage_has_Positioner`
 --
 
-LOCK TABLES `BLSampleImage_has_Positioner` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSamplePosition`
@@ -1333,21 +1352,21 @@ CREATE TABLE `BLSamplePosition` (
   PRIMARY KEY (`blSamplePositionId`),
   KEY `BLSamplePosition_fk_blSampleId` (`blSampleId`),
   CONSTRAINT `BLSamplePosition_fk_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BLSamplePosition`
 --
 
-LOCK TABLES `BLSamplePosition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSamplePosition` DISABLE KEYS */;
-INSERT INTO `BLSamplePosition` VALUES
-(3,398833,1,1,1,'2025-05-14 08:22:40',NULL),
+INSERT INTO `BLSamplePosition` (`blSamplePositionId`, `blSampleId`, `posX`, `posY`, `posZ`, `recordTimeStamp`, `positionType`) VALUES (3,398833,1,1,1,'2025-05-14 08:22:40',NULL),
 (4,398833,1,1,1,'2025-05-14 08:22:40','dispensing'),
 (14,398832,1,1,1,'2025-05-14 08:22:40',NULL);
 /*!40000 ALTER TABLE `BLSamplePosition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleType`
@@ -1369,10 +1388,9 @@ CREATE TABLE `BLSampleType` (
 -- Dumping data for table `BLSampleType`
 --
 
-LOCK TABLES `BLSampleType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleType` DISABLE KEYS */;
-INSERT INTO `BLSampleType` VALUES
-(1,'background','xpdf',1),
+INSERT INTO `BLSampleType` (`blSampleTypeId`, `name`, `proposalType`, `active`) VALUES (1,'background','xpdf',1),
 (2,'container','xpdf',1),
 (3,'sample','xpdf',1),
 (4,'calibrant','xpdf',1),
@@ -1380,7 +1398,8 @@ INSERT INTO `BLSampleType` VALUES
 (6,'sample','scm',1),
 (7,'sample','mx',1);
 /*!40000 ALTER TABLE `BLSampleType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSampleType_has_Component`
@@ -1404,10 +1423,11 @@ CREATE TABLE `BLSampleType_has_Component` (
 -- Dumping data for table `BLSampleType_has_Component`
 --
 
-LOCK TABLES `BLSampleType_has_Component` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSample_has_DataCollectionPlan`
@@ -1431,13 +1451,13 @@ CREATE TABLE `BLSample_has_DataCollectionPlan` (
 -- Dumping data for table `BLSample_has_DataCollectionPlan`
 --
 
-LOCK TABLES `BLSample_has_DataCollectionPlan` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_DataCollectionPlan` DISABLE KEYS */;
-INSERT INTO `BLSample_has_DataCollectionPlan` VALUES
-(398824,197792,1),
+INSERT INTO `BLSample_has_DataCollectionPlan` (`blSampleId`, `dataCollectionPlanId`, `planOrder`) VALUES (398824,197792,1),
 (398827,197792,2);
 /*!40000 ALTER TABLE `BLSample_has_DataCollectionPlan` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSample_has_EnergyScan`
@@ -1462,10 +1482,11 @@ CREATE TABLE `BLSample_has_EnergyScan` (
 -- Dumping data for table `BLSample_has_EnergyScan`
 --
 
-LOCK TABLES `BLSample_has_EnergyScan` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSample_has_Ligand`
@@ -1488,10 +1509,11 @@ CREATE TABLE `BLSample_has_Ligand` (
 -- Dumping data for table `BLSample_has_Ligand`
 --
 
-LOCK TABLES `BLSample_has_Ligand` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_Ligand` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_Ligand` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSample_has_Positioner`
@@ -1516,10 +1538,11 @@ CREATE TABLE `BLSample_has_Positioner` (
 -- Dumping data for table `BLSample_has_Positioner`
 --
 
-LOCK TABLES `BLSample_has_Positioner` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_Positioner` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSession`
@@ -1559,17 +1582,16 @@ CREATE TABLE `BLSession` (
   CONSTRAINT `BLSession_fk_beamCalendarId` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27464596 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27464677 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BLSession`
 --
 
-LOCK TABLES `BLSession` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
-INSERT INTO `BLSession` VALUES
-(9999,1,999999,1,'2016-03-11 09:00:00','2016-03-11 17:00:00','i02',NULL,NULL,'jhgjh','Dr John Doe, Dr Lab Contact','2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `lastUpdate`, `externalId`, `archived`, `riskRating`, `purgedProcessedData`, `icatId`) VALUES (9999,1,999999,1,'2016-03-11 09:00:00','2016-03-11 17:00:00','i02',NULL,NULL,'jhgjh','Dr John Doe, Dr Lab Contact','2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (339525,NULL,141666,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00','3fefbfbd-5f64-5d',0,NULL,0,NULL),
@@ -1581,7 +1603,8 @@ INSERT INTO `BLSession` VALUES
 (27464090,NULL,1000028,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-12-09 16:57:15',NULL,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (27464172,NULL,1000327,NULL,NULL,NULL,'m12',NULL,NULL,NULL,NULL,'2025-04-24 10:11:06',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSession_has_SCPosition`
@@ -1605,10 +1628,11 @@ CREATE TABLE `BLSession_has_SCPosition` (
 -- Dumping data for table `BLSession_has_SCPosition`
 --
 
-LOCK TABLES `BLSession_has_SCPosition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSubSample`
@@ -1652,13 +1676,13 @@ CREATE TABLE `BLSubSample` (
 -- Dumping data for table `BLSubSample`
 --
 
-LOCK TABLES `BLSubSample` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSubSample` DISABLE KEYS */;
-INSERT INTO `BLSubSample` VALUES
-(2,398816,197784,NULL,2,5,NULL,NULL,NULL,NULL,NULL,'2016-09-30 14:25:19','manual',NULL),
+INSERT INTO `BLSubSample` (`blSubSampleId`, `blSampleId`, `diffractionPlanId`, `blSampleImageId`, `positionId`, `position2Id`, `motorPositionId`, `blSubSampleUUID`, `imgFileName`, `imgFilePath`, `comments`, `recordTimeStamp`, `source`, `type`) VALUES (2,398816,197784,NULL,2,5,NULL,NULL,NULL,NULL,NULL,'2016-09-30 14:25:19','manual',NULL),
 (5,398819,197784,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-05 10:16:44','manual',NULL);
 /*!40000 ALTER TABLE `BLSubSample` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BLSubSample_has_Positioner`
@@ -1683,10 +1707,11 @@ CREATE TABLE `BLSubSample_has_Positioner` (
 -- Dumping data for table `BLSubSample_has_Positioner`
 --
 
-LOCK TABLES `BLSubSample_has_Positioner` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSubSample_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSubSample_has_Positioner` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamApertures`
@@ -1712,10 +1737,11 @@ CREATE TABLE `BeamApertures` (
 -- Dumping data for table `BeamApertures`
 --
 
-LOCK TABLES `BeamApertures` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamApertures` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamApertures` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamCalendar`
@@ -1738,12 +1764,12 @@ CREATE TABLE `BeamCalendar` (
 -- Dumping data for table `BeamCalendar`
 --
 
-LOCK TABLES `BeamCalendar` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamCalendar` DISABLE KEYS */;
-INSERT INTO `BeamCalendar` VALUES
-(1,'2016-01','User Mode','2015-12-30 09:00:00','2016-01-02 17:00:00');
+INSERT INTO `BeamCalendar` (`beamCalendarId`, `run`, `beamStatus`, `startDate`, `endDate`) VALUES (1,'2016-01','User Mode','2015-12-30 09:00:00','2016-01-02 17:00:00');
 /*!40000 ALTER TABLE `BeamCalendar` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamCentres`
@@ -1768,10 +1794,11 @@ CREATE TABLE `BeamCentres` (
 -- Dumping data for table `BeamCentres`
 --
 
-LOCK TABLES `BeamCentres` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamCentres` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamCentres` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamLineSetup`
@@ -1839,12 +1866,12 @@ CREATE TABLE `BeamLineSetup` (
 -- Dumping data for table `BeamLineSetup`
 --
 
-LOCK TABLES `BeamLineSetup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamLineSetup` DISABLE KEYS */;
-INSERT INTO `BeamLineSetup` VALUES
-(1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`, `undulatorType1`, `undulatorType2`, `undulatorType3`, `focalSpotSizeAtSample`, `focusingOptic`, `beamDivergenceHorizontal`, `beamDivergenceVertical`, `polarisation`, `monochromatorType`, `setupDate`, `synchrotronName`, `maxExpTimePerDataCollection`, `maxExposureTimePerImage`, `minExposureTimePerImage`, `goniostatMaxOscillationSpeed`, `goniostatMaxOscillationWidth`, `goniostatMinOscillationWidth`, `maxTransmission`, `minTransmission`, `recordTimeStamp`, `CS`, `beamlineName`, `beamSizeXMin`, `beamSizeXMax`, `beamSizeYMin`, `beamSizeYMax`, `energyMin`, `energyMax`, `omegaMin`, `omegaMax`, `kappaMin`, `kappaMax`, `phiMin`, `phiMax`, `active`, `numberOfImagesMax`, `numberOfImagesMin`, `boxSizeXMin`, `boxSizeXMax`, `boxSizeYMin`, `boxSizeYMax`, `monoBandwidthMin`, `monoBandwidthMax`, `preferredDataCentre`, `amplitudeContrast`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BeamLineSetup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamlineAction`
@@ -1873,10 +1900,11 @@ CREATE TABLE `BeamlineAction` (
 -- Dumping data for table `BeamlineAction`
 --
 
-LOCK TABLES `BeamlineAction` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamlineAction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamlineAction` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `BeamlineStats`
@@ -1905,10 +1933,11 @@ CREATE TABLE `BeamlineStats` (
 -- Dumping data for table `BeamlineStats`
 --
 
-LOCK TABLES `BeamlineStats` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamlineStats` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamlineStats` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `CTF`
@@ -1949,10 +1978,9 @@ CREATE TABLE `CTF` (
 -- Dumping data for table `CTF`
 --
 
-LOCK TABLES `CTF` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CTF` DISABLE KEYS */;
-INSERT INTO `CTF` VALUES
-(1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5,NULL,5,5,NULL,NULL,'/mnt/test.png','a',NULL),
+INSERT INTO `CTF` (`ctfId`, `motionCorrectionId`, `autoProcProgramId`, `boxSizeX`, `boxSizeY`, `minResolution`, `maxResolution`, `minDefocus`, `maxDefocus`, `defocusStepSize`, `astigmatism`, `astigmatismAngle`, `estimatedResolution`, `estimatedDefocus`, `amplitudeContrast`, `ccValue`, `fftTheoreticalFullPath`, `comments`, `iceRingDensity`) VALUES (1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5,NULL,5,5,NULL,NULL,'/mnt/test.png','a',NULL),
 (2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9,NULL,7,8,NULL,NULL,'/mnt/test.png','b',NULL),
 (3,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,NULL,9,11,NULL,NULL,'/mnt/test.png','d',NULL),
 (4,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,NULL,11,14,NULL,NULL,'/mnt/test.png','c',NULL),
@@ -1981,7 +2009,8 @@ INSERT INTO `CTF` VALUES
 (27,30,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,NULL,9,12,NULL,NULL,'/mnt/test.png',NULL,NULL),
 (28,30,56986680,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,NULL,11,14,NULL,NULL,'/mnt/test.png',NULL,NULL);
 /*!40000 ALTER TABLE `CTF` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `CalendarHash`
@@ -2003,10 +2032,11 @@ CREATE TABLE `CalendarHash` (
 -- Dumping data for table `CalendarHash`
 --
 
-LOCK TABLES `CalendarHash` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CalendarHash` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CalendarHash` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Component`
@@ -2033,10 +2063,11 @@ CREATE TABLE `Component` (
 -- Dumping data for table `Component`
 --
 
-LOCK TABLES `Component` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Component` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ComponentLattice`
@@ -2065,12 +2096,12 @@ CREATE TABLE `ComponentLattice` (
 -- Dumping data for table `ComponentLattice`
 --
 
-LOCK TABLES `ComponentLattice` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentLattice` DISABLE KEYS */;
-INSERT INTO `ComponentLattice` VALUES
-(1,123497,'P21',10.1,11.1,12.1,90.1,90.2,90.3);
+INSERT INTO `ComponentLattice` (`componentLatticeId`, `componentId`, `spaceGroup`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`) VALUES (1,123497,'P21',10.1,11.1,12.1,90.1,90.2,90.3);
 /*!40000 ALTER TABLE `ComponentLattice` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ComponentSubType`
@@ -2093,10 +2124,9 @@ CREATE TABLE `ComponentSubType` (
 -- Dumping data for table `ComponentSubType`
 --
 
-LOCK TABLES `ComponentSubType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentSubType` DISABLE KEYS */;
-INSERT INTO `ComponentSubType` VALUES
-(1,'Buffer',1,NULL,1),
+INSERT INTO `ComponentSubType` (`componentSubTypeId`, `name`, `hasPh`, `proposalType`, `active`) VALUES (1,'Buffer',1,NULL,1),
 (2,'Precipitant',0,NULL,1),
 (3,'Salt',0,NULL,1),
 (4,'Cell',0,'scm',1),
@@ -2105,7 +2135,8 @@ INSERT INTO `ComponentSubType` VALUES
 (7,'Solution',1,'scm',1),
 (8,'Powder',0,'cy',1);
 /*!40000 ALTER TABLE `ComponentSubType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ComponentType`
@@ -2125,15 +2156,15 @@ CREATE TABLE `ComponentType` (
 -- Dumping data for table `ComponentType`
 --
 
-LOCK TABLES `ComponentType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
-INSERT INTO `ComponentType` VALUES
-(1,'Protein'),
+INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (1,'Protein'),
 (2,'DNA'),
 (3,'Small Molecule'),
 (4,'RNA');
 /*!40000 ALTER TABLE `ComponentType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Component_has_SubType`
@@ -2156,10 +2187,11 @@ CREATE TABLE `Component_has_SubType` (
 -- Dumping data for table `Component_has_SubType`
 --
 
-LOCK TABLES `Component_has_SubType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Component_has_SubType` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Component_has_SubType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ConcentrationType`
@@ -2182,10 +2214,9 @@ CREATE TABLE `ConcentrationType` (
 -- Dumping data for table `ConcentrationType`
 --
 
-LOCK TABLES `ConcentrationType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ConcentrationType` DISABLE KEYS */;
-INSERT INTO `ConcentrationType` VALUES
-(1,'Molar','M',NULL,1),
+INSERT INTO `ConcentrationType` (`concentrationTypeId`, `name`, `symbol`, `proposalType`, `active`) VALUES (1,'Molar','M',NULL,1),
 (2,'Percentage Weight / Volume','%(w/v)',NULL,1),
 (3,'Percentage Volume / Volume','%(v/v)',NULL,1),
 (4,'Milligrams / Millilitre','mg/ml',NULL,1),
@@ -2193,7 +2224,8 @@ INSERT INTO `ConcentrationType` VALUES
 (6,'Microlitre','uL','scm',1),
 (7,'Millilitre','ml','scm',1);
 /*!40000 ALTER TABLE `ConcentrationType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Container`
@@ -2262,17 +2294,16 @@ CREATE TABLE `Container` (
   CONSTRAINT `Container_ibfk8` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `Container_ibfk9` FOREIGN KEY (`priorityPipelineId`) REFERENCES `ProcessingPipeline` (`processingPipelineId`),
   CONSTRAINT `Container_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41129 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42459 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Container`
 --
 
-LOCK TABLES `Container` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Container` DISABLE KEYS */;
-INSERT INTO `Container` VALUES
-(1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`, `parentContainerLocation`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (1332,576,'Container-3-cm0001-1','Puck-16',16,'5','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000003',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (1335,579,'Container-4-cm0001-2','Puck-16',16,'6','processing',NULL,'i03',NULL,NULL,'container-cm0001-2-0001335',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
@@ -2293,9 +2324,11 @@ INSERT INTO `Container` VALUES
 (34898,8583,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,6,NULL,NULL,NULL,NULL,'root@%',NULL),
 (34899,NULL,NULL,NULL,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'Test Comment!',NULL,NULL,NULL,NULL,6,NULL,NULL,NULL,34898,'root@%',NULL),
 (34900,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'',NULL,NULL,NULL,NULL,6,NULL,NULL,NULL,34898,'root@%',NULL),
-(34901,8583,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'',NULL,NULL,4,NULL,6,NULL,NULL,NULL,NULL,'root@%',NULL);
+(34901,8583,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'',NULL,NULL,4,NULL,6,NULL,NULL,NULL,NULL,'root@%',NULL),
+(41764,15333,'TestDPContainer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,6,NULL,NULL,NULL,NULL,'root@%',NULL);
 /*!40000 ALTER TABLE `Container` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerHistory`
@@ -2317,20 +2350,20 @@ CREATE TABLE `ContainerHistory` (
   KEY `ContainerHistory_fk_dewarId` (`currentDewarId`),
   CONSTRAINT `ContainerHistory_fk_dewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `ContainerHistory_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ContainerHistory`
 --
 
-LOCK TABLES `ContainerHistory` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerHistory` DISABLE KEYS */;
-INSERT INTO `ContainerHistory` VALUES
-(6,34874,'3','2016-09-30 12:56:21','in_localstorage','i03',NULL),
+INSERT INTO `ContainerHistory` (`containerHistoryId`, `containerId`, `location`, `blTimeStamp`, `status`, `beamlineName`, `currentDewarId`) VALUES (6,34874,'3','2016-09-30 12:56:21','in_localstorage','i03',NULL),
 (7,34874,'3','2017-10-19 13:35:34','in_storage','i02-2',NULL);
 /*!40000 ALTER TABLE `ContainerHistory` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerInspection`
@@ -2361,20 +2394,20 @@ CREATE TABLE `ContainerInspection` (
   CONSTRAINT `ContainerInspection_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk3` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk4` FOREIGN KEY (`scheduleComponentid`) REFERENCES `ScheduleComponent` (`scheduleComponentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ContainerInspection`
 --
 
-LOCK TABLES `ContainerInspection` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerInspection` DISABLE KEYS */;
-INSERT INTO `ContainerInspection` VALUES
-(4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00'),
+INSERT INTO `ContainerInspection` (`containerInspectionId`, `containerId`, `inspectionTypeId`, `imagerId`, `temperature`, `blTimeStamp`, `scheduleComponentid`, `state`, `priority`, `manual`, `scheduledTimeStamp`, `completedTimeStamp`) VALUES (4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00'),
 (5,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00');
 /*!40000 ALTER TABLE `ContainerInspection` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerQueue`
@@ -2395,20 +2428,20 @@ CREATE TABLE `ContainerQueue` (
   KEY `ContainerQueue_idx1` (`containerId`,`completedTimeStamp`),
   CONSTRAINT `ContainerQueue_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueue_ibfk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=401 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=601 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ContainerQueue`
 --
 
-LOCK TABLES `ContainerQueue` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerQueue` DISABLE KEYS */;
-INSERT INTO `ContainerQueue` VALUES
-(2,34874,NULL,'2016-09-30 12:56:21',NULL),
+INSERT INTO `ContainerQueue` (`containerQueueId`, `containerId`, `personId`, `createdTimeStamp`, `completedTimeStamp`) VALUES (2,34874,NULL,'2016-09-30 12:56:21',NULL),
 (8,34877,NULL,'2016-10-05 09:09:59',NULL);
 /*!40000 ALTER TABLE `ContainerQueue` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerQueueSample`
@@ -2442,12 +2475,12 @@ CREATE TABLE `ContainerQueueSample` (
 -- Dumping data for table `ContainerQueueSample`
 --
 
-LOCK TABLES `ContainerQueueSample` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerQueueSample` DISABLE KEYS */;
-INSERT INTO `ContainerQueueSample` VALUES
-(2,2,2,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `ContainerQueueSample` (`containerQueueSampleId`, `containerQueueId`, `blSubSampleId`, `status`, `startTime`, `endTime`, `dataCollectionPlanId`, `blSampleId`) VALUES (2,2,2,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerQueueSample` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerRegistry`
@@ -2458,26 +2491,27 @@ DROP TABLE IF EXISTS `ContainerRegistry`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ContainerRegistry` (
   `containerRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `barcode` varchar(20) DEFAULT NULL,
+  `barcode` varchar(20) NOT NULL,
   `comments` varchar(255) DEFAULT NULL,
   `recordTimestamp` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`containerRegistryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  PRIMARY KEY (`containerRegistryId`),
+  UNIQUE KEY `barcode` (`barcode`)
+) ENGINE=InnoDB AUTO_INCREMENT=286 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ContainerRegistry`
 --
 
-LOCK TABLES `ContainerRegistry` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerRegistry` DISABLE KEYS */;
-INSERT INTO `ContainerRegistry` VALUES
-(4,'DLS-0001',NULL,'2017-09-21 10:01:07'),
+INSERT INTO `ContainerRegistry` (`containerRegistryId`, `barcode`, `comments`, `recordTimestamp`) VALUES (4,'DLS-0001',NULL,'2017-09-21 10:01:07'),
 (5,'VMXiSim-001',NULL,'2019-03-22 11:48:43'),
 (6,'DLS-0002',NULL,'2024-12-09 16:58:17'),
 (7,'DLS-0003',NULL,'2017-09-21 10:01:07');
 /*!40000 ALTER TABLE `ContainerRegistry` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerRegistry_has_Proposal`
@@ -2499,21 +2533,21 @@ CREATE TABLE `ContainerRegistry_has_Proposal` (
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk1` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB AUTO_INCREMENT=341 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=503 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ContainerRegistry_has_Proposal`
 --
 
-LOCK TABLES `ContainerRegistry_has_Proposal` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerRegistry_has_Proposal` DISABLE KEYS */;
-INSERT INTO `ContainerRegistry_has_Proposal` VALUES
-(1,4,141666,NULL,'2023-09-14 09:00:51'),
+INSERT INTO `ContainerRegistry_has_Proposal` (`containerRegistryHasProposalId`, `containerRegistryId`, `proposalId`, `personId`, `recordTimestamp`) VALUES (1,4,141666,NULL,'2023-09-14 09:00:51'),
 (2,6,1000028,NULL,'2024-12-09 16:58:05'),
 (4,7,141666,NULL,'2023-09-14 09:00:51');
 /*!40000 ALTER TABLE `ContainerRegistry_has_Proposal` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerReport`
@@ -2541,10 +2575,11 @@ CREATE TABLE `ContainerReport` (
 -- Dumping data for table `ContainerReport`
 --
 
-LOCK TABLES `ContainerReport` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerReport` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ContainerReport` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ContainerType`
@@ -2575,10 +2610,9 @@ CREATE TABLE `ContainerType` (
 -- Dumping data for table `ContainerType`
 --
 
-LOCK TABLES `ContainerType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerType` DISABLE KEYS */;
-INSERT INTO `ContainerType` VALUES
-(1,'B21_8+1','saxs',1,9,9,1,1,1,1,0,0,-1),
+INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`, `capacity`, `wellPerRow`, `dropPerWellX`, `dropPerWellY`, `dropHeight`, `dropWidth`, `dropOffsetX`, `dropOffsetY`, `wellDrop`) VALUES (1,'B21_8+1','saxs',1,9,9,1,1,1,1,0,0,-1),
 (2,'B21_96','saxs',1,192,12,2,1,0.5,1,0,0,-1),
 (3,'B21_1tube','saxs',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (4,'I22_Capillary_Rack_20','saxs',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2615,7 +2649,8 @@ INSERT INTO `ContainerType` VALUES
 (35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1),
 (38,'Cryo-EM Puck','mx',1,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `CourierTermsAccepted`
@@ -2645,10 +2680,11 @@ CREATE TABLE `CourierTermsAccepted` (
 -- Dumping data for table `CourierTermsAccepted`
 --
 
-LOCK TABLES `CourierTermsAccepted` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CourierTermsAccepted` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CourierTermsAccepted` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `CryoemInitialModel`
@@ -2669,12 +2705,12 @@ CREATE TABLE `CryoemInitialModel` (
 -- Dumping data for table `CryoemInitialModel`
 --
 
-LOCK TABLES `CryoemInitialModel` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CryoemInitialModel` DISABLE KEYS */;
-INSERT INTO `CryoemInitialModel` VALUES
-(1,15,15);
+INSERT INTO `CryoemInitialModel` (`cryoemInitialModelId`, `resolution`, `numberOfParticles`) VALUES (1,15,15);
 /*!40000 ALTER TABLE `CryoemInitialModel` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Crystal`
@@ -2712,17 +2748,16 @@ CREATE TABLE `Crystal` (
   KEY `Crystal_FKIndex2` (`diffractionPlanId`),
   CONSTRAINT `Crystal_ibfk_1` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Crystal_ibfk_2` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=339273 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=341098 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Crystal`
 --
 
-LOCK TABLES `Crystal` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Crystal` DISABLE KEYS */;
-INSERT INTO `Crystal` VALUES
-(3918,NULL,4380,NULL,'Crystal 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
+INSERT INTO `Crystal` (`crystalId`, `diffractionPlanId`, `proteinId`, `crystalUUID`, `name`, `spaceGroup`, `morphology`, `color`, `size_X`, `size_Y`, `size_Z`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`, `comments`, `pdbFileName`, `pdbFilePath`, `recordTimeStamp`, `abundance`, `theoreticalDensity`) VALUES (3918,NULL,4380,NULL,'Crystal 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
 (3921,NULL,4383,NULL,'Crystal 02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
 (3924,NULL,4386,NULL,'Crystal 03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
 (3927,NULL,4389,NULL,'Crystal 04',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
@@ -2741,7 +2776,8 @@ INSERT INTO `Crystal` VALUES
 (333301,NULL,123491,NULL,NULL,'P41212',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:58:00',NULL,NULL),
 (333308,NULL,123497,NULL,'SampleType01','P12121',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'sample type comments ...',NULL,NULL,'2017-03-23 22:06:42',NULL,NULL);
 /*!40000 ALTER TABLE `Crystal` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `CrystalComposition`
@@ -2772,10 +2808,11 @@ CREATE TABLE `CrystalComposition` (
 -- Dumping data for table `CrystalComposition`
 --
 
-LOCK TABLES `CrystalComposition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CrystalComposition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CrystalComposition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Crystal_has_UUID`
@@ -2800,10 +2837,11 @@ CREATE TABLE `Crystal_has_UUID` (
 -- Dumping data for table `Crystal_has_UUID`
 --
 
-LOCK TABLES `Crystal_has_UUID` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Crystal_has_UUID` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Crystal_has_UUID` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataAcquisition`
@@ -2827,10 +2865,11 @@ CREATE TABLE `DataAcquisition` (
 -- Dumping data for table `DataAcquisition`
 --
 
-LOCK TABLES `DataAcquisition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataAcquisition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DataAcquisition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataCollection`
@@ -2965,17 +3004,16 @@ CREATE TABLE `DataCollection` (
   CONSTRAINT `DataCollection_ibfk_6` FOREIGN KEY (`startPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_7` FOREIGN KEY (`endPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_8` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6018135 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6018213 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DataCollection`
 --
 
-LOCK TABLES `DataCollection` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollection` DISABLE KEYS */;
-INSERT INTO `DataCollection` VALUES
-(993677,374695,55167,NULL,1,'2016-01-14 12:40:34','2016-01-14 12:41:54','DataCollection Successful',45,0.1,0.1,0,3600,1,1,0.02,'/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/','tlys_jan_4','cbf',NULL,'tlys_jan_4_1_####.cbf',1.28255,1.6,193.087,215.62,208.978,'(-402,345,142) EDNAStrategy4: subWedge:1Aperture: Medium',1,NULL,0.059918,0.099937,40.1936,'User','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_315.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_225.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_135.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_45.0.png','Omega',NULL,NULL,45,NULL,NULL,NULL,NULL,5.685,NULL,NULL,0.05,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,988855,2,NULL,80,NULL,20,6,NULL,NULL,NULL,833107367454.3083,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `DataCollection` (`dataCollectionId`, `BLSAMPLEID`, `SESSIONID`, `experimenttype`, `dataCollectionNumber`, `startTime`, `endTime`, `runStatus`, `axisStart`, `axisEnd`, `axisRange`, `overlap`, `numberOfImages`, `startImageNumber`, `numberOfPasses`, `exposureTime`, `imageDirectory`, `imagePrefix`, `imageSuffix`, `imageContainerSubPath`, `fileTemplate`, `wavelength`, `resolution`, `detectorDistance`, `xBeam`, `yBeam`, `comments`, `printableForReport`, `CRYSTALCLASS`, `slitGapVertical`, `slitGapHorizontal`, `transmission`, `synchrotronMode`, `xtalSnapshotFullPath1`, `xtalSnapshotFullPath2`, `xtalSnapshotFullPath3`, `xtalSnapshotFullPath4`, `rotationAxis`, `phiStart`, `kappaStart`, `omegaStart`, `chiStart`, `resolutionAtCorner`, `detector2Theta`, `DETECTORMODE`, `undulatorGap1`, `undulatorGap2`, `undulatorGap3`, `beamSizeAtSampleX`, `beamSizeAtSampleY`, `centeringMethod`, `averageTemperature`, `ACTUALSAMPLEBARCODE`, `ACTUALSAMPLESLOTINCONTAINER`, `ACTUALCONTAINERBARCODE`, `ACTUALCONTAINERSLOTINSC`, `actualCenteringPosition`, `beamShape`, `dataCollectionGroupId`, `POSITIONID`, `detectorId`, `FOCALSPOTSIZEATSAMPLEX`, `POLARISATION`, `FOCALSPOTSIZEATSAMPLEY`, `APERTUREID`, `screeningOrigId`, `startPositionId`, `endPositionId`, `flux`, `strategySubWedgeOrigId`, `blSubSampleId`, `flux_end`, `bestWilsonPlotPath`, `processedDataFile`, `datFullPath`, `magnification`, `totalAbsorbedDose`, `binning`, `particleDiameter`, `boxSize_CTF`, `minResolution`, `minDefocus`, `maxDefocus`, `defocusStepSize`, `amountAstigmatism`, `extractSize`, `bgRadius`, `voltage`, `objAperture`, `c1aperture`, `c2aperture`, `c3aperture`, `c1lens`, `c2lens`, `c3lens`, `totalExposedDose`, `nominalMagnification`, `nominalDefocus`, `imageSizeX`, `imageSizeY`, `pixelSizeOnImage`, `phasePlate`, `dataCollectionPlanId`) VALUES (993677,374695,55167,NULL,1,'2016-01-14 12:40:34','2016-01-14 12:41:54','DataCollection Successful',45,0.1,0.1,0,3600,1,1,0.02,'/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/','tlys_jan_4','cbf',NULL,'tlys_jan_4_1_####.cbf',1.28255,1.6,193.087,215.62,208.978,'(-402,345,142) EDNAStrategy4: subWedge:1Aperture: Medium',1,NULL,0.059918,0.099937,40.1936,'User','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_315.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_225.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_135.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_45.0.png','Omega',NULL,NULL,45,NULL,NULL,NULL,NULL,5.685,NULL,NULL,0.05,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,988855,2,NULL,80,NULL,20,6,NULL,NULL,NULL,833107367454.3083,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1002287,NULL,55167,NULL,2,'2016-01-22 11:25:18','2016-01-22 11:28:23','DataCollection Successful',0,0.1,0.1,0,7200,1,1,0.025,'/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/','ins2','cbf',NULL,'ins2_2_####.cbf',1.2,1.41777,175,215.618,209.102,'(-307,322,-184) Aperture: Large',1,NULL,0.059918,0.099937,0.999423,'User','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_270.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_180.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_90.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_0.0.png','Omega',NULL,NULL,0,NULL,NULL,NULL,NULL,6.1213,NULL,NULL,0.08,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,996311,602072,NULL,80,NULL,20,3752,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1052494,NULL,55168,NULL,1,'2016-04-13 12:18:12','2016-04-13 12:18:50','DataCollection Successful',0,0.4,0.4,-89.6,2,1,1,0.01,'/dls/i03/data/2016/cm14451-2/20160413/test_xtal/','xtal1','cbf',NULL,'xtal1_1_####.cbf',0.976254,1.24362,200,214.33,208.71,'(-703,-47,-74) Aperture: Large',1,NULL,0.059918,0.099937,100,'User','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_1_90.0.png','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_1_0.0.png',NULL,NULL,'Omega',NULL,NULL,0,NULL,NULL,NULL,NULL,5.30095,NULL,NULL,0.08,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1040398,647536,NULL,80,NULL,20,3752,NULL,NULL,NULL,1959830505829.428,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1052503,NULL,55168,NULL,3,'2016-04-13 12:21:26','2016-04-13 12:21:54','DataCollection Successful',93,0.3,0.3,-44.7,3,1,1,0.01,'/dls/i03/data/2016/cm14451-2/20160413/test_xtal/','xtal1','cbf',NULL,'xtal1_3_####.cbf',0.976253,1.5,266.693,214.372,208.299,'(-703,-47,-74) Aperture: Large',1,NULL,0.059918,0.099937,100,'User','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_1_183.0.png','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_1_93.0.png',NULL,NULL,'Omega',NULL,NULL,93,NULL,NULL,NULL,NULL,5.30095,NULL,NULL,0.08,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1040407,647545,NULL,80,NULL,20,3752,NULL,NULL,NULL,1972385107622.2878,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -2990,7 +3028,8 @@ INSERT INTO `DataCollection` VALUES
 (6017412,NULL,27464088,NULL,NULL,'2021-02-25 10:15:06','2021-02-25 10:15:47','DataCollection Successful',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'A Tomogram That Is Still Being Processed',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5440740,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,12,12,10,1,NULL),
 (6017413,NULL,27464088,NULL,NULL,'2021-02-25 10:15:06','2021-02-25 10:15:47','DataCollection Successful',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls/m12/data/2022/cm31111-5/raw/',NULL,'.tif',NULL,'GridSquare_*/Data/*.tif',NULL,NULL,NULL,NULL,NULL,'A Tomogram That Is Still Being Processed',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5440740,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,12,12,10,NULL,NULL);
 /*!40000 ALTER TABLE `DataCollection` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataCollectionComment`
@@ -3011,17 +3050,19 @@ CREATE TABLE `DataCollectionComment` (
   KEY `dataCollectionComment_fk2` (`personId`),
   CONSTRAINT `dataCollectionComment_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `dataCollectionComment_fk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DataCollectionComment`
 --
 
-LOCK TABLES `DataCollectionComment` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionComment` DISABLE KEYS */;
+INSERT INTO `DataCollectionComment` (`dataCollectionCommentId`, `dataCollectionId`, `personId`, `comments`, `createTime`, `modTime`) VALUES (1,993677,1,'test comment','2026-07-07 09:41:46','2026-07-07');
 /*!40000 ALTER TABLE `DataCollectionComment` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataCollectionFileAttachment`
@@ -3039,20 +3080,20 @@ CREATE TABLE `DataCollectionFileAttachment` (
   PRIMARY KEY (`dataCollectionFileAttachmentId`),
   KEY `_dataCollectionFileAttachmentId_fk1` (`dataCollectionId`),
   CONSTRAINT `_dataCollectionFileAttachmentId_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DataCollectionFileAttachment`
 --
 
-LOCK TABLES `DataCollectionFileAttachment` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionFileAttachment` DISABLE KEYS */;
-INSERT INTO `DataCollectionFileAttachment` VALUES
-(1,6017413,'/dls/test.txt','params','2025-06-25 08:06:46'),
+INSERT INTO `DataCollectionFileAttachment` (`dataCollectionFileAttachmentId`, `dataCollectionId`, `fileFullPath`, `fileType`, `createTime`) VALUES (1,6017413,'/dls/test.txt','params','2025-06-25 08:06:46'),
 (2,6017413,'/dls/log.txt','log','2025-06-25 08:06:46');
 /*!40000 ALTER TABLE `DataCollectionFileAttachment` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataCollectionGroup`
@@ -3085,17 +3126,16 @@ CREATE TABLE `DataCollectionGroup` (
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5441388 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
+) ENGINE=InnoDB AUTO_INCREMENT=5441442 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DataCollectionGroup`
 --
 
-LOCK TABLES `DataCollectionGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionGroup` DISABLE KEYS */;
-INSERT INTO `DataCollectionGroup` VALUES
-(988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `xtalSnapshotFullPath`, `scanParameters`, `experimentTypeId`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL),
 (996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1040398,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1040407,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -3107,7 +3147,8 @@ INSERT INTO `DataCollectionGroup` VALUES
 (5440743,27464089,NULL,NULL,'Mesh',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,36),
 (5440744,27464089,NULL,NULL,'Mesh',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,36);
 /*!40000 ALTER TABLE `DataCollectionGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DataCollectionPlan_has_Detector`
@@ -3135,12 +3176,12 @@ CREATE TABLE `DataCollectionPlan_has_Detector` (
 -- Dumping data for table `DataCollectionPlan_has_Detector`
 --
 
-LOCK TABLES `DataCollectionPlan_has_Detector` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` DISABLE KEYS */;
-INSERT INTO `DataCollectionPlan_has_Detector` VALUES
-(4,197792,8,5.4,136.86,45);
+INSERT INTO `DataCollectionPlan_has_Detector` (`dataCollectionPlanHasDetectorId`, `dataCollectionPlanId`, `detectorId`, `exposureTime`, `distance`, `roll`) VALUES (4,197792,8,5.4,136.86,45);
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Detector`
@@ -3185,13 +3226,13 @@ CREATE TABLE `Detector` (
 -- Dumping data for table `Detector`
 --
 
-LOCK TABLES `Detector` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Detector` DISABLE KEYS */;
-INSERT INTO `Detector` VALUES
-(4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `Detector` (`detectorId`, `detectorType`, `detectorManufacturer`, `detectorModel`, `detectorPixelSizeHorizontal`, `detectorPixelSizeVertical`, `DETECTORMAXRESOLUTION`, `DETECTORMINRESOLUTION`, `detectorSerialNumber`, `detectorDistanceMin`, `detectorDistanceMax`, `trustedPixelValueRangeLower`, `trustedPixelValueRangeUpper`, `sensorThickness`, `overload`, `XGeoCorr`, `YGeoCorr`, `detectorMode`, `density`, `composition`, `numberOfPixelsX`, `numberOfPixelsY`, `detectorRollMin`, `detectorRollMax`, `localName`) VALUES (4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL,NULL),
 (8,'Diamond XPDF detector',NULL,NULL,NULL,NULL,NULL,NULL,'1109-761',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10.4,'C+Br+He',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Detector` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Dewar`
@@ -3233,17 +3274,16 @@ CREATE TABLE `Dewar` (
   CONSTRAINT `Dewar_fk_dewarRegistryId` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Dewar_fk_firstExperimentId` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14710 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16014 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Dewar`
 --
 
-LOCK TABLES `Dewar` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Dewar` DISABLE KEYS */;
-INSERT INTO `Dewar` VALUES
-(573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocation`, `dewarStatus`, `bltimeStamp`, `isStorageDewar`, `barCode`, `firstExperimentId`, `customsValue`, `transportValue`, `trackingNumberToSynchrotron`, `trackingNumberFromSynchrotron`, `type`, `facilityCode`, `weight`, `deliveryAgent_barcode`, `externalShippingIdFromSynchrotron`, `source`, `extra`, `dewarRegistryId`) VALUES (573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (576,474,'Dewar-2-cm0001-1',NULL,NULL,'at DLS',NULL,0,'dewar-cm0001-1-0000002',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (579,477,'Dewar-3-cm0001-2',NULL,NULL,'processing',NULL,0,'dewar-cm0001-2-0000477',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (582,480,'Dewar-4-cm0001-3',NULL,NULL,'processing',NULL,0,'dewar-cm0001-3-0000480',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
@@ -3253,9 +3293,11 @@ INSERT INTO `Dewar` VALUES
 (8581,7241,'DLS-1',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (8582,7242,'DLS-1',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (8583,7243,'DLS-1',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
-(14053,12607,'DLS-EM-0000',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL);
+(14053,12607,'DLS-EM-0000',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(15333,13831,'TestDPDewar',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL);
 /*!40000 ALTER TABLE `Dewar` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarLocation`
@@ -3280,10 +3322,11 @@ CREATE TABLE `DewarLocation` (
 -- Dumping data for table `DewarLocation`
 --
 
-LOCK TABLES `DewarLocation` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarLocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarLocation` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarLocationList`
@@ -3303,10 +3346,11 @@ CREATE TABLE `DewarLocationList` (
 -- Dumping data for table `DewarLocationList`
 --
 
-LOCK TABLES `DewarLocationList` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarLocationList` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarLocationList` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarRegistry`
@@ -3330,21 +3374,21 @@ CREATE TABLE `DewarRegistry` (
   KEY `DewarRegistry_ibfk_2` (`labContactId`),
   CONSTRAINT `DewarRegistry_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `DewarRegistry_ibfk_2` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=671 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=749 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DewarRegistry`
 --
 
-LOCK TABLES `DewarRegistry` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarRegistry` DISABLE KEYS */;
-INSERT INTO `DewarRegistry` VALUES
-(1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
+INSERT INTO `DewarRegistry` (`dewarRegistryId`, `facilityCode`, `proposalId`, `labContactId`, `purchaseDate`, `bltimestamp`, `manufacturerSerialNumber`, `type`) VALUES (1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
 (2,'DLS-EM-0001',37027,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
 (217,'DLS-EM-0002',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar');
 /*!40000 ALTER TABLE `DewarRegistry` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarRegistry_has_Proposal`
@@ -3369,20 +3413,20 @@ CREATE TABLE `DewarRegistry_has_Proposal` (
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=441 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DewarRegistry_has_Proposal`
 --
 
-LOCK TABLES `DewarRegistry_has_Proposal` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarRegistry_has_Proposal` DISABLE KEYS */;
-INSERT INTO `DewarRegistry_has_Proposal` VALUES
-(1,1,141666,NULL,'2023-09-14 09:22:50',NULL),
+INSERT INTO `DewarRegistry_has_Proposal` (`dewarRegistryHasProposalId`, `dewarRegistryId`, `proposalId`, `personId`, `recordTimestamp`, `labContactId`) VALUES (1,1,141666,NULL,'2023-09-14 09:22:50',NULL),
 (138,217,141666,NULL,'2023-09-14 09:22:50',NULL);
 /*!40000 ALTER TABLE `DewarRegistry_has_Proposal` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarReport`
@@ -3407,10 +3451,11 @@ CREATE TABLE `DewarReport` (
 -- Dumping data for table `DewarReport`
 --
 
-LOCK TABLES `DewarReport` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarReport` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarReport` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DewarTransportHistory`
@@ -3428,20 +3473,20 @@ CREATE TABLE `DewarTransportHistory` (
   PRIMARY KEY (`DewarTransportHistoryId`),
   KEY `DewarTransportHistory_FKIndex1` (`dewarId`),
   CONSTRAINT `DewarTransportHistory_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DewarTransportHistory`
 --
 
-LOCK TABLES `DewarTransportHistory` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarTransportHistory` DISABLE KEYS */;
-INSERT INTO `DewarTransportHistory` VALUES
-(1,576,'at-facility','','2025-01-01 00:00:00'),
+INSERT INTO `DewarTransportHistory` (`DewarTransportHistoryId`, `dewarId`, `dewarStatus`, `storageLocation`, `arrivalDate`) VALUES (1,576,'at-facility','','2025-01-01 00:00:00'),
 (2,576,'opened','','2025-01-01 02:00:00');
 /*!40000 ALTER TABLE `DewarTransportHistory` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `DiffractionPlan`
@@ -3523,21 +3568,23 @@ CREATE TABLE `DiffractionPlan` (
   CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`),
   CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=205175 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=206542 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `DiffractionPlan`
 --
 
-LOCK TABLES `DiffractionPlan` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DiffractionPlan` DISABLE KEYS */;
-INSERT INTO `DiffractionPlan` VALUES
-(197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`, `userPath`, `robotPlateTemperature`, `exposureTemperature`, `experimentTypeId`, `purificationColumnId`, `collectionMode`, `priority`, `qMin`, `qMax`, `reductionParametersAveraging`, `scanParameters`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(205823,'dp-test-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:41',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(205824,'dp-test-2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:41',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DiffractionPlan` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `EnergyScan`
@@ -3588,17 +3635,16 @@ CREATE TABLE `EnergyScan` (
   CONSTRAINT `ES_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ES_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `ES_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50291 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50318 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `EnergyScan`
 --
 
-LOCK TABLES `EnergyScan` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EnergyScan` DISABLE KEYS */;
-INSERT INTO `EnergyScan` VALUES
-(49661,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.016,1,NULL,298.569,100,7115.73,-4.79,4.66,7095.13,-7.26,1.66,0,'2016-01-12 14:51:20','2016-01-12 14:58:33','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescenceDetector`, `scanFileFullPath`, `jpegChoochFileFullPath`, `element`, `startEnergy`, `endEnergy`, `transmissionFactor`, `exposureTime`, `axisPosition`, `synchrotronCurrent`, `temperature`, `peakEnergy`, `peakFPrime`, `peakFDoublePrime`, `inflectionEnergy`, `inflectionFPrime`, `inflectionFDoublePrime`, `xrayDose`, `startTime`, `endTime`, `edgeEnergy`, `filename`, `beamSizeVertical`, `beamSizeHorizontal`, `choochFileFullPath`, `crystalClass`, `comments`, `flux`, `flux_end`, `workingDirectory`, `blSubSampleId`) VALUES (49661,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.016,1,NULL,298.569,100,7115.73,-4.79,4.66,7095.13,-7.26,1.66,0,'2016-01-12 14:51:20','2016-01-12 14:58:33','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (49662,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.256,1,NULL,299.986,100,7131.44,-6.26,5.1,7122.6,-8.69,2.52,0,'2016-01-12 15:00:34','2016-01-12 15:05:28','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (49668,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/zn1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/zn1_chooch.png','Zn',9626.73,9692.41,0.256,1,NULL,301.465,100,9673.5,-8.73,3.05,9672.94,-9.04,0.48,0,'2016-01-13 15:55:39','2016-01-13 16:02:15','K',NULL,20,20,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (49669,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/zn1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/zn1_chooch.png','Zn',9626.73,9692.41,0.256,1,NULL,299.054,100,9674.62,-7.78,3.36,9674.62,-7.78,3.36,0,'2016-01-13 16:02:39','2016-01-13 16:07:38','K',NULL,20,20,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -3626,7 +3672,8 @@ INSERT INTO `EnergyScan` VALUES
 (50287,55168,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (50290,55168,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `EnergyScan` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Event`
@@ -3659,10 +3706,11 @@ CREATE TABLE `Event` (
 -- Dumping data for table `Event`
 --
 
-LOCK TABLES `Event` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Event` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Event` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `EventChain`
@@ -3685,10 +3733,11 @@ CREATE TABLE `EventChain` (
 -- Dumping data for table `EventChain`
 --
 
-LOCK TABLES `EventChain` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EventChain` DISABLE KEYS */;
 /*!40000 ALTER TABLE `EventChain` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `EventType`
@@ -3709,15 +3758,15 @@ CREATE TABLE `EventType` (
 -- Dumping data for table `EventType`
 --
 
-LOCK TABLES `EventType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EventType` DISABLE KEYS */;
-INSERT INTO `EventType` VALUES
-(3,'LaserExcitation'),
+INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
 (4,'ReactionTrigger'),
 (1,'XrayDetection'),
 (2,'XrayExposure');
 /*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ExperimentKindDetails`
@@ -3743,10 +3792,11 @@ CREATE TABLE `ExperimentKindDetails` (
 -- Dumping data for table `ExperimentKindDetails`
 --
 
-LOCK TABLES `ExperimentKindDetails` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ExperimentKindDetails` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ExperimentKindDetails` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ExperimentType`
@@ -3761,17 +3811,16 @@ CREATE TABLE `ExperimentType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ExperimentType`
 --
 
-LOCK TABLES `ExperimentType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;
-INSERT INTO `ExperimentType` VALUES
-(1,'Default',NULL,1),
+INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `active`) VALUES (1,'Default',NULL,1),
 (2,'MXPressE','mx',1),
 (3,'MXPressO','mx',1),
 (4,'MXPressE_SAD','mx',1),
@@ -3810,9 +3859,12 @@ INSERT INTO `ExperimentType` VALUES
 (37,'Single Particle','em',1),
 (45,'CLEM','em',1),
 (46,'FIB','em',1),
-(47,'Soft X-Ray Tomography','em',1);
+(47,'Soft X-Ray Tomography','em',1),
+(49,'Lamella Tomography','em',1),
+(50,'Characterisation','mx',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `FoilHole`
@@ -3843,12 +3895,12 @@ CREATE TABLE `FoilHole` (
 -- Dumping data for table `FoilHole`
 --
 
-LOCK TABLES `FoilHole` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `FoilHole` DISABLE KEYS */;
-INSERT INTO `FoilHole` VALUES
-(1,1,'1','/dls/foil.png',1,1,1,1,1,1,1);
+INSERT INTO `FoilHole` (`foilHoleId`, `gridSquareId`, `foilHoleLabel`, `foilHoleImage`, `pixelLocationX`, `pixelLocationY`, `diameter`, `stageLocationX`, `stageLocationY`, `qualityIndicator`, `pixelSize`) VALUES (1,1,'1','/dls/foil.png',1,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `FoilHole` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `GeometryClassname`
@@ -3869,10 +3921,11 @@ CREATE TABLE `GeometryClassname` (
 -- Dumping data for table `GeometryClassname`
 --
 
-LOCK TABLES `GeometryClassname` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GeometryClassname` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GeometryClassname` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `GridImageMap`
@@ -3898,10 +3951,11 @@ CREATE TABLE `GridImageMap` (
 -- Dumping data for table `GridImageMap`
 --
 
-LOCK TABLES `GridImageMap` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridImageMap` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GridImageMap` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `GridInfo`
@@ -3939,19 +3993,19 @@ CREATE TABLE `GridInfo` (
   KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
   CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1281745 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1281937 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `GridInfo`
 --
 
-LOCK TABLES `GridInfo` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridInfo` DISABLE KEYS */;
-INSERT INTO `GridInfo` VALUES
-(1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,0.83,0.83,304,229.75,1,6017405,1,1,NULL,NULL);
+INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`, `patchesX`, `patchesY`, `micronsPerPixelX`, `micronsPerPixelY`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,0.83,0.83,304,229.75,1,6017405,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `GridInfo` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `GridSquare`
@@ -3985,21 +4039,21 @@ CREATE TABLE `GridSquare` (
   PRIMARY KEY (`gridSquareId`),
   KEY `GridSquare_fk_atlasId` (`atlasId`),
   CONSTRAINT `GridSquare_fk_atlasId` FOREIGN KEY (`atlasId`) REFERENCES `Atlas` (`atlasId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `GridSquare`
 --
 
-LOCK TABLES `GridSquare` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridSquare` DISABLE KEYS */;
-INSERT INTO `GridSquare` VALUES
-(1,1,1,'/dls/test.png',1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,NULL),
+INSERT INTO `GridSquare` (`gridSquareId`, `atlasId`, `gridSquareLabel`, `gridSquareImage`, `pixelLocationX`, `pixelLocationY`, `height`, `width`, `angle`, `stageLocationX`, `stageLocationY`, `qualityIndicator`, `pixelSize`, `hasRed`, `hasBlue`, `hasGreen`, `hasYellow`, `hasCyan`, `hasMagenta`, `hasGrey`, `mode`) VALUES (1,1,1,'/dls/test.png',1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,NULL),
 (2,1,2,NULL,2,2,1,1,1,2,2,1,1,0,0,0,0,0,0,0,NULL),
 (3,2,1,'/dls/*.png',1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `GridSquare` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Image`
@@ -4039,10 +4093,9 @@ CREATE TABLE `Image` (
 -- Dumping data for table `Image`
 --
 
-LOCK TABLES `Image` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Image` DISABLE KEYS */;
-INSERT INTO `Image` VALUES
-(274837165,1052494,1,'xtal1_1_0001.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.thumb.jpeg',294,0,298.847,NULL,NULL,'2016-04-13 11:18:39',NULL,'2016-04-13 11:18:39'),
+INSERT INTO `Image` (`imageId`, `dataCollectionId`, `imageNumber`, `fileName`, `fileLocation`, `measuredIntensity`, `jpegFileFullPath`, `jpegThumbnailFileFullPath`, `temperature`, `cumulativeIntensity`, `synchrotronCurrent`, `comments`, `machineMessage`, `BLTIMESTAMP`, `motorPositionId`, `recordTimeStamp`) VALUES (274837165,1052494,1,'xtal1_1_0001.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.thumb.jpeg',294,0,298.847,NULL,NULL,'2016-04-13 11:18:39',NULL,'2016-04-13 11:18:39'),
 (274837168,1052494,2,'xtal1_1_0002.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0002.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0002.thumb.jpeg',294,0,298.74,NULL,NULL,'2016-04-13 11:18:50',NULL,'2016-04-13 11:18:50'),
 (274837177,1052503,1,'xtal1_3_0001.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_0001.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_0001.thumb.jpeg',294,0,302.004,NULL,NULL,'2016-04-13 11:21:36',NULL,'2016-04-13 11:21:36'),
 (274837180,1052503,2,'xtal1_3_0002.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_0002.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_3_0002.thumb.jpeg',294,0,301.922,NULL,NULL,'2016-04-13 11:21:45',NULL,'2016-04-13 11:21:45'),
@@ -4052,7 +4105,8 @@ INSERT INTO `Image` VALUES
 (284718118,1066786,3,'thau_2_0003.cbf','/dls/i03/data/2016/cm14451-2/gw/20160418/thau/edna_test',0,'/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0003.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0003.thumb.jpeg',294,0,299.908,NULL,NULL,'2016-04-14 02:19:04',NULL,'2016-04-14 02:19:04'),
 (284718120,6017412,1,NULL,NULL,NULL,'/mnt/test.png','/mnt/test.png',NULL,NULL,NULL,NULL,NULL,'2022-12-20 13:58:16',NULL,'2022-12-20 13:58:16');
 /*!40000 ALTER TABLE `Image` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ImageQualityIndicators`
@@ -4088,10 +4142,9 @@ CREATE TABLE `ImageQualityIndicators` (
 -- Dumping data for table `ImageQualityIndicators`
 --
 
-LOCK TABLES `ImageQualityIndicators` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ImageQualityIndicators` DISABLE KEYS */;
-INSERT INTO `ImageQualityIndicators` VALUES
-(1052494,1,NULL,NULL,296,296,259,0,2.03,2.03,0,0,0,0,NULL,2.61,NULL,NULL),
+INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageId`, `autoProcProgramId`, `spotTotal`, `inResTotal`, `goodBraggCandidates`, `iceRings`, `method1Res`, `method2Res`, `maxUnitCell`, `pctSaturationTop50Peaks`, `inResolutionOvrlSpots`, `binPopCutOffMethod2Res`, `recordTimeStamp`, `totalIntegratedSignal`, `dozor_score`, `driftFactor`) VALUES (1052494,1,NULL,NULL,296,296,259,0,2.03,2.03,0,0,0,0,NULL,2.61,NULL,NULL),
 (1052494,2,NULL,NULL,239,239,224,0,2.12,2.12,0,0,0,0,NULL,2.95,NULL,NULL),
 (1052503,1,274837177,NULL,217,217,202,0,2.07,2.07,0,0,0,0,NULL,2.99,NULL,NULL),
 (1052503,2,NULL,NULL,257,257,236,0,2.06,2.06,0,0,0,0,NULL,3.02,NULL,NULL),
@@ -4100,7 +4153,8 @@ INSERT INTO `ImageQualityIndicators` VALUES
 (1066786,2,284718055,NULL,848,848,652,0,1.56,1.56,0,0,0,0,NULL,2.03,NULL,NULL),
 (1066786,3,284718118,NULL,922,922,735,0,1.57,1.57,0,0,0,0,NULL,2.13,NULL,NULL);
 /*!40000 ALTER TABLE `ImageQualityIndicators` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Imager`
@@ -4123,13 +4177,13 @@ CREATE TABLE `Imager` (
 -- Dumping data for table `Imager`
 --
 
-LOCK TABLES `Imager` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Imager` DISABLE KEYS */;
-INSERT INTO `Imager` VALUES
-(2,'Imager1 20c',20,'Z125434',1000),
+INSERT INTO `Imager` (`imagerId`, `name`, `temperature`, `serial`, `capacity`) VALUES (2,'Imager1 20c',20,'Z125434',1000),
 (7,'VMXi sim',20,'RI1000-0000',750);
 /*!40000 ALTER TABLE `Imager` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `InspectionType`
@@ -4149,13 +4203,13 @@ CREATE TABLE `InspectionType` (
 -- Dumping data for table `InspectionType`
 --
 
-LOCK TABLES `InspectionType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
-INSERT INTO `InspectionType` VALUES
-(1,'Visible'),
+INSERT INTO `InspectionType` (`inspectionTypeId`, `name`) VALUES (1,'Visible'),
 (2,'UV');
 /*!40000 ALTER TABLE `InspectionType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `IspybCrystalClass`
@@ -4176,10 +4230,11 @@ CREATE TABLE `IspybCrystalClass` (
 -- Dumping data for table `IspybCrystalClass`
 --
 
-LOCK TABLES `IspybCrystalClass` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `IspybCrystalClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybCrystalClass` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `IspybReference`
@@ -4202,10 +4257,11 @@ CREATE TABLE `IspybReference` (
 -- Dumping data for table `IspybReference`
 --
 
-LOCK TABLES `IspybReference` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `IspybReference` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybReference` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `LDAPSearchBase`
@@ -4229,13 +4285,13 @@ CREATE TABLE `LDAPSearchBase` (
 -- Dumping data for table `LDAPSearchBase`
 --
 
-LOCK TABLES `LDAPSearchBase` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LDAPSearchBase` DISABLE KEYS */;
-INSERT INTO `LDAPSearchBase` VALUES
-(1,1,'foo',1),
+INSERT INTO `LDAPSearchBase` (`ldapSearchBaseId`, `ldapSearchParametersId`, `searchBase`, `sequenceNumber`) VALUES (1,1,'foo',1),
 (2,2,'bar',1);
 /*!40000 ALTER TABLE `LDAPSearchBase` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `LDAPSearchParameters`
@@ -4260,13 +4316,13 @@ CREATE TABLE `LDAPSearchParameters` (
 -- Dumping data for table `LDAPSearchParameters`
 --
 
-LOCK TABLES `LDAPSearchParameters` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LDAPSearchParameters` DISABLE KEYS */;
-INSERT INTO `LDAPSearchParameters` VALUES
-(1,'group_member','name','one','http://foo.ac.uk','(some=filter)','test'),
+INSERT INTO `LDAPSearchParameters` (`ldapSearchParametersId`, `accountType`, `accountTypeGroupName`, `oneOrMany`, `hostURL`, `filter`, `attributes`) VALUES (1,'group_member','name','one','http://foo.ac.uk','(some=filter)','test'),
 (2,'group_member','name','one','http://bar.ac.uk','(some=filter)','test');
 /*!40000 ALTER TABLE `LDAPSearchParameters` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `LabContact`
@@ -4299,12 +4355,12 @@ CREATE TABLE `LabContact` (
 -- Dumping data for table `LabContact`
 --
 
-LOCK TABLES `LabContact` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LabContact` DISABLE KEYS */;
-INSERT INTO `LabContact` VALUES
-(1,18660,'Stirling Moss',141666,NULL,NULL,NULL,0,0,'2023-09-14 09:15:30');
+INSERT INTO `LabContact` (`labContactId`, `personId`, `cardName`, `proposalId`, `defaultCourrierCompany`, `courierAccount`, `billingReference`, `dewarAvgCustomsValue`, `dewarAvgTransportValue`, `recordTimeStamp`) VALUES (1,18660,'Stirling Moss',141666,NULL,NULL,NULL,0,0,'2023-09-14 09:15:30');
 /*!40000 ALTER TABLE `LabContact` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Laboratory`
@@ -4333,10 +4389,11 @@ CREATE TABLE `Laboratory` (
 -- Dumping data for table `Laboratory`
 --
 
-LOCK TABLES `Laboratory` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Laboratory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Laboratory` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `LaserParameters`
@@ -4357,19 +4414,19 @@ CREATE TABLE `LaserParameters` (
   PRIMARY KEY (`laserParametersId`),
   KEY `LaserParameters_fk_robotActionId` (`robotActionId`),
   CONSTRAINT `LaserParameters_fk_robotActionId` FOREIGN KEY (`robotActionId`) REFERENCES `RobotAction` (`robotActionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `LaserParameters`
 --
 
-LOCK TABLES `LaserParameters` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LaserParameters` DISABLE KEYS */;
-INSERT INTO `LaserParameters` VALUES
-(1,588,1,1,1,1,1,1);
+INSERT INTO `LaserParameters` (`laserParametersId`, `robotActionId`, `laserRepetitionRate`, `scanheadMoveSpeed`, `laserTransmission`, `numberOfPasses`, `gonioRotationSpeed`, `totalMarkingTime`) VALUES (1,588,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `LaserParameters` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `LaserPoint`
@@ -4389,19 +4446,19 @@ CREATE TABLE `LaserPoint` (
   PRIMARY KEY (`laserPointId`),
   KEY `LaserPoint_fk_laserParametersId` (`laserParametersId`),
   CONSTRAINT `LaserPoint_fk_laserParametersId` FOREIGN KEY (`laserParametersId`) REFERENCES `LaserParameters` (`laserParametersId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `LaserPoint`
 --
 
-LOCK TABLES `LaserPoint` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LaserPoint` DISABLE KEYS */;
-INSERT INTO `LaserPoint` VALUES
-(1,1,1,1,1,1,1);
+INSERT INTO `LaserPoint` (`laserPointId`, `laserParametersId`, `x`, `y`, `pointIndex`, `radius`, `laserOn`) VALUES (1,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `LaserPoint` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Ligand`
@@ -4422,17 +4479,18 @@ CREATE TABLE `Ligand` (
   PRIMARY KEY (`ligandId`),
   KEY `Ligand_fk_proposalId` (`proposalId`),
   CONSTRAINT `Ligand_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=379 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Ligands in biochemistry are substances that bind to biomolecules';
+) ENGINE=InnoDB AUTO_INCREMENT=847 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Ligands in biochemistry are substances that bind to biomolecules';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Ligand`
 --
 
-LOCK TABLES `Ligand` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Ligand` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Ligand` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Ligand_has_PDB`
@@ -4455,10 +4513,11 @@ CREATE TABLE `Ligand_has_PDB` (
 -- Dumping data for table `Ligand_has_PDB`
 --
 
-LOCK TABLES `Ligand_has_PDB` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Ligand_has_PDB` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Ligand_has_PDB` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `MXMRRun`
@@ -4490,13 +4549,13 @@ CREATE TABLE `MXMRRun` (
 -- Dumping data for table `MXMRRun`
 --
 
-LOCK TABLES `MXMRRun` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRun` DISABLE KEYS */;
-INSERT INTO `MXMRRun` VALUES
-(672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
+INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueEnd`, `rFreeValueStart`, `rFreeValueEnd`, `LLG`, `TFZ`, `spaceGroup`, `autoProcProgramId`) VALUES (672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
 (672900,603470,NULL,NULL,NULL,NULL,NULL,NULL,NULL,56986675);
 /*!40000 ALTER TABLE `MXMRRun` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `MXMRRunBlob`
@@ -4533,10 +4592,85 @@ CREATE TABLE `MXMRRunBlob` (
 -- Dumping data for table `MXMRRunBlob`
 --
 
-LOCK TABLES `MXMRRunBlob` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRunBlob` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MXMRRunBlob` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `MillingStep`
+--
+
+DROP TABLE IF EXISTS `MillingStep`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `MillingStep` (
+  `millingStepId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `millingStepNameId` int(11) unsigned DEFAULT NULL,
+  `isEnabled` tinyint(1) DEFAULT 0 COMMENT 'This marks whether the milling step is enabled and queued up; when the FIB starts this step, it will be set to False',
+  `status` enum('Finished','Failed','Aborted') DEFAULT NULL COMMENT 'Describes the status of the milling step',
+  `executionTime` float DEFAULT NULL COMMENT 'The time in seconds the step took to complete',
+  `stageX` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `stageY` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `stageZ` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `rotation` float DEFAULT NULL COMMENT 'Rotation of stage in xy plane in degrees',
+  `alphaTilt` float DEFAULT NULL COMMENT 'Unit: degrees',
+  `beamType` enum('Electron','Ion') DEFAULT NULL COMMENT 'Type of beam used',
+  `beamVoltage` float DEFAULT NULL COMMENT 'Unit: volts',
+  `beamCurrent` float DEFAULT NULL COMMENT 'Unit: amperes',
+  `millingAngle` float DEFAULT NULL COMMENT 'The angle the stage is tilted to for milling, in degrees',
+  `depthCorrection` float DEFAULT NULL,
+  `lamellaOffset` float DEFAULT NULL COMMENT 'Unit: metres',
+  `trenchHeightFront` float DEFAULT NULL COMMENT 'Unit: metres',
+  `trenchHeightRear` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapFrontLeft` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapFrontRight` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapRearLeft` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapRearRight` float DEFAULT NULL COMMENT 'Unit: metres',
+  `gridSquareId` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`millingStepId`),
+  KEY `MillingStep_fk_gridSquareId` (`gridSquareId`),
+  KEY `MillingStep_fk_millingStepNameId` (`millingStepNameId`),
+  CONSTRAINT `MillingStep_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `MillingStep_fk_millingStepNameId` FOREIGN KEY (`millingStepNameId`) REFERENCES `MillingStepName` (`millingStepNameId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='FIB Milling Step';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MillingStep`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+/*!40000 ALTER TABLE `MillingStep` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MillingStep` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `MillingStepName`
+--
+
+DROP TABLE IF EXISTS `MillingStepName`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `MillingStepName` (
+  `millingStepNameId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `step` varchar(45) NOT NULL,
+  `recipe` varchar(45) NOT NULL,
+  PRIMARY KEY (`millingStepNameId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Milling step names and recipes';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MillingStepName`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+/*!40000 ALTER TABLE `MillingStepName` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MillingStepName` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ModelBuilding`
@@ -4567,10 +4701,11 @@ CREATE TABLE `ModelBuilding` (
 -- Dumping data for table `ModelBuilding`
 --
 
-LOCK TABLES `ModelBuilding` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ModelBuilding` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ModelBuilding` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `MotionCorrection`
@@ -4613,10 +4748,9 @@ CREATE TABLE `MotionCorrection` (
 -- Dumping data for table `MotionCorrection`
 --
 
-LOCK TABLES `MotionCorrection` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MotionCorrection` DISABLE KEYS */;
-INSERT INTO `MotionCorrection` VALUES
-(1,6017406,NULL,1,NULL,NULL,NULL,NULL,70,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/Position_2_11_45.00_abc.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,1),
+INSERT INTO `MotionCorrection` (`motionCorrectionId`, `dataCollectionId`, `autoProcProgramId`, `imageNumber`, `firstFrame`, `lastFrame`, `dosePerFrame`, `doseWeight`, `totalMotion`, `averageMotionPerFrame`, `driftPlotFullPath`, `micrographFullPath`, `micrographSnapshotFullPath`, `patchesUsedX`, `patchesUsedY`, `fftFullPath`, `fftCorrectedFullPath`, `comments`, `movieId`) VALUES (1,6017406,NULL,1,NULL,NULL,NULL,NULL,70,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/Position_2_11_45.00_abc.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,1),
 (2,6017406,NULL,2,NULL,NULL,NULL,NULL,210,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/Position_2_11_45.00_abc.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,2),
 (3,6017406,NULL,3,NULL,NULL,NULL,NULL,160,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/Position_2_11_45.00_abc.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,3),
 (4,6017406,NULL,4,NULL,NULL,NULL,NULL,170,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/Position_2_11_45.00_abc.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,4),
@@ -4644,7 +4778,8 @@ INSERT INTO `MotionCorrection` VALUES
 (26,6017413,56986803,1,NULL,NULL,NULL,NULL,60,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/broken.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,26),
 (30,6017408,56986677,1,NULL,NULL,NULL,NULL,NULL,NULL,'/mnt/test_xy_shift.json','/dls/m02/raw/broken.jpeg','/mnt/fft.png',NULL,NULL,'/mnt/fft.png',NULL,NULL,27);
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `MotionCorrectionDrift`
@@ -4669,14 +4804,14 @@ CREATE TABLE `MotionCorrectionDrift` (
 -- Dumping data for table `MotionCorrectionDrift`
 --
 
-LOCK TABLES `MotionCorrectionDrift` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MotionCorrectionDrift` DISABLE KEYS */;
-INSERT INTO `MotionCorrectionDrift` VALUES
-(1,1,1,1,1),
+INSERT INTO `MotionCorrectionDrift` (`motionCorrectionDriftId`, `motionCorrectionId`, `frameNumber`, `deltaX`, `deltaY`) VALUES (1,1,1,1,1),
 (2,1,2,4,1),
 (3,1,3,9,1);
 /*!40000 ALTER TABLE `MotionCorrectionDrift` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `MotorPosition`
@@ -4707,10 +4842,11 @@ CREATE TABLE `MotorPosition` (
 -- Dumping data for table `MotorPosition`
 --
 
-LOCK TABLES `MotorPosition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MotorPosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotorPosition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Movie`
@@ -4745,10 +4881,9 @@ CREATE TABLE `Movie` (
 -- Dumping data for table `Movie`
 --
 
-LOCK TABLES `Movie` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Movie` DISABLE KEYS */;
-INSERT INTO `Movie` VALUES
-(1,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `Movie` (`movieId`, `dataCollectionId`, `movieNumber`, `movieFullPath`, `createdTimeStamp`, `positionX`, `positionY`, `nominalDefocus`, `angle`, `fluence`, `numberOfFrames`, `foilHoleId`, `templateLabel`) VALUES (1,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (2,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (3,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (4,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -4776,7 +4911,8 @@ INSERT INTO `Movie` VALUES
 (26,6017413,NULL,NULL,'2023-02-14 14:56:10',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (27,6017408,NULL,NULL,'2024-11-26 16:47:06',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
 /*!40000 ALTER TABLE `Movie` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PDB`
@@ -4799,12 +4935,12 @@ CREATE TABLE `PDB` (
 -- Dumping data for table `PDB`
 --
 
-LOCK TABLES `PDB` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDB` DISABLE KEYS */;
-INSERT INTO `PDB` VALUES
-(6,'ceo2','\r\ndata_\r\n_chemical_name_mineral ?CeO2?\r\n_cell_length_a  5.411223\r\n_cell_length_b  5.411223\r\n_cell_length_c  5.411223\r\n_cell_angle_alpha 90\r\n_cell_angle_beta  90\r\n_cell_angle_gamma 90\r\n_cell_volume 158.4478\r\n_symmetry_space_group_name_H-M     \'Fm3m\'\r\nloop_\r\n_symmetry_equiv_pos_as_xyz\r\n	\'-x, -y, -z\'\r\n	\'-x, -y, z\'\r\n	\'-x, -y+1/2, -z+1/2\'\r\n	\'-x, -y+1/2, z+1/2\'\r\n	\'-x, -z, -y\'\r\n	\'-x, -z, y\'\r\n	\'-x, -z+1/2, -y+1/2\'\r\n	\'-x, -z+1/2, y+1/2\'\r\n	\'-x, z, -y\'\r\n	\'-x, z, y\'\r\n	\'-x, z+1/2, -y+1/2\'\r\n	\'-x, z+1/2, y+1/2\'\r\n	\'-x, y, -z\'\r\n	\'-x, y, z\'\r\n	\'-x, y+1/2, -z+1/2\'\r\n	\'-x, y+1/2, z+1/2\'\r\n	\'-x+1/2, -y, -z+1/2\'\r\n	\'-x+1/2, -y, z+1/2\'\r\n	\'-x+1/2, -y+1/2, -z\'\r\n	\'-x+1/2, -y+1/2, z\'\r\n	\'-x+1/2, -z, -y+1/2\'\r\n	\'-x+1/2, -z, y+1/2\'\r\n	\'-x+1/2, -z+1/2, -y\'\r\n	\'-x+1/2, -z+1/2, y\'\r\n	\'-x+1/2, z, -y+1/2\'\r\n	\'-x+1/2, z, y+1/2\'\r\n	\'-x+1/2, z+1/2, -y\'\r\n	\'-x+1/2, z+1/2, y\'\r\n	\'-x+1/2, y, -z+1/2\'\r\n	\'-x+1/2, y, z+1/2\'\r\n	\'-x+1/2, y+1/2, -z\'\r\n	\'-x+1/2, y+1/2, z\'\r\n	\'-y, -x, -z\'\r\n	\'-y, -x, z\'\r\n	\'-y, -x+1/2, -z+1/2\'\r\n	\'-y, -x+1/2, z+1/2\'\r\n	\'-y, -z, -x\'\r\n	\'-y, -z, x\'\r\n	\'-y, -z+1/2, -x+1/2\'\r\n	\'-y, -z+1/2, x+1/2\'\r\n	\'-y, z, -x\'\r\n	\'-y, z, x\'\r\n	\'-y, z+1/2, -x+1/2\'\r\n	\'-y, z+1/2, x+1/2\'\r\n	\'-y, x, -z\'\r\n	\'-y, x, z\'\r\n	\'-y, x+1/2, -z+1/2\'\r\n	\'-y, x+1/2, z+1/2\'\r\n	\'-y+1/2, -x, -z+1/2\'\r\n	\'-y+1/2, -x, z+1/2\'\r\n	\'-y+1/2, -x+1/2, -z\'\r\n	\'-y+1/2, -x+1/2, z\'\r\n	\'-y+1/2, -z, -x+1/2\'\r\n	\'-y+1/2, -z, x+1/2\'\r\n	\'-y+1/2, -z+1/2, -x\'\r\n	\'-y+1/2, -z+1/2, x\'\r\n	\'-y+1/2, z, -x+1/2\'\r\n	\'-y+1/2, z, x+1/2\'\r\n	\'-y+1/2, z+1/2, -x\'\r\n	\'-y+1/2, z+1/2, x\'\r\n	\'-y+1/2, x, -z+1/2\'\r\n	\'-y+1/2, x, z+1/2\'\r\n	\'-y+1/2, x+1/2, -z\'\r\n	\'-y+1/2, x+1/2, z\'\r\n	\'-z, -x, -y\'\r\n	\'-z, -x, y\'\r\n	\'-z, -x+1/2, -y+1/2\'\r\n	\'-z, -x+1/2, y+1/2\'\r\n	\'-z, -y, -x\'\r\n	\'-z, -y, x\'\r\n	\'-z, -y+1/2, -x+1/2\'\r\n	\'-z, -y+1/2, x+1/2\'\r\n	\'-z, y, -x\'\r\n	\'-z, y, x\'\r\n	\'-z, y+1/2, -x+1/2\'\r\n	\'-z, y+1/2, x+1/2\'\r\n	\'-z, x, -y\'\r\n	\'-z, x, y\'\r\n	\'-z, x+1/2, -y+1/2\'\r\n	\'-z, x+1/2, y+1/2\'\r\n	\'-z+1/2, -x, -y+1/2\'\r\n	\'-z+1/2, -x, y+1/2\'\r\n	\'-z+1/2, -x+1/2, -y\'\r\n	\'-z+1/2, -x+1/2, y\'\r\n	\'-z+1/2, -y, -x+1/2\'\r\n	\'-z+1/2, -y, x+1/2\'\r\n	\'-z+1/2, -y+1/2, -x\'\r\n	\'-z+1/2, -y+1/2, x\'\r\n	\'-z+1/2, y, -x+1/2\'\r\n	\'-z+1/2, y, x+1/2\'\r\n	\'-z+1/2, y+1/2, -x\'\r\n	\'-z+1/2, y+1/2, x\'\r\n	\'-z+1/2, x, -y+1/2\'\r\n	\'-z+1/2, x, y+1/2\'\r\n	\'-z+1/2, x+1/2, -y\'\r\n	\'-z+1/2, x+1/2, y\'\r\n	\'z, -x, -y\'\r\n	\'z, -x, y\'\r\n	\'z, -x+1/2, -y+1/2\'\r\n	\'z, -x+1/2, y+1/2\'\r\n	\'z, -y, -x\'\r\n	\'z, -y, x\'\r\n	\'z, -y+1/2, -x+1/2\'\r\n	\'z, -y+1/2, x+1/2\'\r\n	\'z, y, -x\'\r\n	\'z, y, x\'\r\n	\'z, y+1/2, -x+1/2\'\r\n	\'z, y+1/2, x+1/2\'\r\n	\'z, x, -y\'\r\n	\'z, x, y\'\r\n	\'z, x+1/2, -y+1/2\'\r\n	\'z, x+1/2, y+1/2\'\r\n	\'z+1/2, -x, -y+1/2\'\r\n	\'z+1/2, -x, y+1/2\'\r\n	\'z+1/2, -x+1/2, -y\'\r\n	\'z+1/2, -x+1/2, y\'\r\n	\'z+1/2, -y, -x+1/2\'\r\n	\'z+1/2, -y, x+1/2\'\r\n	\'z+1/2, -y+1/2, -x\'\r\n	\'z+1/2, -y+1/2, x\'\r\n	\'z+1/2, y, -x+1/2\'\r\n	\'z+1/2, y, x+1/2\'\r\n	\'z+1/2, y+1/2, -x\'\r\n	\'z+1/2, y+1/2, x\'\r\n	\'z+1/2, x, -y+1/2\'\r\n	\'z+1/2, x, y+1/2\'\r\n	\'z+1/2, x+1/2, -y\'\r\n	\'z+1/2, x+1/2, y\'\r\n	\'y, -x, -z\'\r\n	\'y, -x, z\'\r\n	\'y, -x+1/2, -z+1/2\'\r\n	\'y, -x+1/2, z+1/2\'\r\n	\'y, -z, -x\'\r\n	\'y, -z, x\'\r\n	\'y, -z+1/2, -x+1/2\'\r\n	\'y, -z+1/2, x+1/2\'\r\n	\'y, z, -x\'\r\n	\'y, z, x\'\r\n	\'y, z+1/2, -x+1/2\'\r\n	\'y, z+1/2, x+1/2\'\r\n	\'y, x, -z\'\r\n	\'y, x, z\'\r\n	\'y, x+1/2, -z+1/2\'\r\n	\'y, x+1/2, z+1/2\'\r\n	\'y+1/2, -x, -z+1/2\'\r\n	\'y+1/2, -x, z+1/2\'\r\n	\'y+1/2, -x+1/2, -z\'\r\n	\'y+1/2, -x+1/2, z\'\r\n	\'y+1/2, -z, -x+1/2\'\r\n	\'y+1/2, -z, x+1/2\'\r\n	\'y+1/2, -z+1/2, -x\'\r\n	\'y+1/2, -z+1/2, x\'\r\n	\'y+1/2, z, -x+1/2\'\r\n	\'y+1/2, z, x+1/2\'\r\n	\'y+1/2, z+1/2, -x\'\r\n	\'y+1/2, z+1/2, x\'\r\n	\'y+1/2, x, -z+1/2\'\r\n	\'y+1/2, x, z+1/2\'\r\n	\'y+1/2, x+1/2, -z\'\r\n	\'y+1/2, x+1/2, z\'\r\n	\'x, -y, -z\'\r\n	\'x, -y, z\'\r\n	\'x, -y+1/2, -z+1/2\'\r\n	\'x, -y+1/2, z+1/2\'\r\n	\'x, -z, -y\'\r\n	\'x, -z, y\'\r\n	\'x, -z+1/2, -y+1/2\'\r\n	\'x, -z+1/2, y+1/2\'\r\n	\'x, z, -y\'\r\n	\'x, z, y\'\r\n	\'x, z+1/2, -y+1/2\'\r\n	\'x, z+1/2, y+1/2\'\r\n	\'x, y, -z\'\r\n	\'x, y, z\'\r\n	\'x, y+1/2, -z+1/2\'\r\n	\'x, y+1/2, z+1/2\'\r\n	\'x+1/2, -y, -z+1/2\'\r\n	\'x+1/2, -y, z+1/2\'\r\n	\'x+1/2, -y+1/2, -z\'\r\n	\'x+1/2, -y+1/2, z\'\r\n	\'x+1/2, -z, -y+1/2\'\r\n	\'x+1/2, -z, y+1/2\'\r\n	\'x+1/2, -z+1/2, -y\'\r\n	\'x+1/2, -z+1/2, y\'\r\n	\'x+1/2, z, -y+1/2\'\r\n	\'x+1/2, z, y+1/2\'\r\n	\'x+1/2, z+1/2, -y\'\r\n	\'x+1/2, z+1/2, y\'\r\n	\'x+1/2, y, -z+1/2\'\r\n	\'x+1/2, y, z+1/2\'\r\n	\'x+1/2, y+1/2, -z\'\r\n	\'x+1/2, y+1/2, z\'\r\nloop_\r\n_atom_site_label\r\n_atom_site_type_symbol\r\n_atom_site_symmetry_multiplicity\r\n_atom_site_fract_x\r\n_atom_site_fract_y\r\n_atom_site_fract_z\r\n_atom_site_occupancy\r\n_atom_site_B_iso_or_equiv\r\nCe1 Ce   0 0 0 0 1 0.127911\r\nO1 O   0 0.25 0.25 0.25 1 0.07795472',NULL,NULL);
+INSERT INTO `PDB` (`pdbId`, `name`, `contents`, `code`, `source`) VALUES (6,'ceo2','\r\ndata_\r\n_chemical_name_mineral ?CeO2?\r\n_cell_length_a  5.411223\r\n_cell_length_b  5.411223\r\n_cell_length_c  5.411223\r\n_cell_angle_alpha 90\r\n_cell_angle_beta  90\r\n_cell_angle_gamma 90\r\n_cell_volume 158.4478\r\n_symmetry_space_group_name_H-M     \'Fm3m\'\r\nloop_\r\n_symmetry_equiv_pos_as_xyz\r\n	\'-x, -y, -z\'\r\n	\'-x, -y, z\'\r\n	\'-x, -y+1/2, -z+1/2\'\r\n	\'-x, -y+1/2, z+1/2\'\r\n	\'-x, -z, -y\'\r\n	\'-x, -z, y\'\r\n	\'-x, -z+1/2, -y+1/2\'\r\n	\'-x, -z+1/2, y+1/2\'\r\n	\'-x, z, -y\'\r\n	\'-x, z, y\'\r\n	\'-x, z+1/2, -y+1/2\'\r\n	\'-x, z+1/2, y+1/2\'\r\n	\'-x, y, -z\'\r\n	\'-x, y, z\'\r\n	\'-x, y+1/2, -z+1/2\'\r\n	\'-x, y+1/2, z+1/2\'\r\n	\'-x+1/2, -y, -z+1/2\'\r\n	\'-x+1/2, -y, z+1/2\'\r\n	\'-x+1/2, -y+1/2, -z\'\r\n	\'-x+1/2, -y+1/2, z\'\r\n	\'-x+1/2, -z, -y+1/2\'\r\n	\'-x+1/2, -z, y+1/2\'\r\n	\'-x+1/2, -z+1/2, -y\'\r\n	\'-x+1/2, -z+1/2, y\'\r\n	\'-x+1/2, z, -y+1/2\'\r\n	\'-x+1/2, z, y+1/2\'\r\n	\'-x+1/2, z+1/2, -y\'\r\n	\'-x+1/2, z+1/2, y\'\r\n	\'-x+1/2, y, -z+1/2\'\r\n	\'-x+1/2, y, z+1/2\'\r\n	\'-x+1/2, y+1/2, -z\'\r\n	\'-x+1/2, y+1/2, z\'\r\n	\'-y, -x, -z\'\r\n	\'-y, -x, z\'\r\n	\'-y, -x+1/2, -z+1/2\'\r\n	\'-y, -x+1/2, z+1/2\'\r\n	\'-y, -z, -x\'\r\n	\'-y, -z, x\'\r\n	\'-y, -z+1/2, -x+1/2\'\r\n	\'-y, -z+1/2, x+1/2\'\r\n	\'-y, z, -x\'\r\n	\'-y, z, x\'\r\n	\'-y, z+1/2, -x+1/2\'\r\n	\'-y, z+1/2, x+1/2\'\r\n	\'-y, x, -z\'\r\n	\'-y, x, z\'\r\n	\'-y, x+1/2, -z+1/2\'\r\n	\'-y, x+1/2, z+1/2\'\r\n	\'-y+1/2, -x, -z+1/2\'\r\n	\'-y+1/2, -x, z+1/2\'\r\n	\'-y+1/2, -x+1/2, -z\'\r\n	\'-y+1/2, -x+1/2, z\'\r\n	\'-y+1/2, -z, -x+1/2\'\r\n	\'-y+1/2, -z, x+1/2\'\r\n	\'-y+1/2, -z+1/2, -x\'\r\n	\'-y+1/2, -z+1/2, x\'\r\n	\'-y+1/2, z, -x+1/2\'\r\n	\'-y+1/2, z, x+1/2\'\r\n	\'-y+1/2, z+1/2, -x\'\r\n	\'-y+1/2, z+1/2, x\'\r\n	\'-y+1/2, x, -z+1/2\'\r\n	\'-y+1/2, x, z+1/2\'\r\n	\'-y+1/2, x+1/2, -z\'\r\n	\'-y+1/2, x+1/2, z\'\r\n	\'-z, -x, -y\'\r\n	\'-z, -x, y\'\r\n	\'-z, -x+1/2, -y+1/2\'\r\n	\'-z, -x+1/2, y+1/2\'\r\n	\'-z, -y, -x\'\r\n	\'-z, -y, x\'\r\n	\'-z, -y+1/2, -x+1/2\'\r\n	\'-z, -y+1/2, x+1/2\'\r\n	\'-z, y, -x\'\r\n	\'-z, y, x\'\r\n	\'-z, y+1/2, -x+1/2\'\r\n	\'-z, y+1/2, x+1/2\'\r\n	\'-z, x, -y\'\r\n	\'-z, x, y\'\r\n	\'-z, x+1/2, -y+1/2\'\r\n	\'-z, x+1/2, y+1/2\'\r\n	\'-z+1/2, -x, -y+1/2\'\r\n	\'-z+1/2, -x, y+1/2\'\r\n	\'-z+1/2, -x+1/2, -y\'\r\n	\'-z+1/2, -x+1/2, y\'\r\n	\'-z+1/2, -y, -x+1/2\'\r\n	\'-z+1/2, -y, x+1/2\'\r\n	\'-z+1/2, -y+1/2, -x\'\r\n	\'-z+1/2, -y+1/2, x\'\r\n	\'-z+1/2, y, -x+1/2\'\r\n	\'-z+1/2, y, x+1/2\'\r\n	\'-z+1/2, y+1/2, -x\'\r\n	\'-z+1/2, y+1/2, x\'\r\n	\'-z+1/2, x, -y+1/2\'\r\n	\'-z+1/2, x, y+1/2\'\r\n	\'-z+1/2, x+1/2, -y\'\r\n	\'-z+1/2, x+1/2, y\'\r\n	\'z, -x, -y\'\r\n	\'z, -x, y\'\r\n	\'z, -x+1/2, -y+1/2\'\r\n	\'z, -x+1/2, y+1/2\'\r\n	\'z, -y, -x\'\r\n	\'z, -y, x\'\r\n	\'z, -y+1/2, -x+1/2\'\r\n	\'z, -y+1/2, x+1/2\'\r\n	\'z, y, -x\'\r\n	\'z, y, x\'\r\n	\'z, y+1/2, -x+1/2\'\r\n	\'z, y+1/2, x+1/2\'\r\n	\'z, x, -y\'\r\n	\'z, x, y\'\r\n	\'z, x+1/2, -y+1/2\'\r\n	\'z, x+1/2, y+1/2\'\r\n	\'z+1/2, -x, -y+1/2\'\r\n	\'z+1/2, -x, y+1/2\'\r\n	\'z+1/2, -x+1/2, -y\'\r\n	\'z+1/2, -x+1/2, y\'\r\n	\'z+1/2, -y, -x+1/2\'\r\n	\'z+1/2, -y, x+1/2\'\r\n	\'z+1/2, -y+1/2, -x\'\r\n	\'z+1/2, -y+1/2, x\'\r\n	\'z+1/2, y, -x+1/2\'\r\n	\'z+1/2, y, x+1/2\'\r\n	\'z+1/2, y+1/2, -x\'\r\n	\'z+1/2, y+1/2, x\'\r\n	\'z+1/2, x, -y+1/2\'\r\n	\'z+1/2, x, y+1/2\'\r\n	\'z+1/2, x+1/2, -y\'\r\n	\'z+1/2, x+1/2, y\'\r\n	\'y, -x, -z\'\r\n	\'y, -x, z\'\r\n	\'y, -x+1/2, -z+1/2\'\r\n	\'y, -x+1/2, z+1/2\'\r\n	\'y, -z, -x\'\r\n	\'y, -z, x\'\r\n	\'y, -z+1/2, -x+1/2\'\r\n	\'y, -z+1/2, x+1/2\'\r\n	\'y, z, -x\'\r\n	\'y, z, x\'\r\n	\'y, z+1/2, -x+1/2\'\r\n	\'y, z+1/2, x+1/2\'\r\n	\'y, x, -z\'\r\n	\'y, x, z\'\r\n	\'y, x+1/2, -z+1/2\'\r\n	\'y, x+1/2, z+1/2\'\r\n	\'y+1/2, -x, -z+1/2\'\r\n	\'y+1/2, -x, z+1/2\'\r\n	\'y+1/2, -x+1/2, -z\'\r\n	\'y+1/2, -x+1/2, z\'\r\n	\'y+1/2, -z, -x+1/2\'\r\n	\'y+1/2, -z, x+1/2\'\r\n	\'y+1/2, -z+1/2, -x\'\r\n	\'y+1/2, -z+1/2, x\'\r\n	\'y+1/2, z, -x+1/2\'\r\n	\'y+1/2, z, x+1/2\'\r\n	\'y+1/2, z+1/2, -x\'\r\n	\'y+1/2, z+1/2, x\'\r\n	\'y+1/2, x, -z+1/2\'\r\n	\'y+1/2, x, z+1/2\'\r\n	\'y+1/2, x+1/2, -z\'\r\n	\'y+1/2, x+1/2, z\'\r\n	\'x, -y, -z\'\r\n	\'x, -y, z\'\r\n	\'x, -y+1/2, -z+1/2\'\r\n	\'x, -y+1/2, z+1/2\'\r\n	\'x, -z, -y\'\r\n	\'x, -z, y\'\r\n	\'x, -z+1/2, -y+1/2\'\r\n	\'x, -z+1/2, y+1/2\'\r\n	\'x, z, -y\'\r\n	\'x, z, y\'\r\n	\'x, z+1/2, -y+1/2\'\r\n	\'x, z+1/2, y+1/2\'\r\n	\'x, y, -z\'\r\n	\'x, y, z\'\r\n	\'x, y+1/2, -z+1/2\'\r\n	\'x, y+1/2, z+1/2\'\r\n	\'x+1/2, -y, -z+1/2\'\r\n	\'x+1/2, -y, z+1/2\'\r\n	\'x+1/2, -y+1/2, -z\'\r\n	\'x+1/2, -y+1/2, z\'\r\n	\'x+1/2, -z, -y+1/2\'\r\n	\'x+1/2, -z, y+1/2\'\r\n	\'x+1/2, -z+1/2, -y\'\r\n	\'x+1/2, -z+1/2, y\'\r\n	\'x+1/2, z, -y+1/2\'\r\n	\'x+1/2, z, y+1/2\'\r\n	\'x+1/2, z+1/2, -y\'\r\n	\'x+1/2, z+1/2, y\'\r\n	\'x+1/2, y, -z+1/2\'\r\n	\'x+1/2, y, z+1/2\'\r\n	\'x+1/2, y+1/2, -z\'\r\n	\'x+1/2, y+1/2, z\'\r\nloop_\r\n_atom_site_label\r\n_atom_site_type_symbol\r\n_atom_site_symmetry_multiplicity\r\n_atom_site_fract_x\r\n_atom_site_fract_y\r\n_atom_site_fract_z\r\n_atom_site_occupancy\r\n_atom_site_B_iso_or_equiv\r\nCe1 Ce   0 0 0 0 1 0.127911\r\nO1 O   0 0.25 0.25 0.25 1 0.07795472',NULL,NULL);
 /*!40000 ALTER TABLE `PDB` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PDBEntry`
@@ -4844,10 +4980,11 @@ CREATE TABLE `PDBEntry` (
 -- Dumping data for table `PDBEntry`
 --
 
-LOCK TABLES `PDBEntry` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDBEntry` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PDBEntry` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PDBEntry_has_AutoProcProgram`
@@ -4873,10 +5010,11 @@ CREATE TABLE `PDBEntry_has_AutoProcProgram` (
 -- Dumping data for table `PDBEntry_has_AutoProcProgram`
 --
 
-LOCK TABLES `PDBEntry_has_AutoProcProgram` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ParticleClassification`
@@ -4912,10 +5050,9 @@ CREATE TABLE `ParticleClassification` (
 -- Dumping data for table `ParticleClassification`
 --
 
-LOCK TABLES `ParticleClassification` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
-INSERT INTO `ParticleClassification` VALUES
-(1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1,0,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ParticleClassification` (`particleClassificationId`, `classNumber`, `classImageFullPath`, `particlesPerClass`, `rotationAccuracy`, `translationAccuracy`, `estimatedResolution`, `overallFourierCompleteness`, `particleClassificationGroupId`, `classDistribution`, `selected`, `bFactorFitIntercept`, `bFactorFitLinear`, `bFactorFitQuadratic`, `angularEfficiency`, `suggestedTilt`) VALUES (1,1,'/mnt/test.jpg',20000,15,15,9,15,1,0.1,0,NULL,NULL,NULL,NULL,NULL),
 (2,1,'/mnt/test.jpg',40000,15,15,12,15,1,0.2,0,NULL,NULL,NULL,NULL,NULL),
 (3,1,'/mnt/test.jpg',60000,15,15,0,15,1,0.1,0,NULL,NULL,NULL,NULL,NULL),
 (4,1,'/mnt/test.jpg',25000,15,15,18,15,1,0.01,1,NULL,NULL,NULL,NULL,NULL),
@@ -4927,7 +5064,8 @@ INSERT INTO `ParticleClassification` VALUES
 (10,1,'/mnt/test.jpg',60000,15,15,15,15,4,0.1,1,NULL,1,NULL,NULL,NULL),
 (11,1,'/mnt/test.jpg',60000,15,15,15,15,5,0.1,1,NULL,1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ParticleClassificationGroup`
@@ -4958,16 +5096,16 @@ CREATE TABLE `ParticleClassificationGroup` (
 -- Dumping data for table `ParticleClassificationGroup`
 --
 
-LOCK TABLES `ParticleClassificationGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassificationGroup` DISABLE KEYS */;
-INSERT INTO `ParticleClassificationGroup` VALUES
-(1,1,56986680,'2D',1,10000,20000,'1',NULL),
+INSERT INTO `ParticleClassificationGroup` (`particleClassificationGroupId`, `particlePickerId`, `programId`, `type`, `batchNumber`, `numberOfParticlesPerBatch`, `numberOfClassesPerBatch`, `symmetry`, `binnedPixelSize`) VALUES (1,1,56986680,'2D',1,10000,20000,'1',NULL),
 (2,3,56986680,'3D',1,10000,20000,'1',NULL),
 (3,4,56986805,'3D',1,10000,20000,'C1',NULL),
 (4,4,56986804,'3D',1,10000,20000,'C1',NULL),
 (5,4,56986806,'3D',1,10000,20000,'C1',NULL);
 /*!40000 ALTER TABLE `ParticleClassificationGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ParticleClassification_has_CryoemInitialModel`
@@ -4990,16 +5128,16 @@ CREATE TABLE `ParticleClassification_has_CryoemInitialModel` (
 -- Dumping data for table `ParticleClassification_has_CryoemInitialModel`
 --
 
-LOCK TABLES `ParticleClassification_has_CryoemInitialModel` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` DISABLE KEYS */;
-INSERT INTO `ParticleClassification_has_CryoemInitialModel` VALUES
-(1,1),
+INSERT INTO `ParticleClassification_has_CryoemInitialModel` (`particleClassificationId`, `cryoemInitialModelId`) VALUES (1,1),
 (2,1),
 (3,1),
 (4,1),
 (5,1);
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ParticlePicker`
@@ -5028,10 +5166,9 @@ CREATE TABLE `ParticlePicker` (
 -- Dumping data for table `ParticlePicker`
 --
 
-LOCK TABLES `ParticlePicker` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticlePicker` DISABLE KEYS */;
-INSERT INTO `ParticlePicker` VALUES
-(1,56986680,21,NULL,1,10,'/mnt/test.jpg'),
+INSERT INTO `ParticlePicker` (`particlePickerId`, `programId`, `firstMotionCorrectionId`, `particlePickingTemplate`, `particleDiameter`, `numberOfParticles`, `summaryImageFullPath`) VALUES (1,56986680,21,NULL,1,10,'/mnt/test.jpg'),
 (2,56986680,21,NULL,1,40,'/mnt/test.jpg'),
 (3,56986680,21,NULL,1,40,'/mnt/test.jpg'),
 (4,56986803,3,NULL,1,60,'/mnt/test.jpg'),
@@ -5040,7 +5177,8 @@ INSERT INTO `ParticlePicker` VALUES
 (7,56986677,30,NULL,1,30,NULL),
 (8,56986677,30,NULL,1,40,NULL);
 /*!40000 ALTER TABLE `ParticlePicker` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Permission`
@@ -5061,10 +5199,9 @@ CREATE TABLE `Permission` (
 -- Dumping data for table `Permission`
 --
 
-LOCK TABLES `Permission` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Permission` DISABLE KEYS */;
-INSERT INTO `Permission` VALUES
-(1,'mx_admin','MX Administrator'),
+INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_admin','MX Administrator'),
 (2,'manage_groups','Manage User Groups'),
 (4,'manage_perms','Manage User Group Permissions'),
 (5,'global_stats','View Global Statistics'),
@@ -5095,7 +5232,8 @@ INSERT INTO `Permission` VALUES
 (77,'fault_admin','Edit Fault Categories'),
 (80,'fault_add','Add New Fault Reports');
 /*!40000 ALTER TABLE `Permission` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Person`
@@ -5125,17 +5263,16 @@ CREATE TABLE `Person` (
   KEY `Person_FKIndexFamilyName` (`familyName`),
   KEY `siteId` (`siteId`),
   CONSTRAINT `Person_ibfk_1` FOREIGN KEY (`laboratoryId`) REFERENCES `Laboratory` (`laboratoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=46719 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46772 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Person`
 --
 
-LOCK TABLES `Person` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-INSERT INTO `Person` VALUES
-(1,NULL,NULL,NULL,'McBoatface','Boaty','Mr','boaty@diamond.ac.uk',NULL,'boaty',NULL,'2016-03-20 13:56:45','a:1:{s:9:\"container\";N;}',NULL),
+INSERT INTO `Person` (`personId`, `laboratoryId`, `siteId`, `personUUID`, `familyName`, `givenName`, `title`, `emailAddress`, `phoneNumber`, `login`, `faxNumber`, `recordTimeStamp`, `cache`, `externalId`) VALUES (1,NULL,NULL,NULL,'McBoatface','Boaty','Mr','boaty@diamond.ac.uk',NULL,'boaty',NULL,'2016-03-20 13:56:45','a:1:{s:9:\"container\";N;}',NULL),
 (16000,NULL,NULL,NULL,'Lauda','Niki','Mr',NULL,NULL,'mx_admin',NULL,'2022-11-16 09:49:44',NULL,NULL),
 (17000,NULL,NULL,NULL,'Doe','John','Mr',NULL,NULL,'yrh59256',NULL,'2022-11-16 09:49:44',NULL,NULL),
 (18549,NULL,NULL,NULL,'Hunt','James','Dr',NULL,NULL,'admin',NULL,'2022-10-21 09:00:00',NULL,NULL),
@@ -5148,7 +5285,8 @@ INSERT INTO `Person` VALUES
 (46435,NULL,NULL,NULL,'Villeneuve','Giles','Dr',NULL,NULL,'industrial',NULL,'2025-04-24 11:16:02',NULL,NULL),
 (46436,NULL,NULL,NULL,'Hakkinen','Mika','Mr',NULL,NULL,'abc12345',NULL,'2025-04-24 12:27:17',NULL,NULL);
 /*!40000 ALTER TABLE `Person` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Phasing`
@@ -5182,10 +5320,11 @@ CREATE TABLE `Phasing` (
 -- Dumping data for table `Phasing`
 --
 
-LOCK TABLES `Phasing` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Phasing` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Phasing` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PhasingAnalysis`
@@ -5205,10 +5344,11 @@ CREATE TABLE `PhasingAnalysis` (
 -- Dumping data for table `PhasingAnalysis`
 --
 
-LOCK TABLES `PhasingAnalysis` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingAnalysis` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingAnalysis` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PhasingProgramAttachment`
@@ -5234,10 +5374,11 @@ CREATE TABLE `PhasingProgramAttachment` (
 -- Dumping data for table `PhasingProgramAttachment`
 --
 
-LOCK TABLES `PhasingProgramAttachment` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingProgramAttachment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingProgramAttachment` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PhasingProgramRun`
@@ -5264,10 +5405,11 @@ CREATE TABLE `PhasingProgramRun` (
 -- Dumping data for table `PhasingProgramRun`
 --
 
-LOCK TABLES `PhasingProgramRun` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingProgramRun` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingProgramRun` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PhasingStatistics`
@@ -5303,10 +5445,11 @@ CREATE TABLE `PhasingStatistics` (
 -- Dumping data for table `PhasingStatistics`
 --
 
-LOCK TABLES `PhasingStatistics` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingStatistics` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingStatistics` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PhasingStep`
@@ -5344,10 +5487,11 @@ CREATE TABLE `PhasingStep` (
 -- Dumping data for table `PhasingStep`
 --
 
-LOCK TABLES `PhasingStep` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingStep` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingStep` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Phasing_has_Scaling`
@@ -5374,10 +5518,11 @@ CREATE TABLE `Phasing_has_Scaling` (
 -- Dumping data for table `Phasing_has_Scaling`
 --
 
-LOCK TABLES `Phasing_has_Scaling` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Phasing_has_Scaling` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Phasing_has_Scaling` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Position`
@@ -5400,20 +5545,20 @@ CREATE TABLE `Position` (
   PRIMARY KEY (`positionId`),
   KEY `Position_FKIndex1` (`relativePositionId`),
   CONSTRAINT `Position_relativePositionfk_1` FOREIGN KEY (`relativePositionId`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=508 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=700 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Position`
 --
 
-LOCK TABLES `Position` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Position` DISABLE KEYS */;
-INSERT INTO `Position` VALUES
-(2,NULL,NULL,NULL,NULL,NULL,'2024-01-01 00:00:00',NULL,NULL,NULL),
+INSERT INTO `Position` (`positionId`, `relativePositionId`, `posX`, `posY`, `posZ`, `scale`, `recordTimeStamp`, `X`, `Y`, `Z`) VALUES (2,NULL,NULL,NULL,NULL,NULL,'2024-01-01 00:00:00',NULL,NULL,NULL),
 (5,NULL,NULL,NULL,NULL,NULL,'2024-01-01 00:00:00',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Position` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Positioner`
@@ -5434,10 +5579,11 @@ CREATE TABLE `Positioner` (
 -- Dumping data for table `Positioner`
 --
 
-LOCK TABLES `Positioner` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Positioner` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PreparePhasingData`
@@ -5468,10 +5614,11 @@ CREATE TABLE `PreparePhasingData` (
 -- Dumping data for table `PreparePhasingData`
 --
 
-LOCK TABLES `PreparePhasingData` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PreparePhasingData` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PreparePhasingData` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessedTomogram`
@@ -5496,14 +5643,14 @@ CREATE TABLE `ProcessedTomogram` (
 -- Dumping data for table `ProcessedTomogram`
 --
 
-LOCK TABLES `ProcessedTomogram` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
-INSERT INTO `ProcessedTomogram` VALUES
-(1,3,'/dls/test.denoised.mrc','Denoised','Ribosome'),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented','Microtubule'),
-(3,3,'/dls/test.picked.cbox','Picked','Membrane');
+INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised',NULL),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
+(3,3,'/dls/test.picked.cbox','Picked',NULL);
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessingJob`
@@ -5530,10 +5677,9 @@ CREATE TABLE `ProcessingJob` (
 -- Dumping data for table `ProcessingJob`
 --
 
-LOCK TABLES `ProcessingJob` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJob` DISABLE KEYS */;
-INSERT INTO `ProcessingJob` VALUES
-(5,1002287,'test job 01','Testing the job submission system','2017-10-16 11:02:12','DIALS/xia2',0),
+INSERT INTO `ProcessingJob` (`processingJobId`, `dataCollectionId`, `displayName`, `comments`, `recordTimestamp`, `recipe`, `automatic`) VALUES (5,1002287,'test job 01','Testing the job submission system','2017-10-16 11:02:12','DIALS/xia2',0),
 (6,6017406,NULL,NULL,'2022-11-14 14:02:14',NULL,0),
 (7,6017408,NULL,NULL,'2022-11-16 13:19:56',NULL,0),
 (8,6017409,NULL,NULL,'2022-11-16 15:47:00',NULL,0),
@@ -5567,7 +5713,8 @@ INSERT INTO `ProcessingJob` VALUES
 (55,6017406,'Tomogram Reconstruction',NULL,'2023-02-14 12:54:42','em-tomo-align-reproc',NULL),
 (1265,6017413,'Tomogram Reconstruction',NULL,'2023-02-14 12:54:42','em-tomo-align-reproc',NULL);
 /*!40000 ALTER TABLE `ProcessingJob` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessingJobImageSweep`
@@ -5594,13 +5741,13 @@ CREATE TABLE `ProcessingJobImageSweep` (
 -- Dumping data for table `ProcessingJobImageSweep`
 --
 
-LOCK TABLES `ProcessingJobImageSweep` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJobImageSweep` DISABLE KEYS */;
-INSERT INTO `ProcessingJobImageSweep` VALUES
-(5,5,1002287,1,270),
+INSERT INTO `ProcessingJobImageSweep` (`processingJobImageSweepId`, `processingJobId`, `dataCollectionId`, `startImage`, `endImage`) VALUES (5,5,1002287,1,270),
 (8,5,1002287,271,360);
 /*!40000 ALTER TABLE `ProcessingJobImageSweep` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessingJobParameter`
@@ -5618,20 +5765,20 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=28055 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28066 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ProcessingJobParameter`
 --
 
-LOCK TABLES `ProcessingJobParameter` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJobParameter` DISABLE KEYS */;
-INSERT INTO `ProcessingJobParameter` VALUES
-(5,5,'vortex factor','1.8*10^102'),
+INSERT INTO `ProcessingJobParameter` (`processingJobParameterId`, `processingJobId`, `parameterKey`, `parameterValue`) VALUES (5,5,'vortex factor','1.8*10^102'),
 (8,5,'80s factor','0.87*10^-93');
 /*!40000 ALTER TABLE `ProcessingJobParameter` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessingPipeline`
@@ -5657,10 +5804,9 @@ CREATE TABLE `ProcessingPipeline` (
 -- Dumping data for table `ProcessingPipeline`
 --
 
-LOCK TABLES `ProcessingPipeline` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingPipeline` DISABLE KEYS */;
-INSERT INTO `ProcessingPipeline` VALUES
-(1,1,'Mosflm','MX','automatic',0),
+INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),
 (2,1,'EDNA','MX','automatic',0),
 (3,2,'Fast DP','MX','automatic',1),
 (4,2,'xia2/3dii','MX','deprecated',0),
@@ -5674,7 +5820,8 @@ INSERT INTO `ProcessingPipeline` VALUES
 (12,3,'Big EP/XDS','MX','automatic',0),
 (13,3,'Big EP/DIALS','MX','automatic',0);
 /*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProcessingPipelineCategory`
@@ -5694,14 +5841,14 @@ CREATE TABLE `ProcessingPipelineCategory` (
 -- Dumping data for table `ProcessingPipelineCategory`
 --
 
-LOCK TABLES `ProcessingPipelineCategory` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` DISABLE KEYS */;
-INSERT INTO `ProcessingPipelineCategory` VALUES
-(1,'screening'),
+INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`) VALUES (1,'screening'),
 (2,'processing'),
 (3,'post processing');
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project`
@@ -5726,10 +5873,11 @@ CREATE TABLE `Project` (
 -- Dumping data for table `Project`
 --
 
-LOCK TABLES `Project` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_BLSample`
@@ -5752,10 +5900,11 @@ CREATE TABLE `Project_has_BLSample` (
 -- Dumping data for table `Project_has_BLSample`
 --
 
-LOCK TABLES `Project_has_BLSample` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_BLSample` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_BLSample` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_DCGroup`
@@ -5778,10 +5927,11 @@ CREATE TABLE `Project_has_DCGroup` (
 -- Dumping data for table `Project_has_DCGroup`
 --
 
-LOCK TABLES `Project_has_DCGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_DCGroup` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_DCGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_EnergyScan`
@@ -5804,10 +5954,11 @@ CREATE TABLE `Project_has_EnergyScan` (
 -- Dumping data for table `Project_has_EnergyScan`
 --
 
-LOCK TABLES `Project_has_EnergyScan` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_EnergyScan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_EnergyScan` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_Person`
@@ -5830,10 +5981,11 @@ CREATE TABLE `Project_has_Person` (
 -- Dumping data for table `Project_has_Person`
 --
 
-LOCK TABLES `Project_has_Person` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Person` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_Protein`
@@ -5856,10 +6008,11 @@ CREATE TABLE `Project_has_Protein` (
 -- Dumping data for table `Project_has_Protein`
 --
 
-LOCK TABLES `Project_has_Protein` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Protein` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Protein` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_Session`
@@ -5882,10 +6035,11 @@ CREATE TABLE `Project_has_Session` (
 -- Dumping data for table `Project_has_Session`
 --
 
-LOCK TABLES `Project_has_Session` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Session` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Session` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_Shipping`
@@ -5908,10 +6062,11 @@ CREATE TABLE `Project_has_Shipping` (
 -- Dumping data for table `Project_has_Shipping`
 --
 
-LOCK TABLES `Project_has_Shipping` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Shipping` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Shipping` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_User`
@@ -5934,10 +6089,11 @@ CREATE TABLE `Project_has_User` (
 -- Dumping data for table `Project_has_User`
 --
 
-LOCK TABLES `Project_has_User` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_User` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_User` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Project_has_XFEFSpectrum`
@@ -5960,10 +6116,11 @@ CREATE TABLE `Project_has_XFEFSpectrum` (
 -- Dumping data for table `Project_has_XFEFSpectrum`
 --
 
-LOCK TABLES `Project_has_XFEFSpectrum` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Proposal`
@@ -5988,25 +6145,26 @@ CREATE TABLE `Proposal` (
   UNIQUE KEY `Proposal_FKIndexCodeNumber` (`proposalCode`,`proposalNumber`),
   KEY `Proposal_FKIndex1` (`personId`),
   CONSTRAINT `Proposal_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1000751 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1000831 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Proposal`
 --
 
-LOCK TABLES `Proposal` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Proposal` DISABLE KEYS */;
-INSERT INTO `Proposal` VALUES
-(37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open',NULL,NULL),
+INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`, `startDate`, `endDate`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open',NULL,NULL),
 (60858,18549,'Software commissioning 2022 visits for all EM','cm','31111','2021-12-14 14:50:02',NULL,NULL,'Open',NULL,NULL),
 (141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open',NULL,NULL),
 (999999,1,'Test Proposal bi-0001','bi','8','2021-12-14 14:50:02',NULL,NULL,'Open',NULL,NULL),
 (1000024,1,'Proposal with shipment','cm','33333','2024-12-09 16:54:31',NULL,NULL,'Open',NULL,NULL),
 (1000028,1,'Proposal with null session','cm','22222','2024-12-09 16:56:33',NULL,NULL,'Open',NULL,NULL),
-(1000327,46435,'Industrial proposal','in','1','2025-04-24 10:10:43',NULL,NULL,'Open',NULL,NULL);
+(1000327,46435,'Industrial proposal','in','1','2025-04-24 10:10:43',NULL,NULL,'Open',NULL,NULL),
+(1000788,1,'TestDiffPlan','dp','12345','2026-06-17 11:18:18','mx',NULL,'Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ProposalHasPerson`
@@ -6032,15 +6190,15 @@ CREATE TABLE `ProposalHasPerson` (
 -- Dumping data for table `ProposalHasPerson`
 --
 
-LOCK TABLES `ProposalHasPerson` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProposalHasPerson` DISABLE KEYS */;
-INSERT INTO `ProposalHasPerson` VALUES
-(4,37027,1,'Principal Investigator'),
+INSERT INTO `ProposalHasPerson` (`proposalHasPersonId`, `proposalId`, `personId`, `role`) VALUES (4,37027,1,'Principal Investigator'),
 (5,60858,18600,'Principal Investigator'),
 (6,1000028,1,'Principal Investigator'),
 (7,1000327,46435,'Principal Investigator');
 /*!40000 ALTER TABLE `ProposalHasPerson` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Protein`
@@ -6081,17 +6239,16 @@ CREATE TABLE `Protein` (
   CONSTRAINT `Protein_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk3` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk4` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=123972 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=124024 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Protein`
 --
 
-LOCK TABLES `Protein` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Protein` DISABLE KEYS */;
-INSERT INTO `Protein` VALUES
-(4380,141666,'Protein 01','PRT-01',NULL,1,1,'GREEN',NULL,NULL,NULL,'2016-03-17 15:57:52',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
+INSERT INTO `Protein` (`proteinId`, `proposalId`, `name`, `acronym`, `description`, `hazardGroup`, `containmentLevel`, `safetyLevel`, `molecularMass`, `proteinType`, `personId`, `bltimeStamp`, `isCreatedBySampleSheet`, `sequence`, `MOD_ID`, `componentTypeId`, `concentrationTypeId`, `global`, `externalId`, `density`, `abundance`, `isotropy`) VALUES (4380,141666,'Protein 01','PRT-01',NULL,1,1,'GREEN',NULL,NULL,NULL,'2016-03-17 15:57:52',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
 (4383,141666,'Protein 02','PRT-02',NULL,1,1,'GREEN',NULL,NULL,NULL,'2016-03-17 16:02:07',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
 (4386,141666,'Protein 03','PRT-03',NULL,1,1,'YELLOW',NULL,NULL,NULL,'2016-03-17 16:02:07',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
 (4389,141666,'Protein 04','PRT-04',NULL,1,1,'YELLOW',NULL,NULL,NULL,'2016-03-17 16:02:07',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
@@ -6107,7 +6264,37 @@ INSERT INTO `Protein` VALUES
 (123491,37027,NULL,'thau',NULL,1,1,NULL,NULL,NULL,NULL,'2016-02-24 12:12:16',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (123497,37027,'XPDF comp1','xpdf-comp-01',NULL,1,1,NULL,NULL,NULL,NULL,'2017-03-23 22:03:40',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Protein` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `Protein_has_Component`
+--
+
+DROP TABLE IF EXISTS `Protein_has_Component`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Protein_has_Component` (
+  `proteinHasComponentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `proteinId` int(10) unsigned NOT NULL COMMENT 'References Protein table',
+  `componentId` int(10) unsigned NOT NULL COMMENT 'References Component table',
+  PRIMARY KEY (`proteinHasComponentId`),
+  KEY `Protein_has_Component_fk_proteinId` (`proteinId`),
+  KEY `Protein_has_Component_fk_componentId` (`componentId`),
+  CONSTRAINT `Protein_has_Component_fk_componentId` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Protein_has_Component_fk_proteinId` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Which elements are contained inside a molecule';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Protein_has_Component`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+/*!40000 ALTER TABLE `Protein_has_Component` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Protein_has_Component` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Protein_has_PDB`
@@ -6132,12 +6319,12 @@ CREATE TABLE `Protein_has_PDB` (
 -- Dumping data for table `Protein_has_PDB`
 --
 
-LOCK TABLES `Protein_has_PDB` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Protein_has_PDB` DISABLE KEYS */;
-INSERT INTO `Protein_has_PDB` VALUES
-(5,123497,6);
+INSERT INTO `Protein_has_PDB` (`proteinhaspdbid`, `proteinid`, `pdbid`) VALUES (5,123497,6);
 /*!40000 ALTER TABLE `Protein_has_PDB` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `PurificationColumn`
@@ -6158,10 +6345,9 @@ CREATE TABLE `PurificationColumn` (
 -- Dumping data for table `PurificationColumn`
 --
 
-LOCK TABLES `PurificationColumn` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PurificationColumn` DISABLE KEYS */;
-INSERT INTO `PurificationColumn` VALUES
-(1,'user supplied',1),
+INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALUES (1,'user supplied',1),
 (2,'s75',1),
 (3,'s200',1),
 (4,'superose6',1),
@@ -6170,7 +6356,8 @@ INSERT INTO `PurificationColumn` VALUES
 (7,'kw404',1),
 (8,'kw405',1);
 /*!40000 ALTER TABLE `PurificationColumn` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `RelativeIceThickness`
@@ -6200,15 +6387,15 @@ CREATE TABLE `RelativeIceThickness` (
 -- Dumping data for table `RelativeIceThickness`
 --
 
-LOCK TABLES `RelativeIceThickness` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `RelativeIceThickness` DISABLE KEYS */;
-INSERT INTO `RelativeIceThickness` VALUES
-(1,23,56986680,1,2,3,4,5),
+INSERT INTO `RelativeIceThickness` (`relativeIceThicknessId`, `motionCorrectionId`, `autoProcProgramId`, `minimum`, `q1`, `median`, `q3`, `maximum`) VALUES (1,23,56986680,1,2,3,4,5),
 (2,24,56986680,2,2,3,4,5),
 (3,26,56986680,3,4,5,6,7),
 (4,25,56986680,3,2,4,4,5);
 /*!40000 ALTER TABLE `RelativeIceThickness` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `RobotAction`
@@ -6236,22 +6423,22 @@ CREATE TABLE `RobotAction` (
   KEY `RobotAction_FK2` (`blsampleId`),
   CONSTRAINT `RobotAction_FK1` FOREIGN KEY (`blsessionId`) REFERENCES `BLSession` (`sessionId`),
   CONSTRAINT `RobotAction_FK2` FOREIGN KEY (`blsampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=674 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
+) ENGINE=InnoDB AUTO_INCREMENT=728 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `RobotAction`
 --
 
-LOCK TABLES `RobotAction` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `RobotAction` DISABLE KEYS */;
-INSERT INTO `RobotAction` VALUES
-(14,27464088,NULL,'LOAD','2024-03-14 11:44:06','2024-02-29 13:02:32','SUCCESS','string',0,0,'string','/dls/file.png','/dls/file.png'),
-(18,27464088,NULL,'LOAD','2024-03-14 11:44:06','2024-02-29 13:02:32','SUCCESS','longstring',0,0,'string','/dls/file.png','/dls/file.png'),
+INSERT INTO `RobotAction` (`robotActionId`, `blsessionId`, `blsampleId`, `actionType`, `startTimestamp`, `endTimestamp`, `status`, `message`, `containerLocation`, `dewarLocation`, `sampleBarcode`, `xtalSnapshotBefore`, `xtalSnapshotAfter`) VALUES (14,27464088,11550,'LOAD','2026-05-08 08:28:52','2024-02-29 13:02:32','SUCCESS','string',0,0,'string','/dls/file.png','/dls/file.png'),
+(18,27464088,11553,'LOAD','2026-05-08 08:28:58','2024-02-29 13:02:32','SUCCESS','longstring',0,0,'string','/dls/file.png','/dls/file.png'),
 (588,55168,NULL,'LASER','2025-11-21 11:43:14','0000-00-00 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (589,55168,NULL,'LASER','2025-11-21 11:43:14','0000-00-00 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `RobotAction` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SSXDataCollection`
@@ -6281,10 +6468,11 @@ CREATE TABLE `SSXDataCollection` (
 -- Dumping data for table `SSXDataCollection`
 --
 
-LOCK TABLES `SSXDataCollection` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SSXDataCollection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SSXDataCollection` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SW_onceToken`
@@ -6313,10 +6501,11 @@ CREATE TABLE `SW_onceToken` (
 -- Dumping data for table `SW_onceToken`
 --
 
-LOCK TABLES `SW_onceToken` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SW_onceToken` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SW_onceToken` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SampleComposition`
@@ -6347,10 +6536,11 @@ CREATE TABLE `SampleComposition` (
 -- Dumping data for table `SampleComposition`
 --
 
-LOCK TABLES `SampleComposition` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SampleComposition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SampleComposition` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScanParametersModel`
@@ -6381,10 +6571,9 @@ CREATE TABLE `ScanParametersModel` (
 -- Dumping data for table `ScanParametersModel`
 --
 
-LOCK TABLES `ScanParametersModel` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScanParametersModel` DISABLE KEYS */;
-INSERT INTO `ScanParametersModel` VALUES
-(4,4,197788,1,0,90,10,NULL,NULL),
+INSERT INTO `ScanParametersModel` (`scanParametersModelId`, `scanParametersServiceId`, `dataCollectionPlanId`, `sequenceNumber`, `start`, `stop`, `step`, `array`, `duration`) VALUES (4,4,197788,1,0,90,10,NULL,NULL),
 (7,4,197788,2,90,180,5,NULL,NULL),
 (10,4,197788,3,180,270,1,NULL,NULL),
 (13,4,197788,3,270,360,0.5,NULL,NULL),
@@ -6392,7 +6581,8 @@ INSERT INTO `ScanParametersModel` VALUES
 (20,7,197792,1,0,90,5,NULL,NULL),
 (23,7,197792,2,90,120,1,NULL,NULL);
 /*!40000 ALTER TABLE `ScanParametersModel` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScanParametersService`
@@ -6413,13 +6603,13 @@ CREATE TABLE `ScanParametersService` (
 -- Dumping data for table `ScanParametersService`
 --
 
-LOCK TABLES `ScanParametersService` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScanParametersService` DISABLE KEYS */;
-INSERT INTO `ScanParametersService` VALUES
-(4,'Temperature','Temperature in Celsius'),
+INSERT INTO `ScanParametersService` (`scanParametersServiceId`, `name`, `description`) VALUES (4,'Temperature','Temperature in Celsius'),
 (7,'Pressure','Pressure in pascal (Pa)');
 /*!40000 ALTER TABLE `ScanParametersService` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Schedule`
@@ -6439,15 +6629,15 @@ CREATE TABLE `Schedule` (
 -- Dumping data for table `Schedule`
 --
 
-LOCK TABLES `Schedule` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Schedule` DISABLE KEYS */;
-INSERT INTO `Schedule` VALUES
-(1,'Daily - 1 week'),
+INSERT INTO `Schedule` (`scheduleId`, `name`) VALUES (1,'Daily - 1 week'),
 (2,'Schedule 2'),
 (11,'Fibonacci'),
 (15,'3 Hour Interval');
 /*!40000 ALTER TABLE `Schedule` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScheduleComponent`
@@ -6473,10 +6663,9 @@ CREATE TABLE `ScheduleComponent` (
 -- Dumping data for table `ScheduleComponent`
 --
 
-LOCK TABLES `ScheduleComponent` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScheduleComponent` DISABLE KEYS */;
-INSERT INTO `ScheduleComponent` VALUES
-(1,1,0,1),
+INSERT INTO `ScheduleComponent` (`scheduleComponentId`, `scheduleId`, `offset_hours`, `inspectionTypeId`) VALUES (1,1,0,1),
 (2,1,12,1),
 (3,1,24,1),
 (4,1,96,1),
@@ -6513,7 +6702,8 @@ INSERT INTO `ScheduleComponent` VALUES
 (93,1,336,1),
 (96,1,504,1);
 /*!40000 ALTER TABLE `ScheduleComponent` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SchemaStatus`
@@ -6529,17 +6719,16 @@ CREATE TABLE `SchemaStatus` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`schemaStatusId`),
   UNIQUE KEY `scriptName` (`scriptName`)
-) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `SchemaStatus`
 --
 
-LOCK TABLES `SchemaStatus` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
-INSERT INTO `SchemaStatus` VALUES
-(6,'20180213_BLSample_subLocation.sql','DONE','2018-02-13 13:27:19'),
+INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `recordTimeStamp`) VALUES (6,'20180213_BLSample_subLocation.sql','DONE','2018-02-13 13:27:19'),
 (12,'20180213_DataCollectionFileAttachment_fileType.sql','DONE','2018-02-13 15:12:54'),
 (16,'20180303_v_run_to_table.sql','DONE','2018-07-25 15:11:18'),
 (19,'20180328_ImageQualityIndicators_alter_table.sql','DONE','2018-07-25 15:11:18'),
@@ -6771,9 +6960,14 @@ INSERT INTO `SchemaStatus` VALUES
 (275,'2026_01_27_AutoProcProgram_parentAutoProcProgramId.sql','DONE','2026-04-02 09:25:22'),
 (276,'2026_02_09_ProcessedTomogram_feature.sql','DONE','2026-04-02 09:25:43'),
 (277,'2026_02_10_AdminVar_bump_version.sql','DONE','2026-04-02 09:28:05'),
-(278,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-02 09:28:19');
+(278,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-02 09:28:19'),
+(279,'2026_07_02_AutoProcProgram_jobUuid.sql','DONE','2026-07-14 13:05:20'),
+(280,'2026_07_02_ExperimentType_lamellaTomography.sql','DONE','2026-07-14 13:05:20'),
+(281,'2026_07_02_Tomogram_thickness.sql','DONE','2026-07-14 13:05:20'),
+(282,'2026_07_13_AdminVar_bump_version.sql','DONE','2026-07-14 13:05:20');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Screen`
@@ -6797,10 +6991,11 @@ CREATE TABLE `Screen` (
 -- Dumping data for table `Screen`
 --
 
-LOCK TABLES `Screen` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Screen` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Screen` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreenComponent`
@@ -6827,10 +7022,11 @@ CREATE TABLE `ScreenComponent` (
 -- Dumping data for table `ScreenComponent`
 --
 
-LOCK TABLES `ScreenComponent` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreenComponent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreenComponent` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreenComponentGroup`
@@ -6853,10 +7049,11 @@ CREATE TABLE `ScreenComponentGroup` (
 -- Dumping data for table `ScreenComponentGroup`
 --
 
-LOCK TABLES `ScreenComponentGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreenComponentGroup` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreenComponentGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Screening`
@@ -6891,10 +7088,9 @@ CREATE TABLE `Screening` (
 -- Dumping data for table `Screening`
 --
 
-LOCK TABLES `Screening` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Screening` DISABLE KEYS */;
-INSERT INTO `Screening` VALUES
-(1894770,1052494,'2016-10-26 08:50:31','mosflm',NULL,'Mosflm native',NULL,1040398,NULL,NULL),
+INSERT INTO `Screening` (`screeningId`, `dataCollectionId`, `bltimeStamp`, `programVersion`, `comments`, `shortComments`, `diffractionPlanId`, `dataCollectionGroupId`, `xmlSampleInformation`, `autoProcProgramId`) VALUES (1894770,1052494,'2016-10-26 08:50:31','mosflm',NULL,'Mosflm native',NULL,1040398,NULL,NULL),
 (1894773,1052494,'2016-10-26 08:50:31','mosflm',NULL,'Mosflm anomalous',NULL,1040398,NULL,NULL),
 (1894774,1052494,'2016-10-26 08:50:31','EDNA MXv1','Standard Native Dataset Multiplicity=3 I/sig=2 Maxlifespan=202 s','EDNAStrategy1',NULL,1040398,NULL,NULL),
 (1894777,1052494,'2016-10-26 08:50:31','EDNA MXv1','strategy with target multiplicity=16, target I/sig=2 Maxlifespan=202 s','EDNAStrategy3',NULL,1040398,NULL,NULL),
@@ -6916,7 +7112,8 @@ INSERT INTO `Screening` VALUES
 (1927987,1066786,'2016-10-26 08:50:31','EDNA MXv1','Standard Anomalous Dataset Multiplicity=3 I/sig=2 Maxlifespan=4034 s','EDNAStrategy2',NULL,1054243,NULL,NULL),
 (1927990,1066786,'2016-10-26 08:50:31','EDNA MXv1','UnderDEV Anomalous Dataset, RadDamage of standard protein','EDNAStrategy5',NULL,1054243,NULL,NULL);
 /*!40000 ALTER TABLE `Screening` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningInput`
@@ -6946,10 +7143,9 @@ CREATE TABLE `ScreeningInput` (
 -- Dumping data for table `ScreeningInput`
 --
 
-LOCK TABLES `ScreeningInput` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningInput` DISABLE KEYS */;
-INSERT INTO `ScreeningInput` VALUES
-(983791,1894774,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ScreeningInput` (`screeningInputId`, `screeningId`, `beamX`, `beamY`, `rmsErrorLimits`, `minimumFractionIndexed`, `maximumFractionRejected`, `minimumSignalToNoise`, `diffractionPlanId`, `xmlSampleInformation`) VALUES (983791,1894774,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
 (983794,1894777,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
 (983797,1894780,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
 (983800,1894783,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -6965,7 +7161,8 @@ INSERT INTO `ScreeningInput` VALUES
 (1013161,1927987,208.32,214.339,NULL,NULL,NULL,NULL,NULL,NULL),
 (1013164,1927990,208.32,214.339,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ScreeningInput` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningOutput`
@@ -7012,10 +7209,9 @@ CREATE TABLE `ScreeningOutput` (
 -- Dumping data for table `ScreeningOutput`
 --
 
-LOCK TABLES `ScreeningOutput` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningOutput` DISABLE KEYS */;
-INSERT INTO `ScreeningOutput` VALUES
-(1489401,1894770,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
+INSERT INTO `ScreeningOutput` (`screeningOutputId`, `screeningId`, `statusDescription`, `rejectedReflections`, `resolutionObtained`, `spotDeviationR`, `spotDeviationTheta`, `beamShiftX`, `beamShiftY`, `numSpotsFound`, `numSpotsUsed`, `numSpotsRejected`, `mosaicity`, `iOverSigma`, `diffractionRings`, `SCREENINGSUCCESS`, `mosaicityEstimated`, `rankingResolution`, `program`, `doseTotal`, `totalExposureTime`, `totalRotationRange`, `totalNumberOfImages`, `rFriedel`, `indexingSuccess`, `strategySuccess`, `alignmentSuccess`) VALUES (1489401,1894770,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1489404,1894773,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1489405,1894774,'Labelit: Indexing successful (I23). Integration successful. Strategy calculation successful.',NULL,NULL,0.197,NULL,-0.0094,-0.0618,303,303,0,1.2,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1489408,1894777,'Labelit: Indexing successful (I23). Integration successful. Strategy calculation successful.',NULL,NULL,0.197,NULL,-0.0094,-0.0618,303,303,0,1.2,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
@@ -7037,7 +7233,8 @@ INSERT INTO `ScreeningOutput` VALUES
 (1522615,1927987,'Labelit: Indexing successful (P4). Integration successful. Strategy calculation successful.',NULL,NULL,0.166,NULL,0.0195,-0.0105,434,434,0,0.7,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1522618,1927990,'Labelit: Indexing successful (P4). Integration successful. Strategy calculation successful.',NULL,NULL,0.166,NULL,0.0195,-0.0105,434,434,0,0.7,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0);
 /*!40000 ALTER TABLE `ScreeningOutput` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningOutputLattice`
@@ -7079,10 +7276,9 @@ CREATE TABLE `ScreeningOutputLattice` (
 -- Dumping data for table `ScreeningOutputLattice`
 --
 
-LOCK TABLES `ScreeningOutputLattice` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningOutputLattice` DISABLE KEYS */;
-INSERT INTO `ScreeningOutputLattice` VALUES
-(1309566,1489401,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.339,76.339,76.339,90,90,90,'2016-04-13 11:19:21',0),
+INSERT INTO `ScreeningOutputLattice` (`screeningOutputLatticeId`, `screeningOutputId`, `spaceGroup`, `pointGroup`, `bravaisLattice`, `rawOrientationMatrix_a_x`, `rawOrientationMatrix_a_y`, `rawOrientationMatrix_a_z`, `rawOrientationMatrix_b_x`, `rawOrientationMatrix_b_y`, `rawOrientationMatrix_b_z`, `rawOrientationMatrix_c_x`, `rawOrientationMatrix_c_y`, `rawOrientationMatrix_c_z`, `unitCell_a`, `unitCell_b`, `unitCell_c`, `unitCell_alpha`, `unitCell_beta`, `unitCell_gamma`, `bltimeStamp`, `labelitIndexing`) VALUES (1309566,1489401,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.339,76.339,76.339,90,90,90,'2016-04-13 11:19:21',0),
 (1309569,1489404,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.339,76.339,76.339,90,90,90,'2016-04-13 11:19:21',0),
 (1309570,1489405,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.3,76.3,76.3,90,90,90,'2016-04-13 11:19:24',0),
 (1309573,1489408,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.3,76.3,76.3,90,90,90,'2016-04-13 11:19:27',0),
@@ -7104,7 +7300,8 @@ INSERT INTO `ScreeningOutputLattice` VALUES
 (1323844,1522615,'P4',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,57.29,57.29,149.07,90,90,90,'2016-04-14 02:19:04',0),
 (1323847,1522618,'P4',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,57.29,57.29,149.07,90,90,90,'2016-04-14 02:19:04',0);
 /*!40000 ALTER TABLE `ScreeningOutputLattice` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningRank`
@@ -7131,10 +7328,11 @@ CREATE TABLE `ScreeningRank` (
 -- Dumping data for table `ScreeningRank`
 --
 
-LOCK TABLES `ScreeningRank` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningRank` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreeningRank` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningRankSet`
@@ -7156,10 +7354,11 @@ CREATE TABLE `ScreeningRankSet` (
 -- Dumping data for table `ScreeningRankSet`
 --
 
-LOCK TABLES `ScreeningRankSet` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningRankSet` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreeningRankSet` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningStrategy`
@@ -7192,10 +7391,9 @@ CREATE TABLE `ScreeningStrategy` (
 -- Dumping data for table `ScreeningStrategy`
 --
 
-LOCK TABLES `ScreeningStrategy` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategy` DISABLE KEYS */;
-INSERT INTO `ScreeningStrategy` VALUES
-(1473909,1489401,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'mosflm - native',NULL,NULL),
+INSERT INTO `ScreeningStrategy` (`screeningStrategyId`, `screeningOutputId`, `phiStart`, `phiEnd`, `rotation`, `exposureTime`, `resolution`, `completeness`, `multiplicity`, `anomalous`, `program`, `rankingResolution`, `transmission`) VALUES (1473909,1489401,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'mosflm - native',NULL,NULL),
 (1473912,1489404,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'mosflm - anomalous',NULL,NULL),
 (1473913,1489405,NULL,NULL,NULL,0.428,NULL,NULL,NULL,0,'BEST',1.41,NULL),
 (1473916,1489408,NULL,NULL,NULL,0.112,NULL,NULL,NULL,0,'BEST',1.41,NULL),
@@ -7217,7 +7415,8 @@ INSERT INTO `ScreeningStrategy` VALUES
 (1507120,1522615,NULL,NULL,NULL,0.01,NULL,NULL,NULL,1,'BEST',1.16,NULL),
 (1507123,1522618,NULL,NULL,NULL,0.01,NULL,NULL,NULL,1,'BEST',1.16,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategy` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningStrategySubWedge`
@@ -7252,10 +7451,9 @@ CREATE TABLE `ScreeningStrategySubWedge` (
 -- Dumping data for table `ScreeningStrategySubWedge`
 --
 
-LOCK TABLES `ScreeningStrategySubWedge` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategySubWedge` DISABLE KEYS */;
-INSERT INTO `ScreeningStrategySubWedge` VALUES
-(1111566,1143792,NULL,'Omega',64,109,0,NULL,1.4,1,NULL,1.22,NULL,33,NULL),
+INSERT INTO `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`, `screeningStrategyWedgeId`, `subWedgeNumber`, `rotationAxis`, `axisStart`, `axisEnd`, `exposureTime`, `transmission`, `oscillationRange`, `completeness`, `multiplicity`, `RESOLUTION`, `doseTotal`, `numberOfImages`, `comments`) VALUES (1111566,1143792,NULL,'Omega',64,109,0,NULL,1.4,1,NULL,1.22,NULL,33,NULL),
 (1111569,1143795,NULL,'Omega',74,119,0,NULL,1.4,0.98,NULL,1.22,NULL,33,NULL),
 (1111570,1143796,1,'Omega',7,40,0.428,100,0.15,1,4.07,1.41,NULL,220,NULL),
 (1111573,1143799,1,'Omega',30,160.05,0.112,100,0.15,1,16.02,1.41,NULL,867,NULL),
@@ -7277,7 +7475,8 @@ INSERT INTO `ScreeningStrategySubWedge` VALUES
 (1123984,1156210,1,'Omega',87,239,0.01,72.2048,0.1,0.99,3.29,1.51,NULL,1520,NULL),
 (1123987,1156213,1,'Omega',87,239,0.01,72.2048,0.1,0.99,3.29,1.51,NULL,1520,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategySubWedge` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ScreeningStrategyWedge`
@@ -7310,10 +7509,9 @@ CREATE TABLE `ScreeningStrategyWedge` (
 -- Dumping data for table `ScreeningStrategyWedge`
 --
 
-LOCK TABLES `ScreeningStrategyWedge` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` DISABLE KEYS */;
-INSERT INTO `ScreeningStrategyWedge` VALUES
-(1143792,1473909,1,1.22,1,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ScreeningStrategyWedge` (`screeningStrategyWedgeId`, `screeningStrategyId`, `wedgeNumber`, `resolution`, `completeness`, `multiplicity`, `doseTotal`, `numberOfImages`, `phi`, `kappa`, `chi`, `comments`, `wavelength`) VALUES (1143792,1473909,1,1.22,1,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),
 (1143795,1473912,1,1.22,0.98,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),
 (1143796,1473913,1,1.41,1,4.07,0,220,NULL,NULL,NULL,NULL,NULL),
 (1143799,1473916,1,1.41,1,16.02,0,867,NULL,NULL,NULL,NULL,NULL),
@@ -7335,7 +7533,8 @@ INSERT INTO `ScreeningStrategyWedge` VALUES
 (1156210,1507120,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL),
 (1156213,1507123,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SessionType`
@@ -7351,17 +7550,18 @@ CREATE TABLE `SessionType` (
   PRIMARY KEY (`sessionTypeId`),
   KEY `SessionType_FKIndex1` (`sessionId`),
   CONSTRAINT `SessionType_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=336 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `SessionType`
 --
 
-LOCK TABLES `SessionType` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SessionType` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SessionType` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Session_has_Person`
@@ -7386,10 +7586,9 @@ CREATE TABLE `Session_has_Person` (
 -- Dumping data for table `Session_has_Person`
 --
 
-LOCK TABLES `Session_has_Person` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Session_has_Person` DISABLE KEYS */;
-INSERT INTO `Session_has_Person` VALUES
-(55167,1,'Co-Investigator',0),
+INSERT INTO `Session_has_Person` (`sessionId`, `personId`, `role`, `remote`) VALUES (55167,1,'Co-Investigator',0),
 (55168,1,'Co-Investigator',0),
 (27464088,46270,'Data Access',0),
 (27464088,46436,'Local Contact',0),
@@ -7397,7 +7596,8 @@ INSERT INTO `Session_has_Person` VALUES
 (27464090,1,'Local Contact',0),
 (27464172,46435,'Principal Investigator',0);
 /*!40000 ALTER TABLE `Session_has_Person` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Shipping`
@@ -7454,17 +7654,16 @@ CREATE TABLE `Shipping` (
   CONSTRAINT `Shipping_ibfk_2` FOREIGN KEY (`sendingLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_3` FOREIGN KEY (`returnLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_4` FOREIGN KEY (`deliveryAgent_flightCodePersonId`) REFERENCES `Person` (`personId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13232 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14486 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Shipping`
 --
 
-LOCK TABLES `Shipping` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Shipping` DISABLE KEYS */;
-INSERT INTO `Shipping` VALUES
-(474,141666,'cm-0001 1 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAgent_agentName`, `deliveryAgent_shippingDate`, `deliveryAgent_deliveryDate`, `deliveryAgent_agentCode`, `deliveryAgent_flightCode`, `shippingStatus`, `bltimeStamp`, `laboratoryId`, `isStorageShipping`, `creationDate`, `comments`, `sendingLabContactId`, `returnLabContactId`, `returnCourier`, `dateOfShippingToUser`, `shippingType`, `SAFETYLEVEL`, `deliveryAgent_flightCodeTimestamp`, `deliveryAgent_label`, `readyByTime`, `closeTime`, `physicalLocation`, `deliveryAgent_pickupConfirmationTimestamp`, `deliveryAgent_pickupConfirmation`, `deliveryAgent_readyByTime`, `deliveryAgent_callinTime`, `deliveryAgent_productcode`, `deliveryAgent_flightCodePersonId`, `extra`, `externalShippingIdToSynchrotron`, `source`) VALUES (474,141666,'cm-0001 1 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (477,141666,'cm-0001 2 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (480,141666,'cm-0001 3 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (6988,37027,'Default Shipping:cm14451-1',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
@@ -7474,9 +7673,11 @@ INSERT INTO `Shipping` VALUES
 (7242,141666,'Shipment 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'2023-08-21 08:16:56',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (7243,141666,'Shipment 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'2023-08-21 08:16:56',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (7266,1000024,'Shipment 02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(12607,141666,'Shipment 03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'2023-08-21 08:16:56',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
+(12607,141666,'Shipment 03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'2023-08-21 08:16:56',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(13831,1000788,'DP-shipping',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
 /*!40000 ALTER TABLE `Shipping` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `ShippingHasSession`
@@ -7499,16 +7700,16 @@ CREATE TABLE `ShippingHasSession` (
 -- Dumping data for table `ShippingHasSession`
 --
 
-LOCK TABLES `ShippingHasSession` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ShippingHasSession` DISABLE KEYS */;
-INSERT INTO `ShippingHasSession` VALUES
-(474,339525),
+INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525),
 (477,339528),
 (480,339531),
 (6988,55167),
 (7227,55168);
 /*!40000 ALTER TABLE `ShippingHasSession` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Sleeve`
@@ -7530,10 +7731,11 @@ CREATE TABLE `Sleeve` (
 -- Dumping data for table `Sleeve`
 --
 
-LOCK TABLES `Sleeve` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Sleeve` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SpaceGroup`
@@ -7563,10 +7765,9 @@ CREATE TABLE `SpaceGroup` (
 -- Dumping data for table `SpaceGroup`
 --
 
-LOCK TABLES `SpaceGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SpaceGroup` DISABLE KEYS */;
-INSERT INTO `SpaceGroup` VALUES
-(1,1,'P1','P 1','aP',NULL,NULL,NULL,1),
+INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortName`, `spaceGroupName`, `bravaisLattice`, `bravaisLatticeName`, `pointGroup`, `geometryClassnameId`, `MX_used`) VALUES (1,1,'P1','P 1','aP',NULL,NULL,NULL,1),
 (2,2,'P-1','P-1',NULL,NULL,NULL,NULL,1),
 (3,3,'P2','P 12 1','mP',NULL,NULL,NULL,1),
 (4,4,'P21','P 121 1','mP',NULL,NULL,NULL,1),
@@ -7797,7 +7998,8 @@ INSERT INTO `SpaceGroup` VALUES
 (229,229,'Im-3m','Im -3 m',NULL,NULL,NULL,NULL,0),
 (230,230,'Ia-3d1','Ia -3 d1',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `SpaceGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `SubstructureDetermination`
@@ -7829,10 +8031,11 @@ CREATE TABLE `SubstructureDetermination` (
 -- Dumping data for table `SubstructureDetermination`
 --
 
-LOCK TABLES `SubstructureDetermination` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SubstructureDetermination` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SubstructureDetermination` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `TiltImageAlignment`
@@ -7864,10 +8067,9 @@ CREATE TABLE `TiltImageAlignment` (
 -- Dumping data for table `TiltImageAlignment`
 --
 
-LOCK TABLES `TiltImageAlignment` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `TiltImageAlignment` DISABLE KEYS */;
-INSERT INTO `TiltImageAlignment` VALUES
-(1,1,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),
+INSERT INTO `TiltImageAlignment` (`movieId`, `tomogramId`, `defocusU`, `defocusV`, `psdFile`, `resolution`, `fitQuality`, `refinedMagnification`, `refinedTiltAngle`, `refinedTiltAxis`, `residualError`) VALUES (1,1,NULL,NULL,NULL,NULL,NULL,NULL,16,5,NULL),
 (2,1,NULL,NULL,NULL,NULL,NULL,NULL,17,5,NULL),
 (3,1,NULL,NULL,NULL,NULL,NULL,NULL,18,5,NULL),
 (4,1,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL),
@@ -7880,7 +8082,8 @@ INSERT INTO `TiltImageAlignment` VALUES
 (13,8,NULL,NULL,NULL,NULL,NULL,NULL,19,5,NULL),
 (14,5,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL);
 /*!40000 ALTER TABLE `TiltImageAlignment` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `Tomogram`
@@ -7915,6 +8118,7 @@ CREATE TABLE `Tomogram` (
   `gridSquareId` int(11) unsigned DEFAULT NULL COMMENT 'FK, references medium mag map in GridSquare',
   `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
   `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
+  `thickness` float DEFAULT NULL COMMENT 'Unit: nm',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
@@ -7929,19 +8133,19 @@ CREATE TABLE `Tomogram` (
 -- Dumping data for table `Tomogram`
 --
 
-LOCK TABLES `Tomogram` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
-INSERT INTO `Tomogram` VALUES
-(1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack_reprocess1.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test_thumbnail.png','test_movie.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.1,NULL,NULL,NULL),
-(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL),
-(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL),
-(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL),
-(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.2,NULL,NULL,NULL);
+INSERT INTO `Tomogram` (`tomogramId`, `dataCollectionId`, `autoProcProgramId`, `volumeFile`, `stackFile`, `sizeX`, `sizeY`, `sizeZ`, `pixelSpacing`, `residualErrorMean`, `residualErrorSD`, `xAxisCorrection`, `tiltAngleOffset`, `zShift`, `fileDirectory`, `centralSliceImage`, `tomogramMovie`, `xyShiftPlot`, `projXY`, `projXZ`, `recordTimeStamp`, `globalAlignmentQuality`, `gridSquareId`, `pixelLocationX`, `pixelLocationY`, `thickness`) VALUES (1,6017406,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack_reprocess1.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test_thumbnail.png','test_movie.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.1,NULL,NULL,NULL,NULL),
+(2,6017408,56986678,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL,NULL),
+(3,6017409,56986678,'aligned_file_fri_aretomo.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL,NULL),
+(4,6017411,56986679,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL,NULL),
+(5,6017411,56986800,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,NULL,NULL,NULL,NULL),
+(6,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL,NULL),
+(7,6017408,56986676,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',NULL,1,NULL,NULL,NULL),
+(8,6017413,56986801,'aligned_file_fri_aretomo.mrc','/dls/m02/data/align_output/Position_1_9_stack.mrc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'/dls','test.png','test.png','test.png','test.png','test.png','2023-01-19 14:15:44',1.2,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `UserGroup`
@@ -7962,10 +8166,9 @@ CREATE TABLE `UserGroup` (
 -- Dumping data for table `UserGroup`
 --
 
-LOCK TABLES `UserGroup` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup` DISABLE KEYS */;
-INSERT INTO `UserGroup` VALUES
-(39,'autocollect'),
+INSERT INTO `UserGroup` (`userGroupId`, `name`) VALUES (39,'autocollect'),
 (17,'bag_stats'),
 (20,'bl_stats'),
 (45,'detector_admin'),
@@ -7990,7 +8193,8 @@ INSERT INTO `UserGroup` VALUES
 (11,'vmxi'),
 (34,'xpdf_admin');
 /*!40000 ALTER TABLE `UserGroup` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `UserGroup_has_LDAPSearchParameters`
@@ -8014,13 +8218,13 @@ CREATE TABLE `UserGroup_has_LDAPSearchParameters` (
 -- Dumping data for table `UserGroup_has_LDAPSearchParameters`
 --
 
-LOCK TABLES `UserGroup_has_LDAPSearchParameters` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` DISABLE KEYS */;
-INSERT INTO `UserGroup_has_LDAPSearchParameters` VALUES
-(1,1,'dls_foo'),
+INSERT INTO `UserGroup_has_LDAPSearchParameters` (`userGroupId`, `ldapSearchParametersId`, `name`) VALUES (1,1,'dls_foo'),
 (17,2,'dls_bar');
 /*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `UserGroup_has_Permission`
@@ -8043,10 +8247,9 @@ CREATE TABLE `UserGroup_has_Permission` (
 -- Dumping data for table `UserGroup_has_Permission`
 --
 
-LOCK TABLES `UserGroup_has_Permission` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
-INSERT INTO `UserGroup_has_Permission` VALUES
-(1,1),
+INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),
 (1,7),
 (1,8),
 (1,9),
@@ -8105,7 +8308,8 @@ INSERT INTO `UserGroup_has_Permission` VALUES
 (34,49),
 (39,69);
 /*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `UserGroup_has_Person`
@@ -8128,16 +8332,16 @@ CREATE TABLE `UserGroup_has_Person` (
 -- Dumping data for table `UserGroup_has_Person`
 --
 
-LOCK TABLES `UserGroup_has_Person` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_Person` DISABLE KEYS */;
-INSERT INTO `UserGroup_has_Person` VALUES
-(1,17000),
+INSERT INTO `UserGroup_has_Person` (`userGroupId`, `personId`) VALUES (1,17000),
 (1,18549),
 (1,46270),
 (2,16000),
 (6,18660);
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XFEFluorescenceComposite`
@@ -8169,10 +8373,11 @@ CREATE TABLE `XFEFluorescenceComposite` (
 -- Dumping data for table `XFEFluorescenceComposite`
 --
 
-LOCK TABLES `XFEFluorescenceComposite` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XFEFluorescenceSpectrum`
@@ -8211,17 +8416,16 @@ CREATE TABLE `XFEFluorescenceSpectrum` (
   CONSTRAINT `XFE_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2502 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2556 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `XFEFluorescenceSpectrum`
 --
 
-LOCK TABLES `XFEFluorescenceSpectrum` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XFEFluorescenceSpectrum` DISABLE KEYS */;
-INSERT INTO `XFEFluorescenceSpectrum` VALUES
-(1766,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.png','2016-01-12 14:49:14','2016-01-12 14:50:05','/dls/i03/data/2016/cm14451-1/20160112_14_49_14.mca',3,NULL,6.4,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.html',NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.dat',12700,20,50,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `XFEFluorescenceSpectrum` (`xfeFluorescenceSpectrumId`, `sessionId`, `blSampleId`, `jpegScanFileFullPath`, `startTime`, `endTime`, `filename`, `exposureTime`, `axisPosition`, `beamTransmission`, `annotatedPymcaXfeSpectrum`, `fittedDataFileFullPath`, `scanFileFullPath`, `energy`, `beamSizeVertical`, `beamSizeHorizontal`, `crystalClass`, `comments`, `blSubSampleId`, `flux`, `flux_end`, `workingDirectory`) VALUES (1766,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.png','2016-01-12 14:49:14','2016-01-12 14:50:05','/dls/i03/data/2016/cm14451-1/20160112_14_49_14.mca',3,NULL,6.4,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.html',NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.dat',12700,20,50,NULL,NULL,NULL,NULL,NULL,NULL),
 (1779,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.png','2016-01-13 15:53:23','2016-01-13 15:54:53','/dls/i03/data/2016/cm14451-1/20160113_15_53_23.mca',3,NULL,1.6,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.html',NULL,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.dat',12700,20,20,NULL,NULL,NULL,NULL,NULL,NULL),
 (1780,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160113_16_50_27.png','2016-01-13 16:50:27','2016-01-13 16:51:27','/dls/i03/data/2016/cm14451-1/20160113_16_50_27.mca',3,NULL,25.6,'/dls/i03/data/2016/cm14451-1/20160113_16_50_27.html',NULL,'/dls/i03/data/2016/cm14451-1/20160113_16_50_27.dat',12700,20,20,NULL,NULL,NULL,NULL,NULL,NULL),
 (1781,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160113_16_51_54.png','2016-01-13 16:51:54','2016-01-13 16:52:29','/dls/i03/data/2016/cm14451-1/20160113_16_51_54.mca',1,NULL,100,'/dls/i03/data/2016/cm14451-1/20160113_16_51_54.html',NULL,'/dls/i03/data/2016/cm14451-1/20160113_16_51_54.dat',12700,20,20,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -8284,7 +8488,8 @@ INSERT INTO `XFEFluorescenceSpectrum` VALUES
 (2002,55168,NULL,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.png','2016-04-06 16:29:44','2016-04-06 16:30:27','/dls/i03/data/2016/cm14451-2/20160406_16_29_44.mca',2,NULL,12.8,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.html',NULL,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.dat',12700,20,50,NULL,NULL,NULL,NULL,NULL,NULL),
 (2005,55168,NULL,'/dls/i03/data/2009/in1246-1/jpegs/bs/bs_MS_1_001.jpeg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `XFEFluorescenceSpectrum` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XRFFluorescenceMapping`
@@ -8319,10 +8524,11 @@ CREATE TABLE `XRFFluorescenceMapping` (
 -- Dumping data for table `XRFFluorescenceMapping`
 --
 
-LOCK TABLES `XRFFluorescenceMapping` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XRFFluorescenceMapping` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMapping` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XRFFluorescenceMappingROI`
@@ -8352,10 +8558,11 @@ CREATE TABLE `XRFFluorescenceMappingROI` (
 -- Dumping data for table `XRFFluorescenceMappingROI`
 --
 
-LOCK TABLES `XRFFluorescenceMappingROI` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XrayCentring`
@@ -8379,10 +8586,11 @@ CREATE TABLE `XrayCentring` (
 -- Dumping data for table `XrayCentring`
 --
 
-LOCK TABLES `XrayCentring` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XrayCentring` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XrayCentring` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `XrayCentringResult`
@@ -8411,10 +8619,11 @@ CREATE TABLE `XrayCentringResult` (
 -- Dumping data for table `XrayCentringResult`
 --
 
-LOCK TABLES `XrayCentringResult` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XrayCentringResult` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XrayCentringResult` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `v_run`
@@ -8437,10 +8646,9 @@ CREATE TABLE `v_run` (
 -- Dumping data for table `v_run`
 --
 
-LOCK TABLES `v_run` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `v_run` DISABLE KEYS */;
-INSERT INTO `v_run` VALUES
-(1,'2008-01','2007-12-17 09:00:00','2008-02-09 08:59:59'),
+INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01','2007-12-17 09:00:00','2008-02-09 08:59:59'),
 (2,'2008-02','2008-02-09 09:00:00','2008-03-14 08:59:59'),
 (3,'2008-03','2008-03-14 09:00:00','2008-04-28 08:59:59'),
 (4,'2008-04','2008-04-28 09:00:00','2008-05-30 08:59:59'),
@@ -8513,7 +8721,8 @@ INSERT INTO `v_run` VALUES
 (71,'2020-02','2020-03-06 09:00:00','2020-05-22 08:59:59'),
 (72,'2020-03','2020-05-22 09:00:00','2020-08-14 08:59:59');
 /*!40000 ALTER TABLE `v_run` ENABLE KEYS */;
-UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `zc_ZocaloBuffer`
@@ -8535,14 +8744,11 @@ CREATE TABLE `zc_ZocaloBuffer` (
 -- Dumping data for table `zc_ZocaloBuffer`
 --
 
-LOCK TABLES `zc_ZocaloBuffer` WRITE;
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `zc_ZocaloBuffer` DISABLE KEYS */;
 /*!40000 ALTER TABLE `zc_ZocaloBuffer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping routines for database 'ispyb'
---
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -8551,6 +8757,6 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-04-15 16:45:45
+-- Dump completed
