@@ -53,6 +53,7 @@ def get_collection_groups(
     atlas_only: bool,
     proposal_reference: ProposalReference,
     search: Optional[str],
+    instrument: str | None = None,
 ) -> Paged[DataCollectionGroupSummaryResponse]:
     query = (
         select(
@@ -88,6 +89,9 @@ def get_collection_groups(
 
     if atlas_only:
         query = query.filter(Atlas.atlasId.is_not(None))
+
+    if instrument:
+        query = query.filter(BLSession.beamLineName == instrument)
 
     if proposal_reference.visit_number is not None:
         query = query.filter(BLSession.visit_number == proposal_reference.visit_number)
