@@ -9,3 +9,9 @@ def test_get_atlas_only(mock_permissions, client):
     resp = client.get("/proposals/cm31111/data-collection-groups")
     assert resp.status_code == 200
     assert len(resp.json()["items"]) == 5
+
+def test_filter_by_instrument(mock_permissions, client):
+    """Get data collection groups that have atlases in proposal"""
+    resp = client.get("/proposals/cm31111/data-collection-groups?instrument=m12")
+    assert resp.status_code == 200
+    assert len(resp.json()["items"]) == 5

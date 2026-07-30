@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends, UploadFile, status
+from fastapi import APIRouter, Body, Depends, Query, UploadFile, status
 from fastapi.responses import RedirectResponse
 from lims_utils.models import Paged, pagination
 
@@ -34,7 +34,7 @@ def get_data_collection_groups(
 ):
     """List collection groups belonging to a session"""
     return groups_crud.get_collection_groups(
-        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, **page
+        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, instrument=None, **page
     )
 
 @router.get(
@@ -45,11 +45,12 @@ def get_data_collection_groups_in_proposal(
     proposalReference=Depends(Permissions.proposal),
     atlasOnly: bool = False,
     page: dict[str, int] = Depends(pagination),
+    instrument: str | None = Query(None, description="Filter by instrument name"),
     search: str | None = None,
 ):
     """List collection groups belonging to a session"""
     return groups_crud.get_collection_groups(
-        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, **page
+        proposal_reference=proposalReference, atlas_only=atlasOnly, search=search, instrument=instrument, **page
     )
 
 
