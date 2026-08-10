@@ -44,7 +44,7 @@ dev = [
     "types-mock",
     "pytest-asyncio",
     # https://github.com/encode/httpx/blob/master/CHANGELOG.md#0270-21st-february-2024
-    "httpx~=0.26.0",
+    "httpx2",
     "setuptools_scm[toml]>=6.2"
 ]
 
