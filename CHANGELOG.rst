@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.31.0 (29/09/2026)
++++++++++
+
+**Added**
+
+- Allow users to download high res search maps
+
++++++++++
 v1.30.1 (10/08/2026)
 +++++++++
 
