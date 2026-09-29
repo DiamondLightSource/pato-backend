@@ -59,7 +59,7 @@ def get_grid_square_image(grid_square_id: int, colour: ColourChannel = "grey", i
     image_path = replace_clem_blob(image, colour=colour)
 
     if is_enhanced:
-        image_path = image_path.replace("/raw/", "/processed/raw/")
+        image_path = image_path.replace("/raw", "/processed/raw")
 
     return image_path
 
