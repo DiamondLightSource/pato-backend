@@ -33,7 +33,12 @@ def get_tomograms(
 
 @router.get("/{gridSquareId}/image", response_class=FileResponse)
 def get_grid_square_image(
-    gridSquareId: int = Depends(Permissions.grid_square), colour: ColourChannel = "grey", isEnhanced: bool = False
+    gridSquareId: int = Depends(Permissions.grid_square),
+    colour: ColourChannel = "grey",
+    isEnhanced: bool = False,
+    isPng: bool = False,
 ):
     """Get image of grid square"""
-    return crud.get_grid_square_image(grid_square_id=gridSquareId, colour=colour, is_enhanced=isEnhanced)
+    return crud.get_grid_square_image(
+        grid_square_id=gridSquareId, colour=colour, is_enhanced=isEnhanced, is_png=isPng
+    )

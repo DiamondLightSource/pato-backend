@@ -1,3 +1,5 @@
+import os
+
 from lims_utils.tables import (
     CTF,
     FoilHole,
@@ -43,7 +45,8 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
         )
         .join(
             ParticlePicker,
-            ParticlePicker.firstMotionCorrectionId == MotionCorrection.motionCorrectionId,
+            ParticlePicker.firstMotionCorrectionId
+            == MotionCorrection.motionCorrectionId,
             isouter=True,
         )
         .group_by(FoilHole.foilHoleId)
@@ -53,13 +56,25 @@ def get_foil_holes(grid_square_id: int, page: int, limit: int):
 
 
 @validate_path
-def get_grid_square_image(grid_square_id: int, colour: ColourChannel = "grey", is_enhanced: bool = False):
-    image = db.session.scalar(select(GridSquare.gridSquareImage).filter(GridSquare.gridSquareId == grid_square_id))
+def get_grid_square_image(
+    grid_square_id: int,
+    colour: ColourChannel = "grey",
+    is_enhanced: bool = False,
+    is_png: bool = False,
+):
+    image = db.session.scalar(
+        select(GridSquare.gridSquareImage).filter(
+            GridSquare.gridSquareId == grid_square_id
+        )
+    )
 
     image_path = replace_clem_blob(image, colour=colour)
 
     if is_enhanced:
         image_path = image_path.replace("/raw", "/processed/raw")
+
+    if is_png:
+        image_path = os.path.splitext(image_path)[0] + ".png"
 
     return image_path
 
