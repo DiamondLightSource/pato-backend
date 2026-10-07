@@ -404,7 +404,13 @@ def get_particle_count_per_resolution(collectionId: int) -> ItemList[DataPoint]:
 @validate_path
 def get_central_slice(collection_id: int, movie_type: MovieType = None) -> str:
     tomogram_id = db.session.scalar(
-        select(Tomogram.tomogramId).filter(Tomogram.dataCollectionId == collection_id).limit(1)
+        select(Tomogram.tomogramId)
+        .outerjoin(AutoProcProgram)
+        .outerjoin(ProcessingJob)
+        .filter(Tomogram.dataCollectionId == collection_id)
+        # Default to displaying AreTomo tomograms first
+        .order_by((ProcessingJob.recipe == "sxt-aretomo").desc())
+        .limit(1)
     )
 
     if tomogram_id is None:
