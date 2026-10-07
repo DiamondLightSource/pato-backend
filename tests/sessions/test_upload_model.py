@@ -1,7 +1,10 @@
 from datetime import datetime
 from unittest.mock import mock_open, patch
 
+import pytest
 from lims_utils.tables import BLSession
+
+from ..users import admin
 
 VALID_FILE = b"\x89\x48\x44\x46\x0d\x0a\x1a\x0a\x01\x02\x03"
 
@@ -16,7 +19,8 @@ def active_mock(_):
 
 @patch("pato.crud.sessions._validate_session_active", new=active_mock)
 @patch("builtins.open", new_callable=mock_open())
-def test_post(_, mock_permissions, client):
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_post(_, mock_user, mock_permissions, client):
     """Should write file successfully if first 8 bytes match expected signature"""
     resp = client.post(
         "/proposals/cm31111/sessions/5/processingModel",
@@ -28,7 +32,8 @@ def test_post(_, mock_permissions, client):
 
 @patch("pato.crud.sessions._validate_session_active", new=active_mock)
 @patch("builtins.open", new_callable=mock_open())
-def test_invalid_file_signature(_, mock_permissions, client):
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_invalid_file_signature(_, mock_user, mock_permissions, client):
     """Should raise exception if file signature doesn't match HDF5 file signature"""
     resp = client.post(
         "/proposals/cm31111/sessions/5/processingModel",
@@ -40,7 +45,8 @@ def test_invalid_file_signature(_, mock_permissions, client):
 
 @patch("pato.crud.sessions._validate_session_active", new=active_mock)
 @patch("builtins.open", side_effect=OSError("Write Error"))
-def test_write_error(_, mock_permissions, client):
+@pytest.mark.parametrize("mock_user", [admin], indirect=True)
+def test_write_error(_, mock_user, mock_permissions, client):
     """Should return 500 if there was an error writing the file"""
     resp = client.post(
         "/proposals/cm31111/sessions/5/processingModel",
