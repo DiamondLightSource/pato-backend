@@ -2,9 +2,11 @@ from lims_utils.auth import GenericUser
 from lims_utils.tables import BLSession, Proposal, ProposalHasPerson, SessionHasPerson
 from sqlalchemy import Select, and_, or_
 
-from ..auth import is_admin
 from .config import Config
 
+
+def is_admin(perms: list[int]):
+    return bool(set(Config.auth.read_all_perms) & set(perms))
 
 def get_allowed_beamlines(perms: list[int]) -> set[str]:
     allowed_beamlines: set[str] = set()
@@ -46,7 +48,7 @@ def check_session(query: Select, user: GenericUser, join_proposal: bool = False)
 
     Returns
         Modified query"""
-    if is_admin(user.permissions):
+    if is_admin(user.permissions) or "manage_shipment" in user.permissions:
         return query
 
     or_expressions = [SessionHasPerson.personId == user.id]
@@ -80,7 +82,7 @@ def check_proposal(query: Select, user: GenericUser):
 
     Returns
         Modified query"""
-    if is_admin(user.permissions):
+    if is_admin(user.permissions) or "manage_shipment" in user.permissions:
         return query
 
     or_expressions = [ProposalHasPerson.personId == user.id]

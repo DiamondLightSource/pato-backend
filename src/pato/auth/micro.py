@@ -11,6 +11,7 @@ from lims_utils.tables import (
 )
 from sqlalchemy import select
 
+from ..utils.auth import is_admin
 from ..utils.config import Config
 from ..utils.database import db
 from ..utils.generic import parse_proposal
@@ -65,7 +66,11 @@ class Permissions(GenericPermissions):
         proposalReference: str,
         visitNumber: int,
         token: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
+        user: GenericUser = Depends(User)
     ):
+        if is_admin(user.permissions) or "manage_shipment" in user.permissions:
+            return parse_proposal(proposalReference, visitNumber)
+
         _check_perms(f"{proposalReference}-{visitNumber}", "session", token.credentials)
 
         return parse_proposal(proposalReference, visitNumber)
