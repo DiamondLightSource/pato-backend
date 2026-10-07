@@ -150,6 +150,11 @@ class DataCollectionSummary(BaseDataCollectionOut):
             return round((self.axisEnd - self.axisStart) / self.numberOfImages, 2)
         return None
 
+    @field_validator("globalAlignmentQuality")
+    @classmethod
+    def round_quality(cls, v):
+        return round(v, 5) if v is not None else None
+
 
 # mypy doesn't support type aliases yet
 

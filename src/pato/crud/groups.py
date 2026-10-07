@@ -6,6 +6,7 @@ from lims_utils.auth import GenericUser
 from lims_utils.models import Paged, ProposalReference
 from lims_utils.tables import (
     Atlas,
+    AutoProcProgram,
     BLSample,
     BLSession,
     DataCollection,
@@ -13,11 +14,12 @@ from lims_utils.tables import (
     ExperimentType,
     GridSquare,
     MotionCorrection,
+    ProcessingJob,
     Proposal,
     Tomogram,
 )
+from sqlalchemy import case, select
 from sqlalchemy import func as f
-from sqlalchemy import select
 from sqlalchemy.sql.functions import coalesce
 
 from ..models.atlas import AtlasCorrelationIn
@@ -118,12 +120,25 @@ def get_collections(
         else (DataCollection.dataCollectionId,)
     )
 
+    preferred_quality = f.max(
+        case(
+            (ProcessingJob.recipe == "sxt-aretomo", Tomogram.globalAlignmentQuality),
+            else_=None,
+        )
+    )
+
+    fallback_quality = f.max(Tomogram.globalAlignmentQuality)
+
+    aretomo_alignment_quality = f.coalesce(
+        preferred_quality, fallback_quality
+    ).label("globalAlignmentQuality")
+
     base_sub_query = (
         select(
             f.row_number().over(order_by=sort).label("index"),
             *unravel(DataCollection),
             f.count(Tomogram.tomogramId.distinct()).label("tomograms"),
-            Tomogram.globalAlignmentQuality,
+            aretomo_alignment_quality,
             MotionCorrection.lastFrame,
             MotionCorrection.dosePerFrame,
         )
@@ -132,6 +147,14 @@ def get_collections(
         .join(DataCollectionGroup)
         .join(BLSession, BLSession.sessionId == DataCollectionGroup.sessionId)
         .join(Tomogram, isouter=(not onlyTomograms))
+        .outerjoin(
+            AutoProcProgram,
+            Tomogram.autoProcProgramId == AutoProcProgram.autoProcProgramId,
+        )
+        .outerjoin(
+            ProcessingJob,
+            AutoProcProgram.processingJobId == ProcessingJob.processingJobId,
+        )
         .group_by(DataCollection.dataCollectionId)
         .order_by(*sort)
     )
