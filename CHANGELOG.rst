@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.31.2 (07/10/2026)
++++++++++
+
+**Changed**
+
+- Return AreTomo central slice for tomograms (when available)
+
++++++++++
 v1.31.1 (29/09/2026)
 +++++++++
 
