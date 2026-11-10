@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.31.4 (10/11/2026)
++++++++++
+
+**Changed**
+
+- Return path for atlas correlation
+
++++++++++
 v1.31.3 (20/10/2026)
 +++++++++
 
