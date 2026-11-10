@@ -5686,9 +5686,9 @@ CREATE TABLE `ProcessedTomogram` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
-INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised',NULL),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
-(3,3,'/dls/test.picked.cbox','Picked',NULL);
+INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised','Ribosome'),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented','Membrane'),
+(3,3,'/dls/test.picked.cbox','Picked','Microtubule');
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -6203,7 +6203,7 @@ INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `prop
 (1000028,1,'Proposal with null session','cm','22222','2024-12-09 16:56:33',NULL,NULL,'Open',NULL,NULL),
 (1000327,46435,'Industrial proposal','in','1','2025-04-24 10:10:43',NULL,NULL,'Open',NULL,NULL),
 (1000788,1,'TestDiffPlan','dp','12345','2026-06-17 11:18:18','mx',NULL,'Open',NULL,NULL),
-(1000915,1,'Proposal with external ID','cm','4444','2026-10-26 10:49:35',NULL,'∏Åùõ≠O¿ê˚”ÿ–J,æ','Open',NULL,NULL);
+(1000915,1,'Proposal with external ID','cm','4444','2026-10-26 10:49:35',NULL,'ÔøΩÔøΩÔøΩÔøΩÔøΩOÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩJ,ÔøΩ','Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
