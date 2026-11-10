@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from typing import Optional
 
 from fastapi import HTTPException, status
@@ -22,7 +23,7 @@ from sqlalchemy import case, select
 from sqlalchemy import func as f
 from sqlalchemy.sql.functions import coalesce
 
-from ..models.atlas import AtlasCorrelationIn
+from ..models.atlas import AtlasCorrelationIn, AtlasCorrelationOut
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
@@ -64,9 +65,7 @@ def get_collection_groups(
             Atlas.atlasId,
             Atlas.atlasImage.label("atlasPath"),
             DataCollection.imageDirectory,
-            f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label(
-                "cassettePosition"
-            ),
+            f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label("cassettePosition"),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
             BLSession.visit_number.label("visitNumber"),
         )
@@ -129,9 +128,7 @@ def get_collections(
 
     fallback_quality = f.max(Tomogram.globalAlignmentQuality)
 
-    aretomo_alignment_quality = f.coalesce(
-        preferred_quality, fallback_quality
-    ).label("globalAlignmentQuality")
+    aretomo_alignment_quality = f.coalesce(preferred_quality, fallback_quality).label("globalAlignmentQuality")
 
     base_sub_query = (
         select(
@@ -162,9 +159,7 @@ def get_collections(
     sub_with_row = check_session(base_sub_query, user, join_proposal=True)
 
     if groupId is not None:
-        sub_with_row = sub_with_row.filter(
-            groupId == DataCollection.dataCollectionGroupId
-        )
+        sub_with_row = sub_with_row.filter(groupId == DataCollection.dataCollectionGroupId)
 
     sub_result = sub_with_row.subquery()
 
@@ -218,9 +213,7 @@ def get_grid_squares(
 
 
 def get_atlas(dcg_id: int):
-    atlas = db.session.scalar(
-        select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id)
-    )
+    atlas = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
 
     if atlas is None:
         raise HTTPException(
@@ -233,9 +226,7 @@ def get_atlas(dcg_id: int):
 
 @validate_path
 def get_atlas_image(dcg_id: int, colour: ColourChannel = "grey"):
-    atlas_image = db.session.scalar(
-        select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id)
-    )
+    atlas_image = db.session.scalar(select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id))
 
     atlas_image = replace_clem_blob(atlas_image, colour=colour)
 
@@ -249,10 +240,20 @@ def get_atlas_image(dcg_id: int, colour: ColourChannel = "grey"):
 
 
 def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
-    ref = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
-    mov = db.session.scalar(
-        select(Atlas).filter(Atlas.dataCollectionGroupId == parameters.pair)
+    base_query = (
+        select(
+            Atlas.atlasId,
+            Atlas.atlasImage,
+            Atlas.pixelSize,
+            f.concat(Proposal.proposalCode, Proposal.proposalNumber, "-", BLSession.visit_number).label("propRef"),
+        )
+        .join(DataCollectionGroup)
+        .join(BLSession)
+        .join(Proposal)
     )
+
+    ref = db.session.execute(base_query.filter(Atlas.dataCollectionGroupId == dcg_id)).one_or_none()
+    mov = db.session.execute(base_query.filter(Atlas.dataCollectionGroupId == parameters.pair)).one_or_none()
 
     if ref is None or mov is None:
         raise HTTPException(
@@ -275,4 +276,6 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
             queue=Config.mq.correlative_alignment_queue,
         )
 
-    return True
+    path_prefix = "/".join(ref.atlasImage.split("/")[:6])
+
+    return AtlasCorrelationOut(path=f"{path_prefix}/spool/correlation/{mov.propRef}/{Path(mov.atlasImage).stem}")

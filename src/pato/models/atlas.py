@@ -7,3 +7,7 @@ class AtlasCorrelationIn(BaseModel):
     """
 
     pair: int
+
+
+class AtlasCorrelationOut(BaseModel):
+    path: str
