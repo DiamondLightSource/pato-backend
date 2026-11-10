@@ -1,5 +1,5 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.8.6-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19-11.8.8-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: ispyb
 -- ------------------------------------------------------
@@ -84,7 +84,7 @@ CREATE TABLE `Aperture` (
   `apertureId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sizeX` float DEFAULT NULL,
   PRIMARY KEY (`apertureId`)
-) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,10 +118,11 @@ CREATE TABLE `Atlas` (
   `hasMagenta` tinyint(1) DEFAULT 0 COMMENT 'Whether atlas has magenta channel',
   `hasGrey` tinyint(1) DEFAULT 0 COMMENT 'Whether atlas has grey channel',
   `mode` enum('Bright Field and Fluorescent','Bright Field','Fluorescent','Tomography','Single Particle') DEFAULT NULL COMMENT 'Collection mode',
+  `atlasType` enum('ROI', 'Tilescan'),
   PRIMARY KEY (`atlasId`),
   KEY `Atlas_fk_dataCollectionGroupId` (`dataCollectionGroupId`),
   CONSTRAINT `Atlas_fk_dataCollectionGroupId` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Atlas of a Cryo-EM grid';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Atlas of a Cryo-EM grid';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,8 +131,8 @@ CREATE TABLE `Atlas` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Atlas` DISABLE KEYS */;
-INSERT INTO `Atlas` (`atlasId`, `dataCollectionGroupId`, `atlasImage`, `pixelSize`, `cassetteSlot`, `hasRed`, `hasBlue`, `hasGreen`, `hasYellow`, `hasCyan`, `hasMagenta`, `hasGrey`, `mode`) VALUES (1,5440742,'/dls/atlas.png',1,1,0,0,0,0,0,0,0,NULL),
-(2,1040398,'/dls/*.png',1,1,0,0,0,0,0,0,0,NULL);
+INSERT INTO `Atlas` (`atlasId`, `dataCollectionGroupId`, `atlasImage`, `pixelSize`, `cassetteSlot`, `hasRed`, `hasBlue`, `hasGreen`, `hasYellow`, `hasCyan`, `hasMagenta`, `hasGrey`, `mode`, `atlasType`) VALUES (1,5440742,'/dls/atlas.png',1,1,0,0,0,0,0,0,0,'Fluorescent','ROI'),
+(2,1040398,'/dls/*.png',1,1,0,0,0,0,0,0,0,'Tomography','ROI');
 /*!40000 ALTER TABLE `Atlas` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -157,7 +158,7 @@ CREATE TABLE `AutoProc` (
   PRIMARY KEY (`autoProcId`),
   KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
   KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`)
-) ENGINE=InnoDB AUTO_INCREMENT=603745 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=603746 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +177,8 @@ INSERT INTO `AutoProc` (`autoProcId`, `autoProcProgramId`, `spaceGroup`, `refine
 (603731,56985584,'I 2 3',78.15,78.15,78.15,90,90,90,'2016-01-22 11:52:36'),
 (603732,56985589,'I 2 3',78.157,78.157,78.157,90,90,90,'2016-01-22 11:53:38'),
 (603735,56985592,'I 2 3',78.15,78.15,78.15,90,90,90,'2016-01-22 11:54:01'),
-(603744,56986673,'I 2 3',78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59');
+(603744,56986673,'I 2 3',78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59'),
+(603745,56986676,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProc` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -268,7 +270,7 @@ CREATE TABLE `AutoProcProgram` (
   KEY `AutoProcProgram_fk_parentAutoProcProgramId` (`parentAutoProcProgramId`),
   CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
   CONSTRAINT `AutoProcProgram_fk_parentAutoProcProgramId` FOREIGN KEY (`parentAutoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB AUTO_INCREMENT=56986833 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56986862 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,7 +327,7 @@ CREATE TABLE `AutoProcProgramAttachment` (
   PRIMARY KEY (`autoProcProgramAttachmentId`),
   KEY `AutoProcProgramAttachmentIdx1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramAttachmentFk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1037454 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1037486 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +368,10 @@ INSERT INTO `AutoProcProgramAttachment` (`autoProcProgramAttachmentId`, `autoPro
 (1037194,56986678,'Result','test.png','/mnt/test.png',NULL,NULL,0),
 (1037195,56986678,'Graph','test_xy_shift.json','/mnt/test_xy_shift.json',NULL,NULL,0),
 (1037196,56986679,'Result','test.png','/mnt/test.png',NULL,NULL,0),
-(1037197,56986679,'Graph','test_xy_shift.json','/mnt/test_xy_shift.json',NULL,NULL,0);
+(1037197,56986679,'Graph','test_xy_shift.json','/mnt/test_xy_shift.json',NULL,NULL,0),
+(1037471,56986806,'Log','test.log','/mnt/',NULL,0,0),
+(1037472,56986806,'Result','diagnostics.json','/mnt/log',NULL,1,0),
+(1037473,56986806,'Result','test.json','/mnt/',NULL,1,0);
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -416,7 +421,7 @@ CREATE TABLE `AutoProcScaling` (
   KEY `AutoProcScalingFk1` (`autoProcId`),
   KEY `AutoProcScalingIdx1` (`autoProcScalingId`,`autoProcId`),
   CONSTRAINT `AutoProcScalingFk1` FOREIGN KEY (`autoProcId`) REFERENCES `AutoProc` (`autoProcId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=603471 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=603472 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -435,7 +440,8 @@ INSERT INTO `AutoProcScaling` (`autoProcScalingId`, `autoProcId`, `recordTimeSta
 (603457,603731,'2016-01-22 11:52:36'),
 (603458,603732,'2016-01-22 11:53:38'),
 (603461,603735,'2016-01-22 11:54:01'),
-(603470,603744,'2016-01-22 12:01:59');
+(603470,603744,'2016-01-22 12:01:59'),
+(603471,603745,'2026-07-21 10:48:59');
 /*!40000 ALTER TABLE `AutoProcScaling` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -954,7 +960,7 @@ CREATE TABLE `BLSample` (
   CONSTRAINT `BLSample_ibfk_1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_2` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_3` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=406982 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=408612 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -963,8 +969,8 @@ CREATE TABLE `BLSample` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample` DISABLE KEYS */;
-INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `containerId`, `name`, `code`, `location`, `holderLength`, `loopLength`, `loopType`, `wireWidth`, `comments`, `completionStage`, `structureStage`, `publicationStage`, `publicationComments`, `blSampleStatus`, `isInSampleChanger`, `lastKnownCenteringPosition`, `POSITIONID`, `recordTimeStamp`, `SMILES`, `blSubSampleId`, `lastImageURL`, `screenComponentGroupId`, `volume`, `dimension1`, `dimension2`, `dimension3`, `shape`, `packingFraction`, `preparationTemeprature`, `preparationHumidity`, `blottingTime`, `blottingForce`, `blottingDrainTime`, `support`, `subLocation`, `staffComments`, `source`) VALUES (11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(11553,NULL,3921,1326,'Sample-002','SAM-011553','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:21:43',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `containerId`, `name`, `code`, `location`, `holderLength`, `loopLength`, `loopType`, `wireWidth`, `comments`, `completionStage`, `structureStage`, `publicationStage`, `publicationComments`, `blSampleStatus`, `isInSampleChanger`, `lastKnownCenteringPosition`, `POSITIONID`, `recordTimeStamp`, `SMILES`, `blSubSampleId`, `lastImageURL`, `screenComponentGroupId`, `volume`, `dimension1`, `dimension2`, `dimension3`, `shape`, `packingFraction`, `preparationTemeprature`, `preparationHumidity`, `blottingTime`, `blottingForce`, `blottingDrainTime`, `support`, `subLocation`, `staffComments`, `source`) VALUES (11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(11553,NULL,3921,1326,'Sample-002','SAM-011553','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5,NULL,NULL,'2016-03-17 16:21:43',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11556,NULL,3924,1326,'Sample-003','SAM-011556','3',NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:27:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11559,NULL,3927,1329,'Sample-004','SAM-011559','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:27:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11562,NULL,3930,1329,'Sample-005','SAM-011562','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:27:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
@@ -985,9 +991,9 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 (398824,NULL,333308,34883,'XPDF-1','XPDF-0001',NULL,NULL,NULL,NULL,NULL,'Test sample for XPDF',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 14:47:58',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (398827,NULL,333308,34883,'XPDF-2','XPDF-0002',NULL,NULL,NULL,NULL,NULL,'Test sample for XPDF',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 14:51:23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (398828,NULL,NULL,34888,'hello','hello','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-10-14 18:33:06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(398831,NULL,NULL,34894,'Sample 01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-04 15:05:52',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(398832,NULL,NULL,34897,'Sample 01',NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-05 13:59:59',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(398833,NULL,NULL,34899,'Sample 01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-08 13:33:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(398831,NULL,NULL,34894,'Sample_01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-04 15:05:52',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(398832,NULL,NULL,34897,'Sample_01',NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-05 13:59:59',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
+(398833,NULL,NULL,34899,'Sample_01',NULL,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-01-08 13:33:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (406241,205823,NULL,41764,'TestDPSample1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (406242,205824,NULL,41764,'TestDPSample2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-06-17 11:20:18',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
 /*!40000 ALTER TABLE `BLSample` ENABLE KEYS */;
@@ -1011,7 +1017,7 @@ CREATE TABLE `BLSampleGroup` (
   KEY `BLSampleGroup_fk_ownerId` (`ownerId`),
   CONSTRAINT `BLSampleGroup_fk_ownerId` FOREIGN KEY (`ownerId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE,
   CONSTRAINT `BLSampleGroup_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=465 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=610 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1093,7 +1099,7 @@ CREATE TABLE `BLSampleImage` (
   CONSTRAINT `BLSampleImage_fk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `BLSampleImage_fk2` FOREIGN KEY (`containerInspectionId`) REFERENCES `ContainerInspection` (`containerInspectionId`),
   CONSTRAINT `BLSampleImage_fk3` FOREIGN KEY (`blSampleImageScoreId`) REFERENCES `BLSampleImageScore` (`blSampleImageScoreId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=604 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1097 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1352,7 +1358,7 @@ CREATE TABLE `BLSamplePosition` (
   PRIMARY KEY (`blSamplePositionId`),
   KEY `BLSamplePosition_fk_blSampleId` (`blSampleId`),
   CONSTRAINT `BLSamplePosition_fk_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=345 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1582,7 +1588,7 @@ CREATE TABLE `BLSession` (
   CONSTRAINT `BLSession_fk_beamCalendarId` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27464677 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27464847 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1971,7 +1977,7 @@ CREATE TABLE `CTF` (
   KEY `CTF_ibfk2` (`autoProcProgramId`),
   CONSTRAINT `CTF_ibfk1` FOREIGN KEY (`motionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`),
   CONSTRAINT `CTF_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2294,7 +2300,7 @@ CREATE TABLE `Container` (
   CONSTRAINT `Container_ibfk8` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `Container_ibfk9` FOREIGN KEY (`priorityPipelineId`) REFERENCES `ProcessingPipeline` (`processingPipelineId`),
   CONSTRAINT `Container_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42459 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43997 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2350,7 +2356,7 @@ CREATE TABLE `ContainerHistory` (
   KEY `ContainerHistory_fk_dewarId` (`currentDewarId`),
   CONSTRAINT `ContainerHistory_fk_dewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `ContainerHistory_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2394,7 +2400,7 @@ CREATE TABLE `ContainerInspection` (
   CONSTRAINT `ContainerInspection_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk3` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk4` FOREIGN KEY (`scheduleComponentid`) REFERENCES `ScheduleComponent` (`scheduleComponentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2428,7 +2434,7 @@ CREATE TABLE `ContainerQueue` (
   KEY `ContainerQueue_idx1` (`containerId`,`completedTimeStamp`),
   CONSTRAINT `ContainerQueue_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueue_ibfk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=601 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=845 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2496,7 +2502,7 @@ CREATE TABLE `ContainerRegistry` (
   `recordTimestamp` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`containerRegistryId`),
   UNIQUE KEY `barcode` (`barcode`)
-) ENGINE=InnoDB AUTO_INCREMENT=286 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2533,7 +2539,7 @@ CREATE TABLE `ContainerRegistry_has_Proposal` (
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk1` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB AUTO_INCREMENT=503 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=677 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2748,7 +2754,7 @@ CREATE TABLE `Crystal` (
   KEY `Crystal_FKIndex2` (`diffractionPlanId`),
   CONSTRAINT `Crystal_ibfk_1` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Crystal_ibfk_2` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=341098 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=343594 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3004,7 +3010,7 @@ CREATE TABLE `DataCollection` (
   CONSTRAINT `DataCollection_ibfk_6` FOREIGN KEY (`startPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_7` FOREIGN KEY (`endPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_8` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6018213 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6018300 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3050,7 +3056,7 @@ CREATE TABLE `DataCollectionComment` (
   KEY `dataCollectionComment_fk2` (`personId`),
   CONSTRAINT `dataCollectionComment_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `dataCollectionComment_fk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3080,7 +3086,7 @@ CREATE TABLE `DataCollectionFileAttachment` (
   PRIMARY KEY (`dataCollectionFileAttachmentId`),
   KEY `_dataCollectionFileAttachmentId_fk1` (`dataCollectionId`),
   CONSTRAINT `_dataCollectionFileAttachmentId_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3126,7 +3132,7 @@ CREATE TABLE `DataCollectionGroup` (
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5441442 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
+) ENGINE=InnoDB AUTO_INCREMENT=5441550 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3274,7 +3280,7 @@ CREATE TABLE `Dewar` (
   CONSTRAINT `Dewar_fk_dewarRegistryId` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Dewar_fk_firstExperimentId` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16014 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17523 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3374,7 +3380,7 @@ CREATE TABLE `DewarRegistry` (
   KEY `DewarRegistry_ibfk_2` (`labContactId`),
   CONSTRAINT `DewarRegistry_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `DewarRegistry_ibfk_2` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=749 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=840 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3383,7 +3389,7 @@ CREATE TABLE `DewarRegistry` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarRegistry` DISABLE KEYS */;
-INSERT INTO `DewarRegistry` (`dewarRegistryId`, `facilityCode`, `proposalId`, `labContactId`, `purchaseDate`, `bltimestamp`, `manufacturerSerialNumber`, `type`) VALUES (1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
+INSERT INTO `DewarRegistry` (`dewarRegistryId`, `facilityCode`, `proposalId`, `labContactId`, `purchaseDate`, `bltimestamp`, `manufacturerSerialNumber`, `type`) VALUES (1,'DLS-EM-0000',141666,NULL,NULL,'2023-09-14 09:19:21','foo','Dewar'),
 (2,'DLS-EM-0001',37027,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar'),
 (217,'DLS-EM-0002',141666,NULL,NULL,'2023-09-14 09:19:21',NULL,'Dewar');
 /*!40000 ALTER TABLE `DewarRegistry` ENABLE KEYS */;
@@ -3413,7 +3419,7 @@ CREATE TABLE `DewarRegistry_has_Proposal` (
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=563 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3473,7 +3479,7 @@ CREATE TABLE `DewarTransportHistory` (
   PRIMARY KEY (`DewarTransportHistoryId`),
   KEY `DewarTransportHistory_FKIndex1` (`dewarId`),
   CONSTRAINT `DewarTransportHistory_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3568,7 +3574,7 @@ CREATE TABLE `DiffractionPlan` (
   CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`),
   CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=206542 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=208141 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3635,7 +3641,7 @@ CREATE TABLE `EnergyScan` (
   CONSTRAINT `ES_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ES_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `ES_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50318 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50372 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3888,7 +3894,7 @@ CREATE TABLE `FoilHole` (
   PRIMARY KEY (`foilHoleId`),
   KEY `FoilHole_fk_gridSquareId` (`gridSquareId`),
   CONSTRAINT `FoilHole_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3993,7 +3999,7 @@ CREATE TABLE `GridInfo` (
   KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
   CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1281937 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1281995 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4039,7 +4045,7 @@ CREATE TABLE `GridSquare` (
   PRIMARY KEY (`gridSquareId`),
   KEY `GridSquare_fk_atlasId` (`atlasId`),
   CONSTRAINT `GridSquare_fk_atlasId` FOREIGN KEY (`atlasId`) REFERENCES `Atlas` (`atlasId`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4414,7 +4420,7 @@ CREATE TABLE `LaserParameters` (
   PRIMARY KEY (`laserParametersId`),
   KEY `LaserParameters_fk_robotActionId` (`robotActionId`),
   CONSTRAINT `LaserParameters_fk_robotActionId` FOREIGN KEY (`robotActionId`) REFERENCES `RobotAction` (`robotActionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4446,7 +4452,7 @@ CREATE TABLE `LaserPoint` (
   PRIMARY KEY (`laserPointId`),
   KEY `LaserPoint_fk_laserParametersId` (`laserParametersId`),
   CONSTRAINT `LaserPoint_fk_laserParametersId` FOREIGN KEY (`laserParametersId`) REFERENCES `LaserParameters` (`laserParametersId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
+) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4479,7 +4485,7 @@ CREATE TABLE `Ligand` (
   PRIMARY KEY (`ligandId`),
   KEY `Ligand_fk_proposalId` (`proposalId`),
   CONSTRAINT `Ligand_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=847 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Ligands in biochemistry are substances that bind to biomolecules';
+) ENGINE=InnoDB AUTO_INCREMENT=1369 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Ligands in biochemistry are substances that bind to biomolecules';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4542,7 +4548,7 @@ CREATE TABLE `MXMRRun` (
   KEY `mxMRRun_FK2` (`autoProcProgramId`),
   CONSTRAINT `mxMRRun_FK1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`),
   CONSTRAINT `mxMRRun_FK2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB AUTO_INCREMENT=672901 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=672902 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4552,7 +4558,8 @@ CREATE TABLE `MXMRRun` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRun` DISABLE KEYS */;
 INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueEnd`, `rFreeValueStart`, `rFreeValueEnd`, `LLG`, `TFZ`, `spaceGroup`, `autoProcProgramId`) VALUES (672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
-(672900,603470,NULL,NULL,NULL,NULL,NULL,NULL,NULL,56986675);
+(672900,603470,NULL,NULL,NULL,NULL,NULL,NULL,NULL,56986675),
+(672901,603471,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `MXMRRun` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -4585,7 +4592,7 @@ CREATE TABLE `MXMRRunBlob` (
   PRIMARY KEY (`mxMRRunBlobId`),
   KEY `mxMRRunBlob_FK1` (`mxMRRunId`),
   CONSTRAINT `mxMRRunBlob_FK1` FOREIGN KEY (`mxMRRunId`) REFERENCES `MXMRRun` (`mxMRRunId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4594,6 +4601,8 @@ CREATE TABLE `MXMRRunBlob` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRunBlob` DISABLE KEYS */;
+INSERT INTO `MXMRRunBlob` (`mxMRRunBlobId`, `mxMRRunId`, `view1`, `view2`, `view3`, `filePath`, `x`, `y`, `z`, `height`, `occupancy`, `nearestAtomName`, `nearestAtomChainId`, `nearestAtomResName`, `nearestAtomResSeq`, `nearestAtomDistance`, `mapType`) VALUES (1,672900,'blob1v1.png','blob1v2.png','blob1v2.png','/dls/images/test/mxmrrun',32.4,45.83,58.89,1234,1,'C','A','ALA',123,1.23,NULL),
+(2,672901,NULL,NULL,NULL,'/dls/images/test/mxmrrun/2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `MXMRRunBlob` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -4634,7 +4643,7 @@ CREATE TABLE `MillingStep` (
   KEY `MillingStep_fk_millingStepNameId` (`millingStepNameId`),
   CONSTRAINT `MillingStep_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `MillingStep_fk_millingStepNameId` FOREIGN KEY (`millingStepNameId`) REFERENCES `MillingStepName` (`millingStepNameId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='FIB Milling Step';
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='FIB Milling Step';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4643,6 +4652,13 @@ CREATE TABLE `MillingStep` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MillingStep` DISABLE KEYS */;
+INSERT INTO `MillingStep` (`millingStepId`, `millingStepNameId`, `isEnabled`, `status`, `executionTime`, `stageX`, `stageY`, `stageZ`, `rotation`, `alphaTilt`, `beamType`, `beamVoltage`, `beamCurrent`, `millingAngle`, `depthCorrection`, `lamellaOffset`, `trenchHeightFront`, `trenchHeightRear`, `widthOverlapFrontLeft`, `widthOverlapFrontRight`, `widthOverlapRearLeft`, `widthOverlapRearRight`, `gridSquareId`) VALUES (31,35,1,'Finished',402.887,-0.00281708,0.00275463,0.0360916,285.001,11.2846,'Ion',30000,0.000000001,NULL,3,0.000002,0.000002,0.00000358107,0.000002,0.000002,0.000002,0.000002,1),
+(40,44,1,'Finished',190.774,-0.00281708,0.00275463,0.0360916,285.001,11.2846,'Ion',30000,0.0000000005,NULL,2,0.0000015,NULL,NULL,0.0000015,0.0000015,0.0000015,0.0000015,1),
+(46,50,1,'Finished',229.315,-0.00281708,0.00275463,0.0360916,285.001,11.2846,'Ion',30000,0.0000000003,NULL,2,0.000001,NULL,NULL,0.000001,0.000001,0.000001,0.000001,1),
+(52,56,1,'Finished',470.248,-0.00281708,0.00275463,0.0360916,285.001,11.2846,'Ion',30000,0.0000000001,NULL,2,0.0000004,NULL,NULL,0.0000005,0.0000005,0.0000005,0.0000005,1),
+(106,35,1,'Finished',402.443,-0.00295058,0.00300475,0.0358824,285.001,18.9999,'Ion',30000,0.000000001,NULL,3,0.000002,0.000002,0.00000354794,0.000002,0.000002,0.000002,0.000002,1),
+(115,44,1,'Finished',194.947,-0.00295058,0.00300475,0.0358824,285.001,18.9999,'Ion',30000,0.0000000005,NULL,2,0.0000015,NULL,NULL,0.0000015,0.0000015,0.0000015,0.0000015,2),
+(121,50,1,'Finished',227.304,-0.00295058,0.00300475,0.0358824,285.001,18.9999,'Ion',30000,0.0000000003,NULL,2,0.000001,NULL,NULL,0.000001,0.000001,0.000001,0.000001,2);
 /*!40000 ALTER TABLE `MillingStep` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -4659,7 +4675,7 @@ CREATE TABLE `MillingStepName` (
   `step` varchar(45) NOT NULL,
   `recipe` varchar(45) NOT NULL,
   PRIMARY KEY (`millingStepNameId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Milling step names and recipes';
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Milling step names and recipes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4668,6 +4684,31 @@ CREATE TABLE `MillingStepName` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MillingStepName` DISABLE KEYS */;
+INSERT INTO `MillingStepName` (`millingStepNameId`, `step`, `recipe`) VALUES (2,'Eucentric Tilt','Preparation'),
+(5,'Artificial Features','Preparation'),
+(8,'Milling Angle','Preparation'),
+(11,'Image Acquisition','Preparation'),
+(14,'Lamella Placement','Preparation'),
+(20,'Delay','Milling'),
+(23,'Reference Definition','Milling'),
+(26,'Electron Reference Definition','Milling'),
+(29,'Stress Relief Cuts','Milling'),
+(32,'Reference Redefinition 1','Milling'),
+(35,'Rough Milling','Milling'),
+(38,'Rough Milling - Electron Image','Milling'),
+(41,'Reference Redefinition 2','Milling'),
+(44,'Medium Milling','Milling'),
+(47,'Medium Milling - Electron Image','Milling'),
+(50,'Fine Milling','Milling'),
+(53,'Fine Milling - Electron Image','Milling'),
+(56,'Finer Milling','Milling'),
+(59,'Finer Milling - Electron Image','Milling'),
+(65,'Delay','Thinning'),
+(68,'Polishing 1','Thinning'),
+(71,'Polishing 1 - Electron Image','Thinning'),
+(74,'Polishing 2','Thinning'),
+(77,'Polishing 2 - Ion Image','Thinning'),
+(80,'Polishing 2 - Electron Image','Thinning');
 /*!40000 ALTER TABLE `MillingStepName` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -4741,7 +4782,7 @@ CREATE TABLE `MotionCorrection` (
   CONSTRAINT `MotionCorrection_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`),
   CONSTRAINT `MotionCorrection_ibfk3` FOREIGN KEY (`movieId`) REFERENCES `Movie` (`movieId`),
   CONSTRAINT `_MotionCorrection_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5089,7 +5130,7 @@ CREATE TABLE `ParticleClassificationGroup` (
   KEY `ParticleClassificationGroup_fk_programId` (`programId`),
   CONSTRAINT `ParticleClassificationGroup_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ParticleClassificationGroup_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5159,7 +5200,7 @@ CREATE TABLE `ParticlePicker` (
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5263,7 +5304,7 @@ CREATE TABLE `Person` (
   KEY `Person_FKIndexFamilyName` (`familyName`),
   KEY `siteId` (`siteId`),
   CONSTRAINT `Person_ibfk_1` FOREIGN KEY (`laboratoryId`) REFERENCES `Laboratory` (`laboratoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=46772 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46855 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5545,7 +5586,7 @@ CREATE TABLE `Position` (
   PRIMARY KEY (`positionId`),
   KEY `Position_FKIndex1` (`relativePositionId`),
   CONSTRAINT `Position_relativePositionfk_1` FOREIGN KEY (`relativePositionId`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=700 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=758 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5645,9 +5686,9 @@ CREATE TABLE `ProcessedTomogram` (
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
-INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised','Ribosome'),
-(2,3,'/dls/test.denoised_segmented.mrc','Segmented','Membrane'),
-(3,3,'/dls/test.picked.cbox','Picked','Microtubule');
+INSERT INTO `ProcessedTomogram` (`processedTomogramId`, `tomogramId`, `filePath`, `processingType`, `feature`) VALUES (1,3,'/dls/test.denoised.mrc','Denoised',NULL),
+(2,3,'/dls/test.denoised_segmented.mrc','Segmented',NULL),
+(3,3,'/dls/test.picked.cbox','Picked',NULL);
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -5765,7 +5806,7 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=28066 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28095 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6145,7 +6186,7 @@ CREATE TABLE `Proposal` (
   UNIQUE KEY `Proposal_FKIndexCodeNumber` (`proposalCode`,`proposalNumber`),
   KEY `Proposal_FKIndex1` (`personId`),
   CONSTRAINT `Proposal_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1000831 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1000922 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6161,7 +6202,8 @@ INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `prop
 (1000024,1,'Proposal with shipment','cm','33333','2024-12-09 16:54:31',NULL,NULL,'Open',NULL,NULL),
 (1000028,1,'Proposal with null session','cm','22222','2024-12-09 16:56:33',NULL,NULL,'Open',NULL,NULL),
 (1000327,46435,'Industrial proposal','in','1','2025-04-24 10:10:43',NULL,NULL,'Open',NULL,NULL),
-(1000788,1,'TestDiffPlan','dp','12345','2026-06-17 11:18:18','mx',NULL,'Open',NULL,NULL);
+(1000788,1,'TestDiffPlan','dp','12345','2026-06-17 11:18:18','mx',NULL,'Open',NULL,NULL),
+(1000915,1,'Proposal with external ID','cm','4444','2026-10-26 10:49:35',NULL,'∏Åùõ≠O¿ê˚”ÿ–J,æ','Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -6239,7 +6281,7 @@ CREATE TABLE `Protein` (
   CONSTRAINT `Protein_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk3` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk4` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=124024 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=124082 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6423,7 +6465,7 @@ CREATE TABLE `RobotAction` (
   KEY `RobotAction_FK2` (`blsampleId`),
   CONSTRAINT `RobotAction_FK1` FOREIGN KEY (`blsessionId`) REFERENCES `BLSession` (`sessionId`),
   CONSTRAINT `RobotAction_FK2` FOREIGN KEY (`blsampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=728 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
+) ENGINE=InnoDB AUTO_INCREMENT=836 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7550,7 +7592,7 @@ CREATE TABLE `SessionType` (
   PRIMARY KEY (`sessionTypeId`),
   KEY `SessionType_FKIndex1` (`sessionId`),
   CONSTRAINT `SessionType_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=498 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7654,7 +7696,7 @@ CREATE TABLE `Shipping` (
   CONSTRAINT `Shipping_ibfk_2` FOREIGN KEY (`sendingLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_3` FOREIGN KEY (`returnLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_4` FOREIGN KEY (`deliveryAgent_flightCodePersonId`) REFERENCES `Person` (`personId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14486 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15937 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8159,7 +8201,7 @@ CREATE TABLE `UserGroup` (
   `name` varchar(31) NOT NULL,
   PRIMARY KEY (`userGroupId`),
   UNIQUE KEY `UserGroup_idx1` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8177,6 +8219,8 @@ INSERT INTO `UserGroup` (`userGroupId`, `name`) VALUES (39,'autocollect'),
 (6,'em_admin'),
 (10,'fault_admin'),
 (50,'goods_handling'),
+(61,'i03_staff'),
+(60,'i19_staff'),
 (53,'imaging_admin'),
 (59,'mm_admin'),
 (2,'mx_admin'),
@@ -8338,7 +8382,9 @@ INSERT INTO `UserGroup_has_Person` (`userGroupId`, `personId`) VALUES (1,17000),
 (1,18549),
 (1,46270),
 (2,16000),
-(6,18660);
+(6,18660),
+(60,18600),
+(61,16000);
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -8416,7 +8462,7 @@ CREATE TABLE `XFEFluorescenceSpectrum` (
   CONSTRAINT `XFE_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2556 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2664 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

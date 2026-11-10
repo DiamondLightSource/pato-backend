@@ -8,7 +8,7 @@ from ..auth import Permissions, User
 from ..crud import alerts as alerts_crud
 from ..crud import groups as crud
 from ..models.alerts import NotificationSignup
-from ..models.atlas import AtlasCorrelationIn
+from ..models.atlas import AtlasCorrelationIn, AtlasCorrelationOut
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import Atlas, DataCollectionGroupSummaryResponse, GridSquare
 from ..utils.generic import ColourChannel
@@ -77,7 +77,8 @@ def get_atlas_image(
     """Get atlas image"""
     return crud.get_atlas_image(dcg_id=groupId, colour=colour)
 
-@router.post("/{groupId}/atlas/correlation", status_code=status.HTTP_202_ACCEPTED)
+
+@router.post("/{groupId}/atlas/correlation", status_code=status.HTTP_202_ACCEPTED, response_model=AtlasCorrelationOut)
 def submit_atlas_correlation(
     groupId: int = Depends(Permissions.data_collection_group),
     parameters: AtlasCorrelationIn = Body(),
