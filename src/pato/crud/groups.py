@@ -64,7 +64,7 @@ def get_collection_groups(
             ExperimentType.name.label("experimentTypeName"),
             Atlas.atlasId,
             Atlas.atlasImage.label("atlasPath"),
-            DataCollection.imageDirectory,
+            f.coalesce(DataCollection.imageDirectory, Atlas.atlasImage).label("imageDirectory"),
             f.coalesce(BLSample.subLocation, Atlas.cassetteSlot).label("cassettePosition"),
             f.count(DataCollection.dataCollectionId.distinct()).label("collections"),
             BLSession.visit_number.label("visitNumber"),
@@ -261,6 +261,8 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
             detail="Data collection group has no atlas",
         )
 
+    path_prefix = "/".join(ref.atlasImage.split("/")[:6])
+    return AtlasCorrelationOut(path=f"{path_prefix}/spool/correlation/{mov.propRef}/{Path(mov.atlasImage).stem}")
     with PikaPublisher() as pika_publisher:
         pika_publisher.publish(
             json.dumps(
@@ -276,6 +278,4 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
             queue=Config.mq.correlative_alignment_queue,
         )
 
-    path_prefix = "/".join(ref.atlasImage.split("/")[:6])
 
-    return AtlasCorrelationOut(path=f"{path_prefix}/spool/correlation/{mov.propRef}/{Path(mov.atlasImage).stem}")
