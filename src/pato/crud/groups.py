@@ -261,8 +261,6 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
             detail="Data collection group has no atlas",
         )
 
-    path_prefix = "/".join(ref.atlasImage.split("/")[:6])
-
     with PikaPublisher() as pika_publisher:
         pika_publisher.publish(
             json.dumps(
@@ -277,5 +275,7 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
             ),
             queue=Config.mq.correlative_alignment_queue,
         )
+
+    path_prefix = "/".join(ref.atlasImage.split("/")[:6])
 
     return AtlasCorrelationOut(path=f"{path_prefix}/spool/correlation/{mov.propRef}/{Path(mov.atlasImage).stem}")
