@@ -3,6 +3,14 @@ Changelog
 ==========
 
 +++++++++
+v1.31.5 (23/11/2026)
++++++++++
+
+**Added**
+
+- Fall back to atlas path if DC is not present
+
++++++++++
 v1.31.4 (10/11/2026)
 +++++++++
 
