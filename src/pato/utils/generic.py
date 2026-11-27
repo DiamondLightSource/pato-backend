@@ -16,6 +16,7 @@ from .database import db
 
 type MovieType = Literal["denoised", "segmented", "picked", "alignment", "stack"] | None
 type ColourChannel = Literal["grey", "red", "green", "blue", "magenta", "cyan", "yellow"]
+type AtlasType = Literal["ROI", "Tilescan"]
 
 def parse_json_file(path):
     try:

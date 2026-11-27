@@ -11,7 +11,7 @@ from ..models.alerts import NotificationSignup
 from ..models.atlas import AtlasCorrelationIn, AtlasCorrelationOut
 from ..models.collections import DataCollectionSortTypes, DataCollectionSummary
 from ..models.response import Atlas, DataCollectionGroupSummaryResponse, GridSquare
-from ..utils.generic import ColourChannel
+from ..utils.generic import AtlasType, ColourChannel
 
 router = APIRouter(
     tags=["Data Collection Groups"],
@@ -51,12 +51,14 @@ def get_grid_squares(
     hideSquares: bool = False,
     hideEmptySearchMaps: bool = False,
     page: dict[str, int] = Depends(pagination),
+    atlasType: AtlasType = "ROI"
 ):
     """Get child grid squares"""
     return crud.get_grid_squares(
         dcg_id=groupId,
         hide_uncollected=hideSquares,
         hide_empty_search_maps=hideEmptySearchMaps,
+        atlas_type=atlasType,
         **page,
     )
 
@@ -64,18 +66,20 @@ def get_grid_squares(
 @router.get("/{groupId}/atlas", response_model=Atlas)
 def get_atlas(
     groupId: int = Depends(Permissions.data_collection_group),
+    atlasType: AtlasType = "ROI"
 ):
     """Get atlas"""
-    return crud.get_atlas(dcg_id=groupId)
+    return crud.get_atlas(dcg_id=groupId, atlas_type=atlasType)
 
 
 @router.get("/{groupId}/atlas/image", response_class=FileResponse)
 def get_atlas_image(
     groupId: int = Depends(Permissions.data_collection_group),
     colour: ColourChannel = "green",
+    atlasType: AtlasType = "ROI"
 ):
     """Get atlas image"""
-    return crud.get_atlas_image(dcg_id=groupId, colour=colour)
+    return crud.get_atlas_image(dcg_id=groupId, colour=colour, atlas_type=atlasType)
 
 
 @router.post("/{groupId}/atlas/correlation", status_code=status.HTTP_202_ACCEPTED, response_model=AtlasCorrelationOut)

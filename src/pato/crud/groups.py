@@ -29,7 +29,7 @@ from ..models.response import DataCollectionGroupSummaryResponse
 from ..utils.auth import check_session
 from ..utils.config import Config
 from ..utils.database import db, unravel
-from ..utils.generic import ColourChannel, replace_clem_blob, validate_path
+from ..utils.generic import AtlasType, ColourChannel, replace_clem_blob, validate_path
 from ..utils.pika import PikaPublisher
 
 
@@ -175,6 +175,7 @@ def get_grid_squares(
     dcg_id: int,
     limit: int,
     page: int,
+    atlas_type: AtlasType = "ROI",
     hide_uncollected: bool = False,
     hide_empty_search_maps: bool = False,
 ):
@@ -196,7 +197,7 @@ def get_grid_squares(
             GridSquare.gridSquareImage,
         )
         .select_from(Atlas)
-        .filter(Atlas.dataCollectionGroupId == dcg_id)
+        .filter(Atlas.dataCollectionGroupId == dcg_id, Atlas.atlasType == atlas_type)
         .join(GridSquare)
     )
 
@@ -212,8 +213,8 @@ def get_grid_squares(
     return db.paginate(query, limit, page, slow_count=True)
 
 
-def get_atlas(dcg_id: int):
-    atlas = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id))
+def get_atlas(dcg_id: int, atlas_type: AtlasType):
+    atlas = db.session.scalar(select(Atlas).filter(Atlas.dataCollectionGroupId == dcg_id, Atlas.atlasType==atlas_type))
 
     if atlas is None:
         raise HTTPException(
@@ -225,8 +226,12 @@ def get_atlas(dcg_id: int):
 
 
 @validate_path
-def get_atlas_image(dcg_id: int, colour: ColourChannel = "grey"):
-    atlas_image = db.session.scalar(select(Atlas.atlasImage).filter(Atlas.dataCollectionGroupId == dcg_id))
+def get_atlas_image(dcg_id: int, atlas_type: AtlasType = "ROI", colour: ColourChannel = "grey"):
+    atlas_image = db.session.scalar(
+        select(Atlas.atlasImage).filter(
+            Atlas.dataCollectionGroupId == dcg_id, Atlas.atlasType == atlas_type
+        )
+    )
 
     atlas_image = replace_clem_blob(atlas_image, colour=colour)
 
@@ -252,8 +257,16 @@ def correlate_atlas(dcg_id: int, parameters: AtlasCorrelationIn):
         .join(Proposal)
     )
 
-    ref = db.session.execute(base_query.filter(Atlas.dataCollectionGroupId == dcg_id)).one_or_none()
-    mov = db.session.execute(base_query.filter(Atlas.dataCollectionGroupId == parameters.pair)).one_or_none()
+    ref = db.session.execute(
+        base_query.filter(
+            Atlas.dataCollectionGroupId == dcg_id, Atlas.atlasType == "ROI"
+        )
+    ).one_or_none()
+    mov = db.session.execute(
+        base_query.filter(
+            Atlas.dataCollectionGroupId == parameters.pair, Atlas.atlasType == "ROI"
+        )
+    ).one_or_none()
 
     if ref is None or mov is None:
         raise HTTPException(
