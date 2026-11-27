@@ -15,7 +15,7 @@ description = "PATO's backend"
 dependencies = [
     "python-multipart~=0.0.22",
     "pika~=1.3.2",
-    "SQLAlchemy~=2.0.51",
+    "SQLAlchemy~=2.1.9",
     "fastapi~=0.143.5",
     "uvicorn[standard]~=0.54.0",
     "requests~=2.34.2",
@@ -24,7 +24,7 @@ dependencies = [
     "pydantic[email]~=2.13.4",
     "fpdf2~=2.8.4",
     "types-requests",
-    "lims_utils~=0.4.16"
+    "lims_utils~=0.5.1"
 ]
 
 dynamic = ["version"]
